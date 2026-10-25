@@ -1,6 +1,6 @@
 /* ========================================================
    PT MUSASHI AUTO PARTS INDONESIA - ENERGY MANAGEMENT SYSTEM
-   Ultra-Clean Minimalist Dashboard (Zero-Scroll First Screen)
+   Ultra-Clean Minimalist Dashboard (Complete Data & Zero Clutter)
    ======================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
@@ -59,10 +59,10 @@ html, body {
 .dashboard-container {
   max-width: 1540px;
   margin: 0 auto;
-  padding: 0.85rem 1.15rem 1.5rem 1.15rem;
+  padding: 0.85rem 1.15rem 2rem 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
 /* ================= 1. HEADER ROW ================= */
@@ -263,74 +263,7 @@ html, body {
   text-overflow: ellipsis;
 }
 
-/* ================= 3. VIEW SEGMENTED CONTROLLER ("TIDAK HARUS SCROLL") ================= */
-.view-switch-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background: #111a2a;
-  padding: 3px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-card);
-  gap: 3px;
-  width: fit-content;
-  max-width: 100%;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.view-switch-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.view-switch-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: transparent;
-  border: none;
-  border-radius: 4px;
-  padding: 0.38rem 0.95rem;
-  font-size: 0.77rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-  font-family: inherit;
-}
-
-.view-switch-btn:hover {
-  color: #ffffff;
-}
-
-.view-switch-btn.active {
-  background: var(--bg-card);
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-}
-
-.view-switch-btn svg {
-  opacity: 0.75;
-}
-.view-switch-btn.active svg {
-  opacity: 1;
-  stroke: var(--color-blue);
-}
-
-/* Sections controlled by View Switcher */
-.view-section-pane {
-  display: none;
-  width: 100%;
-}
-
-.view-section-pane.active {
-  display: block;
-}
-
-/* ================= 4. ROW 2: CHARTS (24H LINE & DONUT) ================= */
+/* ================= 3. ROW 2: CHARTS (24H LINE & DONUT) ================= */
 .charts-grid-row {
   display: grid;
   grid-template-columns: 1.85fr 1fr;
@@ -414,7 +347,7 @@ html, body {
   flex-shrink: 0;
 }
 
-/* ================= 5. ROW 3: TOP 8 & PERLU PERHATIAN ================= */
+/* ================= 4. ROW 3: TOP 8 & PERLU PERHATIAN ================= */
 .mid-split-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -477,7 +410,112 @@ html, body {
   color: var(--color-amber);
 }
 
-/* ================= 6. ROW 4: DAFTAR METER TABLE ================= */
+/* ================= 5. AKTIVITAS BEBAN MESIN UTAMA ================= */
+.activity-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.activity-card-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.activity-card-item:hover {
+  border-color: var(--border-card-subtle);
+  transform: translateY(-1px);
+}
+
+.activity-card-top {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.activity-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-icon-box.orange {
+  background: rgba(251, 146, 60, 0.12);
+  color: var(--color-orange);
+}
+.activity-icon-box.amber {
+  background: rgba(251, 191, 36, 0.12);
+  color: var(--color-amber);
+}
+.activity-icon-box.blue {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--color-blue);
+}
+
+.activity-card-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.activity-card-time {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.activity-kw-pill {
+  margin-left: auto;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: #ffffff;
+  background: #1c283d;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+}
+
+.activity-kw-pill span {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.activity-metric-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 0.5rem;
+}
+
+.act-metric-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.act-metric-row span {
+  color: var(--text-muted);
+}
+
+.act-metric-row strong {
+  color: #ffffff;
+  font-family: var(--font-mono);
+}
+
+/* ================= 6. ROW 5: DAFTAR METER TABLE ================= */
 .table-card-header {
   display: flex;
   justify-content: space-between;
@@ -839,12 +877,15 @@ html, body {
   .mid-split-grid {
     grid-template-columns: 1fr;
   }
+  .activity-cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 0.65rem 0.65rem 1.5rem 0.65rem;
-    gap: 0.55rem;
+    gap: 0.65rem;
   }
 
   .header-row {
@@ -917,18 +958,6 @@ html, body {
     font-size: 0.6rem;
   }
 
-  .view-switch-bar {
-    width: 100%;
-    display: flex;
-  }
-
-  .view-switch-btn {
-    flex: 1;
-    justify-content: center;
-    padding: 0.35rem 0.45rem;
-    font-size: 0.72rem;
-  }
-
   .line-chart-container {
     height: 220px;
   }
@@ -959,7 +988,6 @@ html, body {
 }
 
 @media (max-width: 480px) {
-  /* On very small phones, 2-column or 3-column micro grid */
   .kpi-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.35rem;
