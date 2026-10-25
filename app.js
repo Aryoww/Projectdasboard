@@ -1,277 +1,342 @@
 // ========================================================
-// PT MUSASHI AUTO PARTS INDONESIA - MAINTENANCE UTILITY
-// Energy Management System (EMS) & SCADA Controller
-// Modern Telemetry Dashboard with Dual-Theme Engine (Light/Dark)
+// PT MUSASHI AUTO PARTS INDONESIA - ENERGY MANAGEMENT SYSTEM
+// Minimalist Dark Theme Dashboard Controller
 // ========================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  // Baseline Calibration to match exact Musashi factory profile
+  const CATEGORY_BASELINES = {
+    all: {
+      kw: 10116,
+      kwh: 160605,
+      cost: 'Rp 232 jt',
+      pf: '0,89',
+      online: '135 / 137',
+      alertCount: '38 meter perlu dicek',
+      carbonTon: '126,9',
+      curve24h: [6070, 5540, 7620, 11120, 9580, 11280, 8240, 6420],
+      curveMax: 12000,
+      curveStep: 2000
+    },
+    forging: {
+      kw: 5703,
+      kwh: 90603,
+      cost: 'Rp 131 jt',
+      pf: '0,89',
+      online: '88 / 90',
+      alertCount: '28 meter perlu dicek',
+      carbonTon: '71,6',
+      curve24h: [3420, 3120, 4290, 6260, 5400, 6380, 4650, 3620],
+      curveMax: 7000,
+      curveStep: 1000
+    },
+    electrical: {
+      kw: 3198,
+      kwh: 50825,
+      cost: 'Rp 73 jt',
+      pf: '0,90',
+      online: '18 / 18',
+      alertCount: '3 meter perlu dicek',
+      carbonTon: '40,2',
+      curve24h: [1920, 1750, 2410, 3510, 3030, 3580, 2610, 2030],
+      curveMax: 4000,
+      curveStep: 500
+    },
+    compressor: {
+      kw: 894,
+      kwh: 14256,
+      cost: 'Rp 21 jt',
+      pf: '0,89',
+      online: '10 / 10',
+      alertCount: '4 meter perlu dicek',
+      carbonTon: '11,3',
+      curve24h: [540, 490, 680, 980, 850, 1000, 730, 570],
+      curveMax: 1000,
+      curveStep: 100
+    },
+    water: {
+      kw: 242,
+      kwh: 3872,
+      cost: 'Rp 6 jt',
+      pf: '0,91',
+      online: '12 / 12',
+      alertCount: '1 meter perlu dicek',
+      carbonTon: '3,1',
+      curve24h: [150, 130, 180, 270, 230, 270, 200, 150],
+      curveMax: 400,
+      curveStep: 50
+    },
+    lobby: {
+      kw: 79,
+      kwh: 1069,
+      cost: 'Rp 2 jt',
+      pf: '0,92',
+      online: '7 / 7',
+      alertCount: '0 meter perlu dicek',
+      carbonTon: '0,8',
+      curve24h: [40, 35, 50, 90, 75, 90, 65, 45],
+      curveMax: 150,
+      curveStep: 25
+    }
+  };
+
+  // Top 8 Consumers Data by Category (Matching Exact Screenshots)
+  const TOP_8_DATA = {
+    all: [
+      { name: 'Trafo #1 (TRF-01)', val: 5420 },
+      { name: 'Trafo #4 (TRF-04)', val: 5180 },
+      { name: 'Trafo #6 (TRF-06)', val: 3920 },
+      { name: 'Panel LMVDP #3 (LMV-03)', val: 3710 },
+      { name: 'Trafo #3 (TRF-03)', val: 3320 },
+      { name: 'Trafo #2 (TRF-02)', val: 3250 },
+      { name: 'Panel LMVDP #11 (LMV-11)', val: 3200 },
+      { name: 'Panel LMVDP #9 (LMV-09)', val: 2890 }
+    ],
+    forging: [
+      { name: 'Mesin Forging 11 (FRG1-11)', val: 4410 },
+      { name: 'Mesin Forging 8 (FRG3-08)', val: 4390 },
+      { name: 'Mesin Forging 4 (FRG2-04)', val: 4380 },
+      { name: 'Mesin Forging 25 (FRG1-25)', val: 4350 },
+      { name: 'Mesin Forging 18 (FRG2-18)', val: 4220 },
+      { name: 'Mesin Forging 14 (FRG3-14)', val: 4150 },
+      { name: 'Mesin Forging 7 (FRG1-07)', val: 3980 },
+      { name: 'Mesin Forging 22 (FRG2-22)', val: 3870 }
+    ],
+    electrical: [
+      { name: 'Trafo #1 (TRF-01)', val: 5420 },
+      { name: 'Trafo #4 (TRF-04)', val: 5180 },
+      { name: 'Trafo #6 (TRF-06)', val: 3920 },
+      { name: 'Panel LMVDP #3 (LMV-03)', val: 3710 },
+      { name: 'Trafo #3 (TRF-03)', val: 3320 },
+      { name: 'Trafo #2 (TRF-02)', val: 3250 },
+      { name: 'Panel LMVDP #11 (LMV-11)', val: 3200 },
+      { name: 'Panel LMVDP #9 (LMV-09)', val: 2890 }
+    ],
+    compressor: [
+      { name: 'Compressor Room #2 (CMP-02)', val: 4520 },
+      { name: 'Compressor Room #9 (CMP-09)', val: 4480 },
+      { name: 'Compressor Room #8 (CMP-08)', val: 4420 },
+      { name: 'Compressor Room #1 (CMP-01)', val: 3910 },
+      { name: 'Compressor Room #4 (CMP-04)', val: 3820 },
+      { name: 'Compressor Room #6 (CMP-06)', val: 3750 },
+      { name: 'Compressor Room #7 (CMP-07)', val: 3610 },
+      { name: 'Compressor Room #5 (CMP-05)', val: 3520 }
+    ],
+    water: [
+      { name: 'Cooling Tower Primary Pump (PMP-01)', val: 1240 },
+      { name: 'Chilled Water Pump Fac 1 (PMP-03)', val: 1180 },
+      { name: 'WTP Raw Water Intake Pump (PMP-07)', val: 950 },
+      { name: 'Condenser Water Circulation Pump #2', val: 920 },
+      { name: 'Booster Pump High Pressure (PMP-11)', val: 840 },
+      { name: 'Effluent Treatment Transfer Pump', val: 780 },
+      { name: 'Scrubber Circulation Pump #1', val: 710 },
+      { name: 'Cooling Tower Fan Cell #3', val: 650 }
+    ],
+    lobby: [
+      { name: 'Main Chiller Office & Utility (CHL-01)', val: 420 },
+      { name: 'AHU Central Server Room (AHU-01)', val: 340 },
+      { name: 'Lobby Central AC Packaged (AC-01)', val: 280 },
+      { name: 'UPS Data Center Powerlogic (UPS-01)', val: 260 },
+      { name: 'Utility Workshop Feeder (WS-01)', val: 190 },
+      { name: 'Office Lighting Distribution Panel', val: 150 },
+      { name: 'Canteen Kitchen Exhaust Fan', val: 120 },
+      { name: 'Security Pos Main Gate Panel', val: 80 }
+    ]
+  };
+
+  // Perlu Perhatian Alert Items by Category (Exact Match with Screenshot)
+  const ATTENTION_ALERTS = {
+    all: [
+      { title: 'Mesin Forging 7', area: 'Forging · Factory 1', note: 'Power factor 0.83 – cek kapasitor bank' },
+      { title: 'Mesin Forging 8', area: 'Forging · Factory 1', note: 'Power factor 0.80 – cek kapasitor bank' },
+      { title: 'Mesin Forging 11', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
+      { title: 'Mesin Forging 13', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
+      { title: 'Mesin Forging 16', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
+      { title: 'Mesin Forging 18', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
+      { title: 'Mesin Forging 20', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
+      { title: 'Mesin Forging 22', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' }
+    ],
+    forging: [
+      { title: 'Mesin Forging 7', area: 'Forging · Factory 1', note: 'Power factor 0.83 – cek kapasitor bank' },
+      { title: 'Mesin Forging 8', area: 'Forging · Factory 1', note: 'Power factor 0.80 – cek kapasitor bank' },
+      { title: 'Mesin Forging 11', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
+      { title: 'Mesin Forging 13', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
+      { title: 'Mesin Forging 16', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
+      { title: 'Mesin Forging 18', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
+      { title: 'Mesin Forging 20', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
+      { title: 'Mesin Forging 22', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' }
+    ],
+    electrical: [
+      { title: 'Panel LMVDP #1', area: 'Electrical Room · Panel LMVDP', note: 'Power factor 0.84 – cek kapasitor bank' },
+      { title: 'Panel LMVDP #7', area: 'Electrical Room · Panel LMVDP', note: 'Power factor 0.83 – cek kapasitor bank' },
+      { title: 'Capacitor Bank Panel #4', area: 'Electrical Room · Kapasitor Bank', note: 'Step 3 & 4 Kontaktor Trip - Kapasitas Drop' }
+    ],
+    compressor: [
+      { title: 'Compressor Room #3', area: 'Kompresor · Compressor Room', note: 'Power factor 0.81 – cek kapasitor bank' },
+      { title: 'Compressor Room #5', area: 'Kompresor · Compressor Room', note: 'Power factor 0.81 – cek kapasitor bank' },
+      { title: 'Air Dryer Feeder #2', area: 'Kompresor · Air Dryer', note: 'Power factor 0.83 – cek kapasitor bank' },
+      { title: 'Compressor Room #8', area: 'Kompresor · Compressor Room', note: 'Power factor 0.84 – cek kapasitor bank' }
+    ],
+    water: [
+      { title: 'Chilled Water Pump Fac 2', area: 'Pompa Air · Chilled Water', note: 'Power factor 0.84 – cek kapasitor bank' }
+    ],
+    lobby: [
+      { title: 'Semua Beban Normal', area: 'Lobby & Office', note: 'Cos φ di atas 0,90 - Bebas denda kVARh' }
+    ]
+  };
+
   // Application State
   const state = {
     meters: (typeof METER_DATA !== 'undefined') ? JSON.parse(JSON.stringify(METER_DATA)) : [],
-    currentAreaFilter: 'all',
-    currentStatusFilter: 'all',
+    activeFilter: 'all',
     searchQuery: '',
     sortColumn: 'id',
     sortAsc: true,
     currentPage: 1,
     pageSize: 15,
     isSimulationActive: true,
-    simulationTimer: null,
-    selectedMeter: null,
-    currentTheme: localStorage.getItem('musashi_theme') || 'light'
+    simulationTimer: null
   };
 
-  // Chart References
-  let trafoSparklineChart = null;
-  let trafoGaugeChartInstance = null;
-  let hourlyBarChartInstance = null;
+  // Chart Instances
+  let chart24hInstance = null;
+  let chartDonutInstance = null;
+  let chartTop8Instance = null;
 
   // DOM Elements
-  const liveClockEl = document.getElementById('liveClock');
-  const liveDateEl = document.getElementById('liveDate');
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const themeToggleLabel = document.getElementById('themeToggleLabel');
+  const headerLiveTime = document.getElementById('headerLiveTime');
+  const filterTabsGroup = document.getElementById('filterTabsGroup');
+  const kpiDayaVal = document.getElementById('kpiDayaVal');
+  const kpiDayaSub = document.getElementById('kpiDayaSub');
+  const kpiEnergiVal = document.getElementById('kpiEnergiVal');
+  const kpiEnergiSub = document.getElementById('kpiEnergiSub');
+  const kpiBiayaVal = document.getElementById('kpiBiayaVal');
+  const kpiBiayaSub = document.getElementById('kpiBiayaSub');
+  const kpiPfVal = document.getElementById('kpiPfVal');
+  const kpiPfSub = document.getElementById('kpiPfSub');
+  const kpiOnlineVal = document.getElementById('kpiOnlineVal');
+  const kpiOnlineSub = document.getElementById('kpiOnlineSub');
+  const kpiCarbonVal = document.getElementById('kpiCarbonVal');
+  const kpiCarbonSub = document.getElementById('kpiCarbonSub');
+
+  const attentionList = document.getElementById('attentionList');
   const meterTableBody = document.getElementById('meterTableBody');
   const searchInput = document.getElementById('searchInput');
-  const statusFilterSelect = document.getElementById('statusFilter');
   const pageRangeText = document.getElementById('pageRangeText');
   const totalMetersText = document.getElementById('totalMetersText');
   const paginationButtons = document.getElementById('paginationButtons');
 
-  // KPI & Telemetry Elements
-  const kpiCurrentKw = document.getElementById('kpiCurrentKw');
-  const kpiPeakDemand = document.getElementById('kpiPeakDemand');
-  const kpiEnergyToday = document.getElementById('kpiEnergyToday');
-  const kpiAvgPf = document.getElementById('kpiAvgPf');
-  const kpiCarbonToday = document.getElementById('kpiCarbonToday');
-  const kpiCarbonCallout = document.getElementById('kpiCarbonCallout');
-  const trafo12KwVal = document.getElementById('trafo12KwVal');
-  const trafo12Volt = document.getElementById('trafo12Volt');
-  const trafo12Current = document.getElementById('trafo12Current');
-  const trafo12Pf = document.getElementById('trafo12Pf');
-  const trafo12Temp = document.getElementById('trafo12Temp');
-  const trafo12PercentLoad = document.getElementById('trafo12PercentLoad');
-  const trafo12SyncTime = document.getElementById('trafo12SyncTime');
-
-  // Modals
+  const btnExportCsv = document.getElementById('btnExportCsv');
+  const btnOpenBlueprintModal = document.getElementById('btnOpenBlueprintModal');
+  const blueprintModal = document.getElementById('blueprintModal');
   const meterDetailModal = document.getElementById('meterDetailModal');
-  const btnCloseMeterModal = document.getElementById('btnCloseMeterModal');
-  const modalMeterTitle = document.getElementById('modalMeterTitle');
-  const modalMeterSubtitle = document.getElementById('modalMeterSubtitle');
-  const modalMeterBody = document.getElementById('modalMeterBody');
-
-  const electricalRoomModal = document.getElementById('electricalRoomModal');
-  const btnOpenElectricalModal = document.getElementById('btnOpenElectricalModal');
-  const btnCloseElectricalModal = document.getElementById('btnCloseElectricalModal');
-
-  const topologyModal = document.getElementById('topologyModal');
-  const btnOpenTopology = document.getElementById('btnOpenTopology');
-  const btnCloseTopologyModal = document.getElementById('btnCloseTopologyModal');
-
-  const guideModal = document.getElementById('guideModal');
-  const btnOpenGuide = document.getElementById('btnOpenGuide');
-  const btnCloseGuideModal = document.getElementById('btnCloseGuideModal');
-
-  const btnExportData = document.getElementById('btnExportData');
-  const btnSyncData = document.getElementById('btnSyncData');
-  const btnQuickSearch = document.getElementById('btnQuickSearch');
-  const btnViewAllMeters = document.getElementById('btnViewAllMeters');
-  const btnOpenTrafo12Details = document.getElementById('btnOpenTrafo12Details');
-
-  // Sparkline history data for Trafo 12
-  const sparklineHistory = [1280, 1310, 1295, 1340, 1320, 1365, 1350, 1380, 1375, 1390, 1380];
 
   // ================= 1. INITIALIZATION =================
   function init() {
-    initTheme();
     initClock();
-    initNavPills();
-    initFilterPills();
+    initFilterTabs();
     initCharts();
+    updateViewForActiveFilter();
     renderTable();
-    updateKpis();
     setupEventListeners();
     startSimulation();
   }
 
-  // ================= 2. THEME ENGINE (LIGHT & DARK MODE) =================
-  function initTheme() {
-    applyTheme(state.currentTheme);
-
-    if (themeToggleBtn) {
-      themeToggleBtn.addEventListener('click', () => {
-        const newTheme = (state.currentTheme === 'light') ? 'dark' : 'light';
-        state.currentTheme = newTheme;
-        localStorage.setItem('musashi_theme', newTheme);
-        applyTheme(newTheme);
-      });
-    }
-  }
-
-  function applyTheme(theme) {
-    const isDark = (theme === 'dark');
-    if (isDark) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      if (themeToggleLabel) themeToggleLabel.textContent = 'Light Mode';
-      const sunIcon = document.querySelector('.theme-icon-sun');
-      const moonIcon = document.querySelector('.theme-icon-moon');
-      if (sunIcon) sunIcon.style.display = 'inline-block';
-      if (moonIcon) moonIcon.style.display = 'none';
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      if (themeToggleLabel) themeToggleLabel.textContent = 'Dark Mode';
-      const sunIcon = document.querySelector('.theme-icon-sun');
-      const moonIcon = document.querySelector('.theme-icon-moon');
-      if (sunIcon) sunIcon.style.display = 'none';
-      if (moonIcon) moonIcon.style.display = 'inline-block';
-    }
-
-    // Update Chart themes dynamically
-    updateChartThemes(isDark);
-  }
-
-  function updateChartThemes(isDark) {
-    if (hourlyBarChartInstance) {
-      const textColor = isDark ? '#94a3b8' : '#64748b';
-      const gridColor = isDark ? '#1e293b' : '#f1f5f9';
-      const defaultBarColor = isDark ? '#1e2c3f' : '#e2e8f0';
-      const peakBarColor = isDark ? '#38bdf8' : '#2563eb';
-
-      hourlyBarChartInstance.options.scales.x.ticks.color = textColor;
-      hourlyBarChartInstance.options.scales.y.ticks.color = textColor;
-      hourlyBarChartInstance.options.scales.x.grid.color = 'transparent';
-      hourlyBarChartInstance.options.scales.y.grid.color = gridColor;
-
-      // Update bar colors: peak hour (idx 19) gets peakBarColor, others get defaultBarColor
-      const barColors = hourlyBarChartInstance.data.datasets[0].data.map((_, idx) => {
-        return (idx === 19) ? peakBarColor : defaultBarColor;
-      });
-      hourlyBarChartInstance.data.datasets[0].backgroundColor = barColors;
-      hourlyBarChartInstance.update('none');
-    }
-
-    if (trafoSparklineChart) {
-      const lineColor = isDark ? '#f43f5e' : '#ec4899';
-      trafoSparklineChart.data.datasets[0].borderColor = lineColor;
-      trafoSparklineChart.update('none');
-    }
-  }
-
-  // ================= 3. LIVE CLOCK =================
+  // ================= 2. LIVE CLOCK =================
   function initClock() {
     function updateClock() {
       const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      if (liveClockEl) {
-        liveClockEl.textContent = `${hours}:${minutes}:${seconds} WIB`;
-      }
-
-      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
       const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-      if (liveDateEl) {
-        liveDateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+      const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}.${String(now.getMinutes()).padStart(2, '0')}.${String(now.getSeconds()).padStart(2, '0')}`;
+      if (headerLiveTime) {
+        headerLiveTime.textContent = `${dateStr}, ${timeStr}`;
       }
     }
     updateClock();
     setInterval(updateClock, 1000);
   }
 
-  // ================= 4. NAVIGATION PILLS =================
-  function initNavPills() {
-    const navPills = document.querySelectorAll('#mainNavPills .nav-pill-item');
-    navPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        navPills.forEach(p => {
-          p.classList.remove('active');
-          const dot = p.querySelector('.dot-indicator');
-          if (dot) dot.remove();
-        });
-        pill.classList.add('active');
-        const dot = document.createElement('span');
-        dot.className = 'dot-indicator';
-        pill.appendChild(dot);
-
-        const tab = pill.dataset.tab;
-        if (tab === 'dashboard') {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (tab === 'sld') {
-          const sld = document.getElementById('sldSection');
-          if (sld) sld.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (tab === 'forging') {
-          const dir = document.getElementById('directorySection');
-          if (dir) dir.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          setAreaFilter('forging');
-        } else if (tab === 'electrical') {
-          // Scroll directly to the integrated Electrical Room card on the page
-          const el = document.getElementById('electricalRoomCard');
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            el.classList.add('highlight-pulse');
-            setTimeout(() => el.classList.remove('highlight-pulse'), 1800);
-          }
-        } else if (tab === 'directory') {
-          const dir = document.getElementById('directorySection');
-          if (dir) dir.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    });
-  }
-
-  // ================= 5. FILTER PILLS =================
-  function initFilterPills() {
-    const filterBtns = document.querySelectorAll('#areaFilterPills .filter-pill-btn');
-    filterBtns.forEach(btn => {
+  // ================= 3. FILTER TABS CONTROLLER =================
+  function initFilterTabs() {
+    if (!filterTabsGroup) return;
+    const tabButtons = filterTabsGroup.querySelectorAll('.filter-tab-btn');
+    tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
+        tabButtons.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        state.currentAreaFilter = btn.dataset.filter;
+        state.activeFilter = btn.dataset.filter || 'all';
         state.currentPage = 1;
+        updateViewForActiveFilter();
         renderTable();
       });
     });
   }
 
-  function setAreaFilter(area) {
-    state.currentAreaFilter = area;
-    state.currentPage = 1;
-    const filterBtns = document.querySelectorAll('#areaFilterPills .filter-pill-btn');
-    filterBtns.forEach(b => {
-      if (b.dataset.filter === area) {
-        b.classList.add('active');
-      } else {
-        b.classList.remove('active');
-      }
-    });
-    renderTable();
+  // ================= 4. UPDATE VIEW BASED ON ACTIVE FILTER =================
+  function updateViewForActiveFilter() {
+    const filterKey = state.activeFilter;
+    const data = CATEGORY_BASELINES[filterKey] || CATEGORY_BASELINES.all;
+
+    // 1. Update KPI Values
+    if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
+    if (kpiDayaSub) kpiDayaSub.textContent = 'Total beban listrik sekarang';
+
+    if (kpiEnergiVal) kpiEnergiVal.textContent = data.kwh.toLocaleString('id-ID');
+    if (kpiEnergiSub) kpiEnergiSub.textContent = 'Sejak pukul 00.00';
+
+    if (kpiBiayaVal) kpiBiayaVal.textContent = data.cost;
+    if (kpiBiayaSub) kpiBiayaSub.textContent = 'Berdasarkan tarif asumsi';
+
+    if (kpiPfVal) kpiPfVal.textContent = data.pf;
+    if (kpiPfSub) kpiPfSub.textContent = 'Baik (target ≥ 0,85)';
+
+    if (kpiOnlineVal) kpiOnlineVal.textContent = data.online;
+    if (kpiOnlineSub) kpiOnlineSub.textContent = data.alertCount;
+
+    if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
+    if (kpiCarbonSub) kpiCarbonSub.textContent = 'Faktor grid Jamali 0,79 kg/kWh';
+
+    // 2. Update 24h Line Chart
+    update24hChart(data.curve24h, data.curveMax, data.curveStep);
+
+    // 3. Update Top 8 Horizontal Bar Chart
+    updateTop8Chart(TOP_8_DATA[filterKey] || TOP_8_DATA.all);
+
+    // 4. Update Perlu Perhatian List
+    renderAttentionList(ATTENTION_ALERTS[filterKey] || ATTENTION_ALERTS.all);
   }
 
-  // ================= 6. CHARTS INITIALIZATION =================
+  // ================= 5. CHARTS INITIALIZATION & UPDATES =================
   function initCharts() {
-    const isDark = (state.currentTheme === 'dark');
+    Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
+    Chart.defaults.color = '#94a3b8';
 
-    // Chart 1: Trafo 12 Sparkline (Spline Pink Wave like Reference)
-    const ctxSparkline = document.getElementById('trafoSparkline');
-    if (ctxSparkline) {
-      const gradient = ctxSparkline.getContext('2d').createLinearGradient(0, 0, 0, 90);
-      gradient.addColorStop(0, isDark ? 'rgba(244, 63, 94, 0.25)' : 'rgba(236, 72, 153, 0.2)');
-      gradient.addColorStop(1, 'rgba(236, 72, 153, 0)');
+    // --- 1. Line Chart: Beban 24 Jam Terakhir ---
+    const ctx24h = document.getElementById('chart24h');
+    if (ctx24h) {
+      const gradient = ctx24h.getContext('2d').createLinearGradient(0, 0, 0, 240);
+      gradient.addColorStop(0, 'rgba(56, 189, 248, 0.22)');
+      gradient.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
 
-      trafoSparklineChart = new Chart(ctxSparkline, {
+      chart24hInstance = new Chart(ctx24h, {
         type: 'line',
         data: {
-          labels: ['-10m', '-9m', '-8m', '-7m', '-6m', '-5m', '-4m', '-3m', '-2m', '-1m', 'Now'],
+          labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
           datasets: [{
-            data: sparklineHistory,
-            borderColor: isDark ? '#f43f5e' : '#ec4899',
-            borderWidth: 2.2,
-            pointRadius: 0,
-            pointHoverRadius: 4,
-            pointBackgroundColor: '#ec4899',
-            fill: true,
+            label: 'Daya Listrik',
+            data: CATEGORY_BASELINES.all.curve24h,
+            borderColor: '#38bdf8',
+            borderWidth: 2.8,
             backgroundColor: gradient,
-            tension: 0.45
+            fill: true,
+            tension: 0.45,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#38bdf8',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2
           }]
         },
         options: {
@@ -280,127 +345,138 @@ document.addEventListener('DOMContentLoaded', () => {
           plugins: {
             legend: { display: false },
             tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#ffffff',
+              bodyColor: '#38bdf8',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderWidth: 1,
+              padding: 10,
+              displayColors: false,
               callbacks: {
-                label: (ctx) => `${ctx.parsed.y} kW`
-              }
-            }
-          },
-          scales: {
-            x: { display: false },
-            y: {
-              display: false,
-              suggestedMin: 1200,
-              suggestedMax: 1450
-            }
-          }
-        }
-      });
-    }
-
-    // Chart 2: Trafo Load Zone Semi-Circular Gauge (Speedometer)
-    const ctxGauge = document.getElementById('trafoGaugeChart');
-    if (ctxGauge) {
-      trafoGaugeChartInstance = new Chart(ctxGauge, {
-        type: 'doughnut',
-        data: {
-          labels: ['Ringan (<40%)', 'Optimal (40-75%)', 'Waspada (75-90%)', 'Puncak (>90%)'],
-          datasets: [{
-            data: [40, 35, 15, 10], // Zone proportions
-            backgroundColor: [
-              '#3b82f6', // Ringan (Blue)
-              '#10b981', // Optimal (Green)
-              '#f59e0b', // Waspada (Amber)
-              '#ef4444'  // Puncak (Red)
-            ],
-            borderWidth: 0,
-            hoverOffset: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          circumference: 180,
-          rotation: 270,
-          cutout: '78%',
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: (ctx) => `${ctx.label}: Kapasitas ${ctx.parsed}%`
-              }
-            }
-          }
-        }
-      });
-    }
-
-    // Chart 3: 24-Hour Hourly Bar Chart (Highlighted Peak Hour Bar like Reference)
-    const ctxBar = document.getElementById('hourlyBarChart');
-    if (ctxBar) {
-      const hours = Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
-      // Realistic hourly factory profile (peaking at hour 19 / 19:00 WIB during WBP)
-      const hourlyData = [
-        1.85, 1.80, 1.82, 1.90, 2.10, 2.40, // 00-05
-        2.75, 2.90, 3.10, 3.05, 3.15, 3.00, // 06-11
-        2.60, 3.10, 3.20, 3.15, 3.10, 3.25, // 12-17
-        3.35, 3.42, 3.20, 2.80, 2.10, 1.95  // 18-23 (Hour 19 = 3.42 MW Peak)
-      ];
-
-      const defaultBarColor = isDark ? '#1e2c3f' : '#e2e8f0';
-      const peakBarColor = isDark ? '#38bdf8' : '#2563eb';
-      const backgroundColors = hourlyData.map((_, idx) => (idx === 19) ? peakBarColor : defaultBarColor);
-
-      const textColor = isDark ? '#94a3b8' : '#64748b';
-      const gridColor = isDark ? '#1e293b' : '#f1f5f9';
-
-      hourlyBarChartInstance = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-          labels: hours,
-          datasets: [{
-            data: hourlyData,
-            backgroundColor: backgroundColors,
-            borderRadius: 5,
-            borderSkipped: false,
-            barPercentage: 0.65
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                title: (items) => `Pukul ${items[0].label} WIB`,
-                label: (ctx) => {
-                  const kw = Math.round(ctx.parsed.y * 1000);
-                  const isWbp = (ctx.dataIndex >= 18 && ctx.dataIndex <= 22);
-                  return `Beban: ${ctx.parsed.y.toFixed(2)} MW (${kw.toLocaleString()} kW) ${isWbp ? '• WBP' : ''}`;
-                }
+                label: (ctx) => `${ctx.parsed.y.toLocaleString('id-ID')} kW`
               }
             }
           },
           scales: {
             x: {
               grid: { display: false },
+              ticks: { color: '#94a3b8', font: { size: 11 } }
+            },
+            y: {
+              min: 0,
+              max: CATEGORY_BASELINES.all.curveMax,
+              grid: { color: 'rgba(255, 255, 255, 0.04)' },
               ticks: {
-                color: textColor,
-                font: { size: 10 },
-                callback: function(val, index) {
-                  return (index % 6 === 0 || index === 23) ? this.getLabelForValue(val) : '';
+                color: '#94a3b8',
+                font: { size: 11 },
+                stepSize: CATEGORY_BASELINES.all.curveStep,
+                callback: (val) => val === 0 ? '0' : val.toLocaleString('id-ID')
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // --- 2. Donut Chart: Pembagian Pemakaian Energi ---
+    const ctxDonut = document.getElementById('chartDonutEnergy');
+    if (ctxDonut) {
+      chartDonutInstance = new Chart(ctxDonut, {
+        type: 'doughnut',
+        data: {
+          labels: ['Forging', 'Electrical Room', 'Kompresor', 'Pompa Air', 'Lobby'],
+          datasets: [{
+            data: [90603, 50825, 14256, 3872, 1069],
+            backgroundColor: [
+              '#38bdf8', // Forging (Blue)
+              '#2dd4bf', // Electrical Room (Teal)
+              '#fb923c', // Kompresor (Orange)
+              '#34d399', // Pompa Air (Green)
+              '#f43f5e'  // Lobby (Rose)
+            ],
+            borderWidth: 2,
+            borderColor: '#131d2e',
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#ffffff',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderWidth: 1,
+              padding: 10,
+              callbacks: {
+                label: (ctx) => {
+                  const val = ctx.parsed;
+                  const total = 160605;
+                  const pct = ((val / total) * 100).toFixed(1);
+                  return ` ${ctx.label}: ${val.toLocaleString('id-ID')} kWh (${pct}%)`;
                 }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // --- 3. Horizontal Bar Chart: 8 Meter dengan Pemakaian Tertinggi ---
+    const ctxTop8 = document.getElementById('chartTop8Meters');
+    if (ctxTop8) {
+      const topData = TOP_8_DATA.all;
+      chartTop8Instance = new Chart(ctxTop8, {
+        type: 'bar',
+        data: {
+          labels: topData.map(d => d.name),
+          datasets: [{
+            data: topData.map(d => d.val),
+            backgroundColor: '#2dd4bf',
+            borderRadius: 4,
+            barThickness: 16
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#ffffff',
+              bodyColor: '#2dd4bf',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderWidth: 1,
+              padding: 9,
+              displayColors: false,
+              callbacks: {
+                label: (ctx) => `Pemakaian: ${ctx.parsed.x.toLocaleString('id-ID')} kWh`
+              }
+            }
+          },
+          scales: {
+            x: {
+              min: 0,
+              max: 6000,
+              grid: { color: 'rgba(255, 255, 255, 0.04)' },
+              ticks: {
+                color: '#94a3b8',
+                font: { size: 10 },
+                stepSize: 1000,
+                callback: (val) => val === 0 ? '0' : val.toLocaleString('id-ID')
               }
             },
             y: {
-              grid: { color: gridColor },
+              grid: { display: false },
               ticks: {
-                color: textColor,
-                font: { size: 10 },
-                callback: (val) => `${val} MW`
-              },
-              suggestedMin: 0,
-              suggestedMax: 4.0
+                color: '#94a3b8',
+                font: { size: 11 }
+              }
             }
           }
         }
@@ -408,28 +484,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ================= 7. TABLE RENDERING & PAGINATION =================
+  function update24hChart(newData, newMax, newStep) {
+    if (!chart24hInstance) return;
+    chart24hInstance.data.datasets[0].data = newData;
+    chart24hInstance.options.scales.y.max = newMax;
+    chart24hInstance.options.scales.y.ticks.stepSize = newStep;
+    chart24hInstance.update();
+  }
+
+  function updateTop8Chart(topItems) {
+    if (!chartTop8Instance) return;
+    chartTop8Instance.data.labels = topItems.map(d => d.name);
+    chartTop8Instance.data.datasets[0].data = topItems.map(d => d.val);
+    const maxVal = Math.max(...topItems.map(d => d.val));
+    chartTop8Instance.options.scales.x.max = Math.ceil((maxVal * 1.15) / 1000) * 1000;
+    chartTop8Instance.update();
+  }
+
+  // ================= 6. RENDER PERLU PERHATIAN LIST =================
+  function renderAttentionList(alerts) {
+    if (!attentionList) return;
+    if (!alerts || alerts.length === 0) {
+      attentionList.innerHTML = `
+        <div style="padding:1rem; text-align:center; color:var(--text-muted); font-size:0.8rem;">
+          Semua meter di area ini beroperasi dalam batas normal.
+        </div>
+      `;
+      return;
+    }
+
+    attentionList.innerHTML = alerts.map(item => `
+      <div class="attention-item">
+        <div class="attention-header-text">
+          ${item.title} <span>(${item.area})</span>
+        </div>
+        <div class="attention-alert-text">
+          ${item.note}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ================= 7. DAFTAR METER TABLE =================
   function getFilteredMeters() {
-    return state.meters.filter(meter => {
-      // Area filter
-      if (state.currentAreaFilter !== 'all' && meter.category !== state.currentAreaFilter) {
-        return false;
-      }
-      // Status filter
-      if (state.currentStatusFilter !== 'all' && meter.status !== state.currentStatusFilter) {
-        return false;
-      }
-      // Search Query
-      if (state.searchQuery.trim() !== '') {
-        const query = state.searchQuery.toLowerCase();
-        const matchId = (meter.id || '').toLowerCase().includes(query);
-        const matchName = (meter.name || '').toLowerCase().includes(query);
-        const matchIp = (meter.ip || '').toLowerCase().includes(query);
-        const matchArea = (meter.subArea || '').toLowerCase().includes(query);
-        return matchId || matchName || matchIp || matchArea;
-      }
-      return true;
-    });
+    let list = state.meters;
+
+    // Filter by Tab
+    if (state.activeFilter !== 'all') {
+      list = list.filter(m => {
+        const cat = (m.category || '').toLowerCase();
+        if (state.activeFilter === 'forging') return cat === 'forging';
+        if (state.activeFilter === 'electrical') return cat === 'electrical';
+        if (state.activeFilter === 'compressor') return cat === 'compressor';
+        if (state.activeFilter === 'water') return cat === 'water';
+        if (state.activeFilter === 'lobby') return cat === 'lobby';
+        return true;
+      });
+    }
+
+    // Filter by Search Input
+    if (state.searchQuery.trim() !== '') {
+      const q = state.searchQuery.toLowerCase().trim();
+      list = list.filter(m =>
+        (m.id && m.id.toLowerCase().includes(q)) ||
+        (m.name && m.name.toLowerCase().includes(q)) ||
+        (m.categoryLabel && m.categoryLabel.toLowerCase().includes(q)) ||
+        (m.subArea && m.subArea.toLowerCase().includes(q)) ||
+        (m.ip && m.ip.toLowerCase().includes(q))
+      );
+    }
+
+    return list;
   }
 
   function renderTable() {
@@ -465,12 +590,12 @@ document.addEventListener('DOMContentLoaded', () => {
       totalMetersText.textContent = totalItems;
     }
 
-    // Build Table Rows HTML
+    // Build Table Rows
     if (pageItems.length === 0) {
       meterTableBody.innerHTML = `
         <tr>
-          <td colspan="11" style="text-align:center; padding:2rem; color:var(--text-muted);">
-            Tidak ditemukan data meter digital yang sesuai filter / pencarian "${state.searchQuery}".
+          <td colspan="12" style="text-align:center; padding:2.5rem; color:var(--text-muted);">
+            Tidak ditemukan data meter digital yang sesuai pencarian "${state.searchQuery}".
           </td>
         </tr>
       `;
@@ -481,42 +606,35 @@ document.addEventListener('DOMContentLoaded', () => {
     meterTableBody.innerHTML = pageItems.map(m => {
       const statusClass = (m.status === 'normal') ? 'normal' : (m.status === 'warning') ? 'warning' : 'offline';
       const statusLabel = (m.status === 'normal') ? 'Normal' : (m.status === 'warning') ? 'Warning' : 'Offline';
-      const isFeatured = (m.id === 'TRF-12');
+      const carbonKg = ((m.kwhToday || 0) * 0.79).toFixed(1);
 
       return `
-        <tr style="${isFeatured ? 'background:var(--primary-light); font-weight:600;' : ''}">
-          <td style="font-family:var(--font-mono); font-weight:700; color:${isFeatured ? 'var(--primary)' : 'var(--text-main)'};">
-            ${m.id} ${isFeatured ? '⭐' : ''}
-          </td>
-          <td style="max-width:280px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${m.name}">
+        <tr>
+          <td class="col-id">${m.id}</td>
+          <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis;" title="${m.name}">
             ${m.name}
           </td>
-          <td>
-            <span style="font-size:0.75rem; color:var(--text-muted);">${m.categoryLabel || m.category}</span>
-          </td>
-          <td style="font-family:var(--font-mono); font-size:0.75rem; color:${isFeatured ? 'var(--primary)' : 'var(--text-body)'};">
-            ${m.ip || '10.41.47.x'}
-          </td>
-          <td style="text-align:right; font-family:var(--font-mono); font-weight:700;">
+          <td style="color:var(--text-secondary);">${m.categoryLabel || m.category}</td>
+          <td class="col-mono" style="color:var(--color-blue); font-size:0.78rem;">${m.ip || '192.168.10.x'}</td>
+          <td class="col-num" style="font-weight:600; color:#ffffff;">
             ${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </td>
-          <td style="text-align:right; font-family:var(--font-mono);">
-            ${(m.voltage || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+          <td class="col-num">${(m.voltage || 0).toFixed(1)}</td>
+          <td class="col-num">${(m.current || 0).toFixed(1)}</td>
+          <td class="col-num" style="color:${(m.pf < 0.85) ? 'var(--color-amber)' : 'var(--color-green)'};">
+            ${(m.pf || 0.89).toFixed(2)}
           </td>
-          <td style="text-align:right; font-family:var(--font-mono);">
-            ${(m.current || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+          <td class="col-num" style="color:#ffffff;">
+            ${(m.kwhToday || 0).toLocaleString('id-ID')}
           </td>
-          <td style="text-align:center; font-family:var(--font-mono); color:${(m.pf < 0.85) ? 'var(--accent-amber)' : 'var(--accent-emerald)'};">
-            ${(m.pf || 0.95).toFixed(2)}
-          </td>
-          <td style="text-align:right; font-family:var(--font-mono); color:var(--accent-emerald); font-weight:600;">
-            ${((m.kwhToday || 0) * 0.79).toFixed(1)}
-          </td>
-          <td style="text-align:center;">
-            <span class="status-pill-badge ${statusClass}">● ${statusLabel}</span>
+          <td class="col-num" style="color:var(--color-teal); font-weight:600;">
+            ${carbonKg}
           </td>
           <td style="text-align:center;">
-            <button class="btn-pill-action" onclick="window.openMeterDetailById('${m.id}')" style="padding:0.25rem 0.6rem; font-size:0.72rem;">
+            <span class="status-dot-badge ${statusClass}">${statusLabel}</span>
+          </td>
+          <td style="text-align:center;">
+            <button class="btn-table-detail" onclick="window.openMeterDetailById('${m.id}')">
               Detail
             </button>
           </td>
@@ -533,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Prev Button
     html += `
-      <button class="btn-page" ${state.currentPage === 1 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''} onclick="window.goToPage(${state.currentPage - 1})">
+      <button class="btn-page" ${state.currentPage === 1 ? 'disabled' : ''} onclick="window.goToPage(${state.currentPage - 1})">
         ‹ Prev
       </button>
     `;
@@ -547,13 +665,13 @@ document.addEventListener('DOMContentLoaded', () => {
           </button>
         `;
       } else if (p === state.currentPage - 2 || p === state.currentPage + 2) {
-        html += `<span style="padding:0 0.3rem; color:var(--text-light);">...</span>`;
+        html += `<span style="padding:0 0.2rem; color:var(--text-muted);">...</span>`;
       }
     }
 
     // Next Button
     html += `
-      <button class="btn-page" ${state.currentPage === totalPages ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''} onclick="window.goToPage(${state.currentPage + 1})">
+      <button class="btn-page" ${state.currentPage === totalPages ? 'disabled' : ''} onclick="window.goToPage(${state.currentPage + 1})">
         Next ›
       </button>
     `;
@@ -566,147 +684,71 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTable();
   };
 
-  // ================= 8. KPI CALCULATION & UPDATES =================
-  function updateKpis() {
-    let totalKw = 0;
-    let totalKwh = 0;
-    let pfSum = 0;
-    let activeMeters = 0;
-
-    state.meters.forEach(m => {
-      totalKw += (m.kw || 0);
-      totalKwh += (m.kwhToday || 0);
-      if (m.pf) {
-        pfSum += m.pf;
-        activeMeters++;
-      }
-    });
-
-    const avgPf = activeMeters > 0 ? (pfSum / activeMeters).toFixed(2) : '0.94';
-
-    // Carbon Emissions (Grid Jamali ESDM factor: 0.79 kg CO2e / kWh)
-    const totalCarbonKg = totalKwh * 0.79;
-    const totalCarbonTon = totalCarbonKg / 1000;
-    const carbonRateHourlyKg = Math.round(totalKw * 0.79);
-    const treesEquivalent = Math.round(totalCarbonKg / 21.77); // ~21.77 kg CO2 / pohon / thn
-
-    if (kpiCurrentKw) kpiCurrentKw.textContent = Math.round(totalKw).toLocaleString('id-ID');
-    if (kpiEnergyToday) kpiEnergyToday.textContent = Math.round(totalKwh).toLocaleString('id-ID');
-    if (kpiAvgPf) kpiAvgPf.textContent = avgPf.replace('.', ',');
-    if (kpiCarbonToday) {
-      kpiCarbonToday.textContent = totalCarbonTon.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    if (kpiCarbonCallout) {
-      kpiCarbonCallout.textContent = `Laju: ${carbonRateHourlyKg.toLocaleString('id-ID')} kg CO₂/jam · Setara ${treesEquivalent.toLocaleString('id-ID')} pohon/thn`;
-    }
-
-    // Trafo 12 Specific Update
-    const trafo12 = state.meters.find(m => m.id === 'TRF-12');
-    if (trafo12) {
-      if (trafo12KwVal) trafo12KwVal.textContent = Math.round(trafo12.kw).toLocaleString('id-ID');
-      if (trafo12Volt) trafo12Volt.textContent = `${trafo12.voltage.toFixed(1)} V`;
-      if (trafo12Current) trafo12Current.textContent = `${Math.round(trafo12.current).toLocaleString('id-ID')} A`;
-      if (trafo12Pf) trafo12Pf.textContent = trafo12.pf.toFixed(2);
-      if (trafo12PercentLoad) {
-        const pct = Math.round((trafo12.kw / 2000) * 100);
-        trafo12PercentLoad.textContent = `${pct}%`;
-      }
-    }
-  }
-
-  // ================= 9. SIMULATION ENGINE =================
+  // ================= 8. REALTIME SIMULATION =================
   function startSimulation() {
     if (state.simulationTimer) clearInterval(state.simulationTimer);
 
     state.simulationTimer = setInterval(() => {
       if (!state.isSimulationActive) return;
 
-      // Jitter meter values slightly to look alive
+      // Jitter values slightly by ±0.8%
       state.meters.forEach(m => {
         if (m.status !== 'offline') {
-          const delta = (Math.random() - 0.5) * 0.015; // ±1.5%
-          m.kw = Math.max(10, m.kw * (1 + delta));
-          m.current = Math.max(5, m.current * (1 + delta));
+          const delta = (Math.random() - 0.5) * 0.016;
+          m.kw = Math.max(5, m.kw * (1 + delta));
+          m.current = Math.max(2, m.current * (1 + delta));
           m.kwhToday = (m.kwhToday || 100) + (m.kw / 3600) * 3;
         }
       });
 
-      // Update Trafo 12 Sparkline history
-      const trafo12 = state.meters.find(m => m.id === 'TRF-12');
-      if (trafo12 && trafoSparklineChart) {
-        const latestKw = Math.round(trafo12.kw);
-        sparklineHistory.shift();
-        sparklineHistory.push(latestKw);
-        trafoSparklineChart.data.datasets[0].data = sparklineHistory;
-        trafoSparklineChart.update('none');
-      }
-
-      // Update sync time
-      const now = new Date();
-      const timeStr = `${String(now.getHours()).padStart(2, '0')}.${String(now.getMinutes()).padStart(2, '0')}`;
-      if (trafo12SyncTime) {
-        trafo12SyncTime.textContent = `Hari ini, ${timeStr} WIB`;
-      }
-
-      updateKpis();
       renderTable();
     }, 3500);
   }
 
-  // ================= 10. MODAL HANDLING & DETAIL POPUPS =================
+  // ================= 9. MODALS & DETAIL POPUPS =================
   window.openMeterDetailById = function(meterId) {
     const meter = state.meters.find(m => m.id === meterId);
     if (!meter) return;
 
-    if (modalMeterTitle) modalMeterTitle.textContent = `${meter.name} (${meter.id})`;
-    if (modalMeterSubtitle) modalMeterSubtitle.textContent = `Kategori: ${meter.categoryLabel || meter.category} · Gateway IP: ${meter.ip || '10.41.47.x'}`;
+    const modalTitle = document.getElementById('modalMeterTitle');
+    const modalSubtitle = document.getElementById('modalMeterSubtitle');
+    const modalBody = document.getElementById('modalMeterBody');
 
-    if (modalMeterBody) {
-      modalMeterBody.innerHTML = `
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem;">
-          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:var(--radius-md); border:1px solid var(--border-color);">
-            <div style="font-size:0.72rem; color:var(--text-muted);">Daya Aktif (Active Power)</div>
-            <div style="font-size:1.45rem; font-weight:800; color:var(--primary); font-family:var(--font-mono);">
-              ${(meter.kw || 0).toFixed(1)} <span style="font-size:0.8rem; color:var(--text-muted);">kW</span>
-            </div>
+    if (modalTitle) modalTitle.textContent = `${meter.name} (${meter.id})`;
+    if (modalSubtitle) modalSubtitle.textContent = `Area: ${meter.categoryLabel || meter.category} · Gateway IP: ${meter.ip || '192.168.10.x'}`;
+
+    if (modalBody) {
+      const carbonKg = ((meter.kwhToday || 0) * 0.79).toFixed(1);
+      modalBody.innerHTML = `
+        <div class="detail-specs-grid">
+          <div class="spec-tile">
+            <div class="spec-tile-label">Daya Aktif (Active Power)</div>
+            <div class="spec-tile-val" style="color:var(--color-blue);">${(meter.kw || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">kW</span></div>
           </div>
-          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:var(--radius-md); border:1px solid var(--border-color);">
-            <div style="font-size:0.72rem; color:var(--text-muted);">Tegangan Sistem (V L-L)</div>
-            <div style="font-size:1.45rem; font-weight:800; color:var(--text-main); font-family:var(--font-mono);">
-              ${(meter.voltage || 0).toFixed(1)} <span style="font-size:0.8rem; color:var(--text-muted);">V</span>
-            </div>
+          <div class="spec-tile">
+            <div class="spec-tile-label">Tegangan Sistem (V L-L)</div>
+            <div class="spec-tile-val">${(meter.voltage || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">V</span></div>
           </div>
-          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:var(--radius-md); border:1px solid var(--border-color);">
-            <div style="font-size:0.72rem; color:var(--text-muted);">Arus Beban Total</div>
-            <div style="font-size:1.45rem; font-weight:800; color:var(--text-main); font-family:var(--font-mono);">
-              ${(meter.current || 0).toFixed(1)} <span style="font-size:0.8rem; color:var(--text-muted);">A</span>
-            </div>
+          <div class="spec-tile">
+            <div class="spec-tile-label">Arus Beban Total</div>
+            <div class="spec-tile-val">${(meter.current || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">A</span></div>
           </div>
         </div>
 
-        <div style="background:var(--bg-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1rem;">
-          <h4 style="font-size:0.85rem; font-weight:800; color:var(--text-main); margin-bottom:0.65rem;">
-            Parameter Telemetri & Jaringan Cisco
-          </h4>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem 1.5rem; font-size:0.78rem;">
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Brand / Tipe:</span> <strong>${meter.brand || 'Mitsubishi ME96SS'}</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Modbus Unit ID:</span> <strong style="font-family:var(--font-mono);">${meter.modbusId || 1}</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Cisco Switch Port:</span> <strong style="font-family:var(--font-mono); color:var(--primary);">${meter.ciscoSwitch || 'SW-FAC1-CORE01 (Gi1/0/2)'}</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Subnet Mask:</span> <strong style="font-family:var(--font-mono);">${meter.subnet || '255.255.254.0'}</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Power Factor (Cos φ):</span> <strong style="color:var(--accent-emerald);">${(meter.pf || 0.95).toFixed(2)}</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Frekuensi Grid:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">THD Tegangan:</span> <strong>${(meter.thdV || 2.1).toFixed(1)}%</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Energi Hari Ini:</span> <strong style="font-family:var(--font-mono);">${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></div>
-            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Jejak Emisi Karbon:</span> <strong style="color:var(--accent-emerald); font-family:var(--font-mono);">${((meter.kwhToday || 0) * 0.79).toFixed(1)} kg CO₂e</strong></div>
-          </div>
+        <div class="param-table-box">
+          <div class="param-row"><span>Brand / Tipe:</span> <strong>${meter.brand || 'Mitsubishi ME96SS'}</strong></div>
+          <div class="param-row"><span>Modbus Unit ID:</span> <strong>${meter.modbusId || 1}</strong></div>
+          <div class="param-row"><span>Cisco Switch Port:</span> <strong style="color:var(--color-blue);">${meter.ciscoSwitch || 'SW-FAC1-CORE01 (Gi1/0/2)'}</strong></div>
+          <div class="param-row"><span>Subnet Mask:</span> <strong>${meter.subnet || '255.255.254.0'}</strong></div>
+          <div class="param-row"><span>Power Factor (Cos φ):</span> <strong style="color:${meter.pf < 0.85 ? 'var(--color-amber)' : 'var(--color-green)'};">${(meter.pf || 0.89).toFixed(2)}</strong></div>
+          <div class="param-row"><span>Frekuensi Grid:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz</strong></div>
+          <div class="param-row"><span>Energi Terpakai Hari Ini:</span> <strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></div>
+          <div class="param-row"><span>Jejak Emisi Karbon (CO₂e):</span> <strong style="color:var(--color-teal);">${carbonKg} kg CO₂e</strong></div>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:0.65rem;">
-          <button class="btn-pill-action" onclick="window.pingMeterIp('${meter.ip}')">
-            📶 Test Ping Cisco LAN
-          </button>
-          <button class="btn-pill-action" style="background:var(--primary); color:#fff; border-color:var(--primary);" onclick="window.closeAllModals()">
-            Selesai
+        <div style="display:flex; justify-content:flex-end; gap:0.65rem; margin-top:0.5rem;">
+          <button class="btn-page" style="background:var(--color-blue); color:#ffffff; border-color:var(--color-blue);" onclick="window.closeAllModals()">
+            Tutup
           </button>
         </div>
       `;
@@ -722,111 +764,35 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.closeAllModals = function() {
-    document.querySelectorAll('.modal-overlay').forEach(m => {
-      m.classList.remove('active');
-    });
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
     document.body.style.overflow = '';
   };
 
-  let blueprintZoomScale = 1.0;
-  let lastToggleTimestamp = 0;
+  // Blueprint Zoom Logic
+  let currentZoom = 1.0;
+  const blueprintImg = document.getElementById('blueprintImg');
 
-  window.toggleBlueprintEnlarge = function(forceState) {
-    const card = document.getElementById('electricalRoomCard');
-    if (!card) return;
-
-    // Debounce to prevent rapid double-clicks (200ms)
-    const now = Date.now();
-    if (now - lastToggleTimestamp < 200) {
-      return;
+  function applyBlueprintZoom(scale) {
+    currentZoom = Math.min(Math.max(scale, 0.6), 3.0);
+    if (blueprintImg) {
+      blueprintImg.style.transform = `scale(${currentZoom})`;
     }
-    lastToggleTimestamp = now;
+  }
 
-    const labelZoom = document.getElementById('labelZoomAction');
-    const headerLabel = document.getElementById('btnZoomToggleHeaderLabel');
-    const headerIcon = document.getElementById('btnZoomToggleHeaderIcon');
-    const zoomTools = document.getElementById('blueprintZoomTools');
-    const badgeText = document.getElementById('blueprintBadgeText');
-    const img = document.getElementById('imgBlueprintMain');
+  const btnZoomIn = document.getElementById('btnZoomIn');
+  const btnZoomOut = document.getElementById('btnZoomOut');
+  const btnZoomReset = document.getElementById('btnZoomReset');
 
-    // DOM classList is the single source of truth
-    const isCurrentlyEnlarged = card.classList.contains('is-enlarged');
-    const shouldEnlarge = (typeof forceState === 'boolean') ? forceState : !isCurrentlyEnlarged;
+  if (btnZoomIn) btnZoomIn.addEventListener('click', () => applyBlueprintZoom(currentZoom + 0.25));
+  if (btnZoomOut) btnZoomOut.addEventListener('click', () => applyBlueprintZoom(currentZoom - 0.25));
+  if (btnZoomReset) btnZoomReset.addEventListener('click', () => applyBlueprintZoom(1.0));
 
-    if (shouldEnlarge) {
-      card.classList.add('is-enlarged');
-      if (labelZoom) labelZoom.textContent = 'Perkecil';
-      if (headerLabel) headerLabel.textContent = 'Perkecil Blueprint';
-      if (headerIcon) headerIcon.textContent = '✕';
-      if (zoomTools) zoomTools.style.display = 'flex';
-      if (badgeText) badgeText.textContent = '🔍 Mode Pembesaran HD: Blueprint Gardu 20 kV Factory 1 Musashi';
-      blueprintZoomScale = 1.0;
-      if (img) {
-        img.style.transform = 'scale(1.0)';
-        img.title = 'Klik untuk perkecil kembali';
-      }
-      const zoomDisplay = document.getElementById('zoomLevelDisplay');
-      if (zoomDisplay) zoomDisplay.textContent = '100%';
-
-      // Smooth scroll to card
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-      card.classList.remove('is-enlarged');
-      if (labelZoom) labelZoom.textContent = 'Perbesar';
-      if (headerLabel) headerLabel.textContent = 'Perbesar Blueprint';
-      if (headerIcon) headerIcon.textContent = '⤢';
-      if (zoomTools) zoomTools.style.display = 'none';
-      if (badgeText) badgeText.textContent = 'Blueprint Aktual: Electrical Room Factory 1 PT Musashi';
-      blueprintZoomScale = 1.0;
-      if (img) {
-        img.style.transform = '';
-        img.title = 'Klik untuk perbesar gambar langsung di depan';
-      }
-    }
-  };
-
-  window.adjustBlueprintZoom = function(delta) {
-    const img = document.getElementById('imgBlueprintMain');
-    const zoomDisplay = document.getElementById('zoomLevelDisplay');
-    blueprintZoomScale = Math.max(0.75, Math.min(3.0, blueprintZoomScale + delta));
-    if (img) {
-      img.style.transform = `scale(${blueprintZoomScale})`;
-      img.style.transformOrigin = 'center center';
-    }
-    if (zoomDisplay) {
-      zoomDisplay.textContent = `${Math.round(blueprintZoomScale * 100)}%`;
-    }
-  };
-
-  window.resetBlueprintZoom = function() {
-    blueprintZoomScale = 1.0;
-    const img = document.getElementById('imgBlueprintMain');
-    const zoomDisplay = document.getElementById('zoomLevelDisplay');
-    if (img) img.style.transform = 'scale(1.0)';
-    if (zoomDisplay) zoomDisplay.textContent = '100%';
-  };
-
-  window.zoomBlueprintModal = window.toggleBlueprintEnlarge;
-
-  window.pingMeterIp = function(ip) {
-    alert(`[SIMULASI CISCO ICMP PING]\nMengirim ICMP Echo ke ${ip || '10.41.47.122'}...\n\nReply from ${ip || '10.41.47.122'}: bytes=32 time=1.8ms TTL=64\nPacket: Sent = 4, Received = 4, Lost = 0 (0% loss)\nKoneksi Modbus TCP Port 502: OPEN & RESPONSIVE`);
-  };
-
-  // ================= 11. EVENT LISTENERS =================
+  // ================= 10. EVENT LISTENERS =================
   function setupEventListeners() {
     // Search input
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         state.searchQuery = e.target.value;
-        state.currentPage = 1;
-        renderTable();
-      });
-    }
-
-    // Status filter
-    if (statusFilterSelect) {
-      statusFilterSelect.addEventListener('change', (e) => {
-        state.currentStatusFilter = e.target.value;
         state.currentPage = 1;
         renderTable();
       });
@@ -846,131 +812,44 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // Modal Close Buttons
-    if (btnCloseMeterModal) btnCloseMeterModal.addEventListener('click', window.closeAllModals);
-    if (btnCloseTopologyModal) btnCloseTopologyModal.addEventListener('click', window.closeAllModals);
-    if (btnCloseGuideModal) btnCloseGuideModal.addEventListener('click', window.closeAllModals);
-
-    // Modal & Blueprint Open Buttons
-    const btnZoomBlueprint = document.getElementById('btnZoomBlueprint');
-    if (btnZoomBlueprint) {
-      btnZoomBlueprint.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.toggleBlueprintEnlarge();
-      });
-    }
-
-    const btnZoomToggleHeader = document.getElementById('btnZoomToggleHeader');
-    if (btnZoomToggleHeader) {
-      btnZoomToggleHeader.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.toggleBlueprintEnlarge();
-      });
-    }
-
-    const btnZoomAction = document.getElementById('btnZoomAction');
-    if (btnZoomAction) {
-      btnZoomAction.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.toggleBlueprintEnlarge();
-      });
-    }
-
-    const imgBlueprintMain = document.getElementById('imgBlueprintMain');
-    if (imgBlueprintMain) {
-      imgBlueprintMain.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.toggleBlueprintEnlarge();
-      });
-    }
-    if (btnOpenTopology) btnOpenTopology.addEventListener('click', () => {
-      if (topologyModal) window.openModal(topologyModal);
-    });
-    if (btnOpenGuide) btnOpenGuide.addEventListener('click', () => {
-      if (guideModal) window.openModal(guideModal);
-    });
-    if (btnOpenTrafo12Details) btnOpenTrafo12Details.addEventListener('click', () => {
-      window.openMeterDetailById('TRF-12');
-    });
-
-    // Close on overlay click
-    document.querySelectorAll('.modal-overlay').forEach(overlay => {
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) window.closeAllModals();
-      });
-    });
-
-    // Quick Search Button Focus
-    if (btnQuickSearch) {
-      btnQuickSearch.addEventListener('click', () => {
-        const dir = document.getElementById('directorySection');
-        if (dir) dir.scrollIntoView({ behavior: 'smooth' });
-        if (searchInput) searchInput.focus();
-      });
-    }
-
-    // View All Meters Button
-    if (btnViewAllMeters) {
-      btnViewAllMeters.addEventListener('click', () => {
-        const dir = document.getElementById('directorySection');
-        if (dir) dir.scrollIntoView({ behavior: 'smooth' });
-      });
-    }
-
-    // Sync Data Button
-    if (btnSyncData) {
-      btnSyncData.addEventListener('click', () => {
-        const originalText = btnSyncData.innerHTML;
-        btnSyncData.innerHTML = `<span>Menyinkronkan...</span>`;
-        btnSyncData.style.opacity = '0.7';
-
-        setTimeout(() => {
-          btnSyncData.innerHTML = originalText;
-          btnSyncData.style.opacity = '1';
-          const now = new Date();
-          const timeStr = `${String(now.getHours()).padStart(2, '0')}.${String(now.getMinutes()).padStart(2, '0')}`;
-          if (trafo12SyncTime) trafo12SyncTime.textContent = `Hari ini, ${timeStr} WIB`;
-          alert('Sinkronisasi Berhasil!\nSeluruh 137 register Modbus TCP berhasil diperbarui dari gateway Cisco.');
-        }, 600);
+    // Blueprint Modal Button
+    if (btnOpenBlueprintModal) {
+      btnOpenBlueprintModal.addEventListener('click', () => {
+        applyBlueprintZoom(1.0);
+        window.openModal(blueprintModal);
       });
     }
 
     // Export CSV
-    if (btnExportData) {
-      btnExportData.addEventListener('click', exportToCsv);
+    if (btnExportCsv) {
+      btnExportCsv.addEventListener('click', exportToCsv);
     }
 
-    // Floating Back to Top Button
-    const btnBackToTop = document.getElementById('btnBackToTop');
-    if (btnBackToTop) {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 350) {
-          btnBackToTop.classList.add('visible');
-        } else {
-          btnBackToTop.classList.remove('visible');
-        }
-      }, { passive: true });
-
-      btnBackToTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Close modals on overlay backdrop click or Escape
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) window.closeAllModals();
       });
-    }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') window.closeAllModals();
+    });
   }
 
-  // ================= 12. CSV EXPORT =================
+  // ================= 11. CSV EXPORT =================
   function exportToCsv() {
-    const headers = ['ID Meter', 'Nama Feeder/Panel', 'Kategori', 'Sub Area', 'IP Address', 'Cisco Switch', 'Daya kW', 'Tegangan V', 'Arus A', 'Cos Phi', 'Energi kWh', 'Emisi CO2 kg', 'Status'];
+    const headers = ['ID Meter', 'Nama Feeder/Panel', 'Kategori', 'Sub Area', 'IP Address', 'Daya kW', 'Tegangan V', 'Arus A', 'Cos Phi', 'Energi kWh', 'Emisi CO2 kg', 'Status'];
     const rows = state.meters.map(m => [
       m.id,
       `"${(m.name || '').replace(/"/g, '""')}"`,
       m.categoryLabel || m.category,
       `"${(m.subArea || '').replace(/"/g, '""')}"`,
       m.ip || '',
-      `"${(m.ciscoSwitch || '').replace(/"/g, '""')}"`,
       m.kw || 0,
       m.voltage || 0,
       m.current || 0,
-      m.pf || 0.95,
+      m.pf || 0.89,
       m.kwhToday || 0,
       ((m.kwhToday || 0) * 0.79).toFixed(1),
       m.status

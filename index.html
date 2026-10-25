@@ -3,1005 +3,226 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monitoring Power Meter Digital – PT Musashi Auto Parts Indonesia</title>
-  <meta name="description" content="Dashboard Energy Management System penggantian 137 unit kWh meter analog ke digital Mitsubishi Power Meter & Schneider PM5500 terintegrasi jaringan Cisco PT Musashi.">
-  <link rel="stylesheet" href="style.css?v=5.0">
-  <!-- Chart.js local file for robust offline SCADA performance -->
+  <title>Monitoring Power Meter Digital – PT Musashi</title>
+  <meta name="description" content="Dashboard Energy Management System & SCADA penggantian 137 unit kWh meter analog ke digital Mitsubishi Power Meter PT Musashi Auto Parts Indonesia.">
+  <link rel="stylesheet" href="style.css?v=6.0">
+  <!-- Chart.js local file for offline high performance -->
   <script src="chart.umd.min.js"></script>
 </head>
 <body>
 
-  <!-- ================= TOP NAVIGATION (CLEAN SAAS PILLS LIKE REFERENCE) ================= -->
-  <header class="navbar">
-    <div class="navbar-main-container">
-      <div class="navbar-brand-section">
-        <!-- Blue square logo with icon -->
-        <div class="brand-logo-badge" title="PT Musashi Auto Parts Indonesia - Maintenance Utility">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-          </svg>
+  <main class="dashboard-container">
+
+    <!-- ================= 1. HEADER ROW ================= -->
+    <header class="header-row">
+      <div class="header-left">
+        <div class="header-title-wrap">
+          <h1 class="header-title">Monitoring Power Meter Digital – PT Musashi</h1>
         </div>
-
-        <!-- Brand Identity Text -->
-        <div class="brand-identity-text">
-          <span class="brand-company-title">PT Musashi</span>
-          <span class="brand-sub-badge">EMS SCADA</span>
-        </div>
-      </div>
-
-      <!-- Navigation Pills (Matches Reference Screenshot) -->
-      <nav class="nav-pills-menu" id="mainNavPills" aria-label="Menu Navigasi Utama">
-        <button class="nav-pill-item active" data-tab="dashboard">
-          <span>Dashboard</span>
-          <span class="dot-indicator"></span>
-        </button>
-        <button class="nav-pill-item" data-tab="sld">
-          <span>Single Line Diagram</span>
-        </button>
-        <button class="nav-pill-item" data-tab="forging">
-          <span>Area Forging</span>
-        </button>
-        <button class="nav-pill-item" data-tab="electrical">
-          <span>Electrical Room</span>
-        </button>
-        <button class="nav-pill-item" data-tab="directory">
-          <span>Direktori 137</span>
-        </button>
-      </nav>
-
-    <!-- Right Controls: Date, Clock, Search, Notification, Theme Switcher, Profile -->
-    <div class="nav-right-controls">
-      <!-- Date Pill -->
-      <div class="date-pill" id="datePillBox" title="Tanggal Operasional SCADA">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg>
-        <span id="liveDate">Selasa, 14 Jan 2025</span>
-      </div>
-
-      <!-- Time Pill -->
-      <div class="time-pill" id="timePillBox" title="Waktu Nyata Server SCADA (WIB)">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
-        </svg>
-        <span id="liveClock">22:10 WIB</span>
-      </div>
-
-      <!-- Quick Search Button -->
-      <button class="icon-btn-circle" id="btnQuickSearch" title="Cari cepat meter...">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
-
-      <!-- Notification Bell -->
-      <button class="icon-btn-circle" id="btnNotifications" title="Alarm & Peringatan Kelistrikan">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-        </svg>
-        <span class="notification-badge"></span>
-      </button>
-
-      <!-- DUAL THEME TOGGLE BUTTON (DARK MODE / LIGHT MODE) -->
-      <button class="theme-toggle-btn" id="themeToggleBtn" title="Ganti Mode Gelap / Terang">
-        <!-- Sun icon for dark mode toggle -->
-        <svg class="theme-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-        <!-- Moon icon for light mode toggle -->
-        <svg class="theme-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-        <span id="themeToggleLabel">Dark Mode</span>
-      </button>
-
-      <!-- Project Guide / Help Button -->
-      <button class="icon-btn-circle" id="btnOpenGuide" title="Buka Panduan Proyek & Magang Kelistrikan">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-          <line x1="12" y1="17" x2="12.01" y2="17"></line>
-        </svg>
-      </button>
-
-      <!-- User Profile Badge -->
-      <div class="user-profile-badge" id="btnUserProfile" title="Profil Pengguna SCADA">
-        <div class="user-avatar">AF</div>
-        <span class="user-name">Ananda Faris</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </div>
-    </div>
-  </header>
-
-  <!-- ================= MAIN WRAPPER ================= -->
-  <main class="main-wrapper">
-
-    <!-- ================= ROW 1: 4 TOP KPI CARDS (MATCHING REFERENCE SCREENSHOT) ================= -->
-    <section class="kpi-row-grid" aria-label="Ringkasan Indikator Utama Kelistrikan">
-      
-      <!-- KPI Card 1: Resting Heart Rate -> Daya Aktif Terpasang -->
-      <div class="kpi-card-modern">
-        <div class="kpi-card-header">
-          <div class="kpi-icon-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
-          </div>
-          <div class="kpi-title-block">
-            <span class="kpi-title">Daya Aktif Saat Ini</span>
-            <span class="kpi-subtitle">Total real-time active power</span>
-          </div>
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-main-val" id="kpiCurrentKw">2.148</span>
-          <span class="kpi-unit-val">kW</span>
-        </div>
-        <div class="kpi-info-callout">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span>Beban saat ini 47,7% dari total kapasitas trafo Factory 1.</span>
+        <div class="header-meta">
+          <span>Pengganti kWh meter analog ke Mitsubishi</span>
+          <span class="meta-dot">·</span>
+          <span id="headerLiveTime">25 Okt 2026, 17.29.24</span>
+          <span class="meta-dot">·</span>
+          <span class="badge-simulasi">Data simulasi</span>
         </div>
       </div>
 
-      <!-- KPI Card 2: Maximum Heart Rate -> Beban Puncak vs Kontrak PLN -->
-      <div class="kpi-card-modern">
-        <div class="kpi-card-header">
-          <div class="kpi-icon-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="20" x2="18" y2="10"></line>
-              <line x1="12" y1="20" x2="12" y2="4"></line>
-              <line x1="6" y1="20" x2="6" y2="14"></line>
-            </svg>
-          </div>
-          <div class="kpi-title-block">
-            <span class="kpi-title">Beban Puncak (Peak Demand)</span>
-            <span class="kpi-subtitle">Batas kontrak PLN 4.500 kVA</span>
-          </div>
+      <div class="header-right">
+        <!-- Filter Tabs Button Group (Matches Screenshot) -->
+        <div class="filter-tabs-group" id="filterTabsGroup">
+          <button class="filter-tab-btn active" data-filter="all">Semua</button>
+          <button class="filter-tab-btn" data-filter="forging">Forging</button>
+          <button class="filter-tab-btn" data-filter="electrical">Electrical Room</button>
+          <button class="filter-tab-btn" data-filter="compressor">Kompresor</button>
+          <button class="filter-tab-btn" data-filter="water">Pompa Air</button>
+          <button class="filter-tab-btn" data-filter="lobby">Lobby</button>
         </div>
-        <div class="kpi-value-row">
-          <span class="kpi-main-val" id="kpiPeakDemand">3.420</span>
-          <span class="kpi-unit-val">kW</span>
-        </div>
-        <div class="kpi-info-callout">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span>Peak beban harian tercatat 76% dari batas kontrak (Aman).</span>
-        </div>
-      </div>
 
-      <!-- KPI Card 3: Average Heart Rate -> Konsumsi Energi Hari Ini -->
-      <div class="kpi-card-modern">
-        <div class="kpi-card-header">
-          <div class="kpi-icon-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-            </svg>
-          </div>
-          <div class="kpi-title-block">
-            <span class="kpi-title">Konsumsi Energi Hari Ini</span>
-            <span class="kpi-subtitle">Akumulasi 137 Power Meter</span>
-          </div>
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-main-val" id="kpiEnergyToday">38.450</span>
-          <span class="kpi-unit-val">kWh</span>
-        </div>
-        <div class="kpi-info-callout">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span>Estimasi biaya harian Rp 42.860.000 (Tarif I-4 PLN).</span>
-        </div>
-      </div>
-
-      <!-- KPI Card 4: Heart Rate Variability (HRV) -> Power Factor (Cos φ) -->
-      <div class="kpi-card-modern">
-        <div class="kpi-card-header">
-          <div class="kpi-icon-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-          </div>
-          <div class="kpi-title-block">
-            <span class="kpi-title">Power Factor (Cos φ)</span>
-            <span class="kpi-subtitle">Kualitas daya rata-rata pabrik</span>
-          </div>
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-main-val" id="kpiAvgPf">0,94</span>
-          <span class="kpi-unit-val">cos φ</span>
-        </div>
-        <div class="kpi-info-callout">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span>Cos φ di atas batas PLN 0,85 — Pabrik Bebas Denda kVARh.</span>
-        </div>
-      </div>
-
-      <!-- KPI Card 5: Emisi Karbon (CO2e) ESG Sustainability -->
-      <div class="kpi-card-modern">
-        <div class="kpi-card-header">
-          <div class="kpi-icon-box" style="background:rgba(16, 185, 129, 0.12); color:var(--accent-emerald); border-color:rgba(16, 185, 129, 0.3);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
-              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
-            </svg>
-          </div>
-          <div class="kpi-title-block">
-            <span class="kpi-title">Emisi Karbon (CO₂e)</span>
-            <span class="kpi-subtitle">Faktor Grid Jamali 0,79 kg/kWh</span>
-          </div>
-        </div>
-        <div class="kpi-value-row">
-          <span class="kpi-main-val" id="kpiCarbonToday" style="color:var(--accent-emerald);">30,38</span>
-          <span class="kpi-unit-val">ton CO₂e</span>
-        </div>
-        <div class="kpi-info-callout">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span id="kpiCarbonCallout">Laju: 1.697 kg CO₂/jam · Setara 1.395 pohon/thn</span>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ================= ROW 2: 3-COLUMN MID SECTION (MATCHING SCREENSHOT) ================= -->
-    <section class="mid-row-grid" aria-label="Visualisasi Telemetri Lanjutan">
-      
-      <!-- COLUMN 1: Trafo #12 LMVDP (Matches "Heart Rate" Card in Screenshot) -->
-      <div class="dash-panel">
-        <div class="panel-header-row">
-          <div class="panel-title-group">
-            <div class="kpi-icon-box">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-              </svg>
-            </div>
-            <div class="panel-title-text">
-              <h3>Trafo #12 LMVDP</h3>
-              <p>Area Forging 2.000 kVA (Schneider PM5500)</p>
-            </div>
-          </div>
-          <button class="btn-pill-action" id="btnOpenTrafo12Details" title="Lihat detail lengkap meter Trafo 12">
-            <span>Details</span>
+        <div class="header-actions">
+          <button class="btn-header-action" id="btnOpenBlueprintModal" title="Lihat Blueprint Gardu Listrik HD">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+              <line x1="15" y1="3" x2="15" y2="21"></line>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="3" y1="15" x2="21" y2="15"></line>
             </svg>
+            <span>Blueprint Gardu</span>
           </button>
-        </div>
-
-        <!-- Sparkline Chart (Pink/Rose Spline Wave like Screenshot) -->
-        <div class="sparkline-box">
-          <canvas id="trafoSparkline"></canvas>
-        </div>
-
-        <!-- Big Stat Callout -->
-        <div class="big-stat-callout">
-          <span class="big-stat-label">Beban Aktif Terkini</span>
-          <div class="big-stat-val-row">
-            <span class="big-stat-number" id="trafo12KwVal">1.380</span>
-            <span class="big-stat-unit">kW</span>
-          </div>
-        </div>
-
-        <!-- Metrics Vertical List -->
-        <div class="details-list-vertical">
-          <div class="details-item-row">
-            <span class="d-label">Tegangan Fasa (V L-L)</span>
-            <span class="d-val" id="trafo12Volt">398,4 V</span>
-          </div>
-          <div class="details-item-row">
-            <span class="d-label">Arus Beban Sekunder</span>
-            <span class="d-val" id="trafo12Current">4.028 A</span>
-          </div>
-          <div class="details-item-row">
-            <span class="d-label">Arus Puncak Hari Ini</span>
-            <span class="d-val">4.210 A</span>
-          </div>
-          <div class="details-item-row">
-            <span class="d-label">Power Factor (Cos φ)</span>
-            <span class="d-val" style="color:var(--accent-emerald);" id="trafo12Pf">0,94</span>
-          </div>
-          <div class="details-item-row">
-            <span class="d-label">Suhu Belitan Trafo</span>
-            <span class="d-val" id="trafo12Temp">64,2 °C</span>
-          </div>
-          <div class="details-item-row">
-            <span class="d-label">Gateway Modbus/IP</span>
-            <span class="d-val" style="color:var(--primary);">10.41.47.122</span>
-          </div>
-          <div class="details-item-row">
-            <span class="d-label">Terakhir Sinkron</span>
-            <span class="d-val" id="trafo12SyncTime">14/01/2025, 22.10</span>
-          </div>
-        </div>
-
-        <div class="kpi-info-callout">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span>Beban trafo mencapai 69% saat shift 1 forging press beroperasi optimal.</span>
-        </div>
-
-        <!-- Blue Full Button -->
-        <button class="btn-full-primary" id="btnSyncData">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <polyline points="1 20 1 14 7 14"></polyline>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-          </svg>
-          <span>Sync Data Realtime</span>
-        </button>
-      </div>
-
-      <!-- COLUMN 2: Semi-Circular Gauge (Matches "Heart Rate Zones" in Screenshot) -->
-      <div class="dash-panel">
-        <div class="panel-header-row">
-          <div class="panel-title-group">
-            <div class="kpi-icon-box">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 6v6l4 2"></path>
-              </svg>
-            </div>
-            <div class="panel-title-text">
-              <h3>Tingkat Beban Trafo</h3>
-              <p>Distribusi beban trafo Factory 1</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Gauge Speedometer -->
-        <div class="gauge-wrapper">
-          <div class="gauge-canvas-container">
-            <canvas id="trafoGaugeChart"></canvas>
-            <div class="gauge-center-content">
-              <div class="gauge-center-sub">Beban Trafo 12 Avg</div>
-              <div class="gauge-center-number" id="trafo12PercentLoad">69%</div>
-              <div class="gauge-zone-pill" id="trafo12ZoneBadge">Target Zone</div>
-            </div>
-          </div>
-
-          <!-- Color Legend Dots -->
-          <div class="gauge-legend-row">
-            <div class="gauge-legend-item">
-              <span class="legend-dot blue"></span>
-              <span>Ringan</span>
-            </div>
-            <div class="gauge-legend-item">
-              <span class="legend-dot green"></span>
-              <span>Optimal</span>
-            </div>
-            <div class="gauge-legend-item">
-              <span class="legend-dot amber"></span>
-              <span>Waspada</span>
-            </div>
-            <div class="gauge-legend-item">
-              <span class="legend-dot red"></span>
-              <span>Puncak</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Substation Pills Row -->
-        <div class="substation-pills-row">
-          <div class="substation-pill-item">
-            <span class="s-label">TRF-11</span>
-            <span class="s-val">620 kW (62%)</span>
-          </div>
-          <div class="substation-pill-item">
-            <span class="s-label">TRF-12</span>
-            <span class="s-val" style="color:var(--primary);">1.380 kW (69%)</span>
-          </div>
-          <div class="substation-pill-item">
-            <span class="s-label">TRF-13</span>
-            <span class="s-val" style="color:var(--accent-amber);">980 kW (65%)</span>
-          </div>
-          <div class="substation-pill-item">
-            <span class="s-label">TRF-14</span>
-            <span class="s-val">780 kW (62%)</span>
-          </div>
-        </div>
-
-        <div class="kpi-info-callout" style="margin-top:auto;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span>Semua trafo beroperasi di zona aman dengan margin beban cadangan > 30%.</span>
-        </div>
-      </div>
-
-      <!-- COLUMN 3: Hourly Bar Chart (Matches "Arrhythmia Analysis" in Screenshot) -->
-      <div class="dash-panel">
-        <div class="panel-header-row">
-          <div class="panel-title-group">
-            <div class="kpi-icon-box">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="20" x2="18" y2="10"></line>
-                <line x1="12" y1="20" x2="12" y2="4"></line>
-                <line x1="6" y1="20" x2="6" y2="14"></line>
-              </svg>
-            </div>
-            <div class="panel-title-text">
-              <h3>Profil Beban 24 Jam</h3>
-              <p>WBP Peak Hour (18:00 - 22:00)</p>
-            </div>
-          </div>
-          <select class="btn-pill-action" id="selectBarPeriod" style="outline:none;">
-            <option value="today">Daily ▾</option>
-            <option value="yesterday">Yesterday</option>
-            <option value="week">Weekly</option>
-          </select>
-        </div>
-
-        <!-- 24h Bar Chart (With Peak Highlight Bar like Screenshot) -->
-        <div class="barchart-container">
-          <canvas id="hourlyBarChart"></canvas>
-        </div>
-
-        <div class="chart-bottom-callout">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <span>Puncak beban terjadi pada jam WBP (19:30 WIB) sebesar 3.420 kW (batang biru). Sesuai target hemat energi.</span>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ================= ROW 3: LATEST EQUIPMENT ACTIVITY (MATCHING SCREENSHOT) ================= -->
-    <section class="activity-section" aria-label="Aktivitas Beban Mesin Utama">
-      <div class="activity-header-row">
-        <div class="activity-title-group">
-          <div class="kpi-icon-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-            </svg>
-          </div>
-          <div>
-            <h3 class="activity-title">Aktivitas Beban Area Utama</h3>
-            <p class="activity-subtitle">Konsumsi energi mesin produksi terkini</p>
-          </div>
-        </div>
-        <button class="btn-pill-action" id="btnViewAllMeters">
-          <span>More Activities</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
-          </svg>
-        </button>
-      </div>
-
-      <!-- 3 Equipment Activity Cards (Styled Exactly Like Screenshot) -->
-      <div class="activity-cards-grid">
-        
-        <!-- Activity Card 1: Forging Press -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-12')">
-          <div class="activity-top-row">
-            <div class="activity-id-group">
-              <div class="activity-icon-sq orange">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg>
-              </div>
-              <div class="activity-meta-text">
-                <h4>Forging Press 2500T</h4>
-                <span>14/01, 05.32</span>
-              </div>
-            </div>
-            <div class="activity-kw-badge">
-              130 <span>kW</span>
-            </div>
-          </div>
-          <div class="activity-sub-metrics">
-            <div class="act-sub-row">
-              <span class="label">Duration</span>
-              <span class="val">45 mins</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Max Heart Rate / Peak</span>
-              <span class="val">158 kW</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Energy Consumed</span>
-              <span class="val">389 kWh</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Carbon Emission</span>
-              <span class="val" style="color:var(--accent-emerald);">307 kg CO₂e</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Activity Card 2: Air Compressor -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('CMP-01')">
-          <div class="activity-top-row">
-            <div class="activity-id-group">
-              <div class="activity-icon-sq amber">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
-                </svg>
-              </div>
-              <div class="activity-meta-text">
-                <h4>Air Compressor Atlas</h4>
-                <span>13/01, 16.24</span>
-              </div>
-            </div>
-            <div class="activity-kw-badge">
-              105 <span>kW</span>
-            </div>
-          </div>
-          <div class="activity-sub-metrics">
-            <div class="act-sub-row">
-              <span class="label">Duration</span>
-              <span class="val">30 mins</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Max Heart Rate / Peak</span>
-              <span class="val">121 kW</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Energy Consumed</span>
-              <span class="val">177 kWh</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Carbon Emission</span>
-              <span class="val" style="color:var(--accent-emerald);">140 kg CO₂e</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Activity Card 3: Water Pump System -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('PMP-01')">
-          <div class="activity-top-row">
-            <div class="activity-id-group">
-              <div class="activity-icon-sq teal">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-                </svg>
-              </div>
-              <div class="activity-meta-text">
-                <h4>Cooling Water Pump</h4>
-                <span>12/01, 09.42</span>
-              </div>
-            </div>
-            <div class="activity-kw-badge">
-              145 <span>kW</span>
-            </div>
-          </div>
-          <div class="activity-sub-metrics">
-            <div class="act-sub-row">
-              <span class="label">Duration</span>
-              <span class="val">60 mins</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Max Heart Rate / Peak</span>
-              <span class="val">172 kW</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Energy Consumed</span>
-              <span class="val">451 kWh</span>
-            </div>
-            <div class="act-sub-row">
-              <span class="label">Carbon Emission</span>
-              <span class="val" style="color:var(--accent-emerald);">356 kg CO₂e</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ================= SINGLE LINE DIAGRAM (SLD) & ELECTRICAL ROOM SECTION ================= -->
-    <section class="sld-board-container" id="sldSection" aria-label="Single Line Diagram Factory 1">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-        <div>
-          <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-main); display:flex; align-items:center; gap:0.5rem;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-            </svg>
-            Single Line Diagram (SLD) & Electrical Room Factory 1 PT Musashi
-          </h3>
-          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">
-            Penyulang Utama PLN 20 kV ➔ Kubikel Schneider SM6 ➔ 6 Unit Transformator Factory 1 (Kapasitas Total: 7.750 kVA)
-          </p>
-        </div>
-        <div style="display:flex; gap:0.5rem; align-items:center;">
-          <button class="btn-pill-action" id="btnZoomBlueprint" title="Lihat Blueprint SLD dalam ukuran penuh">
+          <button class="btn-header-action" id="btnExportCsv" title="Unduh laporan data meter ke file CSV">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              <line x1="11" y1="8" x2="11" y2="14"></line>
-              <line x1="8" y1="11" x2="14" y2="11"></line>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            <span>Zoom Blueprint SLD</span>
-          </button>
-          <button class="btn-pill-action" id="btnOpenTopology">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="6" height="6" rx="1"></rect>
-              <rect x="16" y="2" width="6" height="6" rx="1"></rect>
-              <rect x="9" y="16" width="6" height="6" rx="1"></rect>
-              <path d="M5 8v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"></path>
-              <path d="M12 13v3"></path>
-            </svg>
-            <span>Topologi Cisco</span>
+            <span>Export CSV</span>
           </button>
         </div>
       </div>
+    </header>
 
-      <!-- INTEGRATED ELECTRICAL ROOM BLUEPRINT & TELEMETRY CARD (NO POPUP SCROLLING LAG) -->
-      <div class="electrical-room-integrated-card" id="electricalRoomCard">
-        <div class="electrical-card-header">
-          <div style="display:flex; align-items:center; gap:0.6rem;">
-            <div class="kpi-icon-box" style="background:var(--primary-light); color:var(--primary); border-color:var(--primary-border);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-              </svg>
-            </div>
-            <div>
-              <h4 style="font-size:0.92rem; font-weight:800; color:var(--text-main); margin:0;">
-                Electrical Room & Gardu Distribusi 20 kV (Schneider SM6)
-              </h4>
-              <p style="font-size:0.72rem; color:var(--text-muted); margin:0;">
-                Blueprint aktual Single Line Diagram & Integrasi Panel LMVDP Trafo 12 (IP: 10.41.47.122)
-              </p>
-            </div>
-          </div>
-          <div style="display:flex; gap:0.5rem; align-items:center;">
-            <span class="status-pill-badge normal">● 20.020 V NORMAL</span>
-            <span class="status-pill-badge normal">● VCB SM6 CLOSED</span>
-            <button class="btn-zoom-inline" id="btnZoomToggleHeader" style="margin-left:0.5rem; border-color:var(--primary-border); color:var(--primary);">
-              <span id="btnZoomToggleHeaderIcon">⤢</span>
-              <span id="btnZoomToggleHeaderLabel">Perbesar Blueprint</span>
-            </button>
-          </div>
+    <!-- ================= 2. KPI CARDS ROW (MATCHES SCREENSHOT) ================= -->
+    <section class="kpi-grid" aria-label="Ringkasan Beban dan Energi">
+      <!-- Card 1: Daya Saat Ini -->
+      <div class="kpi-card">
+        <div class="kpi-title">Daya saat ini</div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpiDayaVal">10.116</span>
+          <span class="kpi-unit">kW</span>
         </div>
-
-        <div class="electrical-card-body-grid">
-          <!-- Left: Blueprint & Foto Aktual (With In-Place HD Viewer) -->
-          <div class="blueprint-image-container" id="blueprintImageContainer">
-            <div class="blueprint-badge-label">
-              <div style="display:flex; align-items:center; gap:0.4rem;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-                <span id="blueprintBadgeText">Blueprint Aktual: Electrical Room Factory 1 PT Musashi</span>
-              </div>
-              <div class="blueprint-zoom-tools" id="blueprintZoomTools" style="display:none;">
-                <button class="btn-tool-mini" onclick="window.adjustBlueprintZoom(-0.25)" title="Perkecil zoom">−</button>
-                <span class="zoom-level-text" id="zoomLevelDisplay">100%</span>
-                <button class="btn-tool-mini" onclick="window.adjustBlueprintZoom(0.25)" title="Perbesar zoom">+</button>
-                <button class="btn-tool-mini" onclick="window.resetBlueprintZoom()" title="Reset zoom">Reset</button>
-              </div>
-            </div>
-
-            <!-- Scrollable Image Viewport -->
-            <div class="blueprint-img-scrollable" id="blueprintImgWrapper">
-              <img src="schneider_room.jpg" alt="Blueprint SLD Electrical Room Schneider SM6 PT Musashi" id="imgBlueprintMain" title="Klik untuk perbesar/perkecil gambar langsung di depan">
-            </div>
-
-            <div class="blueprint-caption-bar">
-              <span id="blueprintCaptionText">Diagram Distribusi 20 kV ➔ 6 Trafo (7.750 kVA) & Panel LMVDP</span>
-              <button class="btn-zoom-inline" id="btnZoomAction" title="Perbesar gambar langsung di depan">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="iconZoomAction">
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <polyline points="9 21 3 21 3 15"></polyline>
-                  <line x1="21" y1="3" x2="14" y2="10"></line>
-                  <line x1="3" y1="21" x2="10" y2="14"></line>
-                </svg>
-                <span id="labelZoomAction">Perbesar</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Right: Spesifikasi Gardu & Panel LMVDP Trafo 12 -->
-          <div class="electrical-specs-col">
-            <!-- Spesifikasi Gardu 20 kV -->
-            <div class="spec-sub-card">
-              <h5 class="spec-card-title">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                </svg>
-                Spesifikasi Gardu 20 kV Kubikel SM6
-              </h5>
-              <div class="spec-key-value-list">
-                <div class="spec-row">
-                  <span class="k">Tipe Kubikel</span>
-                  <span class="v">Schneider SM6 DM1-A (Disconnector + VCB)</span>
-                </div>
-                <div class="spec-row">
-                  <span class="k">Tegangan Sistem</span>
-                  <span class="v">20.000 V (20 kV PLN Distribusi)</span>
-                </div>
-                <div class="spec-row">
-                  <span class="k">Relay Proteksi</span>
-                  <span class="v">Schneider Sepam S20 (Overcurrent & Earth Fault)</span>
-                </div>
-                <div class="spec-row">
-                  <span class="k">Total Kapasitas Trafo</span>
-                  <span class="v" style="color:var(--primary); font-weight:800;">6 Unit (7.750 kVA)</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Meter Trafo 12 LMVDP (Meter Aktual Lapangan) -->
-            <div class="spec-sub-card featured-highlight">
-              <h5 class="spec-card-title" style="color:var(--primary);">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg>
-                Meter Lapangan: Trafo 12 LMVDP (Forging Lines)
-              </h5>
-              <p style="font-size:0.75rem; color:var(--text-body); line-height:1.5; margin-bottom:0.6rem;">
-                Power meter <strong>Schneider Electric PowerLogic PM5500</strong> di panel LMVDP Trafo 12 terhubung ke Switch Cisco dengan IP <strong>10.41.47.122</strong>. Mensuplai beban mesin Forging Press 2500T dengan arus hingga 4.028 A pada tegangan 210 V JIS.
-              </p>
-              <div class="spec-mini-stats">
-                <div class="mini-stat-pill">
-                  <span class="lbl">IP Gateway</span>
-                  <span class="val" style="color:var(--primary);">10.41.47.122</span>
-                </div>
-                <div class="mini-stat-pill">
-                  <span class="lbl">Tegangan Sekunder</span>
-                  <span class="val">210 V JIS</span>
-                </div>
-                <div class="mini-stat-pill">
-                  <span class="lbl">Kapasitas Trafo</span>
-                  <span class="val">2.000 kVA</span>
-                </div>
-                <div class="mini-stat-pill">
-                  <span class="lbl">Beban Aktif</span>
-                  <span class="val" style="color:var(--accent-emerald);">1.380 kW (69%)</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="kpi-subtitle" id="kpiDayaSub">Total beban listrik sekarang</div>
       </div>
 
-      <!-- Incomer 20kV SM6 Banner -->
-      <div class="incomer-banner-box">
-        <div style="display:flex; align-items:center; gap:0.75rem;">
-          <div class="kpi-icon-box" style="background:var(--primary-light); color:var(--primary); border-color:var(--primary-border);">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-            </svg>
-          </div>
-          <div>
-            <div style="font-weight:800; color:var(--text-main); font-size:0.88rem;">GARDU INDUK 20 kV (SCHNEIDER SM6 DM1-A)</div>
-            <div style="font-size:0.72rem; color:var(--text-muted); font-family:var(--font-mono);">Kabel Bawah Tanah 3x240 mm² Cu XLPE · Relay Proteksi Schneider Sepam S20</div>
-          </div>
+      <!-- Card 2: Energi Hari Ini -->
+      <div class="kpi-card">
+        <div class="kpi-title">Energi hari ini</div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpiEnergiVal">160.605</span>
+          <span class="kpi-unit">kWh</span>
         </div>
-        <div style="display:flex; gap:1.25rem; font-size:0.75rem; align-items:center;">
-          <div><span style="color:var(--text-muted);">Tegangan Grid:</span> <strong style="color:var(--text-main); font-family:var(--font-mono);">20.020 V</strong></div>
-          <div><span style="color:var(--text-muted);">Frekuensi:</span> <strong style="color:var(--accent-emerald); font-family:var(--font-mono);">50,01 Hz</strong></div>
-          <div><span style="color:var(--text-muted);">Status VCB:</span> <span class="status-pill-badge normal">● CLOSED</span></div>
-        </div>
+        <div class="kpi-subtitle" id="kpiEnergiSub">Sejak pukul 00.00</div>
       </div>
 
-      <!-- 20 kV Copper Busbar -->
-      <div class="copper-busbar-line">
-        <span class="copper-busbar-label">MAIN BUSBAR 20.000 V (LINE-UP KUBIKEL SCHNEIDER SM6)</span>
+      <!-- Card 3: Estimasi Biaya Hari Ini -->
+      <div class="kpi-card">
+        <div class="kpi-title">Estimasi biaya hari ini</div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpiBiayaVal">Rp 232 jt</span>
+        </div>
+        <div class="kpi-subtitle" id="kpiBiayaSub">Berdasarkan tarif asumsi</div>
       </div>
 
-      <!-- 6 Transformers Grid -->
-      <div class="sld-trafos-grid">
-        
-        <!-- TRF-11 -->
-        <div class="sld-trafo-card-new" onclick="window.openMeterDetailById('TRF-11')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:0.85rem; color:var(--text-main);">TRAFO #11 (1.000 kVA)</strong>
-              <div style="font-size:0.7rem; color:var(--text-muted);">Pri: 20 kV ➔ Sec: 6.600 V (Billet Heater)</div>
-            </div>
-            <span class="status-pill-badge normal">CLOSED</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.74rem; border-top:1px solid var(--border-subtle); padding-top:0.4rem;">
-            <span style="color:var(--text-muted);">Beban: <strong style="color:var(--text-main);">620 kW (62%)</strong></span>
-            <span style="color:var(--text-muted);">Arus: <strong style="color:var(--text-main);">57,3 A</strong></span>
-            <span style="color:var(--text-muted);">PF: <strong style="color:var(--accent-emerald);">0,95</strong></span>
-          </div>
+      <!-- Card 4: Power Factor Rata-rata -->
+      <div class="kpi-card">
+        <div class="kpi-title">Power factor rata-rata</div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpiPfVal">0,89</span>
         </div>
+        <div class="kpi-subtitle" id="kpiPfSub">Baik (target ≥ 0,85)</div>
+      </div>
 
-        <!-- TRF-12 (Featured) -->
-        <div class="sld-trafo-card-new featured" onclick="window.openMeterDetailById('TRF-12')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:0.85rem; color:var(--primary);">TRAFO #12 (2.000 kVA) ⭐</strong>
-              <div style="font-size:0.7rem; color:var(--text-muted);">Pri: 20 kV ➔ Sec: 210 V JIS (Schneider PM5500 IP 10.41.47.122)</div>
-            </div>
-            <span class="status-pill-badge normal">CLOSED</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.74rem; border-top:1px solid var(--border-subtle); padding-top:0.4rem;">
-            <span style="color:var(--text-muted);">Beban: <strong style="color:var(--primary);">1.380 kW (69%)</strong></span>
-            <span style="color:var(--text-muted);">Arus: <strong style="color:var(--text-main);">4.028 A</strong></span>
-            <span style="color:var(--text-muted);">PF: <strong style="color:var(--accent-emerald);">0,94</strong></span>
-          </div>
+      <!-- Card 5: Meter Online -->
+      <div class="kpi-card">
+        <div class="kpi-title">Meter online</div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpiOnlineVal">135 / 137</span>
         </div>
+        <div class="kpi-subtitle" id="kpiOnlineSub">38 meter perlu dicek</div>
+      </div>
 
-        <!-- TRF-13 -->
-        <div class="sld-trafo-card-new" onclick="window.openMeterDetailById('TRF-13')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:0.85rem; color:var(--accent-amber);">TRAFO #13 (1.500 kVA) ⚠️</strong>
-              <div style="font-size:0.7rem; color:var(--text-muted);">Pri: 20 kV ➔ Sec: 210 V JIS (Sub-Panel Distribusi)</div>
-            </div>
-            <span class="status-pill-badge warning">COS φ 0,84</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.74rem; border-top:1px solid var(--border-subtle); padding-top:0.4rem;">
-            <span style="color:var(--text-muted);">Beban: <strong style="color:var(--text-main);">980 kW (65%)</strong></span>
-            <span style="color:var(--text-muted);">Arus: <strong style="color:var(--text-main);">3.189 A</strong></span>
-            <span style="color:var(--text-muted);">PF: <strong style="color:var(--accent-amber);">0,84</strong></span>
-          </div>
+      <!-- Card 6: Emisi Karbon ESG (Preserving Carbon Emission Feature) -->
+      <div class="kpi-card">
+        <div class="kpi-title">Emisi karbon (CO₂e)</div>
+        <div class="kpi-value-row">
+          <span class="kpi-value" id="kpiCarbonVal" style="color:var(--color-teal);">126,9</span>
+          <span class="kpi-unit">ton</span>
         </div>
-
-        <!-- TRF-14 -->
-        <div class="sld-trafo-card-new" onclick="window.openMeterDetailById('TRF-14')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:0.85rem; color:var(--text-main);">TRAFO #14 (1.250 kVA)</strong>
-              <div style="font-size:0.7rem; color:var(--text-muted);">Pri: 20 kV ➔ Sec: 400 V IEC (Utility, Pompa, Kompresor)</div>
-            </div>
-            <span class="status-pill-badge normal">CLOSED</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.74rem; border-top:1px solid var(--border-subtle); padding-top:0.4rem;">
-            <span style="color:var(--text-muted);">Beban: <strong style="color:var(--text-main);">780 kW (62%)</strong></span>
-            <span style="color:var(--text-muted);">Arus: <strong style="color:var(--text-main);">1.187 A</strong></span>
-            <span style="color:var(--text-muted);">PF: <strong style="color:var(--accent-emerald);">0,95</strong></span>
-          </div>
-        </div>
-
-        <!-- TRF-15 -->
-        <div class="sld-trafo-card-new" onclick="window.openMeterDetailById('TRF-15')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:0.85rem; color:var(--text-main);">TRAFO #15 (1.000 kVA)</strong>
-              <div style="font-size:0.7rem; color:var(--text-muted);">Pri: 20 kV ➔ Sec: 6.600 V (Induction Billet Heater 1)</div>
-            </div>
-            <span class="status-pill-badge normal">CLOSED</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.74rem; border-top:1px solid var(--border-subtle); padding-top:0.4rem;">
-            <span style="color:var(--text-muted);">Beban: <strong style="color:var(--text-main);">590 kW (59%)</strong></span>
-            <span style="color:var(--text-muted);">Arus: <strong style="color:var(--text-main);">54,4 A</strong></span>
-            <span style="color:var(--text-muted);">PF: <strong style="color:var(--accent-emerald);">0,95</strong></span>
-          </div>
-        </div>
-
-        <!-- TRF-16 -->
-        <div class="sld-trafo-card-new" onclick="window.openMeterDetailById('TRF-16')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <strong style="font-size:0.85rem; color:var(--text-main);">TRAFO #16 (1.000 kVA)</strong>
-              <div style="font-size:0.7rem; color:var(--text-muted);">Pri: 20 kV ➔ Sec: 6.600 V (Induction Billet Heater 2)</div>
-            </div>
-            <span class="status-pill-badge normal">CLOSED</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.74rem; border-top:1px solid var(--border-subtle); padding-top:0.4rem;">
-            <span style="color:var(--text-muted);">Beban: <strong style="color:var(--text-main);">610 kW (61%)</strong></span>
-            <span style="color:var(--text-muted);">Arus: <strong style="color:var(--text-main);">56,2 A</strong></span>
-            <span style="color:var(--text-muted);">PF: <strong style="color:var(--accent-emerald);">0,95</strong></span>
-          </div>
-        </div>
-
+        <div class="kpi-subtitle" id="kpiCarbonSub">Faktor grid Jamali 0,79 kg/kWh</div>
       </div>
     </section>
 
-    <!-- ================= DIREKTORI 137 POWER METER DIGITAL TABLE ================= -->
-    <section class="directory-card" id="directorySection" aria-label="Direktori 137 Power Meter Digital">
-      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-        <div>
-          <h3 style="font-size:1.05rem; font-weight:800; color:var(--text-main);">
-            Direktori 137 Power Meter Digital & IP Network
-          </h3>
-          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">
-            Peta penggantian kWh analog ke digital Mitsubishi & Schneider terintegrasi switch Cisco LAN
-          </p>
+    <!-- ================= 3. ROW 2: 24H LINE CHART & ENERGY DONUT ================= -->
+    <section class="charts-grid-row" aria-label="Grafik Beban 24 Jam dan Donut Distribusi">
+      <!-- Card: Beban Listrik 24 Jam Terakhir -->
+      <div class="clean-card">
+        <div class="card-header-block">
+          <h2 class="card-title">Beban listrik 24 jam terakhir</h2>
+          <p class="card-subtitle">Total daya (kW). Naik saat jam produksi, turun malam hari.</p>
         </div>
-        <button class="btn-pill-action" id="btnExportData" style="background:var(--primary); color:#fff; border-color:var(--primary);">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          <span>Export CSV / Excel</span>
-        </button>
-      </div>
-
-      <!-- Table Filter Controls Row -->
-      <div class="table-controls-row">
-        <!-- Search input box -->
-        <div class="search-box-input">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input type="text" id="searchInput" placeholder="Cari ID meter, nama panel, IP (misal 10.41.47.122)...">
-        </div>
-
-        <!-- Category filter pills -->
-        <div class="table-filter-pills" id="areaFilterPills">
-          <button class="filter-pill-btn active" data-filter="all">Semua (137)</button>
-          <button class="filter-pill-btn" data-filter="forging">Forging (48)</button>
-          <button class="filter-pill-btn" data-filter="electrical">Electrical (32)</button>
-          <button class="filter-pill-btn" data-filter="compressor">Kompresor (20)</button>
-          <button class="filter-pill-btn" data-filter="waterpump">Water Pump (25)</button>
-          <button class="filter-pill-btn" data-filter="lobby">Lobby/Offices (12)</button>
-        </div>
-
-        <!-- Status filter select -->
-        <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem;">
-          <span style="color:var(--text-muted);">Status:</span>
-          <select id="statusFilter" class="btn-pill-action" style="outline:none;">
-            <option value="all">Semua Status</option>
-            <option value="normal">Normal (Online)</option>
-            <option value="warning">Warning / Waspada</option>
-            <option value="offline">Offline</option>
-          </select>
+        <div class="line-chart-container">
+          <canvas id="chart24h"></canvas>
         </div>
       </div>
 
-      <!-- Mobile Table Swipe Hint -->
-      <div class="table-scroll-hint">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-        <span>Geser tabel ke samping untuk melihat parameter lengkap (kW, Tegangan, Arus, Cos φ, Emisi CO₂, Status)</span>
+      <!-- Card: Pembagian Pemakaian Energi -->
+      <div class="clean-card">
+        <div class="card-header-block">
+          <h2 class="card-title">Pembagian pemakaian energi</h2>
+          <p class="card-subtitle">Area mana yang paling banyak memakai listrik hari ini.</p>
+        </div>
+        <div class="donut-chart-wrapper">
+          <div class="donut-canvas-box">
+            <canvas id="chartDonutEnergy"></canvas>
+          </div>
+          <!-- Donut Legend (Matches Screenshot) -->
+          <div class="donut-legend-row" id="donutLegendRow">
+            <div class="donut-legend-item">
+              <span class="donut-legend-color" style="background:var(--color-blue);"></span>
+              <span>Forging</span>
+            </div>
+            <div class="donut-legend-item">
+              <span class="donut-legend-color" style="background:var(--color-teal);"></span>
+              <span>Electrical Room</span>
+            </div>
+            <div class="donut-legend-item">
+              <span class="donut-legend-color" style="background:var(--color-orange);"></span>
+              <span>Kompresor</span>
+            </div>
+            <div class="donut-legend-item">
+              <span class="donut-legend-color" style="background:var(--color-green);"></span>
+              <span>Pompa Air</span>
+            </div>
+            <div class="donut-legend-item">
+              <span class="donut-legend-color" style="background:var(--color-rose);"></span>
+              <span>Lobby</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. ROW 3: TOP 8 METERS & PERLU PERHATIAN ================= -->
+    <section class="mid-split-grid" aria-label="Top 8 Pemakaian dan Perlu Perhatian">
+      <!-- Card: 8 Meter dengan Pemakaian Tertinggi -->
+      <div class="clean-card">
+        <div class="card-header-block">
+          <h2 class="card-title">8 meter dengan pemakaian tertinggi</h2>
+          <p class="card-subtitle">Fokus penghematan: mulai dari yang terbesar.</p>
+        </div>
+        <div class="bar-chart-container">
+          <canvas id="chartTop8Meters"></canvas>
+        </div>
       </div>
 
-      <!-- Styled Table Container -->
-      <div class="custom-table-container">
-        <table class="styled-table" id="meterTable">
+      <!-- Card: Perlu Perhatian -->
+      <div class="clean-card">
+        <div class="card-header-block">
+          <h2 class="card-title">Perlu perhatian</h2>
+          <p class="card-subtitle">Meter offline atau power factor rendah (di bawah 0,85 bisa kena denda kVArh).</p>
+        </div>
+        <div class="attention-list-wrapper" id="attentionList">
+          <!-- Dynamically populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 5. ROW 4: DAFTAR METER TABLE ================= -->
+    <section class="clean-card" aria-label="Tabel Seluruh Power Meter Digital">
+      <div class="table-card-header">
+        <div class="card-header-block" style="margin-bottom:0;">
+          <h2 class="card-title">Daftar meter</h2>
+          <p class="card-subtitle">Data langsung tiap meter. Alamat IP dipakai sistem untuk mengambil data.</p>
+        </div>
+        <div class="table-toolbar-right">
+          <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari nama, area, atau IP...">
+        </div>
+      </div>
+
+      <div class="clean-table-responsive">
+        <table class="clean-table" id="meterTable">
           <thead>
             <tr>
-              <th data-sort="id">ID Meter ⇕</th>
-              <th data-sort="name">Nama Feeder / Panel Beban ⇕</th>
-              <th data-sort="category">Area Pabrik ⇕</th>
-              <th data-sort="ip">IP Address (Cisco LAN) ⇕</th>
+              <th data-sort="id">ID ⇕</th>
+              <th data-sort="name">Nama meter ⇕</th>
+              <th data-sort="categoryLabel">Area ⇕</th>
+              <th data-sort="ip">IP address ⇕</th>
               <th data-sort="kw" style="text-align:right;">Daya (kW) ⇕</th>
               <th data-sort="voltage" style="text-align:right;">Tegangan (V) ⇕</th>
               <th data-sort="current" style="text-align:right;">Arus (A) ⇕</th>
-              <th data-sort="pf" style="text-align:center;">Cos φ ⇕</th>
-              <th data-sort="carbon" style="text-align:right;">CO₂ (kg) ⇕</th>
+              <th data-sort="pf" style="text-align:right;">Power factor ⇕</th>
+              <th data-sort="kwhToday" style="text-align:right;">Energi hari ini (kWh) ⇕</th>
+              <th data-sort="carbon" style="text-align:right;">Emisi CO₂ (kg) ⇕</th>
               <th data-sort="status" style="text-align:center;">Status ⇕</th>
               <th style="text-align:center;">Aksi</th>
             </tr>
@@ -1012,12 +233,11 @@
         </table>
       </div>
 
-      <!-- Pagination Row -->
-      <div class="pagination-row">
+      <div class="table-pagination-row">
         <div>
-          Menampilkan <strong id="pageRangeText" style="color:var(--text-main);">1 - 15</strong> dari <strong id="totalMetersText" style="color:var(--text-main);">137</strong> power meter digital
+          Menampilkan <strong id="pageRangeText" style="color:#ffffff;">1 - 15</strong> dari <strong id="totalMetersText" style="color:#ffffff;">137</strong> meter
         </div>
-        <div style="display:flex; gap:0.35rem;" id="paginationButtons">
+        <div class="pagination-btn-group" id="paginationButtons">
           <!-- Dynamically populated by app.js -->
         </div>
       </div>
@@ -1027,93 +247,46 @@
 
   <!-- ================= MODAL: DETAIL METER ================= -->
   <div class="modal-overlay" id="meterDetailModal">
-    <div class="modal-box-card">
-      <div class="modal-header-top">
-        <div>
-          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main);" id="modalMeterTitle">
-            Detail Power Meter Digital
-          </h3>
-          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;" id="modalMeterSubtitle">
-            Telemetri Realtime & Konfigurasi Modbus TCP
-          </p>
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modalMeterTitle">Detail Power Meter</h3>
+          <p id="modalMeterSubtitle">Kategori & Spesifikasi Teknis Jaringan Cisco</p>
         </div>
-        <button class="btn-pill-action" id="btnCloseMeterModal">✕ Tutup</button>
+        <button class="modal-close-btn" onclick="window.closeAllModals()">✕</button>
       </div>
-      <div class="modal-body-content" id="modalMeterBody">
-        <!-- Injected via JavaScript -->
+      <div class="modal-body" id="modalMeterBody">
+        <!-- Dynamically populated by app.js -->
       </div>
     </div>
   </div>
 
-
-
-  <!-- ================= MODAL: CISCO TOPOLOGY ================= -->
-  <div class="modal-overlay" id="topologyModal">
-    <div class="modal-box-card">
-      <div class="modal-header-top">
-        <div>
-          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main);">
-            Topologi Jaringan Cisco & Alur Modbus TCP
-          </h3>
-          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">
-            Arsitektur komunikasi 137 Power Meter ke Switch Cisco dan SCADA Server
-          </p>
+  <!-- ================= MODAL: BLUEPRINT ELECTRICAL ROOM ================= -->
+  <div class="modal-overlay" id="blueprintModal">
+    <div class="modal-card modal-blueprint-wide">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3>Blueprint Gardu 20 kV Factory 1 Musashi</h3>
+          <p>Dokumentasi Resmi Single Line & Cubicle Panel SM6 Schneider Electric</p>
         </div>
-        <button class="btn-pill-action" id="btnCloseTopologyModal">✕ Tutup</button>
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <button class="btn-page" id="btnZoomIn" title="Perbesar">+</button>
+          <button class="btn-page" id="btnZoomReset" title="Reset Zoom">Reset</button>
+          <button class="btn-page" id="btnZoomOut" title="Perkecil">−</button>
+          <button class="modal-close-btn" onclick="window.closeAllModals()" style="margin-left:0.5rem;">✕</button>
+        </div>
       </div>
-      <div class="modal-body-content">
-        <div style="background:var(--bg-subtle); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:1rem; font-size:0.78rem; line-height:1.6;">
-          <h4 style="color:var(--text-main); font-weight:800; margin-bottom:0.5rem;">Alur Komunikasi Modbus TCP / IP Cisco:</h4>
-          <ol style="padding-left:1.2rem; color:var(--text-body);">
-            <li><strong>Power Meter Lapangan:</strong> 137 unit Mitsubishi ME96SS & Schneider PM5500 dihubungkan via kabel UTP Cat6 Shielded / RS-485 Gateway.</li>
-            <li><strong>Cisco Edge Switch:</strong> Terhubung ke Cisco Catalyst 2960 / 3850 di masing-masing panel distribusi (VLAN 47 - Utility EMS).</li>
-            <li><strong>Core Switch Musashi:</strong> Switch SW-FAC1-CORE01 mengumpulkan seluruh packet Modbus TCP port 502.</li>
-            <li><strong>EMS SCADA Server:</strong> Melakukan polling berkala (setiap 3-5 detik) dan menyimpan telemetry ke TimescaleDB / InfluxDB.</li>
-          </ol>
+      <div class="modal-body" style="padding:1rem;">
+        <div class="blueprint-img-viewport" id="blueprintViewport">
+          <img src="schneider_room.jpg" id="blueprintImg" alt="Blueprint Gardu Listrik 20kV Musashi" loading="lazy">
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ================= MODAL: PANDUAN PROYEK MAGANG ================= -->
-  <div class="modal-overlay" id="guideModal">
-    <div class="modal-box-card">
-      <div class="modal-header-top">
-        <div>
-          <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main);">
-            Panduan Proyek & Magang Maintenance Utility
-          </h3>
-          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.2rem;">
-            Ringkasan pekerjaan kelistrikan arus kuat, IoT gateway, dan SCADA dashboard
-          </p>
-        </div>
-        <button class="btn-pill-action" id="btnCloseGuideModal">✕ Tutup</button>
-      </div>
-      <div class="modal-body-content" style="font-size:0.8rem; line-height:1.6; color:var(--text-body);">
-        <p>
-          Sebagai mahasiswa <strong>Teknik Elektro Arus Kuat</strong> yang magang di <strong>PT Musashi Auto Parts Indonesia</strong>, proyek ini memadukan keahlian sistem tenaga listrik (Single Line Diagram, rasio CT 4000/5A, kubikel 20kV SM6, tegangan 210V JIS & 400V IEC) dengan implementasi telemetry digital (Modbus TCP/IP port 502, switch Cisco, dan dashboard SCADA).
-        </p>
-        <div style="background:var(--bg-subtle); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border-color); margin-top:0.5rem;">
-          <strong style="color:var(--text-main);">Fokus Utama Pengawasan Utility:</strong>
-          <ul style="padding-left:1.2rem; margin-top:0.35rem;">
-            <li><strong>WBP (Waktu Beban Puncak 18:00 - 22:00 WIB):</strong> Tarif listrik 1,5x lebih tinggi. Selalu pantau alarm agar tidak melampaui batas kontrak 4.500 kVA.</li>
-            <li><strong>Power Factor (Cos φ ≥ 0,85):</strong> Pertahankan di atas 0,85 agar pabrik terhindar dari denda pinalti kVARh PLN.</li>
-            <li><strong>Pembebanan Trafo (Ideal 50% - 75%):</strong> Trafo 12 LMVDP (Forging) kapasitas 2.000 kVA saat ini berada di 69% (zona optimal).</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Floating Back to Top Button for Mobile & Laptop -->
-  <button class="btn-back-to-top" id="btnBackToTop" title="Kembali ke atas" aria-label="Kembali ke atas">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <polyline points="18 15 12 9 6 15"></polyline>
-    </svg>
-  </button>
-
-  <!-- Core App Scripts -->
+  <!-- Data 137 Power Meter Mitsubishi & Schneider -->
   <script src="data.js"></script>
+  <!-- Application Logic -->
   <script src="app.js"></script>
 </body>
 </html>
