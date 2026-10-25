@@ -2,10 +2,10 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Monitoring Power Meter Digital – PT Musashi</title>
   <meta name="description" content="Dashboard Energy Management System & SCADA penggantian 137 unit kWh meter analog ke digital Mitsubishi Power Meter PT Musashi Auto Parts Indonesia.">
-  <link rel="stylesheet" href="style.css?v=6.0">
+  <link rel="stylesheet" href="style.css?v=7.0">
   <!-- Chart.js local file for offline high performance -->
   <script src="chart.umd.min.js"></script>
 </head>
@@ -17,19 +17,19 @@
     <header class="header-row">
       <div class="header-left">
         <div class="header-title-wrap">
-          <h1 class="header-title">Monitoring Power Meter Digital – PT Musashi</h1>
+          <h1 class="header-title">Monitoring Power Meter – PT Musashi</h1>
         </div>
         <div class="header-meta">
-          <span>Pengganti kWh meter analog ke Mitsubishi</span>
+          <span>Pengganti kWh analog ke Mitsubishi</span>
           <span class="meta-dot">·</span>
-          <span id="headerLiveTime">25 Okt 2026, 17.29.24</span>
+          <span id="headerLiveTime">25 Okt 2026, 17.52.16</span>
           <span class="meta-dot">·</span>
           <span class="badge-simulasi">Data simulasi</span>
         </div>
       </div>
 
       <div class="header-right">
-        <!-- Filter Tabs Button Group (Matches Screenshot) -->
+        <!-- Filter Tabs Button Group (Scrollbar Hidden) -->
         <div class="filter-tabs-group" id="filterTabsGroup">
           <button class="filter-tab-btn active" data-filter="all">Semua</button>
           <button class="filter-tab-btn" data-filter="forging">Forging</button>
@@ -40,29 +40,29 @@
         </div>
 
         <div class="header-actions">
-          <button class="btn-header-action" id="btnOpenBlueprintModal" title="Lihat Blueprint Gardu Listrik HD">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <button class="btn-header-action" id="btnOpenBlueprintModal" title="Lihat Blueprint Gardu Listrik 20kV HD">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="9" y1="3" x2="9" y2="21"></line>
               <line x1="15" y1="3" x2="15" y2="21"></line>
               <line x1="3" y1="9" x2="21" y2="9"></line>
               <line x1="3" y1="15" x2="21" y2="15"></line>
             </svg>
-            <span>Blueprint Gardu</span>
+            <span>Blueprint</span>
           </button>
           <button class="btn-header-action" id="btnExportCsv" title="Unduh laporan data meter ke file CSV">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
               <line x1="12" y1="15" x2="12" y2="3"></line>
             </svg>
-            <span>Export CSV</span>
+            <span>CSV</span>
           </button>
         </div>
       </div>
     </header>
 
-    <!-- ================= 2. KPI CARDS ROW (MATCHES SCREENSHOT) ================= -->
+    <!-- ================= 2. KPI CARDS ROW (COMPACT HIGH-DENSITY) ================= -->
     <section class="kpi-grid" aria-label="Ringkasan Beban dan Energi">
       <!-- Card 1: Daya Saat Ini -->
       <div class="kpi-card">
@@ -71,7 +71,7 @@
           <span class="kpi-value" id="kpiDayaVal">10.116</span>
           <span class="kpi-unit">kW</span>
         </div>
-        <div class="kpi-subtitle" id="kpiDayaSub">Total beban listrik sekarang</div>
+        <div class="kpi-subtitle" id="kpiDayaSub">Total beban sekarang</div>
       </div>
 
       <!-- Card 2: Energi Hari Ini -->
@@ -86,11 +86,11 @@
 
       <!-- Card 3: Estimasi Biaya Hari Ini -->
       <div class="kpi-card">
-        <div class="kpi-title">Estimasi biaya hari ini</div>
+        <div class="kpi-title">Estimasi biaya</div>
         <div class="kpi-value-row">
           <span class="kpi-value" id="kpiBiayaVal">Rp 232 jt</span>
         </div>
-        <div class="kpi-subtitle" id="kpiBiayaSub">Berdasarkan tarif asumsi</div>
+        <div class="kpi-subtitle" id="kpiBiayaSub">Tarif asumsi PLN</div>
       </div>
 
       <!-- Card 4: Power Factor Rata-rata -->
@@ -108,137 +108,176 @@
         <div class="kpi-value-row">
           <span class="kpi-value" id="kpiOnlineVal">135 / 137</span>
         </div>
-        <div class="kpi-subtitle" id="kpiOnlineSub">38 meter perlu dicek</div>
+        <div class="kpi-subtitle" id="kpiOnlineSub">38 meter dicek</div>
       </div>
 
-      <!-- Card 6: Emisi Karbon ESG (Preserving Carbon Emission Feature) -->
+      <!-- Card 6: Emisi Karbon ESG -->
       <div class="kpi-card">
         <div class="kpi-title">Emisi karbon (CO₂e)</div>
         <div class="kpi-value-row">
           <span class="kpi-value" id="kpiCarbonVal" style="color:var(--color-teal);">126,9</span>
           <span class="kpi-unit">ton</span>
         </div>
-        <div class="kpi-subtitle" id="kpiCarbonSub">Faktor grid Jamali 0,79 kg/kWh</div>
+        <div class="kpi-subtitle" id="kpiCarbonSub">Grid Jamali 0,79 kg/kWh</div>
       </div>
     </section>
 
-    <!-- ================= 3. ROW 2: 24H LINE CHART & ENERGY DONUT ================= -->
-    <section class="charts-grid-row" aria-label="Grafik Beban 24 Jam dan Donut Distribusi">
-      <!-- Card: Beban Listrik 24 Jam Terakhir -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title">Beban listrik 24 jam terakhir</h2>
-          <p class="card-subtitle">Total daya (kW). Naik saat jam produksi, turun malam hari.</p>
-        </div>
-        <div class="line-chart-container">
-          <canvas id="chart24h"></canvas>
-        </div>
-      </div>
+    <!-- ================= 3. VIEW SEGMENTED SWITCHER ("TIDAK PERLU SCROLL") ================= -->
+    <nav class="view-switch-bar" aria-label="Navigasi Tampilan Cepat">
+      <button class="view-switch-btn active" data-view="charts" id="viewBtnCharts">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="20" x2="18" y2="10"></line>
+          <line x1="12" y1="20" x2="12" y2="4"></line>
+          <line x1="6" y1="20" x2="6" y2="14"></line>
+        </svg>
+        <span>Grafik Beban 24 Jam</span>
+      </button>
+      <button class="view-switch-btn" data-view="alerts" id="viewBtnAlerts">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        <span>Top 8 & Perhatian</span>
+      </button>
+      <button class="view-switch-btn" data-view="table" id="viewBtnTable">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 3h18v18H3zM3 9h18M3 15h18M9 3v18M15 3v18"></path>
+        </svg>
+        <span>Daftar Meter (137)</span>
+      </button>
+      <button class="view-switch-btn" data-view="all" id="viewBtnAll">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>Tampilkan Semua</span>
+      </button>
+    </nav>
 
-      <!-- Card: Pembagian Pemakaian Energi -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title">Pembagian pemakaian energi</h2>
-          <p class="card-subtitle">Area mana yang paling banyak memakai listrik hari ini.</p>
-        </div>
-        <div class="donut-chart-wrapper">
-          <div class="donut-canvas-box">
-            <canvas id="chartDonutEnergy"></canvas>
+    <!-- ================= 4. PANE 1: CHARTS (24H LINE & DONUT) ================= -->
+    <section class="view-section-pane active" id="paneCharts" aria-label="Grafik Beban 24 Jam dan Donut Distribusi">
+      <div class="charts-grid-row">
+        <!-- Card: Beban Listrik 24 Jam Terakhir -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h2 class="card-title">Beban listrik 24 jam terakhir</h2>
+            <p class="card-subtitle">Total daya (kW). Naik saat jam produksi, turun malam hari.</p>
           </div>
-          <!-- Donut Legend (Matches Screenshot) -->
-          <div class="donut-legend-row" id="donutLegendRow">
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-blue);"></span>
-              <span>Forging</span>
+          <div class="line-chart-container">
+            <canvas id="chart24h"></canvas>
+          </div>
+        </div>
+
+        <!-- Card: Pembagian Pemakaian Energi -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h2 class="card-title">Pembagian pemakaian energi</h2>
+            <p class="card-subtitle">Area mana yang paling banyak memakai listrik hari ini.</p>
+          </div>
+          <div class="donut-chart-wrapper">
+            <div class="donut-canvas-box">
+              <canvas id="chartDonutEnergy"></canvas>
             </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-teal);"></span>
-              <span>Electrical Room</span>
-            </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-orange);"></span>
-              <span>Kompresor</span>
-            </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-green);"></span>
-              <span>Pompa Air</span>
-            </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-rose);"></span>
-              <span>Lobby</span>
+            <!-- Donut Legend (Matches Screenshot) -->
+            <div class="donut-legend-row" id="donutLegendRow">
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-blue);"></span>
+                <span>Forging</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-teal);"></span>
+                <span>Electrical Room</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-orange);"></span>
+                <span>Kompresor</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-green);"></span>
+                <span>Pompa Air</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-rose);"></span>
+                <span>Lobby</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ================= 4. ROW 3: TOP 8 METERS & PERLU PERHATIAN ================= -->
-    <section class="mid-split-grid" aria-label="Top 8 Pemakaian dan Perlu Perhatian">
-      <!-- Card: 8 Meter dengan Pemakaian Tertinggi -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title">8 meter dengan pemakaian tertinggi</h2>
-          <p class="card-subtitle">Fokus penghematan: mulai dari yang terbesar.</p>
+    <!-- ================= 5. PANE 2: TOP 8 METERS & PERLU PERHATIAN ================= -->
+    <section class="view-section-pane" id="paneAlerts" aria-label="Top 8 Pemakaian dan Perlu Perhatian">
+      <div class="mid-split-grid">
+        <!-- Card: 8 Meter dengan Pemakaian Tertinggi -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h2 class="card-title">8 meter dengan pemakaian tertinggi</h2>
+            <p class="card-subtitle">Fokus penghematan: mulai dari yang terbesar.</p>
+          </div>
+          <div class="bar-chart-container">
+            <canvas id="chartTop8Meters"></canvas>
+          </div>
         </div>
-        <div class="bar-chart-container">
-          <canvas id="chartTop8Meters"></canvas>
-        </div>
-      </div>
 
-      <!-- Card: Perlu Perhatian -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title">Perlu perhatian</h2>
-          <p class="card-subtitle">Meter offline atau power factor rendah (di bawah 0,85 bisa kena denda kVArh).</p>
-        </div>
-        <div class="attention-list-wrapper" id="attentionList">
-          <!-- Dynamically populated by app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 5. ROW 4: DAFTAR METER TABLE ================= -->
-    <section class="clean-card" aria-label="Tabel Seluruh Power Meter Digital">
-      <div class="table-card-header">
-        <div class="card-header-block" style="margin-bottom:0;">
-          <h2 class="card-title">Daftar meter</h2>
-          <p class="card-subtitle">Data langsung tiap meter. Alamat IP dipakai sistem untuk mengambil data.</p>
-        </div>
-        <div class="table-toolbar-right">
-          <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari nama, area, atau IP...">
-        </div>
-      </div>
-
-      <div class="clean-table-responsive">
-        <table class="clean-table" id="meterTable">
-          <thead>
-            <tr>
-              <th data-sort="id">ID ⇕</th>
-              <th data-sort="name">Nama meter ⇕</th>
-              <th data-sort="categoryLabel">Area ⇕</th>
-              <th data-sort="ip">IP address ⇕</th>
-              <th data-sort="kw" style="text-align:right;">Daya (kW) ⇕</th>
-              <th data-sort="voltage" style="text-align:right;">Tegangan (V) ⇕</th>
-              <th data-sort="current" style="text-align:right;">Arus (A) ⇕</th>
-              <th data-sort="pf" style="text-align:right;">Power factor ⇕</th>
-              <th data-sort="kwhToday" style="text-align:right;">Energi hari ini (kWh) ⇕</th>
-              <th data-sort="carbon" style="text-align:right;">Emisi CO₂ (kg) ⇕</th>
-              <th data-sort="status" style="text-align:center;">Status ⇕</th>
-              <th style="text-align:center;">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="meterTableBody">
+        <!-- Card: Perlu Perhatian -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h2 class="card-title">Perlu perhatian</h2>
+            <p class="card-subtitle">Meter offline atau power factor rendah (di bawah 0,85 bisa kena denda kVArh).</p>
+          </div>
+          <div class="attention-list-wrapper" id="attentionList">
             <!-- Dynamically populated by app.js -->
-          </tbody>
-        </table>
-      </div>
-
-      <div class="table-pagination-row">
-        <div>
-          Menampilkan <strong id="pageRangeText" style="color:#ffffff;">1 - 15</strong> dari <strong id="totalMetersText" style="color:#ffffff;">137</strong> meter
+          </div>
         </div>
-        <div class="pagination-btn-group" id="paginationButtons">
-          <!-- Dynamically populated by app.js -->
+      </div>
+    </section>
+
+    <!-- ================= 6. PANE 3: DAFTAR METER TABLE ================= -->
+    <section class="view-section-pane" id="paneTable" aria-label="Tabel Seluruh Power Meter Digital">
+      <div class="clean-card">
+        <div class="table-card-header">
+          <div class="card-header-block" style="margin-bottom:0;">
+            <h2 class="card-title">Daftar meter</h2>
+            <p class="card-subtitle">Data langsung tiap meter. Alamat IP dipakai sistem untuk mengambil data.</p>
+          </div>
+          <div class="table-toolbar-right">
+            <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari nama, area, atau IP...">
+          </div>
+        </div>
+
+        <div class="clean-table-responsive">
+          <table class="clean-table" id="meterTable">
+            <thead>
+              <tr>
+                <th data-sort="id">ID ⇕</th>
+                <th data-sort="name">Nama meter ⇕</th>
+                <th data-sort="categoryLabel">Area ⇕</th>
+                <th data-sort="ip">IP address ⇕</th>
+                <th data-sort="kw" style="text-align:right;">Daya (kW) ⇕</th>
+                <th data-sort="voltage" style="text-align:right;">Tegangan (V) ⇕</th>
+                <th data-sort="current" style="text-align:right;">Arus (A) ⇕</th>
+                <th data-sort="pf" style="text-align:right;">Power factor ⇕</th>
+                <th data-sort="kwhToday" style="text-align:right;">Energi hari ini (kWh) ⇕</th>
+                <th data-sort="carbon" style="text-align:right;">Emisi CO₂ (kg) ⇕</th>
+                <th data-sort="status" style="text-align:center;">Status ⇕</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="meterTableBody">
+              <!-- Dynamically populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-pagination-row">
+          <div>
+            Menampilkan <strong id="pageRangeText" style="color:#ffffff;">1 - 15</strong> dari <strong id="totalMetersText" style="color:#ffffff;">137</strong> meter
+          </div>
+          <div class="pagination-btn-group" id="paginationButtons">
+            <!-- Dynamically populated by app.js -->
+          </div>
         </div>
       </div>
     </section>
@@ -266,17 +305,17 @@
     <div class="modal-card modal-blueprint-wide">
       <div class="modal-header">
         <div class="modal-title-wrap">
-          <h3>Blueprint Gardu 20 kV Factory 1 Musashi</h3>
-          <p>Dokumentasi Resmi Single Line & Cubicle Panel SM6 Schneider Electric</p>
+          <h3>Blueprint Gardu 20kV Factory 1</h3>
+          <p>Single Line & Panel SM6 Schneider Electric</p>
         </div>
-        <div style="display:flex; align-items:center; gap:0.5rem;">
+        <div style="display:flex; align-items:center; gap:0.35rem;">
           <button class="btn-page" id="btnZoomIn" title="Perbesar">+</button>
           <button class="btn-page" id="btnZoomReset" title="Reset Zoom">Reset</button>
           <button class="btn-page" id="btnZoomOut" title="Perkecil">−</button>
-          <button class="modal-close-btn" onclick="window.closeAllModals()" style="margin-left:0.5rem;">✕</button>
+          <button class="modal-close-btn" onclick="window.closeAllModals()" style="margin-left:0.35rem;">✕</button>
         </div>
       </div>
-      <div class="modal-body" style="padding:1rem;">
+      <div class="modal-body" style="padding:0.75rem;">
         <div class="blueprint-img-viewport" id="blueprintViewport">
           <img src="schneider_room.jpg" id="blueprintImg" alt="Blueprint Gardu Listrik 20kV Musashi" loading="lazy">
         </div>

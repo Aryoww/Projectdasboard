@@ -1,28 +1,26 @@
 /* ========================================================
    PT MUSASHI AUTO PARTS INDONESIA - ENERGY MANAGEMENT SYSTEM
-   Minimalist Dark Theme Frontend (Ultra-Clean Dashboard)
+   Ultra-Clean Minimalist Dashboard (Zero-Scroll First Screen)
    ======================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
   --bg-body: #0b111e;
   --bg-card: #131d2e;
   --bg-card-hover: #17243a;
-  --bg-card-elevated: #1a273e;
-  --border-card: rgba(255, 255, 255, 0.05);
-  --border-card-subtle: rgba(255, 255, 255, 0.08);
+  --bg-input: #0f172a;
+  --border-card: rgba(255, 255, 255, 0.06);
+  --border-card-subtle: rgba(255, 255, 255, 0.1);
 
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --text-dark: #0f172a;
 
   --color-blue: #38bdf8;
   --color-blue-dark: #0284c7;
   --color-teal: #2dd4bf;
   --color-amber: #fbbf24;
-  --color-amber-dark: #d97706;
   --color-green: #34d399;
   --color-rose: #f43f5e;
   --color-orange: #fb923c;
@@ -35,8 +33,8 @@
   --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
 }
 
 * {
@@ -49,21 +47,22 @@ html, body {
   background-color: var(--bg-body);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Base Container */
+/* Base Dashboard Container */
 .dashboard-container {
-  max-width: 1560px;
+  max-width: 1540px;
   margin: 0 auto;
-  padding: 1.5rem 1.75rem 3rem 1.75rem;
+  padding: 0.85rem 1.15rem 1.5rem 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.75rem;
 }
 
 /* ================= 1. HEADER ROW ================= */
@@ -72,48 +71,49 @@ html, body {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1.25rem;
-  padding-bottom: 0.5rem;
+  gap: 0.65rem;
+  padding-bottom: 0.15rem;
 }
 
 .header-left {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.15rem;
 }
 
 .header-title-wrap {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .header-title {
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .header-meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.82rem;
+  gap: 0.4rem;
+  font-size: 0.76rem;
   color: var(--text-secondary);
   flex-wrap: wrap;
 }
 
 .header-meta .meta-dot {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .badge-simulasi {
   display: inline-flex;
   align-items: center;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 0.72rem;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 0.68rem;
   font-weight: 500;
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid #b45309;
@@ -123,17 +123,25 @@ html, body {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
-/* Filter Button Pills */
+/* Filter Button Pills - Completely Hidden Scrollbar */
 .filter-tabs-group {
   display: inline-flex;
   align-items: center;
-  background: transparent;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.35rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 2px;
+}
+
+.filter-tabs-group::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .filter-tab-btn {
@@ -141,12 +149,13 @@ html, body {
   color: var(--btn-inactive-text);
   border: none;
   border-radius: var(--radius-sm);
-  padding: 0.5rem 1.15rem;
-  font-size: 0.82rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.77rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.15s ease;
+  white-space: nowrap;
   user-select: none;
 }
 
@@ -159,29 +168,30 @@ html, body {
   background: var(--color-blue);
   color: #ffffff;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.25);
+  box-shadow: 0 1px 6px rgba(56, 189, 248, 0.3);
 }
 
 /* Header Action Buttons */
 .header-actions {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .btn-header-action {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.35rem;
   background: #1e293b;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-sm);
-  padding: 0.48rem 0.85rem;
-  font-size: 0.78rem;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .btn-header-action:hover {
@@ -190,94 +200,166 @@ html, body {
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* ================= 2. KPI CARDS ROW ================= */
+/* ================= 2. KPI CARDS ROW (COMPACT HIGH-DENSITY) ================= */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 1.15rem;
+  gap: 0.75rem;
 }
 
 .kpi-card {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
-  padding: 1.15rem 1.25rem;
+  padding: 0.75rem 0.95rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 120px;
+  min-height: 82px;
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
 .kpi-card:hover {
   border-color: var(--border-card-subtle);
-  transform: translateY(-1px);
 }
 
 .kpi-title {
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   font-weight: 500;
   color: var(--text-secondary);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kpi-value-row {
   display: flex;
   align-items: baseline;
-  gap: 0.35rem;
-  margin-bottom: 0.45rem;
+  gap: 0.3rem;
+  margin-bottom: 0.2rem;
 }
 
 .kpi-value {
-  font-size: 1.7rem;
+  font-size: 1.45rem;
   font-weight: 700;
   color: #ffffff;
-  line-height: 1.15;
+  line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
 .kpi-unit {
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: var(--text-secondary);
 }
 
 .kpi-subtitle {
-  font-size: 0.76rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ================= 3. ROW 2: CHARTS (24H LINE & DONUT) ================= */
+/* ================= 3. VIEW SEGMENTED CONTROLLER ("TIDAK HARUS SCROLL") ================= */
+.view-switch-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #111a2a;
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-card);
+  gap: 3px;
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.view-switch-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.view-switch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  padding: 0.38rem 0.95rem;
+  font-size: 0.77rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.view-switch-btn:hover {
+  color: #ffffff;
+}
+
+.view-switch-btn.active {
+  background: var(--bg-card);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.view-switch-btn svg {
+  opacity: 0.75;
+}
+.view-switch-btn.active svg {
+  opacity: 1;
+  stroke: var(--color-blue);
+}
+
+/* Sections controlled by View Switcher */
+.view-section-pane {
+  display: none;
+  width: 100%;
+}
+
+.view-section-pane.active {
+  display: block;
+}
+
+/* ================= 4. ROW 2: CHARTS (24H LINE & DONUT) ================= */
 .charts-grid-row {
   display: grid;
   grid-template-columns: 1.85fr 1fr;
-  gap: 1.15rem;
+  gap: 0.75rem;
 }
 
 .clean-card {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
-  padding: 1.25rem 1.4rem;
+  padding: 1rem 1.15rem;
   display: flex;
   flex-direction: column;
 }
 
 .card-header-block {
-  margin-bottom: 1.15rem;
+  margin-bottom: 0.65rem;
 }
 
 .card-title {
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.01em;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
 }
 
 .card-subtitle {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
   font-weight: 400;
 }
@@ -286,7 +368,7 @@ html, body {
 .line-chart-container {
   position: relative;
   width: 100%;
-  height: 275px;
+  height: 255px;
 }
 
 /* Donut Chart Canvas Container */
@@ -301,7 +383,7 @@ html, body {
 .donut-canvas-box {
   position: relative;
   width: 100%;
-  height: 210px;
+  height: 195px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -312,48 +394,48 @@ html, body {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 0.9rem;
-  margin-top: 1rem;
-  padding-top: 0.65rem;
+  gap: 0.65rem 0.85rem;
+  margin-top: 0.65rem;
+  padding-top: 0.5rem;
 }
 
 .donut-legend-item {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-size: 0.76rem;
+  gap: 0.35rem;
+  font-size: 0.73rem;
   color: var(--text-secondary);
 }
 
 .donut-legend-color {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 2px;
   flex-shrink: 0;
 }
 
-/* ================= 4. ROW 3: TOP 8 & PERLU PERHATIAN ================= */
+/* ================= 5. ROW 3: TOP 8 & PERLU PERHATIAN ================= */
 .mid-split-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.15rem;
+  gap: 0.75rem;
 }
 
 /* Top 8 Horizontal Bar Chart */
 .bar-chart-container {
   position: relative;
   width: 100%;
-  height: 290px;
+  height: 270px;
 }
 
 /* Perlu Perhatian Alert List */
 .attention-list-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-height: 290px;
+  gap: 0.55rem;
+  max-height: 270px;
   overflow-y: auto;
-  padding-right: 0.4rem;
+  padding-right: 0.35rem;
 }
 
 .attention-list-wrapper::-webkit-scrollbar {
@@ -365,11 +447,11 @@ html, body {
 }
 
 .attention-item {
-  padding-bottom: 0.65rem;
+  padding-bottom: 0.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.15rem;
 }
 
 .attention-item:last-child {
@@ -378,7 +460,7 @@ html, body {
 }
 
 .attention-header-text {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #ffffff;
 }
@@ -386,41 +468,41 @@ html, body {
 .attention-header-text span {
   font-weight: 400;
   color: var(--text-secondary);
-  font-size: 0.8rem;
+  font-size: 0.76rem;
 }
 
 .attention-alert-text {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--color-amber);
 }
 
-/* ================= 5. ROW 4: DAFTAR METER TABLE ================= */
+/* ================= 6. ROW 4: DAFTAR METER TABLE ================= */
 .table-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .table-toolbar-right {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
 .clean-search-input {
-  background: #0f172a;
+  background: var(--bg-input);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
-  padding: 0.48rem 0.85rem;
-  font-size: 0.82rem;
+  padding: 0.42rem 0.75rem;
+  font-size: 0.78rem;
   color: #ffffff;
   outline: none;
-  width: 250px;
+  width: 240px;
   transition: border-color 0.15s ease;
   font-family: inherit;
 }
@@ -444,14 +526,14 @@ html, body {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 0.82rem;
+  font-size: 0.79rem;
 }
 
 .clean-table th {
   color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.77rem;
-  padding: 0.75rem 0.85rem;
+  font-size: 0.74rem;
+  padding: 0.65rem 0.75rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   white-space: nowrap;
   user-select: none;
@@ -464,7 +546,7 @@ html, body {
 }
 
 .clean-table td {
-  padding: 0.7rem 0.85rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   color: #cbd5e1;
   white-space: nowrap;
@@ -495,7 +577,7 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
 }
 
 .status-dot-badge::before {
@@ -511,7 +593,7 @@ html, body {
 }
 .status-dot-badge.normal::before {
   background: var(--color-green);
-  box-shadow: 0 0 6px rgba(52, 211, 153, 0.5);
+  box-shadow: 0 0 5px rgba(52, 211, 153, 0.4);
 }
 
 .status-dot-badge.warning {
@@ -519,7 +601,7 @@ html, body {
 }
 .status-dot-badge.warning::before {
   background: var(--color-amber);
-  box-shadow: 0 0 6px rgba(251, 191, 36, 0.5);
+  box-shadow: 0 0 5px rgba(251, 191, 36, 0.4);
 }
 
 .status-dot-badge.offline {
@@ -527,15 +609,15 @@ html, body {
 }
 .status-dot-badge.offline::before {
   background: var(--color-rose);
-  box-shadow: 0 0 6px rgba(244, 63, 94, 0.5);
+  box-shadow: 0 0 5px rgba(244, 63, 94, 0.4);
 }
 
 .btn-table-detail {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 4px;
-  padding: 0.2rem 0.55rem;
-  font-size: 0.72rem;
+  padding: 0.18rem 0.5rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s ease;
@@ -553,18 +635,18 @@ html, body {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  padding-top: 0.75rem;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
 }
 
 .pagination-btn-group {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.25rem;
 }
 
 .btn-page {
@@ -572,8 +654,8 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.06);
   color: var(--text-secondary);
   border-radius: 4px;
-  padding: 0.3rem 0.65rem;
-  font-size: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.72rem;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -595,7 +677,7 @@ html, body {
   cursor: not-allowed;
 }
 
-/* ================= 6. MODALS ================= */
+/* ================= 7. MODALS ================= */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -605,7 +687,7 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .modal-overlay.active {
@@ -617,10 +699,10 @@ html, body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 680px;
+  max-width: 650px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
 }
@@ -629,29 +711,31 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem 1.5rem;
+  padding: 0.95rem 1.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 0.75rem;
 }
 
 .modal-title-wrap h3 {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #ffffff;
+  line-height: 1.2;
 }
 
 .modal-title-wrap p {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
 }
 
 .modal-close-btn {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.2rem;
   line-height: 1;
 }
 
@@ -660,47 +744,47 @@ html, body {
 }
 
 .modal-body {
-  padding: 1.5rem;
+  padding: 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
 }
 
 .detail-specs-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.85rem;
+  gap: 0.65rem;
 }
 
 .spec-tile {
   background: #0d1522;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-sm);
-  padding: 0.75rem;
+  padding: 0.65rem;
 }
 
 .spec-tile-label {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: var(--text-muted);
 }
 
 .spec-tile-val {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 700;
   font-family: var(--font-mono);
   color: #ffffff;
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
 }
 
 .param-table-box {
   background: #0d1522;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-sm);
-  padding: 1rem;
+  padding: 0.85rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.65rem 1.5rem;
-  font-size: 0.78rem;
+  gap: 0.5rem 1.25rem;
+  font-size: 0.75rem;
 }
 
 .param-row {
@@ -719,12 +803,12 @@ html, body {
 
 /* Blueprint Modal Special Styling */
 .modal-blueprint-wide {
-  max-width: 950px;
+  max-width: 900px;
 }
 
 .blueprint-img-viewport {
   width: 100%;
-  max-height: 60vh;
+  max-height: 65vh;
   overflow: auto;
   background: #070c14;
   border-radius: var(--radius-sm);
@@ -741,14 +825,14 @@ html, body {
   transform-origin: center center;
 }
 
-/* ================= 7. RESPONSIVE MEDIA QUERIES ================= */
-@media (max-width: 1400px) {
+/* ================= 8. RESPONSIVE MEDIA QUERIES ================= */
+@media (max-width: 1300px) {
   .kpi-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 992px) {
   .charts-grid-row {
     grid-template-columns: 1fr;
   }
@@ -759,45 +843,102 @@ html, body {
 
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 1rem 0.85rem 2rem 0.85rem;
-    gap: 1rem;
+    padding: 0.65rem 0.65rem 1.5rem 0.65rem;
+    gap: 0.55rem;
   }
 
   .header-row {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .header-title {
+    font-size: 1.05rem;
+  }
+
+  .header-meta {
+    font-size: 0.72rem;
   }
 
   .header-right {
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-between;
   }
 
   .filter-tabs-group {
-    overflow-x: auto;
     width: 100%;
-    padding-bottom: 0.4rem;
-    flex-wrap: nowrap;
   }
 
   .filter-tab-btn {
-    white-space: nowrap;
-    padding: 0.45rem 0.85rem;
-    font-size: 0.78rem;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.74rem;
   }
 
+  .header-actions {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.4rem;
+  }
+
+  .btn-header-action {
+    flex: 1;
+    justify-content: center;
+    padding: 0.38rem 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  /* Compact 3-Column Grid on Mobile so all 6 KPIs take only ~120px! */
   .kpi-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.45rem;
   }
 
   .kpi-card {
-    padding: 0.95rem 1rem;
-    min-height: 105px;
+    padding: 0.45rem 0.55rem;
+    min-height: 60px;
+  }
+
+  .kpi-title {
+    font-size: 0.65rem;
+    margin-bottom: 0.1rem;
   }
 
   .kpi-value {
-    font-size: 1.4rem;
+    font-size: 1.05rem;
+  }
+
+  .kpi-unit {
+    font-size: 0.68rem;
+  }
+
+  .kpi-subtitle {
+    font-size: 0.6rem;
+  }
+
+  .view-switch-bar {
+    width: 100%;
+    display: flex;
+  }
+
+  .view-switch-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 0.35rem 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .line-chart-container {
+    height: 220px;
+  }
+
+  .donut-canvas-box {
+    height: 170px;
+  }
+
+  .bar-chart-container {
+    height: 240px;
   }
 
   .detail-specs-grid {
@@ -818,7 +959,18 @@ html, body {
 }
 
 @media (max-width: 480px) {
+  /* On very small phones, 2-column or 3-column micro grid */
   .kpi-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+  }
+  
+  .kpi-card {
+    padding: 0.4rem 0.45rem;
+    min-height: 56px;
+  }
+
+  .kpi-value {
+    font-size: 0.98rem;
   }
 }

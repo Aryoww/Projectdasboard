@@ -236,11 +236,45 @@ document.addEventListener('DOMContentLoaded', () => {
   function init() {
     initClock();
     initFilterTabs();
+    initViewSwitcher();
     initCharts();
     updateViewForActiveFilter();
     renderTable();
     setupEventListeners();
     startSimulation();
+  }
+
+  // ================= 1.1 VIEW SWITCHER CONTROLLER =================
+  function initViewSwitcher() {
+    const viewButtons = document.querySelectorAll('.view-switch-btn');
+    const paneCharts = document.getElementById('paneCharts');
+    const paneAlerts = document.getElementById('paneAlerts');
+    const paneTable = document.getElementById('paneTable');
+
+    viewButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        viewButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const view = btn.dataset.view;
+
+        if (view === 'all') {
+          if (paneCharts) paneCharts.classList.add('active');
+          if (paneAlerts) paneAlerts.classList.add('active');
+          if (paneTable) paneTable.classList.add('active');
+        } else {
+          if (paneCharts) paneCharts.classList.toggle('active', view === 'charts');
+          if (paneAlerts) paneAlerts.classList.toggle('active', view === 'alerts');
+          if (paneTable) paneTable.classList.toggle('active', view === 'table');
+        }
+
+        // Trigger chart resize if charts are now visible
+        setTimeout(() => {
+          if (chart24hInstance) chart24hInstance.resize();
+          if (chartDonutInstance) chartDonutInstance.resize();
+          if (chartTop8Instance) chartTop8Instance.resize();
+        }, 50);
+      });
+    });
   }
 
   // ================= 2. LIVE CLOCK =================
