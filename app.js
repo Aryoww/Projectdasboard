@@ -43,6 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const kpiPeakDemand = document.getElementById('kpiPeakDemand');
   const kpiEnergyToday = document.getElementById('kpiEnergyToday');
   const kpiAvgPf = document.getElementById('kpiAvgPf');
+  const kpiCarbonToday = document.getElementById('kpiCarbonToday');
+  const kpiCarbonCallout = document.getElementById('kpiCarbonCallout');
   const trafo12KwVal = document.getElementById('trafo12KwVal');
   const trafo12Volt = document.getElementById('trafo12Volt');
   const trafo12Current = document.getElementById('trafo12Current');
@@ -436,8 +438,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sorting
     filtered.sort((a, b) => {
-      let valA = a[state.sortColumn];
-      let valB = b[state.sortColumn];
+      let valA = (state.sortColumn === 'carbon') ? ((a.kwhToday || 0) * 0.79) : a[state.sortColumn];
+      let valB = (state.sortColumn === 'carbon') ? ((b.kwhToday || 0) * 0.79) : b[state.sortColumn];
       if (typeof valA === 'string') valA = valA.toLowerCase();
       if (typeof valB === 'string') valB = valB.toLowerCase();
       if (valA < valB) return state.sortAsc ? -1 : 1;
@@ -467,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pageItems.length === 0) {
       meterTableBody.innerHTML = `
         <tr>
-          <td colspan="10" style="text-align:center; padding:2rem; color:var(--text-muted);">
+          <td colspan="11" style="text-align:center; padding:2rem; color:var(--text-muted);">
             Tidak ditemukan data meter digital yang sesuai filter / pencarian "${state.searchQuery}".
           </td>
         </tr>
@@ -506,6 +508,9 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
           <td style="text-align:center; font-family:var(--font-mono); color:${(m.pf < 0.85) ? 'var(--accent-amber)' : 'var(--accent-emerald)'};">
             ${(m.pf || 0.95).toFixed(2)}
+          </td>
+          <td style="text-align:right; font-family:var(--font-mono); color:var(--accent-emerald); font-weight:600;">
+            ${((m.kwhToday || 0) * 0.79).toFixed(1)}
           </td>
           <td style="text-align:center;">
             <span class="status-pill-badge ${statusClass}">● ${statusLabel}</span>
@@ -579,9 +584,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const avgPf = activeMeters > 0 ? (pfSum / activeMeters).toFixed(2) : '0.94';
 
+    // Carbon Emissions (Grid Jamali ESDM factor: 0.79 kg CO2e / kWh)
+    const totalCarbonKg = totalKwh * 0.79;
+    const totalCarbonTon = totalCarbonKg / 1000;
+    const carbonRateHourlyKg = Math.round(totalKw * 0.79);
+    const treesEquivalent = Math.round(totalCarbonKg / 21.77); // ~21.77 kg CO2 / pohon / thn
+
     if (kpiCurrentKw) kpiCurrentKw.textContent = Math.round(totalKw).toLocaleString('id-ID');
     if (kpiEnergyToday) kpiEnergyToday.textContent = Math.round(totalKwh).toLocaleString('id-ID');
     if (kpiAvgPf) kpiAvgPf.textContent = avgPf.replace('.', ',');
+    if (kpiCarbonToday) {
+      kpiCarbonToday.textContent = totalCarbonTon.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    if (kpiCarbonCallout) {
+      kpiCarbonCallout.textContent = `Laju: ${carbonRateHourlyKg.toLocaleString('id-ID')} kg CO₂/jam · Setara ${treesEquivalent.toLocaleString('id-ID')} pohon/thn`;
+    }
 
     // Trafo 12 Specific Update
     const trafo12 = state.meters.find(m => m.id === 'TRF-12');
@@ -680,6 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Frekuensi Grid:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz</strong></div>
             <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">THD Tegangan:</span> <strong>${(meter.thdV || 2.1).toFixed(1)}%</strong></div>
             <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Energi Hari Ini:</span> <strong style="font-family:var(--font-mono);">${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></div>
+            <div style="display:flex; justify-content:space-between;"><span style="color:var(--text-muted);">Jejak Emisi Karbon:</span> <strong style="color:var(--accent-emerald); font-family:var(--font-mono);">${((meter.kwhToday || 0) * 0.79).toFixed(1)} kg CO₂e</strong></div>
           </div>
         </div>
 
@@ -941,7 +959,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= 12. CSV EXPORT =================
   function exportToCsv() {
-    const headers = ['ID Meter', 'Nama Feeder/Panel', 'Kategori', 'Sub Area', 'IP Address', 'Cisco Switch', 'Daya kW', 'Tegangan V', 'Arus A', 'Cos Phi', 'Energi kWh', 'Status'];
+    const headers = ['ID Meter', 'Nama Feeder/Panel', 'Kategori', 'Sub Area', 'IP Address', 'Cisco Switch', 'Daya kW', 'Tegangan V', 'Arus A', 'Cos Phi', 'Energi kWh', 'Emisi CO2 kg', 'Status'];
     const rows = state.meters.map(m => [
       m.id,
       `"${(m.name || '').replace(/"/g, '""')}"`,
@@ -954,6 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
       m.current || 0,
       m.pf || 0.95,
       m.kwhToday || 0,
+      ((m.kwhToday || 0) * 0.79).toFixed(1),
       m.status
     ]);
 

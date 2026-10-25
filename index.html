@@ -245,6 +245,34 @@
         </div>
       </div>
 
+      <!-- KPI Card 5: Emisi Karbon (CO2e) ESG Sustainability -->
+      <div class="kpi-card-modern">
+        <div class="kpi-card-header">
+          <div class="kpi-icon-box" style="background:rgba(16, 185, 129, 0.12); color:var(--accent-emerald); border-color:rgba(16, 185, 129, 0.3);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+            </svg>
+          </div>
+          <div class="kpi-title-block">
+            <span class="kpi-title">Emisi Karbon (CO₂e)</span>
+            <span class="kpi-subtitle">Faktor Grid Jamali 0,79 kg/kWh</span>
+          </div>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-main-val" id="kpiCarbonToday" style="color:var(--accent-emerald);">30,38</span>
+          <span class="kpi-unit-val">ton CO₂e</span>
+        </div>
+        <div class="kpi-info-callout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span id="kpiCarbonCallout">Laju: 1.697 kg CO₂/jam · Setara 1.395 pohon/thn</span>
+        </div>
+      </div>
+
     </section>
 
     <!-- ================= ROW 2: 3-COLUMN MID SECTION (MATCHING SCREENSHOT) ================= -->
@@ -516,6 +544,10 @@
               <span class="label">Energy Consumed</span>
               <span class="val">389 kWh</span>
             </div>
+            <div class="act-sub-row">
+              <span class="label">Carbon Emission</span>
+              <span class="val" style="color:var(--accent-emerald);">307 kg CO₂e</span>
+            </div>
           </div>
         </div>
 
@@ -550,6 +582,10 @@
               <span class="label">Energy Consumed</span>
               <span class="val">177 kWh</span>
             </div>
+            <div class="act-sub-row">
+              <span class="label">Carbon Emission</span>
+              <span class="val" style="color:var(--accent-emerald);">140 kg CO₂e</span>
+            </div>
           </div>
         </div>
 
@@ -583,6 +619,10 @@
             <div class="act-sub-row">
               <span class="label">Energy Consumed</span>
               <span class="val">451 kWh</span>
+            </div>
+            <div class="act-sub-row">
+              <span class="label">Carbon Emission</span>
+              <span class="val" style="color:var(--accent-emerald);">356 kg CO₂e</span>
             </div>
           </div>
         </div>
@@ -945,7 +985,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
-        <span>Geser tabel ke samping untuk melihat parameter lengkap (kW, Tegangan, Arus, Cos φ, Status)</span>
+        <span>Geser tabel ke samping untuk melihat parameter lengkap (kW, Tegangan, Arus, Cos φ, Emisi CO₂, Status)</span>
       </div>
 
       <!-- Styled Table Container -->
@@ -961,6 +1001,7 @@
               <th data-sort="voltage" style="text-align:right;">Tegangan (V) ⇕</th>
               <th data-sort="current" style="text-align:right;">Arus (A) ⇕</th>
               <th data-sort="pf" style="text-align:center;">Cos φ ⇕</th>
+              <th data-sort="carbon" style="text-align:right;">CO₂ (kg) ⇕</th>
               <th data-sort="status" style="text-align:center;">Status ⇕</th>
               <th style="text-align:center;">Aksi</th>
             </tr>

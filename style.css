@@ -365,14 +365,19 @@ body {
   gap: 1.35rem;
 }
 
-/* ================= ROW 1: 4 TOP KPI CARDS ================= */
+/* ================= ROW 1: 5 TOP KPI CARDS (INCLUDING ESG CARBON) ================= */
 .kpi-row-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 1.15rem;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1400px) {
+  .kpi-row-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 900px) {
   .kpi-row-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1574,7 +1579,7 @@ body {
   }
 
   .kpi-row-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
   }
 
