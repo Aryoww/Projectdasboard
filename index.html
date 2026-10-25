@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Monitoring Power Meter Digital – PT Musashi Auto Parts Indonesia</title>
   <meta name="description" content="Dashboard Energy Management System penggantian 137 unit kWh meter analog ke digital Mitsubishi Power Meter & Schneider PM5500 terintegrasi jaringan Cisco PT Musashi.">
-  <link rel="stylesheet" href="style.css?v=4.0">
+  <link rel="stylesheet" href="style.css?v=5.0">
   <!-- Chart.js local file for robust offline SCADA performance -->
   <script src="chart.umd.min.js"></script>
 </head>
@@ -13,12 +13,20 @@
 
   <!-- ================= TOP NAVIGATION (CLEAN SAAS PILLS LIKE REFERENCE) ================= -->
   <header class="navbar">
-    <div class="brand-wrapper">
-      <!-- Blue square logo with icon -->
-      <div class="brand-logo-badge" title="PT Musashi Auto Parts Indonesia - Maintenance Utility">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
+    <div class="navbar-main-container">
+      <div class="navbar-brand-section">
+        <!-- Blue square logo with icon -->
+        <div class="brand-logo-badge" title="PT Musashi Auto Parts Indonesia - Maintenance Utility">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </div>
+
+        <!-- Brand Identity Text -->
+        <div class="brand-identity-text">
+          <span class="brand-company-title">PT Musashi</span>
+          <span class="brand-sub-badge">EMS SCADA</span>
+        </div>
       </div>
 
       <!-- Navigation Pills (Matches Reference Screenshot) -->
@@ -40,7 +48,6 @@
           <span>Direktori 137</span>
         </button>
       </nav>
-    </div>
 
     <!-- Right Controls: Date, Clock, Search, Notification, Theme Switcher, Profile -->
     <div class="nav-right-controls">
@@ -933,6 +940,14 @@
         </div>
       </div>
 
+      <!-- Mobile Table Swipe Hint -->
+      <div class="table-scroll-hint">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+        <span>Geser tabel ke samping untuk melihat parameter lengkap (kW, Tegangan, Arus, Cos φ, Status)</span>
+      </div>
+
       <!-- Styled Table Container -->
       <div class="custom-table-container">
         <table class="styled-table" id="meterTable">
@@ -1048,6 +1063,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Floating Back to Top Button for Mobile & Laptop -->
+  <button class="btn-back-to-top" id="btnBackToTop" title="Kembali ke atas" aria-label="Kembali ke atas">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
 
   <!-- Core App Scripts -->
   <script src="data.js"></script>

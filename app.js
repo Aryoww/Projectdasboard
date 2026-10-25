@@ -700,19 +700,14 @@ document.addEventListener('DOMContentLoaded', () => {
   window.openModal = function(modalEl) {
     if (!modalEl) return;
     modalEl.classList.add('active');
-    const box = modalEl.querySelector('.modal-box-card');
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-    if (box) {
-      box.style.marginTop = `${Math.max(20, scrollY + 25)}px`;
-    }
+    document.body.style.overflow = 'hidden';
   };
 
   window.closeAllModals = function() {
     document.querySelectorAll('.modal-overlay').forEach(m => {
       m.classList.remove('active');
-      const box = m.querySelector('.modal-box-card');
-      if (box) box.style.marginTop = '';
     });
+    document.body.style.overflow = '';
   };
 
   let isBlueprintEnlarged = false;
@@ -887,6 +882,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Export CSV
     if (btnExportData) {
       btnExportData.addEventListener('click', exportToCsv);
+    }
+
+    // Floating Back to Top Button
+    const btnBackToTop = document.getElementById('btnBackToTop');
+    if (btnBackToTop) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 350) {
+          btnBackToTop.classList.add('visible');
+        } else {
+          btnBackToTop.classList.remove('visible');
+        }
+      }, { passive: true });
+
+      btnBackToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
     }
   }
 

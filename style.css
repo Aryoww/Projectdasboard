@@ -124,17 +124,45 @@ body {
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   padding: 0.65rem 1.75rem;
+  transition: all 0.25s ease;
+}
+
+.navbar-main-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
-  transition: all 0.25s ease;
+  max-width: 1680px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.brand-wrapper {
+.navbar-brand-section {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.brand-identity-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.brand-company-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+.brand-sub-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .brand-logo-badge {
@@ -953,6 +981,7 @@ body {
   border-radius: var(--radius-md);
   padding: 0.45rem 0.85rem;
   width: 320px;
+  max-width: 100%;
 }
 
 .search-box-input input {
@@ -1437,4 +1466,491 @@ body {
   flex-direction: column;
   gap: 1.25rem;
 }
+
+/* ================= TABLE SCROLL HINT (MOBILE FRIENDLY) ================= */
+.table-scroll-hint {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-light);
+  border: 1px dashed var(--primary-border);
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.65rem;
+  animation: pulseHint 2.4s infinite ease-in-out;
+}
+
+.table-scroll-hint svg {
+  flex-shrink: 0;
+  animation: bounceRight 1.5s infinite ease-in-out;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes bounceRight {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+/* ================= FLOATING BACK TO TOP BUTTON ================= */
+.btn-back-to-top {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+}
+
+.btn-back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.btn-back-to-top:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(37, 99, 235, 0.6);
+}
+
+.btn-back-to-top:active {
+  transform: translateY(0) scale(0.92);
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN BREAKPOINTS: LAPTOP, TABLET, MOBILE (HP)
+   ======================================================== */
+
+/* --- 1. LAPTOP & COMPACT SCREENS (<= 1280px) --- */
+@media (max-width: 1280px) {
+  .navbar {
+    padding: 0.6rem 1.25rem;
+  }
+  
+  .navbar-main-container {
+    gap: 1rem;
+  }
+
+  .date-pill {
+    display: none; /* Hide date pill on standard laptops to maintain balanced spacing */
+  }
+
+  .main-wrapper {
+    padding: 1.25rem 1.25rem 3.5rem 1.25rem;
+    gap: 1.15rem;
+  }
+
+  .kpi-row-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .mid-row-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+}
+
+/* --- 2. TABLET & SMALL LAPTOPS (<= 992px) --- */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 0.55rem 1rem;
+  }
+
+  .nav-pills-menu {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    max-width: 420px;
+  }
+
+  .nav-pills-menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-pill-item {
+    flex-shrink: 0;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.78rem;
+  }
+
+  .user-name {
+    display: none; /* Hide profile name text on tablet, keep avatar circle */
+  }
+
+  #themeToggleLabel {
+    display: none; /* Hide text on theme toggle, icon remains */
+  }
+
+  .theme-toggle-btn {
+    padding: 0.45rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+  }
+
+  .electrical-card-body-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sld-trafos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- 3. MOBILE & PHABLETS (<= 860px) --- */
+@media (max-width: 860px) {
+  .navbar {
+    padding: 0.55rem 0.85rem 0.45rem 0.85rem;
+  }
+
+  /* Two-tier mobile header: Top brand & actions, Bottom horizontal tab bar */
+  .navbar-main-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 
+      "brand controls"
+      "nav nav";
+    gap: 0.5rem 0.65rem;
+    align-items: center;
+  }
+
+  .navbar-brand-section {
+    grid-area: brand;
+  }
+
+  .nav-right-controls {
+    grid-area: controls;
+    gap: 0.45rem;
+  }
+
+  .nav-pills-menu {
+    grid-area: nav;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.25rem 0.35rem;
+    gap: 0.3rem;
+  }
+
+  .nav-pills-menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-pill-item {
+    flex-shrink: 0;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  .main-wrapper {
+    padding: 0.95rem 0.75rem 3.5rem 0.75rem;
+    gap: 1rem;
+  }
+
+  .kpi-row-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .kpi-card-modern {
+    padding: 1.1rem;
+    gap: 0.75rem;
+  }
+
+  .kpi-main-val {
+    font-size: 1.85rem;
+  }
+
+  /* Mid Row Cards */
+  .dash-panel {
+    padding: 1.1rem;
+    gap: 1rem;
+  }
+
+  .big-stat-number {
+    font-size: 1.85rem;
+  }
+
+  .gauge-canvas-container {
+    width: 220px;
+    height: 125px;
+  }
+
+  .gauge-center-number {
+    font-size: 1.9rem;
+  }
+
+  .gauge-legend-row {
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+  }
+
+  .substation-pills-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .barchart-container {
+    height: 195px;
+  }
+
+  /* Activity row */
+  .activity-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+
+  .activity-header-row .btn-pill-action {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* SLD Board */
+  .sld-board-container {
+    padding: 1.1rem;
+    gap: 1rem;
+  }
+
+  .sld-board-container > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .sld-board-container > div:first-child > div:last-child {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .sld-board-container > div:first-child > div:last-child .btn-pill-action {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .incomer-banner-box {
+    padding: 0.85rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .incomer-banner-box > div:last-child {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .copper-busbar-line {
+    margin: 0.25rem 0 0.75rem 0;
+  }
+
+  .copper-busbar-label {
+    font-size: 0.64rem;
+    padding: 0.15rem 0.4rem;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .sld-trafos-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  /* Electrical Room Integrated Card */
+  .electrical-room-integrated-card {
+    padding: 1rem;
+  }
+
+  .electrical-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  .electrical-card-header > div:last-child {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .blueprint-image-container img {
+    height: 200px;
+  }
+
+  .blueprint-caption-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .blueprint-caption-bar .btn-zoom-inline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .spec-sub-card {
+    padding: 0.85rem 1rem;
+  }
+
+  .spec-row {
+    font-size: 0.72rem;
+  }
+
+  /* Directory Table Controls */
+  .directory-card {
+    padding: 1.1rem;
+  }
+
+  .directory-card > div:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .directory-card > div:first-child button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .search-box-input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .table-filter-pills {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.35rem;
+  }
+
+  .table-filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-pill-btn {
+    flex-shrink: 0;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
+  .table-scroll-hint {
+    display: flex;
+  }
+
+  .custom-table-container {
+    margin: 0 -0.25rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .pagination-row {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Modals */
+  .modal-overlay {
+    padding: 0.75rem 0.5rem;
+    align-items: center;
+  }
+
+  .modal-box-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border-radius: var(--radius-lg);
+    max-height: 94vh;
+  }
+
+  .modal-header-top {
+    padding: 1rem 1.15rem;
+  }
+
+  .modal-body-content {
+    padding: 1rem 1.15rem;
+    gap: 1rem;
+  }
+
+  .btn-back-to-top {
+    bottom: 1.15rem;
+    right: 1.15rem;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* --- 4. ULTRA COMPACT MOBILE PHONE (<= 420px) --- */
+@media (max-width: 420px) {
+  .brand-company-title {
+    font-size: 0.85rem;
+  }
+
+  .brand-sub-badge {
+    font-size: 0.6rem;
+  }
+
+  .time-pill {
+    display: none; /* Hide on very small screens to avoid crowding phone status bar */
+  }
+
+  .spec-mini-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .incomer-banner-box > div:last-child {
+    grid-template-columns: 1fr;
+  }
+
+  .substation-pills-row {
+    grid-template-columns: 1fr;
+  }
+}
+
 
