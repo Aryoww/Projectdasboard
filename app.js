@@ -763,9 +763,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
 
-    // If opening blueprint modal, reset zoom & pan so it fits screen 100% without scroll
+    // Ensure view is right at top where modal is positioned
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    modalEl.scrollTop = 0;
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.scrollTo({ top: 0, behavior: 'instant' });
+      }
+    } catch (e) {}
+
+    // If opening blueprint modal, calculate snug fit and reset zoom
     if (modalEl.id === 'blueprintModal') {
       applyBlueprintZoom(1.0, 0, 0);
+      adjustBlueprintModalLayout();
     }
   };
 
@@ -785,6 +795,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const blueprintImg = document.getElementById('blueprintImg');
   const blueprintViewport = document.getElementById('blueprintViewport');
+
+  function adjustBlueprintModalLayout() {
+    const modalOverlay = document.getElementById('blueprintModal');
+    const modalCard = modalOverlay?.querySelector('.modal-blueprint-wide');
+    const modalBody = modalOverlay?.querySelector('.blueprint-modal-body');
+    const viewport = document.getElementById('blueprintViewport');
+    if (!modalOverlay || !modalCard || !modalBody || !viewport) return;
+
+    if (modalCard.classList.contains('fullscreen-mode')) {
+      modalCard.style.height = '';
+      modalCard.style.width = '';
+      modalCard.style.maxWidth = '';
+      modalBody.style.height = '';
+      viewport.style.height = '';
+      return;
+    }
+
+    // Determine safe visible screen height
+    const isIframe = window.self !== window.top;
+    let maxAvailableH;
+
+    if (isIframe) {
+      // In Streamlit iframe, window.innerHeight is the iframe height.
+      // Use screen.availHeight (physical screen height) to prevent exceeding viewport!
+      const screenH = (window.screen && window.screen.availHeight) ? window.screen.availHeight : 768;
+      maxAvailableH = Math.min(Math.round(screenH * 0.74), 620);
+      maxAvailableH = Math.max(340, maxAvailableH);
+    } else {
+      maxAvailableH = Math.min(window.innerHeight - 30, 620);
+      maxAvailableH = Math.max(340, maxAvailableH);
+    }
+
+    const headerH = 42;
+    const targetBodyH = maxAvailableH - headerH;
+    // Image aspect ratio: 1008px / 757px = ~1.33157
+    const imgRatio = 1008 / 757;
+
+    // Snug width so there are zero wasted letterbox margins
+    let idealWidth = Math.round(targetBodyH * imgRatio);
+    const maxAllowedWidth = Math.min(window.innerWidth - 24, 1000);
+
+    if (idealWidth > maxAllowedWidth) {
+      idealWidth = maxAllowedWidth;
+      const snugBodyH = Math.round(idealWidth / imgRatio);
+      modalBody.style.height = `${snugBodyH}px`;
+      viewport.style.height = `${snugBodyH}px`;
+      modalCard.style.height = `${snugBodyH + headerH}px`;
+    } else {
+      modalBody.style.height = `${targetBodyH}px`;
+      viewport.style.height = `${targetBodyH}px`;
+      modalCard.style.height = `${maxAvailableH}px`;
+    }
+    modalCard.style.width = `${idealWidth}px`;
+    modalCard.style.maxWidth = `${maxAllowedWidth}px`;
+  }
+
+  window.addEventListener('resize', () => {
+    const blueprintModal = document.getElementById('blueprintModal');
+    if (blueprintModal && blueprintModal.classList.contains('active')) {
+      adjustBlueprintModalLayout();
+    }
+  });
 
   function applyBlueprintZoom(scale, newPanX, newPanY) {
     currentZoom = Math.min(Math.max(scale, 1.0), 3.5);
@@ -808,10 +880,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnZoomIn = document.getElementById('btnZoomIn');
   const btnZoomOut = document.getElementById('btnZoomOut');
   const btnZoomReset = document.getElementById('btnZoomReset');
+  const btnToggleFullscreen = document.getElementById('btnToggleFullscreen');
 
   if (btnZoomIn) btnZoomIn.addEventListener('click', () => applyBlueprintZoom(currentZoom + 0.35));
   if (btnZoomOut) btnZoomOut.addEventListener('click', () => applyBlueprintZoom(currentZoom - 0.35));
   if (btnZoomReset) btnZoomReset.addEventListener('click', () => applyBlueprintZoom(1.0, 0, 0));
+
+  if (btnToggleFullscreen) {
+    btnToggleFullscreen.addEventListener('click', () => {
+      const modalCard = document.querySelector('.modal-blueprint-wide');
+      if (modalCard) {
+        modalCard.classList.toggle('fullscreen-mode');
+        const isFull = modalCard.classList.contains('fullscreen-mode');
+        btnToggleFullscreen.textContent = isFull ? '⊡ Pas' : '⛶ Full';
+        btnToggleFullscreen.title = isFull ? 'Kembali ke Tampilan Pas' : 'Toggle Layar Penuh';
+        if (!isFull) {
+          adjustBlueprintModalLayout();
+        } else {
+          modalCard.style.width = '';
+          modalCard.style.maxWidth = '';
+          modalCard.style.height = '';
+        }
+        applyBlueprintZoom(1.0, 0, 0);
+      }
+    });
+  }
 
   // Mouse Wheel Zoom on Blueprint
   if (blueprintViewport) {

@@ -338,18 +338,22 @@
   </div>
 
   <!-- ================= MODAL: BLUEPRINT ELECTRICAL ROOM ================= -->
-  <div class="modal-overlay" id="blueprintModal">
+  <div class="modal-overlay blueprint-overlay-fullscreen" id="blueprintModal">
     <div class="modal-card modal-blueprint-wide">
-      <div class="modal-header">
+      <div class="modal-header blueprint-modal-header">
         <div class="modal-title-wrap">
-          <h3>Blueprint Gardu 20kV Factory 1</h3>
-          <p>Single Line & Panel SM6 Schneider Electric</p>
+          <h3 style="font-size:0.92rem; display:flex; align-items:center; gap:0.45rem;">
+            <span>Blueprint Gardu 20kV Factory 1</span>
+            <span style="font-size:0.68rem; font-weight:400; color:var(--text-secondary); background:rgba(255,255,255,0.06); padding:1px 6px; border-radius:4px;">Schneider SM6</span>
+          </h3>
+          <p style="font-size:0.7rem; color:var(--text-muted); margin:0;">Single Line Diagram & Cubicle Distribution Substation</p>
         </div>
         <div class="blueprint-controls-group">
-          <button class="btn-page" id="btnZoomIn" title="Perbesar">+</button>
-          <button class="btn-page" id="btnZoomReset" title="Reset Zoom (Fit Layar)">Fit</button>
-          <button class="btn-page" id="btnZoomOut" title="Perkecil">−</button>
-          <button class="modal-close-btn" onclick="window.closeAllModals()" title="Tutup" style="margin-left:0.35rem;">✕</button>
+          <button class="btn-page" id="btnZoomIn" title="Perbesar (+)">🔍 +</button>
+          <button class="btn-page" id="btnZoomReset" title="Reset (Fit Layar)">Fit Layar</button>
+          <button class="btn-page" id="btnZoomOut" title="Perkecil (−)">−</button>
+          <button class="btn-page" id="btnToggleFullscreen" title="Toggle Layar Penuh">⛶ Full</button>
+          <button class="modal-close-btn" onclick="window.closeAllModals()" title="Tutup" style="margin-left:0.5rem; font-size:1.15rem; padding:0.2rem 0.5rem;">✕</button>
         </div>
       </div>
       <div class="modal-body blueprint-modal-body">

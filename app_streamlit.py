@@ -146,6 +146,6 @@ def load_bundled_dashboard():
 try:
     dashboard_html = load_bundled_dashboard()
     # Render dashboard lengkap di dalam Streamlit
-    components.html(dashboard_html, height=2400, scrolling=True)
+    components.html(dashboard_html, height=1450, scrolling=True)
 except Exception as e:
     st.error(f"Gagal memuat dashboard: {e}")
