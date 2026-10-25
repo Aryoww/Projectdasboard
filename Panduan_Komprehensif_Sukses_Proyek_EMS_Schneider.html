@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan Komprehensif & SOP Sukses Proyek EMS Schneider - PT Musashi</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --primary: #0f172a;
+      --navy: #1e3a8a;
+      --sky: #0284c7;
+      --text: #1e293b;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --bg-alt: #f8fafc;
+      --warn-bg: #fffbeb;
+      --warn-border: #f59e0b;
+      --warn-text: #92400e;
+      --danger: #dc2626;
+      --success: #166534;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      background: #e2e8f0;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      padding: 2.5rem 1rem;
+    }
+
+    .master-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .page-sheet {
+      background: #ffffff;
+      padding: 2.5rem 3rem;
+      margin-bottom: 2.5rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+      }
+      .page-sheet {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        padding: 18mm 20mm;
+        page-break-after: always;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .top-toolbar {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      z-index: 1000;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-print {
+      background: var(--navy);
+      color: #ffffff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 9pt;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-print:hover {
+      background: #172554;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--navy);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1.2rem;
+      font-size: 8pt;
+      color: var(--muted);
+    }
+
+    .header-bar strong {
+      color: var(--primary);
+    }
+
+    h1.title-main {
+      font-size: 18pt;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    p.subtitle-main {
+      font-size: 10pt;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    h2.section-header {
+      font-size: 12pt;
+      font-weight: 800;
+      color: var(--navy);
+      border-left: 4px solid var(--sky);
+      padding-left: 0.6rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    h3.sub-header {
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 0.8rem;
+      margin-bottom: 0.35rem;
+    }
+
+    p {
+      font-size: 9pt;
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
+      color: var(--text);
+      text-align: justify;
+    }
+
+    table.custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    table.custom-table th {
+      background: var(--navy);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 7px 10px;
+      border: 1px solid var(--navy);
+      text-align: left;
+    }
+
+    table.custom-table td {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.4;
+    }
+
+    table.custom-table tr:nth-child(even) td {
+      background: var(--bg-alt);
+    }
+
+    .callout-card {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 0.8rem 0;
+      font-size: 8.5pt;
+      color: var(--warn-text);
+      line-height: 1.45;
+    }
+
+    ul, ol {
+      font-size: 9pt;
+      line-height: 1.5;
+      padding-left: 1.4rem;
+      margin-bottom: 0.75rem;
+    }
+
+    li {
+      margin-bottom: 0.35rem;
+    }
+
+    .signature-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .sig-block {
+      font-size: 8pt;
+    }
+
+    .sig-blank {
+      height: 55px;
+    }
+
+    .sig-underline {
+      border-bottom: 1px solid var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-bar {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 0.4rem;
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 7.5pt;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-toolbar no-print">
+    <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF Dokumen</button>
+  </div>
+
+  <div class="master-container">
+    
+    <!-- HALAMAN 1: COVER PAGE -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>PT MUSASHI AUTO PARTS INDONESIA</span>
+        <span>ENGINEERING & INDUSTRIAL AUTOMATION</span>
+      </div>
+      <h1 class="title-main">MASTER PLAYBOOK & SOP:<br>PANDUAN KOMPREHENSIF KESUKSESAN PROYEK INTEGRASI TELEMETRI POWER METER SCHNEIDER & ELECTRICAL ROOM</h1>
+      <p class="subtitle-main">Pedoman Langkah Kerja Lapangan, Protokol Validasi Data Akurat, Standar Integrasi IoT-IT, dan Manajemen Keandalan Energi Pabrik</p>
+      
+      <table class="custom-table">
+        <tr>
+          <td style="width:25%;"><strong>Kode Dokumen:</strong></td>
+          <td style="width:25%;">SOP-EMS-ENG-2026-V1.0</td>
+          <td style="width:25%;"><strong>Status Proyek:</strong></td>
+          <td style="width:25%;">Aktif / Tahap Integrasi</td>
+        </tr>
+        <tr>
+          <td><strong>Project Lead:</strong></td>
+          <td>Engineering Automation Lead</td>
+          <td><strong>Target Fasilitas:</strong></td>
+          <td>Gardu 20kV & 2 Electrical Room</td>
+        </tr>
+        <tr>
+          <td><strong>Kolaborator:</strong></td>
+          <td>Tim IoT, Tim Network IT, Maintenance</td>
+          <td><strong>Tipe Perangkat:</strong></td>
+          <td>Schneider SM6 & PM Series</td>
+        </tr>
+        <tr>
+          <td><strong>Tanggal Efektif:</strong></td>
+          <td>25 Oktober 2026</td>
+          <td><strong>Klasifikasi:</strong></td>
+          <td>Dokumen Master Internal</td>
+        </tr>
+      </table>
+
+      <div class="callout-card">
+        <strong>PANDUAN PENGGUNAAN DOKUMEN INI:</strong><br>
+        Dokumen ini dirancang sebagai panduan operasional langkah-demi-langkah bagi Project Lead untuk memastikan setiap tahapan teknis, 
+        mulai dari penarikan data Ethernet hari Senin, verifikasi keabsahan angka Modbus, pemenuhan pengadaan hardware IoT, hingga transformasi 
+        menjadi dashboard analitik eksekutif, dapat berjalan tanpa kesalahan (zero-error) dan tepat waktu.
+      </div>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 1 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 2: DAFTAR ISI & BAB 1 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 1: ROADMAP STRATEGIS & KPI</span>
+      </div>
+      <h2 class="section-header">BAB 1: Roadmap Strategis & Indikator Kunci Kesuksesan Proyek</h2>
+      <p>
+        Tujuan utama proyek ini adalah membangun sistem telemetri energi terintegrasi yang andal di PT Musashi Auto Parts Indonesia. 
+        Selama ini data energi masih terpecah: data panel Schneider utama sudah ditarik, namun dua Electrical Room belum terintegrasi, 
+        dan data IoT eksisting hanya melintas sebagai angka mentah di jaringan IT. Proyek ini dinyatakan sukses apabila memenuhi 5 kriteria utama:
+      </p>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Kriteria Keberhasilan</th>
+            <th>Target Kuantitatif</th>
+            <th>Tolok Ukur Verifikasi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Kelengkapan Penarikan Data</strong></td>
+            <td>100% Seluruh Meter Terbaca</td>
+            <td>Semua meter di Panel Schneider Utama dan 2 Electrical Room mengirim data aktif tanpa ada yang offline.</td>
+          </tr>
+          <tr>
+            <td><strong>2. Akurasi & Integritas Nilai</strong></td>
+            <td>Deviasi Maksimal ±0.5%</td>
+            <td>Perbandingan angka display fisik panel vs angka dashboard sama persis sesuai spesifikasi Class 0.5S.</td>
+          </tr>
+          <tr>
+            <td><strong>3. Keandalan Jaringan (Uptime)</strong></td>
+            <td>Availability ≥ 99.5%</td>
+            <td>Komunikasi Ethernet/Modbus stabil 24/7; tidak sering time-out atau kehilangan paket data.</td>
+          </tr>
+          <tr>
+            <td><strong>4. Kualitas Visualisasi</strong></td>
+            <td>Actionable Dashboard</td>
+            <td>Bukan hanya angka lewat, melainkan grafik beban 24h, ranking konsumsi, estimasi biaya, dan jejak karbon.</td>
+          </tr>
+          <tr>
+            <td><strong>5. Keamanan Fisik & Kelistrikan</strong></td>
+            <td>Zero Incident & Standardized</td>
+            <td>Semua gateway terlindung box panel ber-ventilasi, PSU 24V terisolasi, dan grounding terukur &lt; 2 Ohm.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 2 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 3: BAB 2 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 2: EKSEKUSI HARI SENIN</span>
+      </div>
+      <h2 class="section-header">BAB 2: Panduan Langkah Eksekusi Hari Senin di Electrical Room</h2>
+      <p>
+        Hari Senin adalah momentum kritis pertama untuk membuktikan bahwa penarikan data dari <strong>Electrical Room A (yang kabel Ethernet-nya sudah terhubung)</strong> 
+        dapat terealisasi secara nyata. Urutan tahapan wajib yang harus dikawal di lapangan:
+      </p>
+
+      <h3 class="sub-header">Fase A: Prosedur Keselamatan Kerja (Safety First) di Gardu 20kV</h3>
+      <p>
+        1. <strong>Izin Masuk & APD Lengkap:</strong> Pastikan memakai helm safety, kacamata pelindung, sepatu safety tahan tegangan (ESR), dan pakaian kerja standar. Jangan menyentuh busbar kubikel 20.000V.<br>
+        2. <strong>Area Kerja Terisolasi:</strong> Aktivitas penarikan data hanya dilakukan pada Low Voltage Compartment tempat modul meter digital dan terminal komunikasi berada.
+      </p>
+
+      <h3 class="sub-header">Fase B: Pengujian Fisik Kabel Ethernet & Sambungan Switch IT</h3>
+      <p>
+        1. <strong>Inspeksi Kabel UTP:</strong> Pastikan kabel LAN Cat6 terpasang rapi di dalam conduit pelindung. Pinout RJ45 standar T568B tidak longgar.<br>
+        2. <strong>Status LED Switch:</strong> Periksa port switch IT tempat kabel dicolokkan. Pastikan lampu Link (hijau solid) dan Activity (oranye berkedip) menyala.<br>
+        3. <strong>Pengetesan Panjang Kabel:</strong> Pastikan panjang kabel di bawah 90 meter agar tidak terjadi attenuasi sinyal yang memicu packet loss berkala.
+      </p>
+
+      <h3 class="sub-header">Fase C: Konfigurasi Jaringan IP Bersama Tim IT</h3>
+      <p>
+        1. <strong>Alokasi IP Statis:</strong> Gunakan IP Address statis permanen beserta Subnet Mask dan Default Gateway dari tim IT.<br>
+        2. <strong>Uji Ping Latency:</strong> Jalankan perintah <code>ping -t [IP_Gateway]</code>. Latency harus stabil di bawah 5 ms tanpa ada 'Request Timed Out'.<br>
+        3. <strong>Port Whitelist:</strong> Pastikan port <strong>502 (Modbus TCP)</strong> dan port HTTP 80/443 telah di-whitelist di switch IT.
+      </p>
+
+      <h3 class="sub-header">Fase D: Pengujian Akuisisi Data Perdana (Test Read Polling)</h3>
+      <p>
+        1. <strong>Software Tester:</strong> Gunakan utility tool seperti Modbus Poll atau skrip penguji untuk membaca Holding Registers meter.<br>
+        2. <strong>Verifikasi Parameter Dasar:</strong> Uji baca Tegangan V L-N, Arus Ampere per Fasa, dan Daya Total kW.<br>
+        3. <strong>Logging Kontinu 30 Menit:</strong> Jalankan pembacaan data otomatis setiap 5 detik selama 30 menit untuk menguji stabilitas transfer.
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 3 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 4: BAB 3 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 3: VALIDITAS DATA (ZERO ERROR)</span>
+      </div>
+      <h2 class="section-header">BAB 3: Protokol Memastikan Validitas & Integritas Data (Zero Error)</h2>
+      <p>
+        Salah satu masalah terbesar dalam proyek IoT industri adalah munculnya data semu (garbage data) karena rasio pengali salah, 
+        urutan byte terbalik, atau register tertukar. Metode berikut wajib diterapkan untuk memastikan data 100% valid:
+      </p>
+
+      <h3 class="sub-header">1. Metode Komparasi Sinkron 3 Titik (Three-Point Verification)</h3>
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Titik Uji</th>
+            <th>Lokasi Pengecekan</th>
+            <th>Parameter Wajib Dicek</th>
+            <th>Toleransi Deviasi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Titik 1: Fisik Panel</strong></td>
+            <td>Display LCD Power Meter di pintu panel gardu</td>
+            <td>Tegangan (V), Arus (A), Daya Aktif (kW), Cos φ</td>
+            <td><strong>Referensi Acuan Utama (0.0%)</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Titik 2: Gateway IoT</strong></td>
+            <td>Web management portal / Raw log gateway</td>
+            <td>Nilai register mentah sebelum diproses backend</td>
+            <td><strong>Harus sama persis dengan Titik 1</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Titik 3: Dashboard Web</strong></td>
+            <td>Layar Dashboard Telemetri PT Musashi</td>
+            <td>Nilai hasil kalkulasi, grafik kurva beban, akumulasi kWh</td>
+            <td><strong>Maksimal selisih ±0.2%</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-header">2. Verifikasi Rasio Current Transformer (CT) & Potential Transformer (PT)</h3>
+      <p>
+        • <strong>Formula Rasio CT:</strong> Arus Aktual = Pembacaan Sinyal Sekunder (0–5A) × (Arus Primer CT / Arus Sekunder CT). Contoh: CT 400/5A memiliki faktor pengali 80.<br>
+        • <strong>Formula Rasio PT:</strong> Tegangan Aktual = Tegangan Sekunder (100V) × (Tegangan Primer PT / Tegangan Sekunder PT). Contoh: PT 20.000V/100V memiliki rasio pengali 200.<br>
+        • <em>Tindakan:</em> Catat nameplate CT dan PT di ruang gardu dan periksa menu setup meter Schneider untuk memastikan rasio sudah terkunci (locked).
+      </p>
+
+      <h3 class="sub-header">3. Validasi Power Factor (Cos φ) dan Polaritas CT</h3>
+      <p>
+        • <strong>Arah Aliran Daya:</strong> Nilai kW harus bernilai <strong>positif (+)</strong> saat beban menyala. Jika negatif (-), berarti polaritas kabel sekunder CT (S1 dan S2) terbalik.<br>
+        • <strong>Kewajaran Power Factor:</strong> Normal pada beban industri motor adalah <strong>0.85 hingga 0.98 lagging</strong>. Jika di bawah 0.5 abnormal, periksa urutan fasa R-S-T.
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 4 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 5: BAB 4 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 4: TEKNIS MODBUS & REGISTER</span>
+      </div>
+      <h2 class="section-header">BAB 4: Teknis Komunikasi Modbus TCP / RTU & Register Mapping</h2>
+      <p>
+        Komunikasi antara power meter Schneider (seri PM5350, PM8000, atau Micrologic/Sepam) dengan sistem dashboard menggunakan protokol Modbus. 
+        Memahami peta register (register map) adalah kunci agar dashboard tidak salah membaca data.
+      </p>
+
+      <h3 class="sub-header">Standar Pemetaan Register Modbus Power Meter Schneider (Holding Registers)</h3>
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Parameter Listrik</th>
+            <th>Register Address</th>
+            <th>Format Data</th>
+            <th>Satuan</th>
+            <th>Keterangan Teknis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Voltage L-L Avg</strong></td>
+            <td>3020 (0x0BCB)</td>
+            <td>Float32 (2 Reg)</td>
+            <td>Volt (V)</td>
+            <td>Tegangan rata-rata fasa ke fasa (380V atau 20.000V)</td>
+          </tr>
+          <tr>
+            <td><strong>Voltage L-N Avg</strong></td>
+            <td>3028 (0x0BD3)</td>
+            <td>Float32 (2 Reg)</td>
+            <td>Volt (V)</td>
+            <td>Tegangan rata-rata fasa ke netral (220V)</td>
+          </tr>
+          <tr>
+            <td><strong>Current Total Avg</strong></td>
+            <td>3000 (0x0BB7)</td>
+            <td>Float32 (2 Reg)</td>
+            <td>Ampere (A)</td>
+            <td>Arus total rata-rata seluruh fasa</td>
+          </tr>
+          <tr>
+            <td><strong>Active Power Total</strong></td>
+            <td>3060 (0x0BF3)</td>
+            <td>Float32 (2 Reg)</td>
+            <td>kW</td>
+            <td>Daya aktif riil beban operasional pabrik</td>
+          </tr>
+          <tr>
+            <td><strong>Reactive Power Total</strong></td>
+            <td>3068 (0x0BFB)</td>
+            <td>Float32 (2 Reg)</td>
+            <td>kVAR</td>
+            <td>Daya reaktif penentu denda kVARh PLN</td>
+          </tr>
+          <tr>
+            <td><strong>Power Factor Total</strong></td>
+            <td>3084 (0x0C0B)</td>
+            <td>Float32 (2 Reg)</td>
+            <td>Nilai (-1 s/d 1)</td>
+            <td>Indikator efisiensi daya (target ≥ 0.85)</td>
+          </tr>
+          <tr>
+            <td><strong>Total Active Energy</strong></td>
+            <td>3204 (0x0C83)</td>
+            <td>Int64 / Float64</td>
+            <td>kWh</td>
+            <td>Akumulasi pemakaian energi total kumulatif</td>
+          </tr>
+          <tr>
+            <td><strong>Frequency</strong></td>
+            <td>3110 (0x0C25)</td>
+            <td>Float32 (2 Reg)</td>
+            <td>Hz</td>
+            <td>Frekuensi listrik grid PLN (Standar 50.0 Hz)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-header">Pengaturan Byte Order (Endianness) & Polling</h3>
+      <p>
+        • <strong>Big-Endian Float (ABCD):</strong> Schneider menggunakan format High Word First. Pastikan parser dashboard diatur ke mode Big-Endian.<br>
+        • <strong>Interval Polling:</strong> Gunakan 5–10 detik untuk parameter instan (kW, V, A, PF), dan 60 detik untuk akumulasi kWh kumulatif.
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 5 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 6: BAB 5 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 5: STANDARDISASI HARDWARE</span>
+      </div>
+      <h2 class="section-header">BAB 5: Standardisasi Hardware Fasilitas (Box Panel, PSU 24V, Stop Kontak)</h2>
+      <p>
+        Berdasarkan hasil koordinasi Anda kemarin dengan tim IoT, penyediaan infrastruktur listrik pendukung merupakan syarat mutlak 
+        agar perangkat pembaca data tidak sering rusak, tidak overheat, dan tidak terganggu induksi medan magnet kubikel 20kV:
+      </p>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Item Hardware</th>
+            <th>Kuantitas</th>
+            <th>Spesifikasi Teknis Rekomendasi</th>
+            <th>Tujuan & Proteksi Lapangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Box Panel Tambahan</strong><br><span style="color:var(--muted); font-size:7.5pt;">Enclosure Gateway</span></td>
+            <td><strong>1 Unit</strong></td>
+            <td>Ukuran min. 400×300×200 mm, Bahan Steel Plate 1.2mm / ABS Industrial, Rating IP54 / IP65, Dilengkapi Kunci Camlock & Louver Ventilasi berfilter debu.</td>
+            <td>Melindungi gateway IoT, ethernet switch, dan modul konverter dari partikel debu gardu, kelembapan, serangga, serta sentuhan mekanis.</td>
+          </tr>
+          <tr>
+            <td><strong>Power Supply Unit (PSU)</strong><br><span style="color:var(--muted); font-size:7.5pt;">Catu Daya DC Gateway</span></td>
+            <td><strong>1 Unit</strong></td>
+            <td>Input: 100–240V AC 50/60Hz, Output: 24V DC / 3.0A s/d 5.0A (Min. 72 Watt), DIN Rail Mounting, Efisiensi ≥ 88%, Short Circuit & Overvoltage Protection.</td>
+            <td>Mencegah gateway re-booting atau hang akibat fluktuasi voltase AC gardu, menjamin transmisi data stabil tanpa drop.</td>
+          </tr>
+          <tr>
+            <td><strong>Stop Kontak Panel</strong><br><span style="color:var(--muted); font-size:7.5pt;">Heavy Duty Grounded</span></td>
+            <td><strong>9 Buah</strong><br><span style="color:var(--muted); font-size:7.5pt;">(Isi 3/unit)</span></td>
+            <td>Stop kontak 3-lubang bertutup / arde grounding standar Schneider/Broco Industrial, Bahan Tahan Panas Flame Retardant, Arus Pengenal 16A / 250V AC.</td>
+            <td>Dipasang tersebar di tiap titik panel untuk: (1) Catu daya adaptor PSU, (2) Power switch ethernet, dan (3) Stop kontak teknisi saat service berkala.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-header">Aturan Pengkabelan (Wiring Best Practices)</h3>
+      <p>
+        • <strong>Pemisahan Jalur:</strong> Kabel data dilarang satu pipa konduit bersama kabel daya 380V/20kV. Jarak minimal 20 cm untuk mencegah EMI.<br>
+        • <strong>Grounding:</strong> Tahanan grounding bodi box dan stop kontak wajib terukur &lt; 2.0 Ohm pada grounding busbar gardu.<br>
+        • <strong>Cable Marker:</strong> Setiap ujung kabel diberi label nama panel, nomor IP, dan nomor fasa sumber.
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 6 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 7: BAB 6 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 6: MATRIKS RACI LINTAS TIM</span>
+      </div>
+      <h2 class="section-header">BAB 6: Manajemen Sinergi Lintas Tim (Matriks RACI IoT - IT - Maintenance)</h2>
+      <p>
+        Keberhasilan proyek ini membutuhkan kolaborasi erat antara 3 divisi: <strong>Engineering (Anda)</strong>, <strong>Tim IoT</strong>, dan <strong>Tim IT Network</strong>, 
+        didukung oleh <strong>Tim Maintenance Listrik</strong>. Matriks RACI berikut menjelaskan pembagian peran secara jelas:
+      </p>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Aktivitas Kerja Proyek</th>
+            <th>Project Lead (Anda)</th>
+            <th>Tim IoT</th>
+            <th>Tim IT Network</th>
+            <th>Maintenance Listrik</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pengajuan Pengadaan Box, PSU, Stop Kontak</td>
+            <td><strong>Accountable (Lead)</strong></td>
+            <td>Consulted (Review Spek)</td>
+            <td>Informed (Tahu Posisi)</td>
+            <td>Responsible (Bantu Pasang)</td>
+          </tr>
+          <tr>
+            <td>Penyambungan Kabel Ethernet & Patch Switch</td>
+            <td>Accountable (Memastikan)</td>
+            <td>Consulted (Posisi Port)</td>
+            <td><strong>Responsible (Buka Port)</strong></td>
+            <td>Informed (Izin Jalur)</td>
+          </tr>
+          <tr>
+            <td>Konfigurasi IP Statis & Port 502 Modbus</td>
+            <td>Accountable (Validasi)</td>
+            <td>Consulted (Setting IP)</td>
+            <td><strong>Responsible (Alokasi IP)</strong></td>
+            <td>Informed</td>
+          </tr>
+          <tr>
+            <td>Penarikan Data Register Meter (Senin)</td>
+            <td><strong>Responsible & Lead</strong></td>
+            <td>Responsible (Dampingi)</td>
+            <td>Consulted (Cek Traffic)</td>
+            <td>Responsible (Buka Pintu)</td>
+          </tr>
+          <tr>
+            <td>Verifikasi Angka Fisik Meter vs Dashboard</td>
+            <td><strong>Responsible & Lead</strong></td>
+            <td>Consulted (Koreksi Log)</td>
+            <td>Informed</td>
+            <td>Consulted (Cek CT/PT)</td>
+          </tr>
+          <tr>
+            <td>Pembangunan Tampilan Visual Dashboard EMS</td>
+            <td><strong>Accountable & Owner</strong></td>
+            <td>Informed (Kirim Data)</td>
+            <td>Informed (Hosting Server)</td>
+            <td>Consulted (Kebutuhan)</td>
+          </tr>
+          <tr>
+            <td>Pemasangan Fisik Box Panel & Wiring Stop Kontak</td>
+            <td>Accountable (Supervisi)</td>
+            <td>Responsible (Pasang Box)</td>
+            <td>Informed</td>
+            <td><strong>Responsible (Kabel Power)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-header">Alur Eskalasi Masalah Lapangan</h3>
+      <p>
+        1. <strong>Kendala Jaringan / IP:</strong> Hubungi Supervisor IT Network jika ping time out lebih dari 15 menit.<br>
+        2. <strong>Kendala Meter / CT:</strong> Hubungi Teknisi Listrik Maintenance jika meter fisik tidak menyala atau CT belum terkoneksi.<br>
+        3. <strong>Kendala Gateway / Konversi:</strong> Hubungi Engineer IoT jika paket Modbus tidak berhasil di-encode ke JSON stream.<br>
+        4. <strong>Kendala Approval Hardware:</strong> Laporkan kepada Manager Maintenance jika form pengadaan mengalami hambatan administrasi.
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 7 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 8: BAB 7 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 7: TRANSFORMASI DATA DASHBOARD</span>
+      </div>
+      <h2 class="section-header">BAB 7: Transformasi Data Mentah ke Dashboard Analitik Modern</h2>
+      <p>
+        Keluhan Anda sangat tepat: <em>"Visualisasi dari pihak IoT hanya sebatas angka mentah yang lewat di bagian IT"</em>. 
+        Angka mentah tanpa konteks tidak memiliki nilai strategis bagi pabrik. Dashboard telemetri modern yang Anda kembangkan 
+        mengubah angka-angka tersebut menjadi modul informasi analitik tingkat tinggi:
+      </p>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Data Mentah IoT Eksisting</th>
+            <th>Kelemahan Data Mentah</th>
+            <th>Transformasi Dashboard Anda</th>
+            <th>Nilai Manfaat Bisnis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Daftar Angka kW per meter<br><span style="color:var(--muted); font-size:7.5pt;">(misal: 105.4 kW)</span></td>
+            <td>Hanya snapshot sesaat, tidak tahu apakah daya naik atau turun.</td>
+            <td><strong>Kurva Beban 24 Jam Terakhir</strong> interaktif dengan gradient fill dan time-scrubbing.</td>
+            <td>Mendeteksi tren konsumsi daya puncak (Peak Demand) dan pola beban kerja tiap shift.</td>
+          </tr>
+          <tr>
+            <td>Angka kumulatif kWh<br><span style="color:var(--muted); font-size:7.5pt;">(misal: 1.240.500 kWh)</span></td>
+            <td>Angka terlalu besar, tidak menunjukkan pemakaian hari ini.</td>
+            <td><strong>Kalkulasi Energi Harian Otomatis</strong> (reset pukul 00.00) dan konversi biaya listrik rupiah.</td>
+            <td>Memantau efisiensi biaya listrik operasional harian terhadap target anggaran pabrik.</td>
+          </tr>
+          <tr>
+            <td>Nilai Power Factor<br><span style="color:var(--muted); font-size:7.5pt;">(misal: 0.81)</span></td>
+            <td>Tidak ada peringatan jika nilai di bawah standar PLN 0.85.</td>
+            <td><strong>Status Badge Dinamis:</strong> Hijau Normal (≥0.85) dan Merah Alert (&lt;0.85).</td>
+            <td>Mencegah denda kVARh dari PLN yang bernilai puluhan juta rupiah tiap bulan.</td>
+          </tr>
+          <tr>
+            <td>Status Online Device<br><span style="color:var(--muted); font-size:7.5pt;">(misal: IP 10.41.47.12)</span></td>
+            <td>Hanya tahu koneksi IT, tidak tahu peralatan apa yang sedang mati.</td>
+            <td><strong>Activity Monitoring Mesin Utama:</strong> Forging Press 2500T, Kompresor GA-90, Pompa Air.</td>
+            <td>Visibilitas status operasional mesin kritikal secara real-time untuk tim Maintenance.</td>
+          </tr>
+          <tr>
+            <td>Tidak ada data lingkungan</td>
+            <td>Tidak mendukung pelaporan keberlanjutan industri (ESG).</td>
+            <td><strong>Indikator Emisi Karbon Otomatis</strong> faktor grid Jamali (0.79 kg CO₂e/kWh).</td>
+            <td>Menyediakan data audit emisi karbon resmi untuk pemenuhan sertifikasi ISO 50001 & ESG.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-header">Integrasi Blueprint Single Line Diagram (SLD) Schneider SM6</h3>
+      <p>
+        Keunggulan utama dashboard Anda adalah fitur <strong>Blueprint HD</strong> gardu 20kV. 
+        Fitur ini memungkinkan operator langsung melihat keterkaitan kelistrikan antara kubikel incoming PLN ➔ cubicle metering ➔ 6 transformator distribusi Factory 1 
+        secara interaktif dengan kontrol zoom in/out dan drag pan.
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 8 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 9: BAB 8 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 8: SISTEM PERINGATAN DINI</span>
+      </div>
+      <h2 class="section-header">BAB 8: Sistem Peringatan Dini (Early Warning System) & Alert Matrix</h2>
+      <p>
+        Dashboard EMS tidak boleh pasif menunggu operator melihat layar. Sistem harus memiliki logika aturan (rule engine) 
+        untuk mendeteksi anomali sebelum terjadi gangguan listrik besar atau trip transformator:
+      </p>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Parameter Listrik</th>
+            <th>Kondisi Normal</th>
+            <th>Batas Peringatan (Warning)</th>
+            <th>Batas Kritis (Critical Alarm)</th>
+            <th>Tindakan Cepat Lapangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Tegangan 3-Phase (V L-L)</strong></td>
+            <td>380 V ± 5%<br>(361V – 399V)</td>
+            <td>&lt; 360 V atau &gt; 400 V<br>(Deviasi 5%–10%)</td>
+            <td>&lt; 342 V atau &gt; 418 V<br>(Deviasi &gt; 10%)</td>
+            <td>Periksa tap changer transformator atau koordinasi gangguan tegangan dengan penyulang PLN.</td>
+          </tr>
+          <tr>
+            <td><strong>Ketidakseimbangan Tegangan</strong></td>
+            <td>Unbalance &lt; 2%</td>
+            <td>2.0% s/d 3.0%</td>
+            <td>&gt; 3.0% (Bahaya Motor)</td>
+            <td>Periksa distribusi beban 1-fasa pada panel penerangan dan stop kontak agar seimbang.</td>
+          </tr>
+          <tr>
+            <td><strong>Beban Arus (Current Ampere)</strong></td>
+            <td>&lt; 80% Rating Breaker</td>
+            <td>80% – 90% Kapasitas</td>
+            <td>&gt; 90% Overload</td>
+            <td>Lakukan pelepasan beban non-prioritas untuk mencegah breaker trip mendadak.</td>
+          </tr>
+          <tr>
+            <td><strong>Power Factor (Cos φ)</strong></td>
+            <td>0.88 s/d 0.98</td>
+            <td>0.85 s/d 0.87</td>
+            <td>&lt; 0.85 (Kena Denda)</td>
+            <td>Periksa Capacitor Bank di LMVDP; pastikan step regulator kapasitor aktif bekerja.</td>
+          </tr>
+          <tr>
+            <td><strong>Status Komunikasi Gateway</strong></td>
+            <td>Koneksi Online (&lt; 2s)</td>
+            <td>Timeout 30–60 detik</td>
+            <td>Offline &gt; 5 menit</td>
+            <td>Cek power supply 24V gateway, lampu link switch IT, dan kabel LAN di Electrical Room.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-header">Alur Notifikasi & Audit Trail</h3>
+      <p>
+        • <strong>Level 1 (Visual Dashboard):</strong> Header meter berubah warna kuning/merah, angka berkedip, dan masuk list <em>Perlu Perhatian</em>.<br>
+        • <strong>Level 2 (Email Alert Otomatis):</strong> Sistem mengirim email ringkasan ke tim Maintenance jika anomali berlangsung lebih dari 10 menit.<br>
+        • <strong>Level 3 (Audit Log):</strong> Setiap kejadian alarm terekam otomatis pada database lokal (Timestamp, Nama Meter, Nilai Ekstrem, Durasi).
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 9 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 10: BAB 9 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 9: PANDUAN TROUBLESHOOTING</span>
+      </div>
+      <h2 class="section-header">BAB 9: Matriks Troubleshooting Lapangan (Failure Modes & Mitigation)</h2>
+      <p>
+        Dalam implementasi telemetri kelistrikan, berbagai kendala lapangan pasti akan ditemui. 
+        Matriks berikut adalah panduan diagnosa cepat dan solusi tuntas yang dapat langsung diterapkan saat menghadapi kendala:
+      </p>
+
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Gejala Masalah Lapangan</th>
+            <th>Akar Penyebab (Root Cause)</th>
+            <th>Langkah Verifikasi Teknis</th>
+            <th>Solusi & Tindakan Korektif</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Gateway Timeout / Data Tidak Masuk</strong></td>
+            <td>1. Catu daya adaptor mati.<br>2. Port switch IT disabled.<br>3. IP bentrok (IP Conflict).</td>
+            <td>• Cek lampu LED power gateway.<br>• Jalankan ping berkelanjutan.<br>• Lepas kabel LAN dan ping IP tersebut.</td>
+            <td>Ganti ke PSU 24V DC industri, pasang di stop kontak panel baru, minta tim IT mengunci MAC address statis.</td>
+          </tr>
+          <tr>
+            <td><strong>Angka Daya (kW) Terbaca Negatif (-)</strong></td>
+            <td>Polaritas kabel sekunder CT fasa terbalik arah.</td>
+            <td>Periksa tanda titik/panah CT (P1 menuju sumber PLN, P2 menuju beban pabrik).</td>
+            <td>Balik sambungan kabel sekunder S1 dan S2 pada terminal blok meter Schneider.</td>
+          </tr>
+          <tr>
+            <td><strong>Angka Daya Jauh Lebih Kecil / Besar</strong></td>
+            <td>Setting rasio CT / PT di meter belum disesuaikan dengan fisik lapangan.</td>
+            <td>Bandingkan menu konfigurasi meter dengan nameplate fisik CT (misal 500/5A tapi terset 100/5A).</td>
+            <td>Masuk ke menu password meter Schneider, sesuaikan CT Primary dan Secondary ke nilai yang benar.</td>
+          </tr>
+          <tr>
+            <td><strong>Angka Terbaca Nilai Raksasa Tak Wajar</strong></td>
+            <td>Endianness byte order pada driver parser Modbus terbalik.</td>
+            <td>Bandingkan raw hex buffer terhadap standar IEEE 754 float.</td>
+            <td>Ubah konfigurasi pembacaan dari Little-Endian (CDAB) ke Big-Endian (ABCD) pada skrip parsing.</td>
+          </tr>
+          <tr>
+            <td><strong>Sering Putus-Nyambung (Intermittent)</strong></td>
+            <td>Interferensi elektromagnetik (EMI) atau resistor terminasi ketiadaan.</td>
+            <td>Periksa jalur kabel LAN/RS485 apakah menempel pada kabel power 20kV.</td>
+            <td>Pasang resistor terminasi 120 Ohm di meter ujung, pisahkan jalur konduit sejauh min. 20 cm.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 class="sub-header">Golden Rules Penanganan Troubleshooting:</h3>
+      <p>
+        1. <strong>Jangan Mengubah Wiring Saat Bertegangan:</strong> Selalu gunakan multimeter penguji sebelum menyentuh terminal kabel.<br>
+        2. <strong>Catat Setiap Perubahan Parameter:</strong> Dokumentasikan setiap perubahan IP, Slave ID, atau rasio CT.<br>
+        3. <strong>Simpan Backup Konfigurasi:</strong> Backup file konfigurasi gateway konverter dan database dashboard secara berkala.
+      </p>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 10 dari 11</span>
+      </div>
+    </div>
+
+    <!-- HALAMAN 11: BAB 10 -->
+    <div class="page-sheet">
+      <div class="header-bar">
+        <span>SOP-EMS-ENG-2026-V1.0</span>
+        <span>BAB 10: CHECKLIST & PENGESAHAN</span>
+      </div>
+      <h2 class="section-header">BAB 10: Master Checklist Audit Kesiapan & Lembar Pengesahan</h2>
+      <p>
+        Gunakan lembar periksa (Master Checklist) 20 poin ini sebagai instrumen evaluasi harian Anda. 
+        Setiap item wajib diverifikasi sebelum proyek dinyatakan selesai secara resmi (Sign-Off):
+      </p>
+
+      <table class="custom-table" style="font-size:7.8pt;">
+        <thead>
+          <tr>
+            <th style="width:5%;">No</th>
+            <th style="width:62%;">Item Pemeriksaan Teknis & Manajerial</th>
+            <th style="width:18%;">Divisi PIC</th>
+            <th style="width:15%;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Kabel LAN Cat6 Electrical Room terpasang rapi dalam konduit</td><td>IT / Listrik</td><td>[ ] Selesai</td></tr>
+          <tr><td>2</td><td>Port switch IT terhubung aktif dan lampu link menyala hijau</td><td>IT Network</td><td>[ ] Selesai</td></tr>
+          <tr><td>3</td><td>IP Address statis gateway telah dialokasikan dan bebas konflik</td><td>IT Network</td><td>[ ] Selesai</td></tr>
+          <tr><td>4</td><td>Port 502 Modbus TCP dibuka di firewall jaringan lokal</td><td>IT Network</td><td>[ ] Selesai</td></tr>
+          <tr><td>5</td><td>Pengajuan pembelian Box Panel, PSU 24V, Stop Kontak di-ACC</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>6</td><td>Box panel pelindung terpasang kokoh dengan proteksi debu IP54/65</td><td>Tim IoT / MTC</td><td>[ ] Selesai</td></tr>
+          <tr><td>7</td><td>Power Supply 24V DC terpasang rapi pada DIN Rail dengan proteksi MCB</td><td>Tim IoT / MTC</td><td>[ ] Selesai</td></tr>
+          <tr><td>8</td><td>Stop kontak 3-lubang terpasang di 9 titik panel gardu dengan arde baik</td><td>Maintenance</td><td>[ ] Selesai</td></tr>
+          <tr><td>9</td><td>Nilai tahanan grounding terukur &lt; 2.0 Ohm pada bodi box dan stop kontak</td><td>Maintenance</td><td>[ ] Selesai</td></tr>
+          <tr><td>10</td><td>Uji coba penarikan data perdana hari Senin berhasil tanpa timeout</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>11</td><td>Komparasi 3 Titik: Angka fisik display panel vs dashboard cocok (±0.2%)</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>12</td><td>Rasio pengali CT dan PT telah dicocokkan dengan nameplate aktual</td><td>Maintenance</td><td>[ ] Selesai</td></tr>
+          <tr><td>13</td><td>Polaritas seluruh CT fasa benar (tidak ada angka daya kW yang negatif)</td><td>Maintenance</td><td>[ ] Selesai</td></tr>
+          <tr><td>14</td><td>Tampilan kurva beban 24 jam di dashboard ter-update secara berkala</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>15</td><td>Kalkulasi biaya listrik harian dan estimasi emisi karbon (ESG) aktif</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>16</td><td>Fitur Blueprint Gardu 20kV Schneider SM6 dapat dibuka instan bebas scroll</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>17</td><td>Sistem alert batas peringatan tegangan, arus, dan Power Factor berfungsi</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>18</td><td>Penyuluhan singkat operasional dashboard kepada operator maintenance</td><td>Project Lead</td><td>[ ] Selesai</td></tr>
+          <tr><td>19</td><td>Seluruh data meter tersimpan aman dalam database lokal ber-backup</td><td>IT / Project</td><td>[ ] Selesai</td></tr>
+          <tr><td>20</td><td>Dokumen serah terima operasional ditandatangani oleh seluruh pihak</td><td>Semua Pihak</td><td>[ ] Selesai</td></tr>
+        </tbody>
+      </table>
+
+      <div class="signature-row">
+        <div class="sig-block">
+          <strong>Dibuat & Divalidasi:</strong>
+          <div class="sig-blank"></div>
+          <div class="sig-underline"></div>
+          <span>Project Lead / Engineering</span>
+        </div>
+        <div class="sig-block">
+          <strong>Dikoordinasikan Oleh:</strong>
+          <div class="sig-blank"></div>
+          <div class="sig-underline"></div>
+          <span>Team Lead IoT & Otomasi</span>
+        </div>
+        <div class="sig-block">
+          <strong>Diverifikasi Jaringan:</strong>
+          <div class="sig-blank"></div>
+          <div class="sig-underline"></div>
+          <span>Supervisor IT Network</span>
+        </div>
+        <div class="sig-block">
+          <strong>Disetujui Oleh:</strong>
+          <div class="sig-blank"></div>
+          <div class="sig-underline"></div>
+          <span>Manager Maintenance</span>
+        </div>
+      </div>
+
+      <div class="footer-bar">
+        <span>CONFIDENTIAL - PT Musashi Auto Parts Indonesia</span>
+        <span>Halaman 11 dari 11</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
