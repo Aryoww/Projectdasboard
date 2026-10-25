@@ -839,28 +839,68 @@ html, body {
   font-family: var(--font-mono);
 }
 
-/* Blueprint Modal Special Styling */
+/* Blueprint Modal Special Styling (Fit to Screen, Zero Scroll) */
 .modal-blueprint-wide {
-  max-width: 900px;
+  max-width: min(94vw, 1020px);
+  width: 94vw;
+  height: min(88vh, 750px);
+  max-height: 88vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.blueprint-modal-body {
+  padding: 0.5rem 0.85rem 0.85rem 0.85rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .blueprint-img-viewport {
   width: 100%;
-  max-height: 65vh;
-  overflow: auto;
-  background: #070c14;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #060a12;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  cursor: grab;
+  user-select: none;
+}
+
+.blueprint-img-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.blueprint-img-viewport.is-zoomed {
+  overflow: auto;
 }
 
 .blueprint-img-viewport img {
   max-width: 100%;
+  max-height: 100%;
+  width: auto;
   height: auto;
-  transition: transform 0.2s ease;
+  object-fit: contain;
+  transition: transform 0.15s ease-out;
   transform-origin: center center;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: auto;
+}
+
+.blueprint-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 /* ================= 8. RESPONSIVE MEDIA QUERIES ================= */

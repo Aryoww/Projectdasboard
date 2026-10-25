@@ -345,14 +345,14 @@
           <h3>Blueprint Gardu 20kV Factory 1</h3>
           <p>Single Line & Panel SM6 Schneider Electric</p>
         </div>
-        <div style="display:flex; align-items:center; gap:0.35rem;">
+        <div class="blueprint-controls-group">
           <button class="btn-page" id="btnZoomIn" title="Perbesar">+</button>
-          <button class="btn-page" id="btnZoomReset" title="Reset Zoom">Reset</button>
+          <button class="btn-page" id="btnZoomReset" title="Reset Zoom (Fit Layar)">Fit</button>
           <button class="btn-page" id="btnZoomOut" title="Perkecil">−</button>
-          <button class="modal-close-btn" onclick="window.closeAllModals()" style="margin-left:0.35rem;">✕</button>
+          <button class="modal-close-btn" onclick="window.closeAllModals()" title="Tutup" style="margin-left:0.35rem;">✕</button>
         </div>
       </div>
-      <div class="modal-body" style="padding:0.75rem;">
+      <div class="modal-body blueprint-modal-body">
         <div class="blueprint-img-viewport" id="blueprintViewport">
           <img src="schneider_room.jpg" id="blueprintImg" alt="Blueprint Gardu Listrik 20kV Musashi" loading="lazy">
         </div>

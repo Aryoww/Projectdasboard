@@ -761,21 +761,47 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!modalEl) return;
     modalEl.classList.add('active');
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    // If opening blueprint modal, reset zoom & pan so it fits screen 100% without scroll
+    if (modalEl.id === 'blueprintModal') {
+      applyBlueprintZoom(1.0, 0, 0);
+    }
   };
 
   window.closeAllModals = function() {
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
     document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
   };
 
-  // Blueprint Zoom Logic
+  // Blueprint Zoom & Smooth Drag Pan Logic (Zero-Scroll by Default)
   let currentZoom = 1.0;
-  const blueprintImg = document.getElementById('blueprintImg');
+  let panX = 0;
+  let panY = 0;
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
 
-  function applyBlueprintZoom(scale) {
-    currentZoom = Math.min(Math.max(scale, 0.6), 3.0);
+  const blueprintImg = document.getElementById('blueprintImg');
+  const blueprintViewport = document.getElementById('blueprintViewport');
+
+  function applyBlueprintZoom(scale, newPanX, newPanY) {
+    currentZoom = Math.min(Math.max(scale, 1.0), 3.5);
+    if (currentZoom === 1.0) {
+      panX = 0;
+      panY = 0;
+    } else {
+      if (typeof newPanX === 'number') panX = newPanX;
+      if (typeof newPanY === 'number') panY = newPanY;
+    }
+
     if (blueprintImg) {
-      blueprintImg.style.transform = `scale(${currentZoom})`;
+      blueprintImg.style.transform = `scale(${currentZoom}) translate(${panX / currentZoom}px, ${panY / currentZoom}px)`;
+    }
+
+    if (blueprintViewport) {
+      blueprintViewport.classList.toggle('is-zoomed', currentZoom > 1.0);
     }
   }
 
@@ -783,9 +809,60 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnZoomOut = document.getElementById('btnZoomOut');
   const btnZoomReset = document.getElementById('btnZoomReset');
 
-  if (btnZoomIn) btnZoomIn.addEventListener('click', () => applyBlueprintZoom(currentZoom + 0.25));
-  if (btnZoomOut) btnZoomOut.addEventListener('click', () => applyBlueprintZoom(currentZoom - 0.25));
-  if (btnZoomReset) btnZoomReset.addEventListener('click', () => applyBlueprintZoom(1.0));
+  if (btnZoomIn) btnZoomIn.addEventListener('click', () => applyBlueprintZoom(currentZoom + 0.35));
+  if (btnZoomOut) btnZoomOut.addEventListener('click', () => applyBlueprintZoom(currentZoom - 0.35));
+  if (btnZoomReset) btnZoomReset.addEventListener('click', () => applyBlueprintZoom(1.0, 0, 0));
+
+  // Mouse Wheel Zoom on Blueprint
+  if (blueprintViewport) {
+    blueprintViewport.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.25 : -0.25;
+      applyBlueprintZoom(currentZoom + delta);
+    }, { passive: false });
+
+    // Drag to Pan when Zoomed In
+    blueprintViewport.addEventListener('mousedown', (e) => {
+      if (currentZoom <= 1.0) return;
+      isDragging = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+      blueprintViewport.classList.add('is-dragging');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      panX = e.clientX - startX;
+      panY = e.clientY - startY;
+      applyBlueprintZoom(currentZoom, panX, panY);
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        if (blueprintViewport) blueprintViewport.classList.remove('is-dragging');
+      }
+    });
+
+    // Touch Drag for Mobile
+    blueprintViewport.addEventListener('touchstart', (e) => {
+      if (currentZoom <= 1.0 || e.touches.length !== 1) return;
+      isDragging = true;
+      startX = e.touches[0].clientX - panX;
+      startY = e.touches[0].clientY - panY;
+    }, { passive: true });
+
+    blueprintViewport.addEventListener('touchmove', (e) => {
+      if (!isDragging || e.touches.length !== 1) return;
+      panX = e.touches[0].clientX - startX;
+      panY = e.touches[0].clientY - startY;
+      applyBlueprintZoom(currentZoom, panX, panY);
+    }, { passive: true });
+
+    blueprintViewport.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+  }
 
   // ================= 10. EVENT LISTENERS =================
   function setupEventListeners() {
