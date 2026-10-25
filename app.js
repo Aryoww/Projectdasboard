@@ -710,12 +710,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = '';
   };
 
-  let isBlueprintEnlarged = false;
   let blueprintZoomScale = 1.0;
+  let lastToggleTimestamp = 0;
 
-  window.toggleBlueprintEnlarge = function() {
+  window.toggleBlueprintEnlarge = function(forceState) {
     const card = document.getElementById('electricalRoomCard');
     if (!card) return;
+
+    // Debounce to prevent rapid double-clicks (200ms)
+    const now = Date.now();
+    if (now - lastToggleTimestamp < 200) {
+      return;
+    }
+    lastToggleTimestamp = now;
 
     const labelZoom = document.getElementById('labelZoomAction');
     const headerLabel = document.getElementById('btnZoomToggleHeaderLabel');
@@ -724,21 +731,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const badgeText = document.getElementById('blueprintBadgeText');
     const img = document.getElementById('imgBlueprintMain');
 
-    isBlueprintEnlarged = !isBlueprintEnlarged;
+    // DOM classList is the single source of truth
+    const isCurrentlyEnlarged = card.classList.contains('is-enlarged');
+    const shouldEnlarge = (typeof forceState === 'boolean') ? forceState : !isCurrentlyEnlarged;
 
-    if (isBlueprintEnlarged) {
+    if (shouldEnlarge) {
       card.classList.add('is-enlarged');
-      if (labelZoom) labelZoom.textContent = '✕ Perkecil';
-      if (headerLabel) headerLabel.textContent = 'Perkecil Tampilan';
+      if (labelZoom) labelZoom.textContent = 'Perkecil';
+      if (headerLabel) headerLabel.textContent = 'Perkecil Blueprint';
       if (headerIcon) headerIcon.textContent = '✕';
       if (zoomTools) zoomTools.style.display = 'flex';
       if (badgeText) badgeText.textContent = '🔍 Mode Pembesaran HD: Blueprint Gardu 20 kV Factory 1 Musashi';
       blueprintZoomScale = 1.0;
-      if (img) img.style.transform = 'scale(1.0)';
+      if (img) {
+        img.style.transform = 'scale(1.0)';
+        img.title = 'Klik untuk perkecil kembali';
+      }
       const zoomDisplay = document.getElementById('zoomLevelDisplay');
       if (zoomDisplay) zoomDisplay.textContent = '100%';
 
-      // Smooth scroll to card so it is right in front of user
+      // Smooth scroll to card
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
       card.classList.remove('is-enlarged');
@@ -748,7 +760,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (zoomTools) zoomTools.style.display = 'none';
       if (badgeText) badgeText.textContent = 'Blueprint Aktual: Electrical Room Factory 1 PT Musashi';
       blueprintZoomScale = 1.0;
-      if (img) img.style.transform = '';
+      if (img) {
+        img.style.transform = '';
+        img.title = 'Klik untuk perbesar gambar langsung di depan';
+      }
     }
   };
 
@@ -820,13 +835,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Modal & Blueprint Open Buttons
     const btnZoomBlueprint = document.getElementById('btnZoomBlueprint');
-    if (btnZoomBlueprint) btnZoomBlueprint.addEventListener('click', window.toggleBlueprintEnlarge);
+    if (btnZoomBlueprint) {
+      btnZoomBlueprint.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.toggleBlueprintEnlarge();
+      });
+    }
 
     const btnZoomToggleHeader = document.getElementById('btnZoomToggleHeader');
-    if (btnZoomToggleHeader) btnZoomToggleHeader.addEventListener('click', window.toggleBlueprintEnlarge);
+    if (btnZoomToggleHeader) {
+      btnZoomToggleHeader.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.toggleBlueprintEnlarge();
+      });
+    }
 
     const btnZoomAction = document.getElementById('btnZoomAction');
-    if (btnZoomAction) btnZoomAction.addEventListener('click', window.toggleBlueprintEnlarge);
+    if (btnZoomAction) {
+      btnZoomAction.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.toggleBlueprintEnlarge();
+      });
+    }
+
+    const imgBlueprintMain = document.getElementById('imgBlueprintMain');
+    if (imgBlueprintMain) {
+      imgBlueprintMain.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.toggleBlueprintEnlarge();
+      });
+    }
     if (btnOpenTopology) btnOpenTopology.addEventListener('click', () => {
       if (topologyModal) window.openModal(topologyModal);
     });
