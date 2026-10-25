@@ -51,17 +51,23 @@ st.set_page_config(
 )
 
 # =============================================================================
-# 3. STREAMLIT FULL-WIDTH STYLING
+# 3. STREAMLIT FULL-WIDTH & RESPONSIVE STYLING
 # =============================================================================
 st.markdown("""
 <style>
-    /* Styling agar dashboard memenuhi layar dengan rapi */
+    /* Styling agar dashboard memenuhi layar dengan rapi tanpa overflow horizontal */
+    html, body, [data-testid="stAppViewContainer"] {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
     .block-container {
         padding-top: 0.35rem !important;
         padding-bottom: 0rem !important;
         padding-left: 0.5rem !important;
         padding-right: 0.5rem !important;
         max-width: 100% !important;
+        overflow-x: hidden !important;
     }
     header[data-testid="stHeader"] {
         background: #0f172a !important;
@@ -74,7 +80,112 @@ st.markdown("""
         border-radius: 12px !important;
         border: 1px solid #cbd5e1 !important;
         width: 100% !important;
+        max-width: 100% !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* LAN Sharing Banner Styling */
+    .lan-banner-wrapper {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #2563eb;
+        border-radius: 10px;
+        padding: 0.65rem 1rem;
+        margin-bottom: 0.65rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        font-size: 0.82rem;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+    .lan-banner-status {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+    }
+    .lan-status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #10b981;
+        flex-shrink: 0;
+    }
+    .lan-banner-urls {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .lan-url-group {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+    .lan-pill-badge {
+        font-family: Consolas, monospace;
+        font-weight: 700;
+        font-size: 0.76rem;
+        padding: 0.2rem 0.55rem;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
+    .lan-pill-badge.wifi {
+        color: #2563eb;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+    }
+    .lan-pill-badge.local {
+        color: #0f172a;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }
+
+    /* Penyesuaian Khusus Smartphone (HP) */
+    @media (max-width: 768px) {
+        .block-container {
+            padding-left: 0.25rem !important;
+            padding-right: 0.25rem !important;
+            padding-top: 0.25rem !important;
+        }
+        .lan-banner-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0.55rem 0.75rem;
+            gap: 0.45rem;
+        }
+        .lan-banner-urls {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.35rem;
+        }
+        .lan-url-group {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .lan-url-group span.lbl {
+            font-size: 0.72rem;
+            white-space: nowrap;
+        }
+        .lan-pill-badge {
+            font-size: 0.72rem;
+            padding: 0.2rem 0.45rem;
+            text-align: right;
+        }
+        iframe {
+            border-radius: 8px !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -83,17 +194,21 @@ st.markdown("""
 # 4. LAN SHARING BANNER (INFORMASI AKSES MULTI-USER)
 # =============================================================================
 st.markdown(f"""
-<div style="background:#ffffff; border:1px solid #e2e8f0; border-left:4px solid #2563eb; border-radius:10px; padding:0.6rem 1.25rem; margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; font-size:0.82rem; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-    <div style="display:flex; align-items:center; gap:0.5rem;">
-        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981;"></span>
-        <strong style="color:#0f172a;">🌐 Streamlit Server PT Musashi Aktif:</strong>
-        <span style="color:#64748b;">Dashboard telemetry & energy monitoring siap diakses multi-user.</span>
+<div class="lan-banner-wrapper">
+    <div class="lan-banner-status">
+        <span class="lan-status-dot"></span>
+        <strong style="color:#0f172a;">🌐 Server PT Musashi Aktif</strong>
+        <span style="color:#64748b; font-size:0.75rem;">(Monitoring siap diakses)</span>
     </div>
-    <div style="display:flex; gap:0.75rem; align-items:center;">
-        <span style="color:#64748b; font-size:0.78rem;">URL LAN / Wi-Fi:</span>
-        <span style="font-family:Consolas, monospace; font-weight:700; color:#2563eb; background:#eff6ff; padding:0.25rem 0.65rem; border-radius:6px; border:1px solid #bfdbfe;">http://{LOCAL_IP}:{STREAMLIT_PORT}</span>
-        <span style="color:#64748b; font-size:0.78rem;">Lokal:</span>
-        <span style="font-family:Consolas, monospace; font-weight:700; color:#0f172a; background:#f8fafc; padding:0.25rem 0.65rem; border-radius:6px; border:1px solid #e2e8f0;">http://localhost:{STREAMLIT_PORT}</span>
+    <div class="lan-banner-urls">
+        <div class="lan-url-group">
+            <span class="lbl" style="color:#64748b; font-weight:600;">Akses Wi-Fi / LAN:</span>
+            <span class="lan-pill-badge wifi">http://{LOCAL_IP}:{STREAMLIT_PORT}</span>
+        </div>
+        <div class="lan-url-group">
+            <span class="lbl" style="color:#64748b; font-weight:600;">Lokal:</span>
+            <span class="lan-pill-badge local">http://localhost:{STREAMLIT_PORT}</span>
+        </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
