@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Progres Integrasi Data Power Meter Schneider & Electrical Room</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --primary: #0f172a;
+      --navy: #1e3a8a;
+      --accent: #0284c7;
+      --text: #1e293b;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --bg-alt: #f8fafc;
+      --warn-bg: #fffbeb;
+      --warn-border: #f59e0b;
+      --warn-text: #92400e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      background: #e2e8f0;
+      font-size: 11pt;
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .report-sheet {
+      background: #ffffff;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto 2rem auto;
+      padding: 18mm 20mm;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+      }
+      .report-sheet {
+        box-shadow: none;
+        margin: 0;
+        width: 100%;
+        min-height: 100vh;
+        page-break-after: always;
+        padding: 15mm 18mm;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--navy);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .header-left h4 {
+      font-size: 10.5pt;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-left p {
+      font-size: 8pt;
+      color: var(--muted);
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 8pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .header-right strong {
+      color: var(--primary);
+    }
+
+    h1.doc-title {
+      font-size: 15pt;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.25;
+      margin-bottom: 0.25rem;
+    }
+
+    p.doc-subtitle {
+      font-size: 9pt;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    h2.section-title {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: var(--navy);
+      border-left: 3.5px solid var(--accent);
+      padding-left: 0.5rem;
+      margin-top: 1rem;
+      margin-bottom: 0.45rem;
+    }
+
+    p.content-para {
+      font-size: 8.5pt;
+      line-height: 1.45;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      text-align: justify;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin-bottom: 0.75rem;
+    }
+
+    table.data-table th {
+      background: var(--navy);
+      color: #ffffff;
+      font-weight: 600;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid var(--navy);
+    }
+
+    table.data-table td {
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.35;
+    }
+
+    table.data-table tr:nth-child(even) td {
+      background: var(--bg-alt);
+    }
+
+    .badge-success {
+      color: #166534;
+      font-weight: 700;
+    }
+
+    .badge-ready {
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .badge-pending {
+      color: #b45309;
+      font-weight: 700;
+    }
+
+    .badge-danger {
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    .callout-box {
+      background: var(--warn-bg);
+      border: 1px solid var(--warn-border);
+      border-radius: 4px;
+      padding: 7px 10px;
+      font-size: 8pt;
+      color: var(--warn-text);
+      line-height: 1.4;
+      margin-top: 0.5rem;
+    }
+
+    .action-list {
+      font-size: 8.5pt;
+      line-height: 1.45;
+      padding-left: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .action-list li {
+      margin-bottom: 0.25rem;
+    }
+
+    .signature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .sig-col {
+      font-size: 8pt;
+      color: var(--text);
+    }
+
+    .sig-space {
+      height: 48px;
+    }
+
+    .sig-line {
+      border-bottom: 1px solid var(--text);
+      margin-bottom: 0.2rem;
+    }
+
+    .sheet-footer {
+      position: absolute;
+      bottom: 12mm;
+      left: 20mm;
+      right: 20mm;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 4px;
+      font-size: 7.5pt;
+      color: var(--muted);
+    }
+
+    .print-btn-bar {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      z-index: 999;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-action {
+      background: var(--navy);
+      color: #ffffff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      font-size: 9pt;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .btn-action:hover {
+      background: #172554;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-btn-bar no-print">
+    <button class="btn-action" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+  </div>
+
+  <!-- ==================== HALAMAN 1 ==================== -->
+  <div class="report-sheet">
+    <div class="header-top">
+      <div class="header-left">
+        <h4>PROJECT STATUS REPORT</h4>
+        <p>Departemen Engineering & Maintenance Automation · PT Musashi Auto Parts Indonesia</p>
+      </div>
+      <div class="header-right">
+        <div><strong>No. Dokumen:</strong> RPT-EMS-2026-10</div>
+        <div><strong>Tanggal:</strong> 25 Oktober 2026</div>
+        <div><strong>Sifat:</strong> Penting / Rencana Eksekusi</div>
+      </div>
+    </div>
+
+    <h1 class="doc-title">Laporan Progres Integrasi Data Power Meter Schneider & Kesiapan 2 Electrical Room</h1>
+    <p class="doc-subtitle">Evaluasi Data Eksisting IoT, Rencana Uji Tarik Data Ethernet (Senin), dan Kebutuhan Sarana Tambahan</p>
+
+    <h2 class="section-title">1. Ringkasan Eksekutif</h2>
+    <p class="content-para">
+      Laporan ini disusun untuk memberikan evaluasi menyeluruh mengenai status implementasi sistem pemantauan energi 
+      (<em>Energy Management System / EMS</em>). Saat ini, <strong>data untuk panel distribusi utama Schneider Electric telah berhasil ditarik</strong> 
+      dan siap diintegrasikan ke dalam antarmuka dashboard analitik. Namun demikian, fokus integrasi untuk <strong>2 Electrical Room</strong> masih 
+      menghadapi kendala infrastruktur fisik. Berdasarkan koordinasi teknis bersama tim IoT dan verifikasi jalur Ethernet, telah disusun rencana aksi 
+      penarikan data pada hari Senin, sekaligus merinci kebutuhan fasilitas kelistrikan (hardware) yang mendesak diajukan guna menjamin keandalan 
+      transmisi telemetri di lapangan secara berkelanjutan.
+    </p>
+
+    <h2 class="section-title">2. Status Capaian Saat Ini (Current Progress)</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:26%;">Lingkup Pekerjaan</th>
+          <th style="width:22%;">Status Teknis</th>
+          <th style="width:52%;">Keterangan & Catatan Operasional</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Panel Schneider Utama</strong><br><span style="color:var(--muted); font-size:7.5pt;">Substation Factory 1</span></td>
+          <td><span class="badge-success">● SUDAH DITARIK</span><br><span style="font-size:7.5pt; color:var(--muted);">(Ready to Visualize)</span></td>
+          <td>Data telemetri daya (kW, kWh, Voltage, Current, Cos φ) telah berhasil diakuisisi dan siap ditransformasikan ke dalam antarmuka visual dashboard komprehensif.</td>
+        </tr>
+        <tr>
+          <td><strong>Electrical Room A</strong><br><span style="color:var(--muted); font-size:7.5pt;">Jalur Ethernet Terhubung</span></td>
+          <td><span class="badge-ready">● READY UJI SENIN</span><br><span style="font-size:7.5pt; color:var(--muted);">(Ethernet Ready)</span></td>
+          <td>Kabel Ethernet fisik telah tersambung ke port switch. Siap untuk pengujian penarikan data meter (Modbus TCP) pada hari Senin.</td>
+        </tr>
+        <tr>
+          <td><strong>Electrical Room B</strong><br><span style="color:var(--muted); font-size:7.5pt;">Belum Terintegrasi</span></td>
+          <td><span class="badge-pending">● PENDING</span><br><span style="font-size:7.5pt; color:var(--muted);">(Menunggu Fasilitas)</span></td>
+          <td>Belum ditarik karena menunggu penyediaan box pelindung, catu daya 24V DC, dan stop kontak lokal di dalam ruang kubikel gardu.</td>
+        </tr>
+        <tr>
+          <td><strong>Visualisasi Eksisting</strong><br><span style="color:var(--muted); font-size:7.5pt;">Pihak IoT / IT</span></td>
+          <td><span class="badge-danger">● PERLU UPGRADE</span><br><span style="font-size:7.5pt; color:var(--muted);">(Hanya Angka Lewat)</span></td>
+          <td>Visualisasi eksisting dari pihak IoT saat ini hanya menampilkan angka mentah (raw log stream) tanpa konteks analitik, tren beban, maupun kalkulasi ESG.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">3. Identifikasi Masalah & Analisis Kesenjangan (Gap Analysis)</h2>
+    <p class="content-para">
+      <strong>A. Keterbatasan Tampilan Data Eksisting (Tim IoT):</strong><br>
+      Berdasarkan evaluasi sistem eksisting yang dibangun tim IoT, data memang telah melintas melalui jaringan IT. Namun, visualisasi saat ini 
+      <strong>hanya sebatas menampilkan deretan angka mentah (raw data log)</strong>. Hal ini belum memberikan manfaat operasional karena ketiadaan: 
+      (1) Grafik tren beban 24 jam untuk mendeteksi lonjakan daya abnormal, (2) Perhitungan akumulasi biaya pemakaian listrik per shift, 
+      (3) Pemantauan emisi karbon (kg CO₂e), dan (4) Sistem peringatan dini (alarm) saat parameter melampaui batas aman. 
+      Dashboard modern yang sedang dikembangkan dirancang untuk mentransformasi 'angka lewat' tersebut menjadi visualisasi informatif dan prediktif bagi tim Maintenance & Manajemen.
+    </p>
+    <p class="content-para">
+      <strong>B. Kendala Operasional di 2 Electrical Room:</strong><br>
+      Dua ruang gardu distribusi (Electrical Room) belum dapat ditarik datanya secara optimal dikarenakan ketiadaan titik catu daya lokal 
+      (power outlet) dan box pelindung perangkat gateway IoT. Akibatnya, modul komunikasi berisiko terganggu oleh debu industri serta mengalami 
+      fluktuasi voltase jika tidak menggunakan catu daya DC teregulasi.
+    </p>
+
+    <div class="callout-box">
+      <strong>CATATAN HASIL KOORDINASI DENGAN TIM IOT:</strong><br>
+      Pihak IoT siap mengalirkan data protokol Modbus/Ethernet ke server dashboard secara kontinu. Namun, mereka mengajukan permintaan resmi 
+      penyediaan sarana penunjang di lokasi (Box Panel, PSU 24V DC, dan Stop Kontak) guna memastikan keandalan transmisi data dan keselamatan instalasi.
+    </div>
+
+    <div class="sheet-footer">
+      <span>CONFIDENTIAL - Untuk Penggunaan Internal & Koordinasi Lintas Departemen</span>
+      <span>Halaman 1 dari 2</span>
+    </div>
+  </div>
+
+  <!-- ==================== HALAMAN 2 ==================== -->
+  <div class="report-sheet">
+    <div class="header-top">
+      <div class="header-left">
+        <h4>PROJECT STATUS REPORT</h4>
+        <p>Departemen Engineering & Maintenance Automation · PT Musashi Auto Parts Indonesia</p>
+      </div>
+      <div class="header-right">
+        <div><strong>No. Dokumen:</strong> RPT-EMS-2026-10</div>
+        <div><strong>Tanggal:</strong> 25 Oktober 2026</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">4. Rincian Kebutuhan Fasilitas & Hardware (Permintaan Tim IoT)</h2>
+    <p class="content-para">Untuk memastikan keandalan operasional perangkat akuisisi data di Electrical Room, berikut rincian material yang diajukan:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:5%; text-align:center;">No</th>
+          <th style="width:26%;">Item Hardware</th>
+          <th style="width:14%; text-align:center;">Jumlah</th>
+          <th style="width:43%;">Fungsi & Peruntukan di Lapangan</th>
+          <th style="width:12%; text-align:center;">Urgensi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;">1</td>
+          <td><strong>Box Panel Tambahan</strong><br><span style="font-size:7.5pt; color:var(--muted);">Enclosure Box IP54/IP65</span></td>
+          <td style="text-align:center;"><strong>1 Unit</strong></td>
+          <td>Rumah pelindung untuk gateway IoT, ethernet switch, dan modul converter agar aman dari paparan debu gardu, suhu, getaran, serta kontak fisik tak sengaja.</td>
+          <td style="text-align:center;"><span class="badge-danger">Mendesak</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">2</td>
+          <td><strong>Power Supply Unit (PSU)</strong><br><span style="font-size:7.5pt; color:var(--muted);">Input 220V AC ➔ Output 24V DC</span></td>
+          <td style="text-align:center;"><strong>1 Unit</strong></td>
+          <td>Menyediakan suplai daya DC teregulasi dan stabil khusus untuk perangkat controller/gateway IoT agar transfer data tidak sering drop atau hang.</td>
+          <td style="text-align:center;"><span class="badge-danger">Mendesak</span></td>
+        </tr>
+        <tr>
+          <td style="text-align:center;">3</td>
+          <td><strong>Stop Kontak Panel (3 Lubang)</strong><br><span style="font-size:7.5pt; color:var(--muted);">Heavy Duty / Arde Grounding</span></td>
+          <td style="text-align:center;"><strong>9 Buah</strong><br><span style="font-size:7.5pt; color:var(--muted);">(Isi 3/unit)</span></td>
+          <td>Dipasang di masing-masing panel kubikel/gardu untuk: (1) Sumber input adaptor PSU 24V, (2) Power switch ethernet, dan (3) Catu daya laptop maintenance saat commissioning/troubleshooting berkala.</td>
+          <td style="text-align:center;"><span class="badge-ready">Penting</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="section-title">5. Rencana Aksi Hari Senin (Action Plan - Monday Execution)</h2>
+    <p class="content-para">
+      Sebagai langkah percepatan sebelum pengadaan material rampung, pada <strong>hari Senin</strong> akan dilakukan uji tarik data pada 
+      <strong>Electrical Room yang telah terhubung kabel Ethernet</strong> dengan tahapan sebagai berikut:
+    </p>
+    <ol class="action-list">
+      <li><strong>Verifikasi Jaringan Fisik & IP:</strong> Pengujian ping dan alokasi subnet IP gateway terhadap jaringan switch IT internal.</li>
+      <li><strong>Ekstraksi Data Perdana (Modbus TCP):</strong> Menguji pembacaan register parameter dari power meter Schneider melalui gateway Ethernet.</li>
+      <li><strong>Validasi Akurasi Parameter:</strong> Membandingkan angka telemetri yang lewat di IT dengan nilai fisik pada layar meter panel (V, A, kW, PF).</li>
+      <li><strong>Sinkronisasi ke Dashboard:</strong> Memasukkan stream data hasil penarikan ke dalam modul analitik dashboard terpusat.</li>
+    </ol>
+
+    <h2 class="section-title">6. Rekomendasi & Tindak Lanjut Manajemen</h2>
+    <ol class="action-list">
+      <li><strong>Persetujuan Fasilitas:</strong> Memohon persetujuan pengadaan 1 Box Panel, 1 PSU 24V DC, dan 9 stop kontak 3-lubang guna standardisasi instalasi di 2 Electrical Room.</li>
+      <li><strong>Sinergi Lintas Departemen:</strong> Mengagendakan evaluasi bersama tim IoT, IT, dan Maintenance pada Senin siang pasca-uji tarik data Ethernet perdana.</li>
+      <li><strong>Penerapan Dashboard Analitik:</strong> Menjadikan dashboard baru sebagai standar monitoring energi pabrik menggantikan visualisasi raw data angka mentah.</li>
+    </ol>
+
+    <div class="signature-grid">
+      <div class="sig-col">
+        <strong>Diajukan Oleh:</strong>
+        <div class="sig-space"></div>
+        <div class="sig-line"></div>
+        <span>Project Lead / Engineering</span>
+      </div>
+      <div class="sig-col">
+        <strong>Dikoordinasikan Dengan:</strong>
+        <div class="sig-space"></div>
+        <div class="sig-line"></div>
+        <span>Team Lead IoT & Otomasi</span>
+      </div>
+      <div class="sig-col">
+        <strong>Mengetahui / Menyetujui:</strong>
+        <div class="sig-space"></div>
+        <div class="sig-line"></div>
+        <span>Manager Maintenance & Engineering</span>
+      </div>
+    </div>
+
+    <div class="sheet-footer">
+      <span>CONFIDENTIAL - Untuk Penggunaan Internal & Koordinasi Lintas Departemen</span>
+      <span>Halaman 2 dari 2</span>
+    </div>
+  </div>
+
+</body>
+</html>
