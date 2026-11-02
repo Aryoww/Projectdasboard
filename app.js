@@ -5,103 +5,105 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Baseline Calibration to match exact Musashi factory profile
+  // Baseline Calibration for Electrical Room Substation (38 Digital Power Meters Schneider & Mitsubishi)
   const CATEGORY_BASELINES = {
     all: {
-      kw: 10116,
-      kwh: 160605,
-      cost: 'Rp 232 jt',
-      pf: '0,89',
-      online: '135 / 137',
-      alertCount: '38 meter perlu dicek',
-      carbonTon: '126,9',
-      curve24h: [6070, 5540, 7620, 11120, 9580, 11280, 8240, 6420],
-      curveMax: 12000,
-      curveStep: 2000
+      kw: 14129,
+      kwh: 197064,
+      cost: 'Rp 285 jt',
+      pf: '0,90',
+      online: '38 / 38',
+      alertCount: '3 meter perlu dicek',
+      carbonTon: '155,7',
+      curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
+      curveMax: 17000,
+      curveStep: 3000
     },
-    forging: {
-      kw: 5703,
-      kwh: 90603,
-      cost: 'Rp 131 jt',
-      pf: '0,89',
-      online: '88 / 90',
-      alertCount: '28 meter perlu dicek',
-      carbonTon: '71,6',
-      curve24h: [3420, 3120, 4290, 6260, 5400, 6380, 4650, 3620],
+    electrical: {
+      kw: 14129,
+      kwh: 197064,
+      cost: 'Rp 285 jt',
+      pf: '0,90',
+      online: '38 / 38',
+      alertCount: '3 meter perlu dicek',
+      carbonTon: '155,7',
+      curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
+      curveMax: 17000,
+      curveStep: 3000
+    },
+    fac1: {
+      kw: 6277,
+      kwh: 86724,
+      cost: 'Rp 125 jt',
+      pf: '0,91',
+      online: '15 / 15',
+      alertCount: '1 meter perlu dicek',
+      carbonTon: '68,5',
+      curve24h: [3760, 3430, 4720, 6880, 5930, 6980, 5100, 3970],
+      curveMax: 8000,
+      curveStep: 1000
+    },
+    fac2: {
+      kw: 5398,
+      kwh: 74744,
+      cost: 'Rp 108 jt',
+      pf: '0,88',
+      online: '12 / 12',
+      alertCount: '2 meter perlu dicek',
+      carbonTon: '59,0',
+      curve24h: [3240, 2950, 4060, 5920, 5100, 6000, 4390, 3420],
       curveMax: 7000,
       curveStep: 1000
     },
-    electrical: {
-      kw: 3198,
-      kwh: 50825,
-      cost: 'Rp 73 jt',
-      pf: '0,90',
-      online: '34 / 34',
-      alertCount: '3 meter perlu dicek',
-      carbonTon: '40,2',
-      curve24h: [1920, 1750, 2410, 3510, 3030, 3580, 2610, 2030],
-      curveMax: 4000,
+    fac3: {
+      kw: 2454,
+      kwh: 35596,
+      cost: 'Rp 51 jt',
+      pf: '0,92',
+      online: '11 / 11',
+      alertCount: '0 meter perlu dicek',
+      carbonTon: '28,1',
+      curve24h: [1470, 1340, 1850, 2690, 2320, 2730, 2000, 1550],
+      curveMax: 3500,
       curveStep: 500
     },
-    compressor: {
-      kw: 894,
-      kwh: 14256,
-      cost: 'Rp 21 jt',
+    forging: {
+      kw: 7400,
+      kwh: 104404,
+      cost: 'Rp 151 jt',
       pf: '0,89',
-      online: '10 / 10',
-      alertCount: '4 meter perlu dicek',
-      carbonTon: '11,3',
-      curve24h: [540, 490, 680, 980, 850, 1000, 730, 570],
-      curveMax: 1000,
-      curveStep: 100
+      online: '15 / 15',
+      alertCount: '3 meter perlu dicek',
+      carbonTon: '82,5',
+      curve24h: [4440, 4050, 5570, 8110, 6990, 8230, 6020, 4690],
+      curveMax: 9000,
+      curveStep: 1500
     },
-    water: {
-      kw: 242,
-      kwh: 3872,
-      cost: 'Rp 6 jt',
-      pf: '0,91',
-      online: '12 / 12',
-      alertCount: '1 meter perlu dicek',
-      carbonTon: '3,1',
-      curve24h: [150, 130, 180, 270, 230, 270, 200, 150],
-      curveMax: 400,
-      curveStep: 50
-    },
-    lobby: {
-      kw: 79,
-      kwh: 1069,
-      cost: 'Rp 2 jt',
-      pf: '0,92',
-      online: '7 / 7',
+    heattreatment: {
+      kw: 5110,
+      kwh: 69704,
+      cost: 'Rp 101 jt',
+      pf: '0,94',
+      online: '15 / 15',
       alertCount: '0 meter perlu dicek',
-      carbonTon: '0,8',
-      curve24h: [40, 35, 50, 90, 75, 90, 65, 45],
-      curveMax: 150,
-      curveStep: 25
+      carbonTon: '55,1',
+      curve24h: [3070, 2800, 3850, 5600, 4830, 5680, 4160, 3240],
+      curveMax: 6500,
+      curveStep: 1000
     }
   };
 
-  // Top 8 Consumers Data by Category (Matching Exact Screenshots)
+  // Top 8 Consumers Data by Category & Factory Substation
   const TOP_8_DATA = {
     all: [
-      { name: 'Trafo #1 (TRF-01)', val: 5420 },
-      { name: 'Trafo #4 (TRF-04)', val: 5180 },
-      { name: 'Trafo #6 (TRF-06)', val: 3920 },
-      { name: 'Panel LMVDP #3 (LMV-03)', val: 3710 },
-      { name: 'Trafo #3 (TRF-03)', val: 3320 },
-      { name: 'Trafo #2 (TRF-02)', val: 3250 },
-      { name: 'Panel LMVDP #11 (LMV-11)', val: 3200 },
-      { name: 'Panel LMVDP #9 (LMV-09)', val: 2890 }
-    ],
-    forging: [
-      { name: 'Mesin Forging 11 (FRG1-11)', val: 4410 },
-      { name: 'Mesin Forging 8 (FRG3-08)', val: 4390 },
-      { name: 'Mesin Forging 4 (FRG2-04)', val: 4380 },
-      { name: 'Mesin Forging 25 (FRG1-25)', val: 4350 },
-      { name: 'Mesin Forging 18 (FRG2-18)', val: 4220 },
-      { name: 'Mesin Forging 14 (FRG3-14)', val: 4150 },
-      { name: 'Mesin Forging 7 (FRG1-07)', val: 3980 },
-      { name: 'Mesin Forging 22 (FRG2-22)', val: 3870 }
+      { name: 'Trafo #12 LMVDP 210V (TRF-12)', val: 18450 },
+      { name: 'Trafo #13 Sub-Dist 210V (TRF-13)', val: 12840 },
+      { name: 'Trafo #14 Utility 400V (TRF-14)', val: 10570 },
+      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
+      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
+      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
+      { name: 'Trafo #05 Pompa Fac 3 (TRF-05)', val: 6240 },
+      { name: 'Trafo #01 Forging Fac 2 (TRF-01)', val: 5420 }
     ],
     electrical: [
       { name: 'Trafo #12 LMVDP 210V (TRF-12)', val: 18450 },
@@ -110,79 +112,91 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
       { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
       { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
-      { name: 'Trafo #05 Pompa Fac 4 (TRF-05)', val: 6240 },
-      { name: 'Panel LMVDP #10 (LMV-10)', val: 4120 }
+      { name: 'Trafo #05 Pompa Fac 3 (TRF-05)', val: 6240 },
+      { name: 'Trafo #01 Forging Fac 2 (TRF-01)', val: 5420 }
     ],
-    compressor: [
-      { name: 'Compressor Room #2 (CMP-02)', val: 4520 },
-      { name: 'Compressor Room #9 (CMP-09)', val: 4480 },
-      { name: 'Compressor Room #8 (CMP-08)', val: 4420 },
-      { name: 'Compressor Room #1 (CMP-01)', val: 3910 },
-      { name: 'Compressor Room #4 (CMP-04)', val: 3820 },
-      { name: 'Compressor Room #6 (CMP-06)', val: 3750 },
-      { name: 'Compressor Room #7 (CMP-07)', val: 3610 },
-      { name: 'Compressor Room #5 (CMP-05)', val: 3520 }
+    fac1: [
+      { name: 'Trafo #12 LMVDP 210V (TRF-12)', val: 18450 },
+      { name: 'Trafo #13 Sub-Dist 210V (TRF-13)', val: 12840 },
+      { name: 'Trafo #14 Utility 400V (TRF-14)', val: 10570 },
+      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
+      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
+      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
+      { name: 'Panel LMVDP #02 Forging (LMV-02)', val: 5820 },
+      { name: 'Panel LMVDP #01 Main (LMV-01)', val: 4950 }
     ],
-    water: [
-      { name: 'Cooling Tower Primary Pump (PMP-01)', val: 1240 },
-      { name: 'Chilled Water Pump Fac 1 (PMP-03)', val: 1180 },
-      { name: 'WTP Raw Water Intake Pump (PMP-07)', val: 950 },
-      { name: 'Condenser Water Circulation Pump #2', val: 920 },
-      { name: 'Booster Pump High Pressure (PMP-11)', val: 840 },
-      { name: 'Effluent Treatment Transfer Pump', val: 780 },
-      { name: 'Scrubber Circulation Pump #1', val: 710 },
-      { name: 'Cooling Tower Fan Cell #3', val: 650 }
+    fac2: [
+      { name: 'Trafo #01 Forging 210V (TRF-01)', val: 5420 },
+      { name: 'Trafo #04 Forging 210V (TRF-04)', val: 5180 },
+      { name: 'Trafo #03 Carburizing HT (TRF-03)', val: 3320 },
+      { name: 'Trafo #02 Carburizing HT (TRF-02)', val: 3250 },
+      { name: 'Panel LMVDP #07 Forging (LMV-07)', val: 4120 },
+      { name: 'Panel LMVDP #08 Forging (LMV-08)', val: 3890 },
+      { name: 'Panel LMVDP #09 HT (LMV-09)', val: 3450 },
+      { name: 'Panel LMVDP #06 Main (LMV-06)', val: 2890 }
     ],
-    lobby: [
-      { name: 'Main Chiller Office & Utility (CHL-01)', val: 420 },
-      { name: 'AHU Central Server Room (AHU-01)', val: 340 },
-      { name: 'Lobby Central AC Packaged (AC-01)', val: 280 },
-      { name: 'UPS Data Center Powerlogic (UPS-01)', val: 260 },
-      { name: 'Utility Workshop Feeder (WS-01)', val: 190 },
-      { name: 'Office Lighting Distribution Panel', val: 150 },
-      { name: 'Canteen Kitchen Exhaust Fan', val: 120 },
-      { name: 'Security Pos Main Gate Panel', val: 80 }
+    fac3: [
+      { name: 'Trafo #05 Pompa & Util (TRF-05)', val: 6240 },
+      { name: 'Trafo #06 Forging 210V (TRF-06)', val: 3920 },
+      { name: 'Trafo #07 Annealing HT (TRF-07)', val: 2890 },
+      { name: 'Trafo #08 Annealing HT (TRF-08)', val: 2650 },
+      { name: 'Panel LMVDP #11 Forging (LMV-11)', val: 3200 },
+      { name: 'Panel LMVDP #12 Forging (LMV-12)', val: 2910 },
+      { name: 'Panel LMVDP #13 HT (LMV-13)', val: 2450 },
+      { name: 'Panel LMVDP #10 Main (LMV-10)', val: 2180 }
+    ],
+    forging: [
+      { name: 'Trafo #12 Fac 1 210V (TRF-12)', val: 18450 },
+      { name: 'Trafo #13 Fac 1 210V (TRF-13)', val: 12840 },
+      { name: 'Trafo #01 Fac 2 Forging (TRF-01)', val: 5420 },
+      { name: 'Trafo #04 Fac 2 Forging (TRF-04)', val: 5180 },
+      { name: 'Trafo #06 Fac 3 Forging (TRF-06)', val: 3920 },
+      { name: 'Panel LMVDP #02 Fac 1 (LMV-02)', val: 5820 },
+      { name: 'Panel LMVDP #07 Fac 2 (LMV-07)', val: 4120 },
+      { name: 'Panel LMVDP #11 Fac 3 (LMV-11)', val: 3200 }
+    ],
+    heattreatment: [
+      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
+      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
+      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
+      { name: 'Trafo #03 Carburizing (TRF-03)', val: 3320 },
+      { name: 'Trafo #02 Carburizing (TRF-02)', val: 3250 },
+      { name: 'Trafo #07 Annealing (TRF-07)', val: 2890 },
+      { name: 'Trafo #08 Annealing (TRF-08)', val: 2650 },
+      { name: 'Panel LMVDP #03 Fac 1 (LMV-03)', val: 4410 }
     ]
   };
 
-  // Perlu Perhatian Alert Items by Category (Exact Match with Screenshot)
+  // Perlu Perhatian Alert Items by Category & Factory
   const ATTENTION_ALERTS = {
     all: [
-      { title: 'Mesin Forging 7', area: 'Forging · Factory 1', note: 'Power factor 0.83 – cek kapasitor bank' },
-      { title: 'Mesin Forging 8', area: 'Forging · Factory 1', note: 'Power factor 0.80 – cek kapasitor bank' },
-      { title: 'Mesin Forging 11', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
-      { title: 'Mesin Forging 13', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
-      { title: 'Mesin Forging 16', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
-      { title: 'Mesin Forging 18', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
-      { title: 'Mesin Forging 20', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
-      { title: 'Mesin Forging 22', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' }
-    ],
-    forging: [
-      { title: 'Mesin Forging 7', area: 'Forging · Factory 1', note: 'Power factor 0.83 – cek kapasitor bank' },
-      { title: 'Mesin Forging 8', area: 'Forging · Factory 1', note: 'Power factor 0.80 – cek kapasitor bank' },
-      { title: 'Mesin Forging 11', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
-      { title: 'Mesin Forging 13', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
-      { title: 'Mesin Forging 16', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
-      { title: 'Mesin Forging 18', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' },
-      { title: 'Mesin Forging 20', area: 'Forging · Factory 1', note: 'Power factor 0.84 – cek kapasitor bank' },
-      { title: 'Mesin Forging 22', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' }
+      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', note: 'PF 0,84 (Di bawah 0,85) – Cek Kapasitor Bank Step 4' },
+      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', note: 'Step 3 & 4 Kontaktor Trip – Perlu Reset APFC Controller' },
+      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging line 2 tinggi' }
     ],
     electrical: [
       { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', note: 'PF 0,84 (Di bawah 0,85) – Cek Kapasitor Bank Step 4' },
-      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Electrical Room · Kapasitor Bank Fac 2', note: 'Step 3 & 4 Kontaktor Trip – Perlu Reset APFC' },
-      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Electrical Room · Panel LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging tinggi' }
+      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', note: 'Step 3 & 4 Kontaktor Trip – Perlu Reset APFC Controller' },
+      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging line 2 tinggi' }
     ],
-    compressor: [
-      { title: 'Compressor Room #3', area: 'Kompresor · Compressor Room', note: 'Power factor 0.81 – cek kapasitor bank' },
-      { title: 'Compressor Room #5', area: 'Kompresor · Compressor Room', note: 'Power factor 0.81 – cek kapasitor bank' },
-      { title: 'Air Dryer Feeder #2', area: 'Kompresor · Air Dryer', note: 'Power factor 0.83 – cek kapasitor bank' },
-      { title: 'Compressor Room #8', area: 'Kompresor · Compressor Room', note: 'Power factor 0.84 – cek kapasitor bank' }
+    fac1: [
+      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', note: 'PF 0,84 – Cek Kapasitor Bank Step 4 APFC Panel CAP-01' },
+      { title: 'Transformer 1.000 kVA (TRF-11)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', note: 'THD-I 4,8% – Harmonik induksi heater termonitor normal' }
     ],
-    water: [
-      { title: 'Chilled Water Pump Fac 2', area: 'Pompa Air · Chilled Water', note: 'Power factor 0.84 – cek kapasitor bank' }
+    fac2: [
+      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Substation Forging APFC', note: 'Step 3 & 4 Kontaktor Trip – Kapasitas turun, perlu reset APFC' },
+      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging shift 2 tinggi' }
     ],
-    lobby: [
-      { title: 'Semua Beban Normal', area: 'Lobby & Office', note: 'Cos φ di atas 0,90 - Bebas denda kVARh' }
+    fac3: [
+      { title: 'Semua Trafo & Panel Normal', area: 'Factory 3 · Substation Gardu 20kV', note: 'Cos φ rata-rata 0,92 – Bebas denda kVARh PLN, suhu trafo stabil 65°C' }
+    ],
+    forging: [
+      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Forging Substation 210V', note: 'PF 0,84 – Beban impulsif mesin forging press memerlukan kompensasi APFC' },
+      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Forging APFC Step 1-6', note: 'Step 3 & 4 Kontaktor Trip – Perlu penggantian fuse / kontaktor' },
+      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Forging Lines', note: 'PF 0,83 – Beban puncak mesin press 2000T' }
+    ],
+    heattreatment: [
+      { title: 'Semua Beban Heat Treatment Normal', area: 'Substation HT Fac 1, 2, 3', note: 'Cos φ rata-rata 0,94 – Pemanas induksi billet & furnace carburizing beroperasi stabil' }
     ]
   };
 
@@ -258,26 +272,137 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateClock, 1000);
   }
 
+  // Central function to set filter and synchronize all navigation controls
+  function setActiveFilter(filterKey) {
+    state.activeFilter = filterKey;
+    state.currentPage = 1;
+
+    // 1. Update Top Filter Tabs
+    const btnFilterAll = document.getElementById('btnFilterAll');
+    const btnElectricalParent = document.getElementById('btnElectricalParent');
+    const electricalBtnLabel = document.getElementById('electricalBtnLabel');
+
+    if (btnFilterAll) {
+      if (filterKey === 'all') {
+        btnFilterAll.classList.add('active');
+      } else {
+        btnFilterAll.classList.remove('active');
+      }
+    }
+
+    if (btnElectricalParent) {
+      if (filterKey !== 'all') {
+        btnElectricalParent.classList.add('active');
+      } else {
+        btnElectricalParent.classList.remove('active');
+      }
+    }
+
+    // Dynamic button label for Electrical Room
+    if (electricalBtnLabel) {
+      const labels = {
+        fac1: '⚡ Electrical Room: Factory 1',
+        fac2: '⚡ Electrical Room: Factory 2',
+        fac3: '⚡ Electrical Room: Factory 3',
+        forging: '⚡ Electrical Room: Forging',
+        heattreatment: '⚡ Electrical Room: HT',
+        electrical: '⚡ Electrical Room'
+      };
+      electricalBtnLabel.textContent = labels[filterKey] || '⚡ Electrical Room';
+    }
+
+    // 2. Update Dropdown Items Active State
+    const dropdownItems = document.querySelectorAll('.dropdown-item-btn');
+    dropdownItems.forEach(item => {
+      if (item.dataset.filter === filterKey) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+
+    // 3. Update Sub-Navbar Pills Active State
+    const subPills = document.querySelectorAll('.sub-nav-pill');
+    subPills.forEach(pill => {
+      if (pill.dataset.subfilter === filterKey) {
+        pill.classList.add('active');
+      } else {
+        pill.classList.remove('active');
+      }
+    });
+
+    // Close Dropdown menu if open
+    const dropdownWrap = document.getElementById('electricalDropdownWrap');
+    if (dropdownWrap) {
+      dropdownWrap.classList.remove('open');
+      if (btnElectricalParent) btnElectricalParent.setAttribute('aria-expanded', 'false');
+    }
+
+    // 4. Update Views & Table
+    updateViewForActiveFilter();
+    renderTable();
+  }
+
   // ================= 3. FILTER TABS CONTROLLER =================
   function initFilterTabs() {
-    if (!filterTabsGroup) return;
-    const tabButtons = filterTabsGroup.querySelectorAll('.filter-tab-btn');
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        state.activeFilter = btn.dataset.filter || 'all';
-        state.currentPage = 1;
-        updateViewForActiveFilter();
-        renderTable();
+    const btnFilterAll = document.getElementById('btnFilterAll');
+    if (btnFilterAll) {
+      btnFilterAll.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setActiveFilter('all');
       });
+    }
+
+    const dropdownWrap = document.getElementById('electricalDropdownWrap');
+    const btnElectricalParent = document.getElementById('btnElectricalParent');
+
+    if (btnElectricalParent && dropdownWrap) {
+      btnElectricalParent.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // Toggle dropdown open/close
+        const isOpen = dropdownWrap.classList.toggle('open');
+        btnElectricalParent.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        
+        // If clicking when in 'all' mode, also switch filter to electrical
+        if (state.activeFilter === 'all') {
+          setActiveFilter('electrical');
+        }
+      });
+    }
+
+    // Dropdown Items Click Handlers
+    const dropdownItems = document.querySelectorAll('.dropdown-item-btn');
+    dropdownItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const f = item.dataset.filter || 'electrical';
+        setActiveFilter(f);
+      });
+    });
+
+    // Sub-Navbar Pills Click Handlers
+    const subPills = document.querySelectorAll('.sub-nav-pill');
+    subPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const f = pill.dataset.subfilter || 'electrical';
+        setActiveFilter(f);
+      });
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (dropdownWrap && !dropdownWrap.contains(e.target)) {
+        dropdownWrap.classList.remove('open');
+        if (btnElectricalParent) btnElectricalParent.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 
   // ================= 4. UPDATE VIEW BASED ON ACTIVE FILTER =================
   function updateViewForActiveFilter() {
     const filterKey = state.activeFilter;
-    const data = CATEGORY_BASELINES[filterKey] || CATEGORY_BASELINES.all;
+    const data = CATEGORY_BASELINES[filterKey] || CATEGORY_BASELINES.electrical || CATEGORY_BASELINES.all;
 
     // 1. Update KPI Values
     if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
@@ -298,42 +423,40 @@ document.addEventListener('DOMContentLoaded', () => {
     if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
     if (kpiCarbonSub) kpiCarbonSub.textContent = 'Faktor grid Jamali 0,79 kg/kWh';
 
-    // Update Ticker Bar Realtime
-    const tkKw = document.querySelector('.tk-kw');
-    const tkPf = document.querySelector('.tk-pf');
-    const tkKwh = document.querySelector('.tk-kwh');
-    const tkOnline = document.querySelector('.tk-online');
-    if (tkKw) tkKw.textContent = `${data.kw.toLocaleString('id-ID')} kW`;
-    if (tkPf) tkPf.textContent = `${data.pf} (Normal)`;
-    if (tkKwh) tkKwh.textContent = `${data.kwh.toLocaleString('id-ID')} kWh`;
-    if (tkOnline) tkOnline.textContent = `${data.online} Online`;
-
     // 2. Update 24h Line Chart
     update24hChart(data.curve24h, data.curveMax, data.curveStep);
 
     // 3. Update Top 8 Horizontal Bar Chart
-    updateTop8Chart(TOP_8_DATA[filterKey] || TOP_8_DATA.all);
+    updateTop8Chart(TOP_8_DATA[filterKey] || TOP_8_DATA.electrical || TOP_8_DATA.all);
 
     // 4. Update Donut Chart Distribution
     updateDonutChart(filterKey);
 
     // 5. Update Perlu Perhatian List
-    renderAttentionList(ATTENTION_ALERTS[filterKey] || ATTENTION_ALERTS.all);
+    renderAttentionList(ATTENTION_ALERTS[filterKey] || ATTENTION_ALERTS.electrical || ATTENTION_ALERTS.all);
 
     // 6. Update Section Titles for Table
     const tableSectionTitle = document.getElementById('tableSectionTitle');
     const tableSectionSub = document.getElementById('tableSectionSub');
     if (tableSectionTitle && tableSectionSub) {
-      if (filterKey === 'electrical') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room';
-        tableSectionSub.textContent = 'Telemetri realtime Transformator 20kV, Cubicle Schneider SM6, Panel LMVDP, dan APFC Capacitor Bank.';
-      } else if (filterKey === 'all') {
-        tableSectionTitle.textContent = 'Daftar Seluruh Power Meter Pabrik';
-        tableSectionSub.textContent = 'Data langsung 137 unit meter digital Schneider & Mitsubishi seluruh area pabrik.';
+      if (filterKey === 'fac1') {
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 1 (15 Unit)';
+        tableSectionSub.textContent = 'Trafo TRF 11-16 (20kV / 6.6kV / 210V / 400V), Panel LMVDP, dan Capacitor Bank APFC Substation Factory 1.';
+      } else if (filterKey === 'fac2') {
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 2 (12 Unit)';
+        tableSectionSub.textContent = 'Trafo TRF 01-04 (Forging & Carburizing HT), Panel LMVDP 210V, dan APFC Substation Factory 2.';
+      } else if (filterKey === 'fac3') {
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 3 (11 Unit)';
+        tableSectionSub.textContent = 'Trafo TRF 05-08 (Pompa, Forging, Annealing HT), Panel LMVDP, dan APFC Substation Factory 3.';
+      } else if (filterKey === 'forging') {
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Sistem Beban Forging (15 Unit)';
+        tableSectionSub.textContent = 'Trafo & Panel LMVDP 210V penyuplai lini mesin Forging Press Factory 1, 2, dan 3.';
+      } else if (filterKey === 'heattreatment') {
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Sistem Beban Heat Treatment (15 Unit)';
+        tableSectionSub.textContent = 'Trafo & Panel penyuplai Billet Induction Heater 6.6kV, Furnace Carburizing, dan Annealing.';
       } else {
-        const areaNames = { forging: 'Forging', compressor: 'Kompresor', water: 'Pompa Air', lobby: 'Lobby' };
-        tableSectionTitle.textContent = `Daftar Meter: Area ${areaNames[filterKey] || filterKey}`;
-        tableSectionSub.textContent = `Data telemetri konsumsi daya dan status operasional meter area ${areaNames[filterKey] || filterKey}.`;
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room (38 Unit)';
+        tableSectionSub.textContent = 'Telemetri realtime 16 Transformator 20kV, Cubicle Schneider SM6, Panel LMVDP, dan APFC Cap Bank seluruh factory.';
       }
     }
   }
@@ -537,48 +660,91 @@ document.addEventListener('DOMContentLoaded', () => {
     const donutSubEl = document.getElementById('donutSub');
     const donutLegendRow = document.getElementById('donutLegendRow');
 
-    if (filterKey === 'electrical') {
-      if (donutTitleEl) donutTitleEl.textContent = 'Distribusi Beban Electrical Room';
-      if (donutSubEl) donutSubEl.textContent = 'Proporsi pemakaian energi transformator & panel substation.';
-      chartDonutInstance.data.labels = [
-        'Trafo 210V LMVDP (TRF-12/13)',
-        'Trafo Billet 6.6kV (TRF-11/15/16)',
-        'Trafo 400V Utility (TRF-14/05)',
-        'Panel Feeder LMVDP',
-        'Trafo Standby/Lobby'
-      ];
-      chartDonutInstance.data.datasets[0].data = [24800, 16100, 5800, 3100, 1025];
-      chartDonutInstance.data.datasets[0].backgroundColor = [
-        '#2dd4bf', // Teal
-        '#38bdf8', // Blue
-        '#fb923c', // Orange
-        '#a78bfa', // Purple
-        '#94a3b8'  // Gray
-      ];
+    if (filterKey === 'fac1') {
+      if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Substation Factory 1';
+      if (donutSubEl) donutSubEl.textContent = 'Beban Trafo 210V Forging vs 6.6kV Billet Heater vs 400V Utility.';
+      chartDonutInstance.data.labels = ['Trafo 210V Forging', 'Billet 6.6kV', 'Utility 400V', 'Panel LMVDP'];
+      chartDonutInstance.data.datasets[0].data = [31290, 23820, 10570, 21044];
+      chartDonutInstance.data.datasets[0].backgroundColor = ['#38bdf8', '#2dd4bf', '#fb923c', '#a78bfa'];
       if (donutLegendRow) {
         donutLegendRow.innerHTML = `
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Trafo 210V (TRF-12/13)</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Billet 6.6kV (TRF-11/15/16)</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Trafo 400V (TRF-14/05)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Forging 210V</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Billet 6.6kV</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Utility 400V</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Panel LMVDP</span></div>
+        `;
+      }
+    } else if (filterKey === 'fac2') {
+      if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Substation Factory 2';
+      if (donutSubEl) donutSubEl.textContent = 'Beban Substation Forging vs Furnace Heat Treatment Fac 2.';
+      chartDonutInstance.data.labels = ['Trafo Forging', 'Carburizing HT', 'Panel LMVDP 210V', 'APFC Cap Bank'];
+      chartDonutInstance.data.datasets[0].data = [10600, 6570, 14350, 43224];
+      chartDonutInstance.data.datasets[0].backgroundColor = ['#38bdf8', '#f43f5e', '#a78bfa', '#2dd4bf'];
+      if (donutLegendRow) {
+        donutLegendRow.innerHTML = `
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Forging 210V</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f43f5e;"></span><span>Carburizing HT</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Panel LMVDP</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Cap Bank APFC</span></div>
+        `;
+      }
+    } else if (filterKey === 'fac3') {
+      if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Substation Factory 3';
+      if (donutSubEl) donutSubEl.textContent = 'Distribusi Substation Fac 3 (Pompa, Forging, & Annealing HT).';
+      chartDonutInstance.data.labels = ['Pompa & Cooling', 'Forging 210V', 'Annealing HT', 'Panel LMVDP Fac 3'];
+      chartDonutInstance.data.datasets[0].data = [6240, 3920, 5540, 19896];
+      chartDonutInstance.data.datasets[0].backgroundColor = ['#34d399', '#38bdf8', '#fb923c', '#a78bfa'];
+      if (donutLegendRow) {
+        donutLegendRow.innerHTML = `
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#34d399;"></span><span>Pompa & Cooling</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Forging 210V</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Annealing HT</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Panel LMVDP</span></div>
+        `;
+      }
+    } else if (filterKey === 'forging') {
+      if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Substation Forging';
+      if (donutSubEl) donutSubEl.textContent = 'Konsumsi daya Forging Substation per Factory (1, 2, dan 3).';
+      chartDonutInstance.data.labels = ['Forging Fac 1', 'Forging Fac 2', 'Forging Fac 3', 'Feeder LMVDP'];
+      chartDonutInstance.data.datasets[0].data = [31290, 10600, 3920, 58594];
+      chartDonutInstance.data.datasets[0].backgroundColor = ['#38bdf8', '#2dd4bf', '#fb923c', '#a78bfa'];
+      if (donutLegendRow) {
+        donutLegendRow.innerHTML = `
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Fac 1 (68%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Fac 2 (18%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Fac 3 (7%)</span></div>
           <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Feeder LMVDP</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#94a3b8;"></span><span>Trafo Standby/Lobby</span></div>
+        `;
+      }
+    } else if (filterKey === 'heattreatment') {
+      if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Heat Treatment (HT)';
+      if (donutSubEl) donutSubEl.textContent = 'Konsumsi pemanas induksi billet Fac 1, carburizing Fac 2, & annealing Fac 3.';
+      chartDonutInstance.data.labels = ['Billet Heater Fac 1', 'Carburizing Fac 2', 'Annealing Fac 3', 'Panel Kontrol HT'];
+      chartDonutInstance.data.datasets[0].data = [23820, 6570, 5540, 33774];
+      chartDonutInstance.data.datasets[0].backgroundColor = ['#f43f5e', '#fb923c', '#2dd4bf', '#a78bfa'];
+      if (donutLegendRow) {
+        donutLegendRow.innerHTML = `
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f43f5e;"></span><span>Billet 6.6kV</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Carburizing</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Annealing</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Panel Kontrol</span></div>
         `;
       }
     } else {
-      if (donutTitleEl) donutTitleEl.textContent = 'Pembagian pemakaian energi';
-      if (donutSubEl) donutSubEl.textContent = 'Area mana yang paling banyak memakai listrik hari ini.';
-      chartDonutInstance.data.labels = ['Forging', 'Electrical Room', 'Kompresor', 'Pompa Air', 'Lobby'];
-      chartDonutInstance.data.datasets[0].data = [90603, 50825, 14256, 3872, 1069];
+      if (donutTitleEl) donutTitleEl.textContent = 'Pembagian Beban Substation Musashi';
+      if (donutSubEl) donutSubEl.textContent = 'Proporsi konsumsi energi gardu listrik antar Factory 1, 2, dan 3.';
+      chartDonutInstance.data.labels = ['Factory 1', 'Factory 2', 'Factory 3', '⚡ Forging Total', '🔥 HT Total'];
+      chartDonutInstance.data.datasets[0].data = [86724, 74744, 35596, 104404, 69704];
       chartDonutInstance.data.datasets[0].backgroundColor = [
-        '#38bdf8', '#2dd4bf', '#fb923c', '#34d399', '#f43f5e'
+        '#38bdf8', '#2dd4bf', '#34d399', '#f59e0b', '#f43f5e'
       ];
       if (donutLegendRow) {
         donutLegendRow.innerHTML = `
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-blue);"></span><span>Forging</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-teal);"></span><span>Electrical Room</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-orange);"></span><span>Kompresor</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-green);"></span><span>Pompa Air</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-rose);"></span><span>Lobby</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Factory 1 (44%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Factory 2 (38%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#34d399;"></span><span>Factory 3 (18%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f59e0b;"></span><span>⚡ Forging</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f43f5e;"></span><span>🔥 HT</span></div>
         `;
       }
     }
@@ -613,15 +779,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function getFilteredMeters() {
     let list = state.meters;
 
-    // Filter by Tab
+    // Filter by Tab / Substation
     if (state.activeFilter !== 'all') {
+      const f = state.activeFilter;
       list = list.filter(m => {
-        const cat = (m.category || '').toLowerCase();
-        if (state.activeFilter === 'forging') return cat === 'forging';
-        if (state.activeFilter === 'electrical') return cat === 'electrical';
-        if (state.activeFilter === 'compressor') return cat === 'compressor';
-        if (state.activeFilter === 'water') return cat === 'water' || cat === 'waterpump';
-        if (state.activeFilter === 'lobby') return cat === 'lobby';
+        if (f === 'electrical') {
+          return true; // All 38 Electrical Room meters
+        }
+        if (f === 'fac1') {
+          return m.factory === 'fac1';
+        }
+        if (f === 'fac2') {
+          return m.factory === 'fac2';
+        }
+        if (f === 'fac3') {
+          return m.factory === 'fac3';
+        }
+        if (f === 'forging') {
+          return m.system === 'forging';
+        }
+        if (f === 'heattreatment' || f === 'ht') {
+          return m.system === 'heattreatment';
+        }
         return true;
       });
     }
@@ -633,6 +812,8 @@ document.addEventListener('DOMContentLoaded', () => {
         (m.id && m.id.toLowerCase().includes(q)) ||
         (m.name && m.name.toLowerCase().includes(q)) ||
         (m.categoryLabel && m.categoryLabel.toLowerCase().includes(q)) ||
+        (m.factoryLabel && m.factoryLabel.toLowerCase().includes(q)) ||
+        (m.systemLabel && m.systemLabel.toLowerCase().includes(q)) ||
         (m.subArea && m.subArea.toLowerCase().includes(q)) ||
         (m.ip && m.ip.toLowerCase().includes(q))
       );
@@ -1142,7 +1323,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= 12. TV MODE & AUTO-CYCLE ROTATION =================
   let tvCountdownInterval = null;
   let tvCycleSecondsLeft = 12;
-  const TV_CYCLE_CATEGORIES = ['electrical', 'all', 'forging', 'compressor', 'water', 'lobby'];
+  const TV_CYCLE_CATEGORIES = ['electrical', 'fac1', 'fac2', 'fac3', 'forging', 'heattreatment'];
   let currentTvCategoryIdx = 0;
 
   function toggleTvMode() {
@@ -1180,10 +1361,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tvCycleSecondsLeft = 12;
         currentTvCategoryIdx = (currentTvCategoryIdx + 1) % TV_CYCLE_CATEGORIES.length;
         const nextCat = TV_CYCLE_CATEGORIES[currentTvCategoryIdx];
-        const targetBtn = document.querySelector(`.filter-tab-btn[data-filter="${nextCat}"]`);
-        if (targetBtn) {
-          targetBtn.click();
-        }
+        setActiveFilter(nextCat);
       }
       updateTvCountdownDisplay();
     }, 1000);
