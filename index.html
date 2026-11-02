@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Monitoring Power Meter Digital – PT Musashi</title>
-  <meta name="description" content="Dashboard Energy Management System & SCADA penggantian 137 unit kWh meter analog ke digital Mitsubishi Power Meter PT Musashi Auto Parts Indonesia.">
+  <title>Monitoring Electrical Room & Power Meter – PT Musashi</title>
+  <meta name="description" content="Dashboard Energy Management System & SCADA Electrical Room Gardu 20kV Cubicle Schneider SM6, Transformator, dan Panel LMVDP PT Musashi Auto Parts Indonesia.">
   <link rel="stylesheet" href="style.css?v=8.0">
   <!-- Chart.js local file for offline high performance -->
   <script src="chart.umd.min.js"></script>
@@ -17,29 +17,36 @@
     <header class="header-row">
       <div class="header-left">
         <div class="header-title-wrap">
-          <h1 class="header-title">Monitoring Power Meter – PT Musashi</h1>
+          <h1 class="header-title">Monitoring Electrical Room – PT Musashi</h1>
         </div>
         <div class="header-meta">
-          <span>Pengganti kWh meter analog ke Mitsubishi</span>
+          <span>Gardu 20kV Cubicle Schneider SM6 & 16 Transformator LMVDP</span>
           <span class="meta-dot">·</span>
           <span id="headerLiveTime">25 Okt 2026, 17.52.16</span>
           <span class="meta-dot">·</span>
-          <span class="badge-simulasi">Data simulasi</span>
+          <span class="badge-simulasi" style="background:rgba(45,212,191,0.15); color:var(--color-teal); border:1px solid rgba(45,212,191,0.3);">⚡ SCADA VLAN 20 Live</span>
         </div>
       </div>
 
       <div class="header-right">
-        <!-- Filter Tabs Button Group -->
+        <!-- Filter Tabs Button Group (Focus on Electrical Room) -->
         <div class="filter-tabs-group" id="filterTabsGroup">
-          <button class="filter-tab-btn active" data-filter="all">Semua</button>
+          <button class="filter-tab-btn active" data-filter="electrical">⚡ Electrical Room</button>
+          <button class="filter-tab-btn" data-filter="all">Semua Area Pabrik</button>
           <button class="filter-tab-btn" data-filter="forging">Forging</button>
-          <button class="filter-tab-btn" data-filter="electrical">Electrical Room</button>
           <button class="filter-tab-btn" data-filter="compressor">Kompresor</button>
           <button class="filter-tab-btn" data-filter="water">Pompa Air</button>
           <button class="filter-tab-btn" data-filter="lobby">Lobby</button>
         </div>
 
         <div class="header-actions">
+          <button class="btn-header-action btn-tv-mode" id="btnToggleTvMode" title="Mode TV Pabrik / Kiosk Layar Besar (Fullscreen & Auto-Rotate)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+              <polyline points="17 2 12 7 7 2"></polyline>
+            </svg>
+            <span id="tvModeBtnText">Mode TV</span>
+          </button>
           <button class="btn-header-action" id="btnOpenBlueprintModal" title="Lihat Blueprint Gardu Listrik 20kV HD">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -61,6 +68,29 @@
         </div>
       </div>
     </header>
+
+    <!-- ================= RUNNING TICKER BAR (SCADA TV & ALERT) ================= -->
+    <section class="factory-ticker-bar" id="factoryTickerBar">
+      <div class="ticker-badge">
+        <span class="pulsing-beacon"></span>
+        <span class="ticker-label">SCADA LIVE</span>
+      </div>
+      <div class="ticker-marquee-track">
+        <div class="ticker-marquee-content" id="tickerMarqueeText">
+          ⚡ <strong>SCADA ELECTRICAL ROOM & GARDU 20kV</strong> — Total Beban Substation: <span class="tk-kw">3.198 kW</span> &nbsp;|&nbsp; 
+          Power Factor: <span class="tk-pf">0,90 (Normal)</span> &nbsp;|&nbsp; 
+          Energi Hari Ini: <span class="tk-kwh">50.825 kWh</span> &nbsp;|&nbsp; 
+          Trafo & Panel: <span class="tk-online">34 / 34 Online</span> &nbsp;|&nbsp; 
+          ⚠️ <em>Perhatian: Trafo #13 (Sub-Distribution 210V) PF 0,84 — Cek Step 4 Kapasitor Bank APFC</em> &nbsp;|&nbsp;
+          📐 <em>Cubicle Schneider SM6: Incoming PLN 20kV Tegangan Stabil</em> &nbsp;|&nbsp;
+          🌿 Emisi CO₂: 40,2 ton &nbsp;|&nbsp; Tarif Listrik: Rp 1.444,7/kWh
+        </div>
+      </div>
+      <div class="tv-cycle-badge" id="tvCycleBadge" style="display:none;" title="Auto-Cycle Aktif untuk TV Pabrik">
+        <span class="cycle-spin">↻</span>
+        <span id="tvCycleCountdown">Auto-Putar: 15s</span>
+      </div>
+    </section>
 
     <!-- ================= 2. KPI CARDS ROW (COMPACT HIGH-DENSITY) ================= -->
     <section class="kpi-grid" aria-label="Ringkasan Beban dan Energi">
@@ -138,8 +168,8 @@
       <!-- Card: Pembagian Pemakaian Energi -->
       <div class="clean-card">
         <div class="card-header-block">
-          <h2 class="card-title">Pembagian pemakaian energi</h2>
-          <p class="card-subtitle">Area mana yang paling banyak memakai listrik hari ini.</p>
+          <h2 class="card-title" id="donutTitle">Distribusi Beban Electrical Room</h2>
+          <p class="card-subtitle" id="donutSub">Proporsi pemakaian energi transformator & panel substation.</p>
         </div>
         <div class="donut-chart-wrapper">
           <div class="donut-canvas-box">
@@ -148,24 +178,24 @@
           <!-- Donut Legend (Matches Screenshot) -->
           <div class="donut-legend-row" id="donutLegendRow">
             <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-blue);"></span>
-              <span>Forging</span>
+              <span class="donut-legend-color" style="background:var(--color-teal);"></span>
+              <span>Trafo 210V (TRF-12/13)</span>
             </div>
             <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-teal);"></span>
-              <span>Electrical Room</span>
+              <span class="donut-legend-color" style="background:var(--color-blue);"></span>
+              <span>Billet 6.6kV (TRF-11/15/16)</span>
             </div>
             <div class="donut-legend-item">
               <span class="donut-legend-color" style="background:var(--color-orange);"></span>
-              <span>Kompresor</span>
+              <span>Trafo 400V (TRF-14/05)</span>
             </div>
             <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-green);"></span>
-              <span>Pompa Air</span>
+              <span class="donut-legend-color" style="background:#a78bfa;"></span>
+              <span>Feeder LMVDP</span>
             </div>
             <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-rose);"></span>
-              <span>Lobby</span>
+              <span class="donut-legend-color" style="background:#94a3b8;"></span>
+              <span>Trafo Standby/Lobby</span>
             </div>
           </div>
         </div>
@@ -197,16 +227,26 @@
       </div>
     </section>
 
-    <!-- ================= 5. ROW 4: AKTIVITAS BEBAN MESIN UTAMA ================= -->
-    <section aria-label="Aktivitas Beban Mesin Utama">
-      <div class="card-header-block" style="margin-bottom:0.65rem;">
-        <h2 class="card-title">Aktivitas Beban Area Utama</h2>
-        <p class="card-subtitle">Konsumsi energi mesin produksi terkini (Forging, Kompresor, Pompa Air)</p>
+    <!-- ================= 5. ROW 4: ASET UTAMA ELECTRICAL ROOM ================= -->
+    <section aria-label="Aset Utama Electrical Room">
+      <div class="card-header-block" style="margin-bottom:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <div>
+          <h2 class="card-title" id="activitySectionTitle">Aset Kritis & Transformator Utama Electrical Room</h2>
+          <p class="card-subtitle" id="activitySectionSub">Pemantauan realtime Transformator 20kV, Panel LMVDP 210V/400V, dan Capacitor Bank APFC</p>
+        </div>
+        <button class="btn-page" onclick="document.getElementById('btnOpenBlueprintModal').click()" style="display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; border-color:var(--color-teal); color:var(--color-teal); cursor:pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+            <line x1="15" y1="3" x2="15" y2="21"></line>
+          </svg>
+          <span>Buka Blueprint SLD Gardu 20kV</span>
+        </button>
       </div>
 
       <div class="activity-cards-grid">
-        <!-- Activity Card 1: Forging Press -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-12')">
+        <!-- Activity Card 1: Trafo 2.000 kVA (TRF-12) -->
+        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-12')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
           <div class="activity-card-top">
             <div class="activity-icon-box orange">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -214,60 +254,60 @@
               </svg>
             </div>
             <div>
-              <h3 class="activity-card-title">Forging Press 2500T</h3>
-              <span class="activity-card-time">Shift 1 · 05.32 WIB</span>
+              <h3 class="activity-card-title">Transformer 2.000 kVA (TRF-12)</h3>
+              <span class="activity-card-time">Substation LMVDP 20kV / 210V · IP 10.41.47.122</span>
             </div>
-            <div class="activity-kw-pill">130 <span>kW</span></div>
+            <div class="activity-kw-pill">1.381 <span>kW</span></div>
           </div>
           <div class="activity-metric-rows">
-            <div class="act-metric-row"><span>Durasi Operasi</span><strong>45 mins</strong></div>
-            <div class="act-metric-row"><span>Beban Puncak (Peak)</span><strong>158 kW</strong></div>
-            <div class="act-metric-row"><span>Energi Terpakai</span><strong>389 kWh</strong></div>
-            <div class="act-metric-row"><span>Emisi Karbon</span><strong style="color:var(--color-teal);">307 kg CO₂e</strong></div>
+            <div class="act-metric-row"><span>Beban Mesin Forging</span><strong>20+ Feeder Line</strong></div>
+            <div class="act-metric-row"><span>Arus Sekunder (R-S-T)</span><strong>4.028 A</strong></div>
+            <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>210 V / 121 V</strong></div>
+            <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,94 (Optimal)</strong></div>
           </div>
         </div>
 
-        <!-- Activity Card 2: Air Compressor -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('CMP-01')">
-          <div class="activity-card-top">
-            <div class="activity-icon-box amber">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
-              </svg>
-            </div>
-            <div>
-              <h3 class="activity-card-title">Air Compressor Atlas</h3>
-              <span class="activity-card-time">Shift 1 · 16.24 WIB</span>
-            </div>
-            <div class="activity-kw-pill">105 <span>kW</span></div>
-          </div>
-          <div class="activity-metric-rows">
-            <div class="act-metric-row"><span>Durasi Operasi</span><strong>30 mins</strong></div>
-            <div class="act-metric-row"><span>Beban Puncak (Peak)</span><strong>121 kW</strong></div>
-            <div class="act-metric-row"><span>Energi Terpakai</span><strong>177 kWh</strong></div>
-            <div class="act-metric-row"><span>Emisi Karbon</span><strong style="color:var(--color-teal);">140 kg CO₂e</strong></div>
-          </div>
-        </div>
-
-        <!-- Activity Card 3: Water Pump -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('PMP-01')">
+        <!-- Activity Card 2: Trafo 1.000 kVA (TRF-11) -->
+        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-11')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
           <div class="activity-card-top">
             <div class="activity-icon-box blue">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
               </svg>
             </div>
             <div>
-              <h3 class="activity-card-title">Cooling Water Pump</h3>
-              <span class="activity-card-time">Shift 1 · 08.15 WIB</span>
+              <h3 class="activity-card-title">Transformer 1.000 kVA (TRF-11)</h3>
+              <span class="activity-card-time">Billet Heater 6.6kV · IP 10.41.47.111</span>
             </div>
-            <div class="activity-kw-pill">85 <span>kW</span></div>
+            <div class="activity-kw-pill">620 <span>kW</span></div>
           </div>
           <div class="activity-metric-rows">
-            <div class="act-metric-row"><span>Durasi Operasi</span><strong>60 mins</strong></div>
-            <div class="act-metric-row"><span>Beban Puncak (Peak)</span><strong>98 kW</strong></div>
-            <div class="act-metric-row"><span>Energi Terpakai</span><strong>451 kWh</strong></div>
-            <div class="act-metric-row"><span>Emisi Karbon</span><strong style="color:var(--color-teal);">356 kg CO₂e</strong></div>
+            <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Induction Heater Fac 1</strong></div>
+            <div class="act-metric-row"><span>Arus TM 6.6kV</span><strong>57,3 A</strong></div>
+            <div class="act-metric-row"><span>Tegangan Menengah</span><strong>6.600 V</strong></div>
+            <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,95 (Normal)</strong></div>
+          </div>
+        </div>
+
+        <!-- Activity Card 3: Capacitor Bank & LMVDP (CAP-01 / TRF-13) -->
+        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-13')" style="cursor:pointer;" title="Klik untuk lihat detail PF & Kapasitor Bank">
+          <div class="activity-card-top">
+            <div class="activity-icon-box amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="activity-card-title">Panel LMVDP & Capacitor Bank</h3>
+              <span class="activity-card-time">APFC 600 kVAR & Trafo #13 (1500 kVA)</span>
+            </div>
+            <div class="activity-kw-pill" style="background:rgba(251,191,36,0.15); color:var(--color-amber);">PF 0,84 <span>⚠️</span></div>
+          </div>
+          <div class="activity-metric-rows">
+            <div class="act-metric-row"><span>Status Regulasi PF</span><strong style="color:var(--color-amber);">Perlu Cek Step 4</strong></div>
+            <div class="act-metric-row"><span>Kompensasi Reaktif</span><strong>620 kVAR</strong></div>
+            <div class="act-metric-row"><span>Target Regulasi PLN</span><strong>Cos φ ≥ 0,85</strong></div>
+            <div class="act-metric-row"><span>Denda kVARh PLN</span><strong style="color:var(--color-green);">Rp 0 (Terkendali)</strong></div>
           </div>
         </div>
       </div>
@@ -277,11 +317,11 @@
     <section class="clean-card" aria-label="Tabel Seluruh Power Meter Digital">
       <div class="table-card-header">
         <div class="card-header-block" style="margin-bottom:0;">
-          <h2 class="card-title">Daftar meter</h2>
-          <p class="card-subtitle">Data langsung tiap meter. Alamat IP dipakai sistem untuk mengambil data.</p>
+          <h2 class="card-title" id="tableSectionTitle">Daftar Meter Electrical Room</h2>
+          <p class="card-subtitle" id="tableSectionSub">Telemetri realtime Transformator 20kV, Cubicle Schneider SM6, Panel LMVDP, dan APFC Capacitor Bank.</p>
         </div>
         <div class="table-toolbar-right">
-          <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari nama, area, atau IP...">
+          <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari TRF, LMV, IP 10.41.47..., dsb...">
         </div>
       </div>
 

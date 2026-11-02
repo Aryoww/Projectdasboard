@@ -1027,82 +1027,367 @@ html, body {
     gap: 0.4rem;
   }
 
+/* ================= 1.5 FACTORY TICKER BAR (SCADA TV & ALERTS) ================= */
+.factory-ticker-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.ticker-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: var(--color-blue);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pulsing-beacon {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-teal);
+  box-shadow: 0 0 8px var(--color-teal);
+  animation: beaconPulse 1.6s infinite ease-in-out;
+}
+
+@keyframes beaconPulse {
+  0% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 2px var(--color-teal); }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 10px var(--color-teal), 0 0 16px rgba(45, 212, 191, 0.5); }
+  100% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 2px var(--color-teal); }
+}
+
+.ticker-marquee-track {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.ticker-marquee-content {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marqueeRoll 28s linear infinite;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.ticker-marquee-track:hover .ticker-marquee-content {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeRoll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+.ticker-marquee-content strong {
+  color: var(--text-primary);
+}
+
+.ticker-marquee-content .tk-kw {
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+.ticker-marquee-content .tk-pf {
+  color: var(--color-teal);
+  font-weight: 600;
+}
+
+.ticker-marquee-content .tk-kwh {
+  color: var(--color-amber);
+  font-weight: 600;
+}
+
+.ticker-marquee-content .tk-online {
+  color: var(--color-green);
+  font-weight: 600;
+}
+
+.tv-cycle-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(251, 146, 60, 0.15);
+  border: 1px solid rgba(251, 146, 60, 0.4);
+  color: var(--color-orange);
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cycle-spin {
+  display: inline-block;
+  animation: spinCycle 4s linear infinite;
+}
+
+@keyframes spinCycle {
+  100% { transform: rotate(360deg); }
+}
+
+/* TV Mode Button Styling */
+.btn-tv-mode {
+  background: rgba(14, 165, 233, 0.12);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.btn-tv-mode:hover {
+  background: rgba(14, 165, 233, 0.25);
+  border-color: var(--color-blue);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+}
+
+body.tv-mode .btn-tv-mode {
+  background: var(--color-blue-dark);
+  border-color: var(--color-blue);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+}
+
+/* ================= 12. MODE TV PABRIK (FULLSCREEN SCADA KIOSK) ================= */
+body.tv-mode {
+  background-color: #050811;
+  font-size: 14px;
+}
+
+body.tv-mode .dashboard-container {
+  max-width: 100%;
+  padding: 0.75rem 1.25rem;
+  gap: 0.85rem;
+}
+
+body.tv-mode .header-title {
+  font-size: 1.6rem;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+body.tv-mode .header-meta {
+  font-size: 0.85rem;
+}
+
+body.tv-mode .factory-ticker-bar {
+  padding: 0.5rem 0.85rem;
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 15px rgba(2, 132, 199, 0.2);
+}
+
+body.tv-mode .ticker-marquee-content {
+  font-size: 0.95rem;
+}
+
+body.tv-mode .kpi-grid {
+  gap: 0.75rem;
+}
+
+body.tv-mode .kpi-card {
+  padding: 0.85rem 1rem;
+  background: linear-gradient(180deg, #131f33 0%, #0d1624 100%);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+}
+
+body.tv-mode .kpi-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+body.tv-mode .kpi-value {
+  font-size: 2.1rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+body.tv-mode .kpi-unit {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+body.tv-mode .kpi-subtitle {
+  font-size: 0.75rem;
+}
+
+body.tv-mode .card-title {
+  font-size: 1.05rem;
+}
+
+body.tv-mode .filter-tab-btn {
+  font-size: 0.85rem;
+  padding: 0.45rem 0.95rem;
+}
+
+/* ================= 13. RESPONSIVE DESIGN (SMARTPHONE & TABLET) ================= */
+@media (max-width: 900px) {
+  .dashboard-container {
+    padding: 0.5rem 0.65rem 1.5rem 0.65rem;
+    gap: 0.65rem;
+  }
+
+  .header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .header-left {
+    width: 100%;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.45rem;
+  }
+
+  /* Smooth horizontal swipe for tabs on smartphone */
+  .filter-tabs-group {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+  }
+
+  .filter-tabs-group::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-tab-btn {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 0.42rem 0.85rem;
+    font-size: 0.78rem;
+  }
+
+  .header-actions {
+    display: flex;
+    width: 100%;
+    gap: 0.35rem;
+  }
+
   .btn-header-action {
     flex: 1;
     justify-content: center;
-    padding: 0.38rem 0.5rem;
-    font-size: 0.72rem;
+    padding: 0.45rem 0.4rem;
+    font-size: 0.75rem;
   }
 
-  /* Compact 3-Column Grid on Mobile so all 6 KPIs take only ~120px! */
+  /* Smartphone KPI: 2 Column or 3 Column Grid */
   .kpi-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.45rem;
   }
 
   .kpi-card {
-    padding: 0.45rem 0.55rem;
-    min-height: 60px;
+    padding: 0.6rem 0.75rem;
+    min-height: 68px;
   }
 
   .kpi-title {
-    font-size: 0.65rem;
-    margin-bottom: 0.1rem;
+    font-size: 0.72rem;
   }
 
   .kpi-value {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
   }
 
-  .kpi-unit {
-    font-size: 0.68rem;
-  }
-
-  .kpi-subtitle {
-    font-size: 0.6rem;
+  .charts-grid-row, .mid-split-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
   }
 
   .line-chart-container {
-    height: 220px;
+    height: 200px;
   }
 
   .donut-canvas-box {
-    height: 170px;
+    height: 180px;
   }
 
   .bar-chart-container {
-    height: 240px;
+    height: 220px;
   }
 
-  .detail-specs-grid {
+  .activity-cards-grid {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
   }
 
-  .param-table-box {
-    grid-template-columns: 1fr;
-  }
-
-  .clean-search-input {
-    width: 100%;
+  /* Mobile Table: Horizontal Scroll indicator */
+  .clean-table-responsive {
+    border-radius: var(--radius-sm);
+    box-shadow: inset -8px 0 8px -8px rgba(0, 0, 0, 0.5);
   }
 
   .table-toolbar-right {
     width: 100%;
   }
+
+  .clean-search-input {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
-  .kpi-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.35rem;
+  .header-title {
+    font-size: 1.1rem;
   }
-  
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+  }
+
   .kpi-card {
-    padding: 0.4rem 0.45rem;
-    min-height: 56px;
+    padding: 0.5rem 0.6rem;
   }
 
   .kpi-value {
-    font-size: 0.98rem;
+    font-size: 1.15rem;
+  }
+
+  .kpi-subtitle {
+    font-size: 0.62rem;
+  }
+
+  .factory-ticker-bar {
+    padding: 0.25rem 0.45rem;
+  }
+
+  .ticker-badge {
+    font-size: 0.58rem;
+    padding: 0.1rem 0.35rem;
+  }
+
+  .ticker-marquee-content {
+    font-size: 0.7rem;
   }
 }

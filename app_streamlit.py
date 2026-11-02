@@ -44,7 +44,7 @@ STREAMLIT_PORT = 8501
 # 2. KONFIGURASI HALAMAN STREAMLIT
 # =============================================================================
 st.set_page_config(
-    page_title="Monitoring Power Meter Digital – PT Musashi",
+    page_title="Monitoring Electrical Room & Power Meter – PT Musashi",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"

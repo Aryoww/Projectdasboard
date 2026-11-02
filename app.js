@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       kwh: 50825,
       cost: 'Rp 73 jt',
       pf: '0,90',
-      online: '18 / 18',
+      online: '34 / 34',
       alertCount: '3 meter perlu dicek',
       carbonTon: '40,2',
       curve24h: [1920, 1750, 2410, 3510, 3030, 3580, 2610, 2030],
@@ -104,14 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Mesin Forging 22 (FRG2-22)', val: 3870 }
     ],
     electrical: [
-      { name: 'Trafo #1 (TRF-01)', val: 5420 },
-      { name: 'Trafo #4 (TRF-04)', val: 5180 },
-      { name: 'Trafo #6 (TRF-06)', val: 3920 },
-      { name: 'Panel LMVDP #3 (LMV-03)', val: 3710 },
-      { name: 'Trafo #3 (TRF-03)', val: 3320 },
-      { name: 'Trafo #2 (TRF-02)', val: 3250 },
-      { name: 'Panel LMVDP #11 (LMV-11)', val: 3200 },
-      { name: 'Panel LMVDP #9 (LMV-09)', val: 2890 }
+      { name: 'Trafo #12 LMVDP 210V (TRF-12)', val: 18450 },
+      { name: 'Trafo #13 Sub-Dist 210V (TRF-13)', val: 12840 },
+      { name: 'Trafo #14 Utility 400V (TRF-14)', val: 10570 },
+      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
+      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
+      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
+      { name: 'Trafo #05 Pompa Fac 4 (TRF-05)', val: 6240 },
+      { name: 'Panel LMVDP #10 (LMV-10)', val: 4120 }
     ],
     compressor: [
       { name: 'Compressor Room #2 (CMP-02)', val: 4520 },
@@ -168,9 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { title: 'Mesin Forging 22', area: 'Forging · Factory 1', note: 'Power factor 0.82 – cek kapasitor bank' }
     ],
     electrical: [
-      { title: 'Panel LMVDP #1', area: 'Electrical Room · Panel LMVDP', note: 'Power factor 0.84 – cek kapasitor bank' },
-      { title: 'Panel LMVDP #7', area: 'Electrical Room · Panel LMVDP', note: 'Power factor 0.83 – cek kapasitor bank' },
-      { title: 'Capacitor Bank Panel #4', area: 'Electrical Room · Kapasitor Bank', note: 'Step 3 & 4 Kontaktor Trip - Kapasitas Drop' }
+      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', note: 'PF 0,84 (Di bawah 0,85) – Cek Kapasitor Bank Step 4' },
+      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Electrical Room · Kapasitor Bank Fac 2', note: 'Step 3 & 4 Kontaktor Trip – Perlu Reset APFC' },
+      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Electrical Room · Panel LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging tinggi' }
     ],
     compressor: [
       { title: 'Compressor Room #3', area: 'Kompresor · Compressor Room', note: 'Power factor 0.81 – cek kapasitor bank' },
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Application State
   const state = {
     meters: (typeof METER_DATA !== 'undefined') ? JSON.parse(JSON.stringify(METER_DATA)) : [],
-    activeFilter: 'all',
+    activeFilter: 'electrical',
     searchQuery: '',
     sortColumn: 'id',
     sortAsc: true,
@@ -298,14 +298,44 @@ document.addEventListener('DOMContentLoaded', () => {
     if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
     if (kpiCarbonSub) kpiCarbonSub.textContent = 'Faktor grid Jamali 0,79 kg/kWh';
 
+    // Update Ticker Bar Realtime
+    const tkKw = document.querySelector('.tk-kw');
+    const tkPf = document.querySelector('.tk-pf');
+    const tkKwh = document.querySelector('.tk-kwh');
+    const tkOnline = document.querySelector('.tk-online');
+    if (tkKw) tkKw.textContent = `${data.kw.toLocaleString('id-ID')} kW`;
+    if (tkPf) tkPf.textContent = `${data.pf} (Normal)`;
+    if (tkKwh) tkKwh.textContent = `${data.kwh.toLocaleString('id-ID')} kWh`;
+    if (tkOnline) tkOnline.textContent = `${data.online} Online`;
+
     // 2. Update 24h Line Chart
     update24hChart(data.curve24h, data.curveMax, data.curveStep);
 
     // 3. Update Top 8 Horizontal Bar Chart
     updateTop8Chart(TOP_8_DATA[filterKey] || TOP_8_DATA.all);
 
-    // 4. Update Perlu Perhatian List
+    // 4. Update Donut Chart Distribution
+    updateDonutChart(filterKey);
+
+    // 5. Update Perlu Perhatian List
     renderAttentionList(ATTENTION_ALERTS[filterKey] || ATTENTION_ALERTS.all);
+
+    // 6. Update Section Titles for Table
+    const tableSectionTitle = document.getElementById('tableSectionTitle');
+    const tableSectionSub = document.getElementById('tableSectionSub');
+    if (tableSectionTitle && tableSectionSub) {
+      if (filterKey === 'electrical') {
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room';
+        tableSectionSub.textContent = 'Telemetri realtime Transformator 20kV, Cubicle Schneider SM6, Panel LMVDP, dan APFC Capacitor Bank.';
+      } else if (filterKey === 'all') {
+        tableSectionTitle.textContent = 'Daftar Seluruh Power Meter Pabrik';
+        tableSectionSub.textContent = 'Data langsung 137 unit meter digital Schneider & Mitsubishi seluruh area pabrik.';
+      } else {
+        const areaNames = { forging: 'Forging', compressor: 'Kompresor', water: 'Pompa Air', lobby: 'Lobby' };
+        tableSectionTitle.textContent = `Daftar Meter: Area ${areaNames[filterKey] || filterKey}`;
+        tableSectionSub.textContent = `Data telemetri konsumsi daya dan status operasional meter area ${areaNames[filterKey] || filterKey}.`;
+      }
+    }
   }
 
   // ================= 5. CHARTS INITIALIZATION & UPDATES =================
@@ -499,6 +529,60 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxVal = Math.max(...topItems.map(d => d.val));
     chartTop8Instance.options.scales.x.max = Math.ceil((maxVal * 1.15) / 1000) * 1000;
     chartTop8Instance.update();
+  }
+
+  function updateDonutChart(filterKey) {
+    if (!chartDonutInstance) return;
+    const donutTitleEl = document.getElementById('donutTitle');
+    const donutSubEl = document.getElementById('donutSub');
+    const donutLegendRow = document.getElementById('donutLegendRow');
+
+    if (filterKey === 'electrical') {
+      if (donutTitleEl) donutTitleEl.textContent = 'Distribusi Beban Electrical Room';
+      if (donutSubEl) donutSubEl.textContent = 'Proporsi pemakaian energi transformator & panel substation.';
+      chartDonutInstance.data.labels = [
+        'Trafo 210V LMVDP (TRF-12/13)',
+        'Trafo Billet 6.6kV (TRF-11/15/16)',
+        'Trafo 400V Utility (TRF-14/05)',
+        'Panel Feeder LMVDP',
+        'Trafo Standby/Lobby'
+      ];
+      chartDonutInstance.data.datasets[0].data = [24800, 16100, 5800, 3100, 1025];
+      chartDonutInstance.data.datasets[0].backgroundColor = [
+        '#2dd4bf', // Teal
+        '#38bdf8', // Blue
+        '#fb923c', // Orange
+        '#a78bfa', // Purple
+        '#94a3b8'  // Gray
+      ];
+      if (donutLegendRow) {
+        donutLegendRow.innerHTML = `
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Trafo 210V (TRF-12/13)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Billet 6.6kV (TRF-11/15/16)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Trafo 400V (TRF-14/05)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Feeder LMVDP</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#94a3b8;"></span><span>Trafo Standby/Lobby</span></div>
+        `;
+      }
+    } else {
+      if (donutTitleEl) donutTitleEl.textContent = 'Pembagian pemakaian energi';
+      if (donutSubEl) donutSubEl.textContent = 'Area mana yang paling banyak memakai listrik hari ini.';
+      chartDonutInstance.data.labels = ['Forging', 'Electrical Room', 'Kompresor', 'Pompa Air', 'Lobby'];
+      chartDonutInstance.data.datasets[0].data = [90603, 50825, 14256, 3872, 1069];
+      chartDonutInstance.data.datasets[0].backgroundColor = [
+        '#38bdf8', '#2dd4bf', '#fb923c', '#34d399', '#f43f5e'
+      ];
+      if (donutLegendRow) {
+        donutLegendRow.innerHTML = `
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-blue);"></span><span>Forging</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-teal);"></span><span>Electrical Room</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-orange);"></span><span>Kompresor</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-green);"></span><span>Pompa Air</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:var(--color-rose);"></span><span>Lobby</span></div>
+        `;
+      }
+    }
+    chartDonutInstance.update();
   }
 
   // ================= 6. RENDER PERLU PERHATIAN LIST =================
@@ -995,6 +1079,26 @@ document.addEventListener('DOMContentLoaded', () => {
       btnExportCsv.addEventListener('click', exportToCsv);
     }
 
+    // TV Mode Button
+    const btnToggleTvMode = document.getElementById('btnToggleTvMode');
+    if (btnToggleTvMode) {
+      btnToggleTvMode.addEventListener('click', toggleTvMode);
+    }
+
+    // Key shortcut 't' / 'T' for TV Mode
+    window.addEventListener('keydown', (e) => {
+      if ((e.key === 't' || e.key === 'T') && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        toggleTvMode();
+      }
+    });
+
+    // Exit TV mode if user exits fullscreen manually
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && document.body.classList.contains('tv-mode')) {
+        toggleTvMode();
+      }
+    });
+
     // Close modals on overlay backdrop click or Escape
     document.querySelectorAll('.modal-overlay').forEach(modal => {
       modal.addEventListener('click', (e) => {
@@ -1035,6 +1139,87 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.removeChild(link);
   }
 
+  // ================= 12. TV MODE & AUTO-CYCLE ROTATION =================
+  let tvCountdownInterval = null;
+  let tvCycleSecondsLeft = 12;
+  const TV_CYCLE_CATEGORIES = ['electrical', 'all', 'forging', 'compressor', 'water', 'lobby'];
+  let currentTvCategoryIdx = 0;
+
+  function toggleTvMode() {
+    const isTv = document.body.classList.toggle('tv-mode');
+    const tvBtnText = document.getElementById('tvModeBtnText');
+    const tvCycleBadge = document.getElementById('tvCycleBadge');
+
+    if (isTv) {
+      if (tvBtnText) tvBtnText.textContent = 'Keluar TV';
+      if (tvCycleBadge) tvCycleBadge.style.display = 'inline-flex';
+      
+      // Request fullscreen if supported
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      startTvAutoCycle();
+    } else {
+      if (tvBtnText) tvBtnText.textContent = 'Mode TV';
+      if (tvCycleBadge) tvCycleBadge.style.display = 'none';
+      stopTvAutoCycle();
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+  }
+
+  function startTvAutoCycle() {
+    stopTvAutoCycle();
+    tvCycleSecondsLeft = 12;
+    updateTvCountdownDisplay();
+
+    tvCountdownInterval = setInterval(() => {
+      tvCycleSecondsLeft--;
+      if (tvCycleSecondsLeft <= 0) {
+        tvCycleSecondsLeft = 12;
+        currentTvCategoryIdx = (currentTvCategoryIdx + 1) % TV_CYCLE_CATEGORIES.length;
+        const nextCat = TV_CYCLE_CATEGORIES[currentTvCategoryIdx];
+        const targetBtn = document.querySelector(`.filter-tab-btn[data-filter="${nextCat}"]`);
+        if (targetBtn) {
+          targetBtn.click();
+        }
+      }
+      updateTvCountdownDisplay();
+    }, 1000);
+  }
+
+  function stopTvAutoCycle() {
+    if (tvCountdownInterval) clearInterval(tvCountdownInterval);
+    tvCountdownInterval = null;
+  }
+
+  function updateTvCountdownDisplay() {
+    const cd = document.getElementById('tvCycleCountdown');
+    if (cd) {
+      cd.textContent = `Auto-Putar: ${tvCycleSecondsLeft}s`;
+    }
+  }
+
+  // Live Digital Clock with Flashing Seconds
+  function startLiveClock() {
+    const liveTimeEl = document.getElementById('headerLiveTime');
+    if (!liveTimeEl) return;
+
+    function updateClock() {
+      const now = new Date();
+      const options = { day: 'numeric', month: 'short', year: 'numeric' };
+      const datePart = now.toLocaleDateString('id-ID', options);
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      liveTimeEl.textContent = `${datePart}, ${h}:${m}:${s} WIB`;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  }
+
   // Run initialization
+  startLiveClock();
   init();
 });
