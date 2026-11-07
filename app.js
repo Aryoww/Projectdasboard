@@ -220,7 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // DOM Elements
   const headerLiveTime = document.getElementById('headerLiveTime');
-  const filterTabsGroup = document.getElementById('filterTabsGroup');
   const kpiDayaVal = document.getElementById('kpiDayaVal');
   const kpiDayaSub = document.getElementById('kpiDayaSub');
   const kpiEnergiVal = document.getElementById('kpiEnergiVal');
@@ -277,106 +276,118 @@ document.addEventListener('DOMContentLoaded', () => {
     state.activeFilter = filterKey;
     state.currentPage = 1;
 
-    // 1. Update Top Filter Tabs
-    const btnFilterAll = document.getElementById('btnFilterAll');
-    const btnElectricalParent = document.getElementById('btnElectricalParent');
-    const electricalBtnLabel = document.getElementById('electricalBtnLabel');
-
-    if (btnFilterAll) {
-      if (filterKey === 'all') {
-        btnFilterAll.classList.add('active');
+    // 1. Update Sidebar Navigation Active State
+    const sideBtns = document.querySelectorAll('.sidebar-menu-btn[data-filter]');
+    sideBtns.forEach(btn => {
+      const bf = btn.dataset.filter;
+      if (bf === filterKey || (filterKey === 'all' && bf === 'all') || (filterKey === 'electrical' && bf === 'all')) {
+        btn.classList.add('active');
       } else {
-        btnFilterAll.classList.remove('active');
-      }
-    }
-
-    if (btnElectricalParent) {
-      if (filterKey !== 'all') {
-        btnElectricalParent.classList.add('active');
-      } else {
-        btnElectricalParent.classList.remove('active');
-      }
-    }
-
-    // Dynamic button label for Electrical Room
-    if (electricalBtnLabel) {
-      const labels = {
-        fac1: '⚡ Electrical Room: Factory 1',
-        fac2: '⚡ Electrical Room: Factory 2',
-        fac3: '⚡ Electrical Room: Factory 3',
-        forging: '⚡ Electrical Room: Forging',
-        heattreatment: '⚡ Electrical Room: HT',
-        electrical: '⚡ Electrical Room'
-      };
-      electricalBtnLabel.textContent = labels[filterKey] || '⚡ Electrical Room';
-    }
-
-    // 2. Update Dropdown Items Active State
-    const dropdownItems = document.querySelectorAll('.dropdown-item-btn');
-    dropdownItems.forEach(item => {
-      if (item.dataset.filter === filterKey) {
-        item.classList.add('active');
-      } else {
-        item.classList.remove('active');
+        btn.classList.remove('active');
       }
     });
 
-    // 3. Update Sub-Navbar Pills Active State
+    // 2. Update Header Banner Title, Subtitle, and Tag
+    const bannerTitle = document.getElementById('bannerTitle');
+    const bannerSubtitle = document.getElementById('bannerSubtitle');
+    const bannerAreaTag = document.getElementById('bannerAreaTag');
+
+    if (bannerTitle) {
+      const titles = {
+        all: 'Dashboard',
+        electrical: 'Dashboard',
+        fac1: 'Electrical Room 1 – Substation Factory 1',
+        fac2: 'Electrical Room 2 – Substation Factory 2',
+        fac3: 'Electrical Room 3 – Substation Factory 3',
+        forging: 'Electrical Substation – Lini Mesin Forging',
+        heattreatment: 'Electrical Substation – Lini Heat Treatment (HT)'
+      };
+      bannerTitle.textContent = titles[filterKey] || 'Dashboard';
+    }
+
+    if (bannerSubtitle) {
+      const subs = {
+        all: 'Selamat datang, Division Head & Tim Utility Engineering PT Musashi Auto Parts Indonesia',
+        electrical: 'Selamat datang, Division Head & Tim Utility Engineering PT Musashi Auto Parts Indonesia',
+        fac1: 'Monitoring 15 Unit: Trafo 20kV (TRF 11-16), Panel LMVDP 210V & 400V, dan APFC Capacitor Bank',
+        fac2: 'Monitoring 12 Unit: Trafo 20kV (TRF 01-04), Panel LMVDP Forging & APFC Substation Fac 2',
+        fac3: 'Monitoring 11 Unit: Trafo 20kV (TRF 05-08), Panel LMVDP Pompa & Annealing Substation Fac 3',
+        forging: 'Monitoring 15 Unit Substation Penyuplai Beban Kritis Mesin Press & Induction Heaters Forging',
+        heattreatment: 'Monitoring 15 Unit Substation Penyuplai Billet Induction Heater 6.6kV & Carburizing Furnace'
+      };
+      bannerSubtitle.textContent = subs[filterKey] || subs.all;
+    }
+
+    if (bannerAreaTag) {
+      const tags = {
+        all: 'Gardu 20kV Cubicle Schneider SM6 · Fac 1, 2, 3 (Forging & Heat Treatment)',
+        electrical: 'Gardu 20kV Cubicle Schneider SM6 · Fac 1, 2, 3 (Forging & Heat Treatment)',
+        fac1: 'Substation Factory 1 · Gardu 20kV Schneider SM6 & Trafo TRF 11-16',
+        fac2: 'Substation Factory 2 · Gardu 20kV & Trafo TRF 01-04',
+        fac3: 'Substation Factory 3 · Gardu 20kV & Trafo TRF 05-08',
+        forging: 'Sistem Distribusi Beban Mesin Forging Press · Fac 1, 2, 3',
+        heattreatment: 'Sistem Distribusi Billet Induction Heater 6.6kV & Carburizing'
+      };
+      bannerAreaTag.textContent = tags[filterKey] || tags.all;
+    }
+
+    // 3. Update Alert Banner Messages
+    const alertCountBadge = document.getElementById('alertCountBadge');
+    const alertDescText = document.getElementById('alertDescText');
+    if (alertCountBadge && alertDescText) {
+      if (filterKey === 'fac1') {
+        alertCountBadge.textContent = '1 Meter Perlu Pengecekan';
+        alertDescText.textContent = 'Power factor Trafo TRF-13 bernilai 0,84 (di bawah standar target PLN ≥ 0,85). Periksa step kapasitor APFC #13 untuk mencegah penalti kVARh.';
+      } else if (filterKey === 'fac2') {
+        alertCountBadge.textContent = '2 Meter Perlu Pengecekan';
+        alertDescText.textContent = 'Trafo TRF-01 beban mendekati 85% saat peak forging shift 1. Pantau suhu transformator dan arus sekunder.';
+      } else if (filterKey === 'fac3') {
+        alertCountBadge.textContent = 'Semua Normal';
+        alertDescText.textContent = 'Kondisi beban Transformator TRF 05-08 dan power factor beroperasi dalam rentang optimal (> 0,90).';
+      } else if (filterKey === 'forging') {
+        alertCountBadge.textContent = '2 Trafo Beban Tinggi';
+        alertDescText.textContent = 'Lini Mesin Forging Press TRF-12 & TRF-01 mengalami lonjakan arus saat shift siang. Pastikan APFC aktif penuh.';
+      } else if (filterKey === 'heattreatment') {
+        alertCountBadge.textContent = 'Operasi Stabil';
+        alertDescText.textContent = 'Billet Induction Heater TRF-11, 15, 16 pada tegangan 6.6kV beroperasi stabil dengan PF 0,95.';
+      } else {
+        alertCountBadge.textContent = '3 Meter Perlu Pengecekan';
+        alertDescText.textContent = 'Power factor di bawah standar PLN (< 0,85) terdeteksi pada Trafo TRF-13 (0,84) dan APFC Cap Bank. Mohon segera periksa step regulator kapasitor untuk mencegah denda kVARh PLN.';
+      }
+    }
+
+    // 4. Update Sub-Navbar Pills Active State
     const subPills = document.querySelectorAll('.sub-nav-pill');
     subPills.forEach(pill => {
-      if (pill.dataset.subfilter === filterKey) {
+      const sf = pill.dataset.subfilter;
+      if (sf === filterKey || (filterKey === 'all' && sf === 'all') || (filterKey === 'electrical' && sf === 'all')) {
         pill.classList.add('active');
       } else {
         pill.classList.remove('active');
       }
     });
 
-    // Close Dropdown menu if open
-    const dropdownWrap = document.getElementById('electricalDropdownWrap');
-    if (dropdownWrap) {
-      dropdownWrap.classList.remove('open');
-      if (btnElectricalParent) btnElectricalParent.setAttribute('aria-expanded', 'false');
-    }
-
-    // 4. Update Views & Table
+    // 5. Update Views & Table
     updateViewForActiveFilter();
     renderTable();
   }
 
-  // ================= 3. FILTER TABS CONTROLLER =================
+  // ================= 3. FILTER TABS & SIDEBAR CONTROLLER =================
   function initFilterTabs() {
-    const btnFilterAll = document.getElementById('btnFilterAll');
-    if (btnFilterAll) {
-      btnFilterAll.addEventListener('click', (e) => {
+    // Sidebar Navigation Buttons
+    const sideBtns = document.querySelectorAll('.sidebar-menu-btn[data-filter]');
+    sideBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
-        setActiveFilter('all');
-      });
-    }
-
-    const dropdownWrap = document.getElementById('electricalDropdownWrap');
-    const btnElectricalParent = document.getElementById('btnElectricalParent');
-
-    if (btnElectricalParent && dropdownWrap) {
-      btnElectricalParent.addEventListener('click', (e) => {
-        e.stopPropagation();
-        // Toggle dropdown open/close
-        const isOpen = dropdownWrap.classList.toggle('open');
-        btnElectricalParent.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        
-        // If clicking when in 'all' mode, also switch filter to electrical
-        if (state.activeFilter === 'all') {
-          setActiveFilter('electrical');
-        }
-      });
-    }
-
-    // Dropdown Items Click Handlers
-    const dropdownItems = document.querySelectorAll('.dropdown-item-btn');
-    dropdownItems.forEach(item => {
-      item.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const f = item.dataset.filter || 'electrical';
+        const f = btn.dataset.filter || 'all';
         setActiveFilter(f);
+
+        // Auto close sidebar on mobile if open
+        const sidebar = document.getElementById('appSidebar');
+        if (sidebar && window.innerWidth <= 1024) {
+          sidebar.classList.remove('open');
+        }
       });
     });
 
@@ -385,17 +396,9 @@ document.addEventListener('DOMContentLoaded', () => {
     subPills.forEach(pill => {
       pill.addEventListener('click', (e) => {
         e.stopPropagation();
-        const f = pill.dataset.subfilter || 'electrical';
+        const f = pill.dataset.subfilter || 'all';
         setActiveFilter(f);
       });
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      if (dropdownWrap && !dropdownWrap.contains(e.target)) {
-        dropdownWrap.classList.remove('open');
-        if (btnElectricalParent) btnElectricalParent.setAttribute('aria-expanded', 'false');
-      }
     });
   }
 
@@ -463,15 +466,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= 5. CHARTS INITIALIZATION & UPDATES =================
   function initCharts() {
+    const isDark = document.body.classList.contains('dark-theme');
+    const defaultTextColor = isDark ? '#94a3b8' : '#64748b';
+    const defaultGridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : '#e2e8f0';
+
     Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
-    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.color = defaultTextColor;
 
     // --- 1. Line Chart: Beban 24 Jam Terakhir ---
     const ctx24h = document.getElementById('chart24h');
     if (ctx24h) {
       const gradient = ctx24h.getContext('2d').createLinearGradient(0, 0, 0, 240);
-      gradient.addColorStop(0, 'rgba(56, 189, 248, 0.22)');
-      gradient.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+      gradient.addColorStop(0, 'rgba(2, 132, 199, 0.22)');
+      gradient.addColorStop(1, 'rgba(2, 132, 199, 0.0)');
 
       chart24hInstance = new Chart(ctx24h, {
         type: 'line',
@@ -480,14 +487,14 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             label: 'Daya Listrik',
             data: CATEGORY_BASELINES.all.curve24h,
-            borderColor: '#38bdf8',
+            borderColor: '#0284c7',
             borderWidth: 2.8,
             backgroundColor: gradient,
             fill: true,
             tension: 0.45,
             pointRadius: 0,
             pointHoverRadius: 5,
-            pointHoverBackgroundColor: '#38bdf8',
+            pointHoverBackgroundColor: '#0284c7',
             pointHoverBorderColor: '#ffffff',
             pointHoverBorderWidth: 2
           }]
@@ -513,14 +520,14 @@ document.addEventListener('DOMContentLoaded', () => {
           scales: {
             x: {
               grid: { display: false },
-              ticks: { color: '#94a3b8', font: { size: 11 } }
+              ticks: { color: defaultTextColor, font: { size: 11 } }
             },
             y: {
               min: 0,
               max: CATEGORY_BASELINES.all.curveMax,
-              grid: { color: 'rgba(255, 255, 255, 0.04)' },
+              grid: { color: defaultGridColor },
               ticks: {
-                color: '#94a3b8',
+                color: defaultTextColor,
                 font: { size: 11 },
                 stepSize: CATEGORY_BASELINES.all.curveStep,
                 callback: (val) => val === 0 ? '0' : val.toLocaleString('id-ID')
@@ -548,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
               '#f43f5e'  // Lobby (Rose)
             ],
             borderWidth: 2,
-            borderColor: '#131d2e',
+            borderColor: '#ffffff',
             hoverOffset: 6
           }]
         },
@@ -588,7 +595,8 @@ document.addEventListener('DOMContentLoaded', () => {
           labels: topData.map(d => d.name),
           datasets: [{
             data: topData.map(d => d.val),
-            backgroundColor: '#2dd4bf',
+            backgroundColor: '#0284c7',
+            hoverBackgroundColor: '#8c2924',
             borderRadius: 4,
             barThickness: 16
           }]
@@ -602,7 +610,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tooltip: {
               backgroundColor: '#0f172a',
               titleColor: '#ffffff',
-              bodyColor: '#2dd4bf',
+              bodyColor: '#38bdf8',
               borderColor: 'rgba(255, 255, 255, 0.1)',
               borderWidth: 1,
               padding: 9,
@@ -615,19 +623,19 @@ document.addEventListener('DOMContentLoaded', () => {
           scales: {
             x: {
               min: 0,
-              max: 6000,
-              grid: { color: 'rgba(255, 255, 255, 0.04)' },
+              max: 20000,
+              grid: { color: defaultGridColor },
               ticks: {
-                color: '#94a3b8',
+                color: defaultTextColor,
                 font: { size: 10 },
-                stepSize: 1000,
+                stepSize: 4000,
                 callback: (val) => val === 0 ? '0' : val.toLocaleString('id-ID')
               }
             },
             y: {
               grid: { display: false },
               ticks: {
-                color: '#94a3b8',
+                color: defaultTextColor,
                 font: { size: 11 }
               }
             }
@@ -1255,9 +1263,82 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Export CSV
+    // Sidebar Blueprint Button
+    const sideNavBlueprint = document.getElementById('sideNavBlueprint');
+    if (sideNavBlueprint) {
+      sideNavBlueprint.addEventListener('click', () => {
+        applyBlueprintZoom(1.0);
+        window.openModal(blueprintModal);
+      });
+    }
+
+    // Export CSV (Header button & Sidebar button)
     if (btnExportCsv) {
       btnExportCsv.addEventListener('click', exportToCsv);
+    }
+    const sideNavReport = document.getElementById('sideNavReport');
+    if (sideNavReport) {
+      sideNavReport.addEventListener('click', exportToCsv);
+    }
+
+    // Scroll to Table Button (Header Banner)
+    const btnScrollToTable = document.getElementById('btnScrollToTable');
+    if (btnScrollToTable) {
+      btnScrollToTable.addEventListener('click', () => {
+        const tableSec = document.getElementById('tableSection');
+        if (tableSec) {
+          tableSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // Review Alert Button (Amber Alert Banner)
+    const btnReviewAlert = document.getElementById('btnReviewAlert');
+    if (btnReviewAlert) {
+      btnReviewAlert.addEventListener('click', () => {
+        const attCard = document.getElementById('attentionListCard');
+        if (attCard) {
+          attCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          attCard.style.boxShadow = '0 0 16px rgba(245, 158, 11, 0.7)';
+          attCard.style.borderColor = '#f59e0b';
+          setTimeout(() => {
+            attCard.style.boxShadow = '';
+            attCard.style.borderColor = '';
+          }, 2200);
+        }
+      });
+    }
+
+    // Theme Toggle Button (Light Corporate vs SCADA Dark)
+    const btnToggleTheme = document.getElementById('btnToggleTheme');
+    const themeToggleIcon = document.getElementById('themeToggleIcon');
+    const themeToggleText = document.getElementById('themeToggleText');
+    if (btnToggleTheme) {
+      btnToggleTheme.addEventListener('click', () => {
+        const isDark = document.body.classList.toggle('dark-theme');
+        if (themeToggleIcon) themeToggleIcon.textContent = isDark ? '☀️' : '🌙';
+        if (themeToggleText) themeToggleText.textContent = isDark ? 'Terang' : 'Gelap';
+        applyThemeToCharts(isDark);
+      });
+    }
+
+    // Mobile Sidebar Drawer Toggle
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const appSidebar = document.getElementById('appSidebar');
+    if (btnToggleSidebar && appSidebar) {
+      btnToggleSidebar.addEventListener('click', (e) => {
+        e.stopPropagation();
+        appSidebar.classList.toggle('open');
+      });
+
+      // Close sidebar if clicking outside on mobile
+      document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 && appSidebar.classList.contains('open')) {
+          if (!appSidebar.contains(e.target) && e.target !== btnToggleSidebar) {
+            appSidebar.classList.remove('open');
+          }
+        }
+      });
     }
 
     // TV Mode Button
@@ -1290,6 +1371,26 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') window.closeAllModals();
     });
+  }
+
+  // Dynamically update Chart.js colors based on Light vs Dark theme
+  function applyThemeToCharts(isDark) {
+    const textColor = isDark ? '#94a3b8' : '#64748b';
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : '#e2e8f0';
+
+    if (chart24hInstance) {
+      chart24hInstance.options.scales.x.ticks.color = textColor;
+      chart24hInstance.options.scales.y.ticks.color = textColor;
+      chart24hInstance.options.scales.y.grid.color = gridColor;
+      chart24hInstance.update();
+    }
+
+    if (chartTop8Instance) {
+      chartTop8Instance.options.scales.x.ticks.color = textColor;
+      chartTop8Instance.options.scales.x.grid.color = gridColor;
+      chartTop8Instance.options.scales.y.ticks.color = textColor;
+      chartTop8Instance.update();
+    }
   }
 
   // ================= 11. CSV EXPORT =================

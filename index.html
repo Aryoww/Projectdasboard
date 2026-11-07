@@ -3,133 +3,200 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Monitoring Electrical Room & Power Meter – PT Musashi</title>
-  <meta name="description" content="Dashboard Energy Management System & SCADA Electrical Room Gardu 20kV Cubicle Schneider SM6, Transformator, dan Panel LMVDP PT Musashi Auto Parts Indonesia.">
-  <link rel="stylesheet" href="style.css?v=8.0">
+  <title>Musashi Utility – Monitoring Electrical Room & Power Meter</title>
+  <meta name="description" content="Dashboard Energy Management System & SCADA Electrical Room Gardu 20kV Schneider SM6, Transformator, dan Panel LMVDP PT Musashi Auto Parts Indonesia.">
+  <link rel="stylesheet" href="style.css?v=9.0">
   <!-- Chart.js local file for offline high performance -->
   <script src="chart.umd.min.js"></script>
 </head>
 <body>
 
-  <main class="dashboard-container">
+  <div class="app-layout" id="appLayout">
 
-    <!-- ================= 1. HEADER ROW ================= -->
-    <header class="header-row">
-      <div class="header-left">
-        <div class="header-title-wrap">
-          <h1 class="header-title">Monitoring Electrical Room – PT Musashi</h1>
-        </div>
-        <div class="header-meta">
-          <span>Gardu 20kV Cubicle Schneider SM6 · Fac 1, 2, 3 (Forging & Heat Treatment)</span>
-          <span class="meta-dot">·</span>
-          <span id="headerLiveTime">25 Okt 2026, 17.52.16</span>
-          <span class="meta-dot">·</span>
-          <span class="badge-simulasi" style="background:rgba(45,212,191,0.15); color:var(--color-teal); border:1px solid rgba(45,212,191,0.3);">⚡ SCADA VLAN 20 Live</span>
+    <!-- ================= 1. SIDEBAR (PT MUSASHI UTILITY) ================= -->
+    <aside class="app-sidebar" id="appSidebar">
+      <!-- Watermark Wave Pattern (Matches Musashi Style) -->
+      <div class="sidebar-wave-watermark"></div>
+
+      <!-- Brand / Logo Area -->
+      <div class="sidebar-brand">
+        <div class="brand-logo-wrap">
+          <div class="brand-emblem-box">
+            <img src="musashi_logo_clean.png" alt="Musashi Emblem" class="brand-logo-img">
+          </div>
+          <div class="brand-text-wrap">
+            <div class="brand-title-row">
+              <span class="brand-title-musashi">MUSASHI</span>
+              <span class="brand-badge-utility">Utility</span>
+            </div>
+            <span class="brand-subtitle">Power to Value</span>
+          </div>
         </div>
       </div>
 
-      <div class="header-right">
-        <!-- Filter Tabs Button Group: Electrical Room (with Factory 1, 2, 3 & Forging & HT) -->
-        <div class="filter-tabs-group" id="filterTabsGroup">
-          <button class="filter-tab-btn" data-filter="all" id="btnFilterAll">Semua Substation</button>
-          
-          <!-- Electrical Room Dropdown Parent -->
-          <div class="filter-dropdown-wrap" id="electricalDropdownWrap">
-            <button class="filter-tab-btn filter-dropdown-btn active" id="btnElectricalParent" data-filter="electrical" aria-haspopup="true" aria-expanded="false" title="Menu Electrical Room (Factory 1, 2, 3 & Forging / HT)">
-              <span class="dropdown-glow-dot"></span>
-              <span class="dropdown-btn-label" id="electricalBtnLabel">⚡ Electrical Room</span>
-              <svg class="dropdown-chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="6 9 12 15 18 9"></polyline>
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav" aria-label="Menu Navigasi Utama Musashi Utility">
+        <!-- Section: DASHBOARD -->
+        <div class="sidebar-section-title">DASHBOARD</div>
+        <button class="sidebar-menu-btn active" data-filter="all" id="sideNavDashboard" title="Dashboard Utama Monitoring Seluruh Substation">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span class="sidebar-btn-label">Dashboard</span>
+        </button>
+
+        <!-- Section: ELECTRICAL ROOM -->
+        <div class="sidebar-section-title">ELECTRICAL ROOM</div>
+
+        <button class="sidebar-menu-btn" data-filter="fac1" id="sideNavFac1" title="Electrical Room Factory 1 (15 Unit: Trafo TRF 11-16 & LMVDP)">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span class="sidebar-btn-label">Electrical Room 1</span>
+          <span class="sidebar-badge">Fac 1 (15)</span>
+        </button>
+
+        <button class="sidebar-menu-btn" data-filter="fac2" id="sideNavFac2" title="Electrical Room Factory 2 (12 Unit: Trafo TRF 01-04 & APFC)">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span class="sidebar-btn-label">Electrical Room 2</span>
+          <span class="sidebar-badge">Fac 2 (12)</span>
+        </button>
+
+        <button class="sidebar-menu-btn" data-filter="fac3" id="sideNavFac3" title="Electrical Room Factory 3 (11 Unit: Trafo TRF 05-08 & Panel)">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span class="sidebar-btn-label">Electrical Room 3</span>
+          <span class="sidebar-badge">Fac 3 (11)</span>
+        </button>
+
+        <button class="sidebar-menu-btn" data-filter="forging" id="sideNavForging" title="Substation Lini Mesin Forging Press (15 Unit)">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+          <span class="sidebar-btn-label">Forging</span>
+          <span class="sidebar-badge forging-badge">Forging (15)</span>
+        </button>
+
+        <button class="sidebar-menu-btn" data-filter="heattreatment" id="sideNavHt" title="Substation Lini Heat Treatment (15 Unit: Billet Heater & Carburizing)">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+          </svg>
+          <span class="sidebar-btn-label">HT (Heat Treatment)</span>
+          <span class="sidebar-badge ht-badge">HT (15)</span>
+        </button>
+
+        <!-- Section: LAPORAN & REKAP -->
+        <div class="sidebar-section-title">LAPORAN & REKAP</div>
+
+        <button class="sidebar-menu-btn" id="sideNavReport" title="Buka data dan unduh rekapitulasi CSV">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span class="sidebar-btn-label">Pusat Laporan & Rekap</span>
+        </button>
+
+        <button class="sidebar-menu-btn" id="sideNavBlueprint" title="Buka Blueprint Gardu Listrik Schneider SM6 20kV">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+            <line x1="15" y1="3" x2="15" y2="21"></line>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+            <line x1="3" y1="15" x2="21" y2="15"></line>
+          </svg>
+          <span class="sidebar-btn-label">Blueprint Gardu 20kV</span>
+        </button>
+
+        <a class="sidebar-menu-btn" href="Panduan_Aksi_Harian_Dan_Materi_Belajar_EMS.html" target="_blank" title="Buka Panduan Aksi Harian & Kurikulum EMS Schneider">
+          <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          <span class="sidebar-btn-label">Panduan Belajar EMS</span>
+          <span class="sidebar-badge-new">Docs ↗</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar User Profile Footer -->
+      <div class="sidebar-profile-card">
+        <div class="profile-avatar-circle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="profile-info-text">
+          <div class="profile-name">Division Head Utility</div>
+          <div class="profile-role">Div. Head · Engineering</div>
+        </div>
+        <div class="profile-status-dot" title="Koneksi VLAN 20 SCADA Aktif"></div>
+      </div>
+    </aside>
+
+    <!-- ================= 2. MAIN CONTENT AREA ================= -->
+    <main class="app-main-content" id="appMainContent">
+
+      <!-- ================= TOP RED BANNER (MUSASHI CRIMSON HEADER) ================= -->
+      <header class="musashi-header-banner" id="mainBannerHeader">
+        <div class="banner-left">
+          <div class="banner-title-wrap">
+            <button class="mobile-sidebar-toggle" id="btnToggleSidebar" aria-label="Buka / Tutup Sidebar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
               </svg>
             </button>
-
-            <!-- Dropdown Menu Panel -->
-            <div class="filter-dropdown-menu" id="electricalDropdownMenu">
-              <div class="dropdown-menu-header">
-                <span class="dropdown-header-title">⚡ Substation Gardu 20kV</span>
-                <span class="dropdown-header-badge">38 Unit</span>
-              </div>
-              
-              <button class="dropdown-item-btn active" data-filter="electrical" title="Semua 38 Unit Substation & Gardu 20kV">
-                <span class="drop-item-icon">⚡</span>
-                <div class="drop-item-content">
-                  <span class="drop-item-title">Semua Electrical Room</span>
-                  <span class="drop-item-sub">Total 38 unit gardu, trafo & panel LMVDP</span>
-                </div>
-                <span class="drop-item-badge">38</span>
-              </button>
-
-              <div class="dropdown-section-title">Substation Factory</div>
-              
-              <button class="dropdown-item-btn" data-filter="fac1" title="Substation Electrical Factory 1">
-                <span class="drop-item-icon">🏭</span>
-                <div class="drop-item-content">
-                  <span class="drop-item-title">Factory 1</span>
-                  <span class="drop-item-sub">15 unit · Trafo TRF 11-16 & LMVDP</span>
-                </div>
-                <span class="drop-item-badge">15</span>
-              </button>
-
-              <button class="dropdown-item-btn" data-filter="fac2" title="Substation Electrical Factory 2">
-                <span class="drop-item-icon">🏭</span>
-                <div class="drop-item-content">
-                  <span class="drop-item-title">Factory 2</span>
-                  <span class="drop-item-sub">12 unit · Trafo TRF 01-04 & APFC</span>
-                </div>
-                <span class="drop-item-badge">12</span>
-              </button>
-
-              <button class="dropdown-item-btn" data-filter="fac3" title="Substation Electrical Factory 3">
-                <span class="drop-item-icon">🏭</span>
-                <div class="drop-item-content">
-                  <span class="drop-item-title">Factory 3</span>
-                  <span class="drop-item-sub">11 unit · Trafo TRF 05-08 & Panel</span>
-                </div>
-                <span class="drop-item-badge">11</span>
-              </button>
-
-              <div class="dropdown-section-title">Sistem Beban Substation</div>
-              
-              <button class="dropdown-item-btn" data-filter="forging" title="Substation Penyuplai Lini Forging">
-                <span class="drop-item-icon">⚡</span>
-                <div class="drop-item-content">
-                  <span class="drop-item-title">Forging</span>
-                  <span class="drop-item-sub">15 unit · Substation Lini Mesin Forging</span>
-                </div>
-                <span class="drop-item-badge forging">Forging</span>
-              </button>
-
-              <button class="dropdown-item-btn" data-filter="heattreatment" title="Substation Penyuplai Heat Treatment (HT)">
-                <span class="drop-item-icon">🔥</span>
-                <div class="drop-item-content">
-                  <span class="drop-item-title">Heat Treatment (HT)</span>
-                  <span class="drop-item-sub">15 unit · Billet Heater & Carburizing</span>
-                </div>
-                <span class="drop-item-badge ht">HT</span>
-              </button>
-            </div>
+            <h1 class="banner-title" id="bannerTitle">Dashboard</h1>
+          </div>
+          <p class="banner-subtitle" id="bannerSubtitle">Selamat datang, Division Head & Tim Utility Engineering PT Musashi Auto Parts Indonesia</p>
+          <div class="banner-meta">
+            <span id="bannerAreaTag">Gardu 20kV Cubicle Schneider SM6 · Fac 1, 2, 3 (Forging & Heat Treatment)</span>
+            <span class="meta-dot">·</span>
+            <span id="headerLiveTime">25 Okt 2026, 17.52.16</span>
+            <span class="meta-dot">·</span>
+            <span class="badge-vlan-live">⚡ SCADA VLAN 20 Live</span>
           </div>
         </div>
 
-        <div class="header-actions">
-          <button class="btn-header-action btn-tv-mode" id="btnToggleTvMode" title="Mode TV Pabrik / Kiosk Layar Besar (Fullscreen & Auto-Rotate)">
+        <div class="banner-actions">
+          <button class="btn-banner-action" id="btnScrollToTable" title="Buka Tabel Data Seluruh Meter">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            <span>Data Meter</span>
+          </button>
+          
+          <button class="btn-banner-action" id="btnOpenBlueprintModal" title="Lihat Blueprint Gardu Listrik 20kV HD">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+              <line x1="15" y1="3" x2="15" y2="21"></line>
+            </svg>
+            <span>Blueprint</span>
+          </button>
+
+          <button class="btn-banner-action btn-tv-mode" id="btnToggleTvMode" title="Mode TV Pabrik / Kiosk Layar Besar">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
               <polyline points="17 2 12 7 7 2"></polyline>
             </svg>
             <span id="tvModeBtnText">Mode TV</span>
           </button>
-          <button class="btn-header-action" id="btnOpenBlueprintModal" title="Lihat Blueprint Gardu Listrik 20kV HD">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="9" y1="3" x2="9" y2="21"></line>
-              <line x1="15" y1="3" x2="15" y2="21"></line>
-              <line x1="3" y1="9" x2="21" y2="9"></line>
-              <line x1="3" y1="15" x2="21" y2="15"></line>
-            </svg>
-            <span>Blueprint</span>
-          </button>
-          <button class="btn-header-action" id="btnExportCsv" title="Unduh laporan data meter ke file CSV">
+
+          <button class="btn-banner-action" id="btnExportCsv" title="Unduh laporan data meter ke file CSV">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
@@ -137,301 +204,346 @@
             </svg>
             <span>CSV</span>
           </button>
-        </div>
-      </div>
-    </header>
 
-    <!-- ================= SUB-NAVIGATION BAR (QUICK PILLS UNTUK ELECTRICAL ROOM) ================= -->
-    <nav class="sub-navbar-bar" id="electricalSubNavbar" aria-label="Sub-menu Electrical Room">
-      <div class="sub-nav-inner">
-        <span class="sub-nav-badge">
-          <span class="pulsing-sub-dot"></span>
-          Substation:
-        </span>
-        <div class="sub-pills-list">
-          <button class="sub-nav-pill active" data-subfilter="electrical" title="Tampilkan Semua 38 Unit Substation & Gardu Listrik">Semua (38)</button>
-          <button class="sub-nav-pill" data-subfilter="fac1" title="Substation Factory 1 (15 Unit)">🏭 Factory 1 (15)</button>
-          <button class="sub-nav-pill" data-subfilter="fac2" title="Substation Factory 2 (12 Unit)">🏭 Factory 2 (12)</button>
-          <button class="sub-nav-pill" data-subfilter="fac3" title="Substation Factory 3 (11 Unit)">🏭 Factory 3 (11)</button>
-          <span class="sub-pills-separator"></span>
-          <button class="sub-nav-pill" data-subfilter="forging" title="Sistem Beban Forging Substation (15 Unit)">⚡ Forging (15)</button>
-          <button class="sub-nav-pill" data-subfilter="heattreatment" title="Sistem Beban Heat Treatment Substation (15 Unit)">🔥 HT (15)</button>
+          <button class="btn-banner-action btn-theme-toggle" id="btnToggleTheme" title="Beralih Tema Terang / Gelap">
+            <span id="themeToggleIcon">🌙</span>
+            <span id="themeToggleText">Gelap</span>
+          </button>
         </div>
-      </div>
-      <div class="tv-cycle-badge" id="tvCycleBadge" style="display:none;" title="Auto-Cycle Aktif untuk TV Pabrik">
-        <span class="cycle-spin">↻</span>
-        <span id="tvCycleCountdown">Auto-Putar: 15s</span>
-      </div>
-    </nav>
+      </header>
 
-    <!-- ================= 2. KPI CARDS ROW (COMPACT HIGH-DENSITY) ================= -->
-    <section class="kpi-grid" aria-label="Ringkasan Beban dan Energi">
-      <!-- Card 1: Daya Saat Ini -->
-      <div class="kpi-card">
-        <div class="kpi-title">Daya saat ini</div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" id="kpiDayaVal">14.129</span>
-          <span class="kpi-unit">kW</span>
-        </div>
-        <div class="kpi-subtitle" id="kpiDayaSub">Total beban listrik sekarang</div>
-      </div>
-
-      <!-- Card 2: Energi Hari Ini -->
-      <div class="kpi-card">
-        <div class="kpi-title">Energi hari ini</div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" id="kpiEnergiVal">197.064</span>
-          <span class="kpi-unit">kWh</span>
-        </div>
-        <div class="kpi-subtitle" id="kpiEnergiSub">Sejak pukul 00.00</div>
-      </div>
-
-      <!-- Card 3: Estimasi Biaya Hari Ini -->
-      <div class="kpi-card">
-        <div class="kpi-title">Estimasi biaya hari ini</div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" id="kpiBiayaVal">Rp 285 jt</span>
-        </div>
-        <div class="kpi-subtitle" id="kpiBiayaSub">Berdasarkan tarif asumsi</div>
-      </div>
-
-      <!-- Card 4: Power Factor Rata-rata -->
-      <div class="kpi-card">
-        <div class="kpi-title">Power factor rata-rata</div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" id="kpiPfVal">0,90</span>
-        </div>
-        <div class="kpi-subtitle" id="kpiPfSub">Baik (target ≥ 0,85)</div>
-      </div>
-
-      <!-- Card 5: Meter Online -->
-      <div class="kpi-card">
-        <div class="kpi-title">Meter online</div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" id="kpiOnlineVal">38 / 38</span>
-        </div>
-        <div class="kpi-subtitle" id="kpiOnlineSub">3 meter perlu dicek</div>
-      </div>
-
-      <!-- Card 6: Emisi Karbon ESG -->
-      <div class="kpi-card">
-        <div class="kpi-title">Emisi karbon (CO₂e)</div>
-        <div class="kpi-value-row">
-          <span class="kpi-value" id="kpiCarbonVal" style="color:var(--color-teal);">155,7</span>
-          <span class="kpi-unit">ton</span>
-        </div>
-        <div class="kpi-subtitle" id="kpiCarbonSub">Faktor grid Jamali 0,79 kg/kWh</div>
-      </div>
-    </section>
-
-    <!-- ================= 3. ROW 2: CHARTS (24H LINE & DONUT) ================= -->
-    <section class="charts-grid-row" aria-label="Grafik Beban 24 Jam dan Donut Distribusi">
-      <!-- Card: Beban Listrik 24 Jam Terakhir -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title">Beban listrik 24 jam terakhir</h2>
-          <p class="card-subtitle">Total daya (kW). Naik saat jam produksi, turun malam hari.</p>
-        </div>
-        <div class="line-chart-container">
-          <canvas id="chart24h"></canvas>
-        </div>
-      </div>
-
-      <!-- Card: Pembagian Pemakaian Energi -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title" id="donutTitle">Distribusi Beban Electrical Room</h2>
-          <p class="card-subtitle" id="donutSub">Proporsi pemakaian energi transformator & panel substation.</p>
-        </div>
-        <div class="donut-chart-wrapper">
-          <div class="donut-canvas-box">
-            <canvas id="chartDonutEnergy"></canvas>
-          </div>
-          <!-- Donut Legend (Matches Screenshot) -->
-          <div class="donut-legend-row" id="donutLegendRow">
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-teal);"></span>
-              <span>Trafo 210V (TRF-12/13)</span>
+      <!-- ================= ALERT BANNER (PERLU TINDAKAN / ALERT UTILITY) ================= -->
+      <section class="alert-action-banner" id="alertActionBanner" aria-label="Pemberitahuan Alert Utility">
+        <div class="alert-banner-left">
+          <div class="alert-icon-box">!</div>
+          <div class="alert-text-block">
+            <div class="alert-headline">
+              <strong>PERLU TINDAKAN ANDA (TO-DO UTILITY)</strong>
+              <span class="alert-count-pill" id="alertCountBadge">3 Meter Perlu Pengecekan</span>
             </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-blue);"></span>
-              <span>Billet 6.6kV (TRF-11/15/16)</span>
-            </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:var(--color-orange);"></span>
-              <span>Trafo 400V (TRF-14/05)</span>
-            </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:#a78bfa;"></span>
-              <span>Feeder LMVDP</span>
-            </div>
-            <div class="donut-legend-item">
-              <span class="donut-legend-color" style="background:#94a3b8;"></span>
-              <span>Trafo Standby/Lobby</span>
-            </div>
+            <p class="alert-desc" id="alertDescText">
+              Power factor di bawah standar PLN (&lt; 0,85) terdeteksi pada Trafo TRF-13 (0,84) dan APFC Cap Bank. Mohon segera periksa step regulator kapasitor untuk mencegah denda kVARh PLN.
+            </p>
           </div>
         </div>
-      </div>
-    </section>
+        <div class="alert-banner-right">
+          <button class="btn-alert-action" id="btnReviewAlert" title="Lihat meter yang perlu tindakan">
+            <span>Tinjau Meter Masuk →</span>
+          </button>
+        </div>
+      </section>
 
-    <!-- ================= 4. ROW 3: TOP 8 METERS & PERLU PERHATIAN ================= -->
-    <section class="mid-split-grid" aria-label="Top 8 Pemakaian dan Perlu Perhatian">
-      <!-- Card: 8 Meter dengan Pemakaian Tertinggi -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title">8 meter dengan pemakaian tertinggi</h2>
-          <p class="card-subtitle">Fokus penghematan: mulai dari yang terbesar.</p>
-        </div>
-        <div class="bar-chart-container">
-          <canvas id="chartTop8Meters"></canvas>
-        </div>
-      </div>
-
-      <!-- Card: Perlu Perhatian -->
-      <div class="clean-card">
-        <div class="card-header-block">
-          <h2 class="card-title">Perlu perhatian</h2>
-          <p class="card-subtitle">Meter offline atau power factor rendah (di bawah 0,85 bisa kena denda kVArh).</p>
-        </div>
-        <div class="attention-list-wrapper" id="attentionList">
-          <!-- Dynamically populated by app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 5. ROW 4: ASET UTAMA ELECTRICAL ROOM ================= -->
-    <section aria-label="Aset Utama Electrical Room">
-      <div class="card-header-block" style="margin-bottom:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
-        <div>
-          <h2 class="card-title" id="activitySectionTitle">Aset Kritis & Transformator Utama Electrical Room</h2>
-          <p class="card-subtitle" id="activitySectionSub">Pemantauan realtime Transformator 20kV, Panel LMVDP 210V/400V, dan Capacitor Bank APFC</p>
-        </div>
-        <button class="btn-page" onclick="document.getElementById('btnOpenBlueprintModal').click()" style="display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; border-color:var(--color-teal); color:var(--color-teal); cursor:pointer;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="9" y1="3" x2="9" y2="21"></line>
-            <line x1="15" y1="3" x2="15" y2="21"></line>
-          </svg>
-          <span>Buka Blueprint SLD Gardu 20kV</span>
-        </button>
-      </div>
-
-      <div class="activity-cards-grid" id="activityCardsGrid">
-        <!-- Activity Card 1: Trafo 2.000 kVA (TRF-12) -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-12')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
-          <div class="activity-card-top">
-            <div class="activity-icon-box orange">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-              </svg>
-            </div>
-            <div>
-              <h3 class="activity-card-title">Transformer 2.000 kVA (TRF-12)</h3>
-              <span class="activity-card-time">Substation LMVDP 20kV / 210V · IP 10.41.47.122</span>
-            </div>
-            <div class="activity-kw-pill">1.381 <span>kW</span></div>
+      <!-- ================= SUB-NAVIGATION BAR (QUICK PILLS UNTUK ELECTRICAL ROOM) ================= -->
+      <nav class="sub-navbar-bar" id="electricalSubNavbar" aria-label="Sub-menu Electrical Room">
+        <div class="sub-nav-inner">
+          <span class="sub-nav-badge">
+            <span class="pulsing-sub-dot"></span>
+            Filter Cepat:
+          </span>
+          <div class="sub-pills-list">
+            <button class="sub-nav-pill active" data-subfilter="all" title="Tampilkan Semua 38 Unit Substation & Gardu Listrik">Semua Substation (38)</button>
+            <button class="sub-nav-pill" data-subfilter="fac1" title="Substation Factory 1 (15 Unit)">🏭 Electrical Room 1 (15)</button>
+            <button class="sub-nav-pill" data-subfilter="fac2" title="Substation Factory 2 (12 Unit)">🏭 Electrical Room 2 (12)</button>
+            <button class="sub-nav-pill" data-subfilter="fac3" title="Substation Factory 3 (11 Unit)">🏭 Electrical Room 3 (11)</button>
+            <span class="sub-pills-separator"></span>
+            <button class="sub-nav-pill" data-subfilter="forging" title="Sistem Beban Forging Substation (15 Unit)">⚡ Forging (15)</button>
+            <button class="sub-nav-pill" data-subfilter="heattreatment" title="Sistem Beban Heat Treatment Substation (15 Unit)">🔥 HT (15)</button>
           </div>
-          <div class="activity-metric-rows">
-            <div class="act-metric-row"><span>Beban Mesin Forging</span><strong>20+ Feeder Line</strong></div>
-            <div class="act-metric-row"><span>Arus Sekunder (R-S-T)</span><strong>4.028 A</strong></div>
-            <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>210 V / 121 V</strong></div>
-            <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,94 (Optimal)</strong></div>
+        </div>
+        <div class="tv-cycle-badge" id="tvCycleBadge" style="display:none;" title="Auto-Cycle Aktif untuk TV Pabrik">
+          <span class="cycle-spin">↻</span>
+          <span id="tvCycleCountdown">Auto-Putar: 15s</span>
+        </div>
+      </nav>
+
+      <!-- ================= 2. KPI CARDS ROW (COMPACT HIGH-DENSITY) ================= -->
+      <section class="kpi-grid" aria-label="Ringkasan Beban dan Energi">
+        <!-- Card 1: Daya Saat Ini -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-icon-pill kpi-icon-teal">kW</span>
+            <div class="kpi-title">Daya saat ini</div>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value" id="kpiDayaVal">14.129</span>
+            <span class="kpi-unit">kW</span>
+          </div>
+          <div class="kpi-subtitle" id="kpiDayaSub">Total beban listrik sekarang</div>
+        </div>
+
+        <!-- Card 2: Energi Hari Ini -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-icon-pill kpi-icon-amber">kWh</span>
+            <div class="kpi-title">Energi hari ini</div>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value" id="kpiEnergiVal">197.064</span>
+            <span class="kpi-unit">kWh</span>
+          </div>
+          <div class="kpi-subtitle" id="kpiEnergiSub">Sejak pukul 00.00</div>
+        </div>
+
+        <!-- Card 3: Estimasi Biaya Hari Ini -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-icon-pill kpi-icon-green">Rp</span>
+            <div class="kpi-title">Estimasi biaya hari ini</div>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value" id="kpiBiayaVal">Rp 285 jt</span>
+          </div>
+          <div class="kpi-subtitle" id="kpiBiayaSub">Berdasarkan tarif asumsi</div>
+        </div>
+
+        <!-- Card 4: Power Factor Rata-rata -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-icon-pill kpi-icon-blue">PF</span>
+            <div class="kpi-title">Power factor rata-rata</div>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value" id="kpiPfVal">0,90</span>
+          </div>
+          <div class="kpi-subtitle" id="kpiPfSub">Baik (target ≥ 0,85)</div>
+        </div>
+
+        <!-- Card 5: Meter Online -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-icon-pill kpi-icon-rose">⚡</span>
+            <div class="kpi-title">Meter online</div>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value" id="kpiOnlineVal">38 / 38</span>
+          </div>
+          <div class="kpi-subtitle" id="kpiOnlineSub">3 meter perlu dicek</div>
+        </div>
+
+        <!-- Card 6: Emisi Karbon ESG -->
+        <div class="kpi-card">
+          <div class="kpi-top-row">
+            <span class="kpi-icon-pill kpi-icon-teal">CO₂</span>
+            <div class="kpi-title">Emisi karbon (CO₂e)</div>
+          </div>
+          <div class="kpi-value-row">
+            <span class="kpi-value" id="kpiCarbonVal" style="color:var(--color-teal);">155,7</span>
+            <span class="kpi-unit">ton</span>
+          </div>
+          <div class="kpi-subtitle" id="kpiCarbonSub">Faktor grid Jamali 0,79 kg/kWh</div>
+        </div>
+      </section>
+
+      <!-- ================= 3. ROW 2: CHARTS (24H LINE & DONUT) ================= -->
+      <section class="charts-grid-row" aria-label="Grafik Beban 24 Jam dan Donut Distribusi">
+        <!-- Card: Beban Listrik 24 Jam Terakhir -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h2 class="card-title">Beban listrik 24 jam terakhir</h2>
+            <p class="card-subtitle">Total daya (kW). Naik saat jam produksi, turun malam hari.</p>
+          </div>
+          <div class="line-chart-container">
+            <canvas id="chart24h"></canvas>
           </div>
         </div>
 
-        <!-- Activity Card 2: Trafo 1.000 kVA (TRF-11) -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-11')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
-          <div class="activity-card-top">
-            <div class="activity-icon-box blue">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-              </svg>
-            </div>
-            <div>
-              <h3 class="activity-card-title">Transformer 1.000 kVA (TRF-11)</h3>
-              <span class="activity-card-time">Billet Heater 6.6kV · IP 10.41.47.111</span>
-            </div>
-            <div class="activity-kw-pill">620 <span>kW</span></div>
+        <!-- Card: Pembagian Pemakaian Energi -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h2 class="card-title" id="donutTitle">Distribusi Beban Electrical Room</h2>
+            <p class="card-subtitle" id="donutSub">Proporsi pemakaian energi transformator & panel substation.</p>
           </div>
-          <div class="activity-metric-rows">
-            <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Induction Heater Fac 1</strong></div>
-            <div class="act-metric-row"><span>Arus TM 6.6kV</span><strong>57,3 A</strong></div>
-            <div class="act-metric-row"><span>Tegangan Menengah</span><strong>6.600 V</strong></div>
-            <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,95 (Normal)</strong></div>
+          <div class="donut-chart-wrapper">
+            <div class="donut-canvas-box">
+              <canvas id="chartDonutEnergy"></canvas>
+            </div>
+            <!-- Donut Legend -->
+            <div class="donut-legend-row" id="donutLegendRow">
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-teal);"></span>
+                <span>Trafo 210V (TRF-12/13)</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-blue);"></span>
+                <span>Billet 6.6kV (TRF-11/15/16)</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:var(--color-orange);"></span>
+                <span>Trafo 400V (TRF-14/05)</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:#a78bfa;"></span>
+                <span>Feeder LMVDP</span>
+              </div>
+              <div class="donut-legend-item">
+                <span class="donut-legend-color" style="background:#94a3b8;"></span>
+                <span>Trafo Standby/Lobby</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. ROW 3: TOP 8 METERS & PERLU PERHATIAN ================= -->
+      <section class="mid-split-grid" aria-label="Top 8 Pemakaian dan Perlu Perhatian">
+        <!-- Card: 8 Meter dengan Pemakaian Tertinggi -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h2 class="card-title">8 meter dengan pemakaian tertinggi</h2>
+            <p class="card-subtitle">Fokus penghematan: mulai dari yang terbesar.</p>
+          </div>
+          <div class="bar-chart-container">
+            <canvas id="chartTop8Meters"></canvas>
           </div>
         </div>
 
-        <!-- Activity Card 3: Capacitor Bank & LMVDP (CAP-01 / TRF-13) -->
-        <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-13')" style="cursor:pointer;" title="Klik untuk lihat detail PF & Kapasitor Bank">
-          <div class="activity-card-top">
-            <div class="activity-icon-box amber">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-              </svg>
-            </div>
-            <div>
-              <h3 class="activity-card-title">Panel LMVDP & Capacitor Bank</h3>
-              <span class="activity-card-time">APFC 600 kVAR & Trafo #13 (1500 kVA)</span>
-            </div>
-            <div class="activity-kw-pill" style="background:rgba(251,191,36,0.15); color:var(--color-amber);">PF 0,84 <span>⚠️</span></div>
+        <!-- Card: Perlu Perhatian -->
+        <div class="clean-card" id="attentionListCard">
+          <div class="card-header-block">
+            <h2 class="card-title">Perlu perhatian</h2>
+            <p class="card-subtitle">Meter offline atau power factor rendah (di bawah 0,85 bisa kena denda kVArh).</p>
           </div>
-          <div class="activity-metric-rows">
-            <div class="act-metric-row"><span>Status Regulasi PF</span><strong style="color:var(--color-amber);">Perlu Cek Step 4</strong></div>
-            <div class="act-metric-row"><span>Kompensasi Reaktif</span><strong>620 kVAR</strong></div>
-            <div class="act-metric-row"><span>Target Regulasi PLN</span><strong>Cos φ ≥ 0,85</strong></div>
-            <div class="act-metric-row"><span>Denda kVARh PLN</span><strong style="color:var(--color-green);">Rp 0 (Terkendali)</strong></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= 6. ROW 5: DAFTAR METER TABLE ================= -->
-    <section class="clean-card" aria-label="Tabel Seluruh Power Meter Digital">
-      <div class="table-card-header">
-        <div class="card-header-block" style="margin-bottom:0;">
-          <h2 class="card-title" id="tableSectionTitle">Daftar Meter Electrical Room</h2>
-          <p class="card-subtitle" id="tableSectionSub">Telemetri realtime Transformator 20kV, Cubicle Schneider SM6, Panel LMVDP, dan APFC Capacitor Bank.</p>
-        </div>
-        <div class="table-toolbar-right">
-          <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari TRF, LMV, IP 10.41.47..., dsb...">
-        </div>
-      </div>
-
-      <div class="clean-table-responsive">
-        <table class="clean-table" id="meterTable">
-          <thead>
-            <tr>
-              <th data-sort="id">ID ⇕</th>
-              <th data-sort="name">Nama meter ⇕</th>
-              <th data-sort="categoryLabel">Area ⇕</th>
-              <th data-sort="ip">IP address ⇕</th>
-              <th data-sort="kw" style="text-align:right;">Daya (kW) ⇕</th>
-              <th data-sort="voltage" style="text-align:right;">Tegangan (V) ⇕</th>
-              <th data-sort="current" style="text-align:right;">Arus (A) ⇕</th>
-              <th data-sort="pf" style="text-align:right;">Power factor ⇕</th>
-              <th data-sort="kwhToday" style="text-align:right;">Energi hari ini (kWh) ⇕</th>
-              <th data-sort="carbon" style="text-align:right;">Emisi CO₂ (kg) ⇕</th>
-              <th data-sort="status" style="text-align:center;">Status ⇕</th>
-              <th style="text-align:center;">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="meterTableBody">
+          <div class="attention-list-wrapper" id="attentionList">
             <!-- Dynamically populated by app.js -->
-          </tbody>
-        </table>
-      </div>
-
-      <div class="table-pagination-row">
-        <div>
-          Menampilkan <strong id="pageRangeText" style="color:#ffffff;">1 - 15</strong> dari <strong id="totalMetersText" style="color:#ffffff;">38</strong> meter
+          </div>
         </div>
-        <div class="pagination-btn-group" id="paginationButtons">
-          <!-- Dynamically populated by app.js -->
-        </div>
-      </div>
-    </section>
+      </section>
 
-  </main>
+      <!-- ================= 5. ROW 4: ASET UTAMA ELECTRICAL ROOM ================= -->
+      <section aria-label="Aset Utama Electrical Room">
+        <div class="card-header-block" style="margin-bottom:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <h2 class="card-title" id="activitySectionTitle">Aset Kritis & Transformator Utama Electrical Room</h2>
+            <p class="card-subtitle" id="activitySectionSub">Pemantauan realtime Transformator 20kV, Panel LMVDP 210V/400V, dan Capacitor Bank APFC</p>
+          </div>
+          <button class="btn-page" onclick="document.getElementById('btnOpenBlueprintModal').click()" style="display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; border-color:var(--color-crimson, #8c2924); color:var(--color-crimson, #8c2924); cursor:pointer;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+              <line x1="15" y1="3" x2="15" y2="21"></line>
+            </svg>
+            <span>Buka Blueprint SLD Gardu 20kV</span>
+          </button>
+        </div>
+
+        <div class="activity-cards-grid" id="activityCardsGrid">
+          <!-- Activity Card 1: Trafo 2.000 kVA (TRF-12) -->
+          <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-12')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
+            <div class="activity-card-top">
+              <div class="activity-icon-box orange">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </div>
+              <div>
+                <h3 class="activity-card-title">Transformer 2.000 kVA (TRF-12)</h3>
+                <span class="activity-card-time">Substation LMVDP 20kV / 210V · IP 10.41.47.122</span>
+              </div>
+              <div class="activity-kw-pill">1.381 <span>kW</span></div>
+            </div>
+            <div class="activity-metric-rows">
+              <div class="act-metric-row"><span>Beban Mesin Forging</span><strong>20+ Feeder Line</strong></div>
+              <div class="act-metric-row"><span>Arus Sekunder (R-S-T)</span><strong>4.028 A</strong></div>
+              <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>210 V / 121 V</strong></div>
+              <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,94 (Optimal)</strong></div>
+            </div>
+          </div>
+
+          <!-- Activity Card 2: Trafo 1.000 kVA (TRF-11) -->
+          <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-11')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
+            <div class="activity-card-top">
+              <div class="activity-icon-box blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </div>
+              <div>
+                <h3 class="activity-card-title">Transformer 1.000 kVA (TRF-11)</h3>
+                <span class="activity-card-time">Billet Heater 6.6kV · IP 10.41.47.111</span>
+              </div>
+              <div class="activity-kw-pill">620 <span>kW</span></div>
+            </div>
+            <div class="activity-metric-rows">
+              <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Induction Heater Fac 1</strong></div>
+              <div class="act-metric-row"><span>Arus TM 6.6kV</span><strong>57,3 A</strong></div>
+              <div class="act-metric-row"><span>Tegangan Menengah</span><strong>6.600 V</strong></div>
+              <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,95 (Normal)</strong></div>
+            </div>
+          </div>
+
+          <!-- Activity Card 3: Capacitor Bank & LMVDP (CAP-01 / TRF-13) -->
+          <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-13')" style="cursor:pointer;" title="Klik untuk lihat detail PF & Kapasitor Bank">
+            <div class="activity-card-top">
+              <div class="activity-icon-box amber">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="activity-card-title">Panel LMVDP & Capacitor Bank</h3>
+                <span class="activity-card-time">APFC 600 kVAR & Trafo #13 (1500 kVA)</span>
+              </div>
+              <div class="activity-kw-pill" style="background:rgba(251,191,36,0.15); color:var(--color-amber);">PF 0,84 <span>⚠️</span></div>
+            </div>
+            <div class="activity-metric-rows">
+              <div class="act-metric-row"><span>Status Regulasi PF</span><strong style="color:var(--color-amber);">Perlu Cek Step 4</strong></div>
+              <div class="act-metric-row"><span>Kompensasi Reaktif</span><strong>620 kVAR</strong></div>
+              <div class="act-metric-row"><span>Target Regulasi PLN</span><strong>Cos φ ≥ 0,85</strong></div>
+              <div class="act-metric-row"><span>Denda kVARh PLN</span><strong style="color:var(--color-green);">Rp 0 (Terkendali)</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 6. ROW 5: DAFTAR METER TABLE ================= -->
+      <section class="clean-card" id="tableSection" aria-label="Tabel Seluruh Power Meter Digital">
+        <div class="table-card-header">
+          <div class="card-header-block" style="margin-bottom:0;">
+            <h2 class="card-title" id="tableSectionTitle">Daftar Meter Electrical Room</h2>
+            <p class="card-subtitle" id="tableSectionSub">Telemetri realtime Transformator 20kV, Cubicle Schneider SM6, Panel LMVDP, dan APFC Capacitor Bank.</p>
+          </div>
+          <div class="table-toolbar-right">
+            <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari TRF, LMV, IP 10.41.47..., dsb...">
+          </div>
+        </div>
+
+        <div class="clean-table-responsive">
+          <table class="clean-table" id="meterTable">
+            <thead>
+              <tr>
+                <th data-sort="id">ID ⇕</th>
+                <th data-sort="name">Nama meter ⇕</th>
+                <th data-sort="categoryLabel">Area ⇕</th>
+                <th data-sort="ip">IP address ⇕</th>
+                <th data-sort="kw" style="text-align:right;">Daya (kW) ⇕</th>
+                <th data-sort="voltage" style="text-align:right;">Tegangan (V) ⇕</th>
+                <th data-sort="current" style="text-align:right;">Arus (A) ⇕</th>
+                <th data-sort="pf" style="text-align:right;">Power factor ⇕</th>
+                <th data-sort="kwhToday" style="text-align:right;">Energi hari ini (kWh) ⇕</th>
+                <th data-sort="carbon" style="text-align:right;">Emisi CO₂ (kg) ⇕</th>
+                <th data-sort="status" style="text-align:center;">Status ⇕</th>
+                <th style="text-align:center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="meterTableBody">
+              <!-- Dynamically populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-pagination-row">
+          <div>
+            Menampilkan <strong id="pageRangeText">1 - 15</strong> dari <strong id="totalMetersText">38</strong> meter
+          </div>
+          <div class="pagination-btn-group" id="paginationButtons">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
 
   <!-- ================= MODAL: DETAIL METER ================= -->
   <div class="modal-overlay" id="meterDetailModal">
@@ -476,7 +588,7 @@
     </div>
   </div>
 
-  <!-- Data 137 Power Meter Mitsubishi & Schneider -->
+  <!-- Data 38 Power Meter Schneider & Mitsubishi -->
   <script src="data.js"></script>
   <!-- Application Logic -->
   <script src="app.js"></script>

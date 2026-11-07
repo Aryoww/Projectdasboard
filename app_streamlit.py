@@ -130,7 +130,13 @@ def load_bundled_dashboard():
         end_tag = html.find('>', start_tag) + 1
         html = html[:start_tag] + f"<style>\n{css}\n</style>" + html[end_tag:]
     
-    # Inlining Image as base64
+    # Inlining Images as base64
+    logo_path = os.path.join(base_dir, "musashi_logo_clean.png")
+    if os.path.exists(logo_path):
+        with open(logo_path, "rb") as logo_file:
+            logo_b64 = base64.b64encode(logo_file.read()).decode("utf-8")
+            html = html.replace('src="musashi_logo_clean.png"', f'src="data:image/png;base64,{logo_b64}"')
+
     if os.path.exists(img_path):
         with open(img_path, "rb") as img_file:
             img_b64 = base64.b64encode(img_file.read()).decode("utf-8")
