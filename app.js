@@ -167,36 +167,36 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  // Perlu Perhatian Alert Items by Category & Factory
+  // Perlu Perhatian Alert Items by Category & Factory (SCADA-Grade)
   const ATTENTION_ALERTS = {
     all: [
-      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', note: 'PF 0,84 (Di bawah 0,85) – Cek Kapasitor Bank Step 4' },
-      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', note: 'Step 3 & 4 Kontaktor Trip – Perlu Reset APFC Controller' },
-      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging line 2 tinggi' }
+      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank Step 4.' },
+      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', severity: 'critical', badge: 'Kontaktor Trip', note: 'Kontaktor step 3 & 4 trip otomatis. Kapasitas kompensasi daya reaktif turun 150 kVAR.', action: 'Reset APFC controller & ganti fuse pengaman kontaktor.' },
+      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift 2 tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada feeder LMV-07.' }
     ],
     electrical: [
-      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', note: 'PF 0,84 (Di bawah 0,85) – Cek Kapasitor Bank Step 4' },
-      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', note: 'Step 3 & 4 Kontaktor Trip – Perlu Reset APFC Controller' },
-      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging line 2 tinggi' }
+      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank Step 4.' },
+      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', severity: 'critical', badge: 'Kontaktor Trip', note: 'Kontaktor step 3 & 4 trip otomatis. Kapasitas kompensasi daya reaktif turun 150 kVAR.', action: 'Reset APFC controller & ganti fuse pengaman kontaktor.' },
+      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift 2 tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada feeder LMV-07.' }
     ],
     fac1: [
-      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', note: 'PF 0,84 – Cek Kapasitor Bank Step 4 APFC Panel CAP-01' },
-      { title: 'Transformer 1.000 kVA (TRF-11)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', note: 'THD-I 4,8% – Harmonik induksi heater termonitor normal' }
+      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah ambang PLN. Perlu aktivasi bank kapasitor tambahan.', action: 'Cek Kapasitor Bank Step 4 APFC Panel CAP-01.' },
+      { id: 'TRF-11', title: 'Transformer 1.000 kVA (TRF-11)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'THD-I 4,8%', note: 'Harmonik beban non-linear heater induksi terdeteksi mendekati ambang 5,0%.', action: 'Pantau filter harmonik aktif (AHF) pada kubikel 20kV.' }
     ],
     fac2: [
-      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Substation Forging APFC', note: 'Step 3 & 4 Kontaktor Trip – Kapasitas turun, perlu reset APFC' },
-      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · LMVDP 210V', note: 'PF 0,83 – Beban induktif motor forging shift 2 tinggi' }
+      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Substation Forging APFC', severity: 'critical', badge: 'Kontaktor Trip', note: 'Step 3 & 4 kontaktor trip otomatis. Kapasitas kompensasi daya turun 150 kVAR.', action: 'Reset APFC controller & ganti fuse pengaman kontaktor.' },
+      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · LMVDP 210V', severity: 'warning', badge: 'Cos φ 0,83', note: 'Beban induktif motor forging press shift 2 meningkat saat produksi komponen poros.', action: 'Aktifkan kompensasi lokal pada feeder LMV-07.' }
     ],
     fac3: [
-      { title: 'Semua Trafo & Panel Normal', area: 'Factory 3 · Substation Gardu 20kV', note: 'Cos φ rata-rata 0,92 – Bebas denda kVARh PLN, suhu trafo stabil 65°C' }
+      { id: 'TRF-05', title: 'Semua Trafo & Panel Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'Sistem Optimal', note: 'Cos φ rata-rata 0,92 – Bebas denda kVARh PLN, suhu trafo stabil 65°C.', action: 'Operasional normal, pertahankan jadwal inspeksi preventif mingguan.' }
     ],
     forging: [
-      { title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Forging Substation 210V', note: 'PF 0,84 – Beban impulsif mesin forging press memerlukan kompensasi APFC' },
-      { title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Forging APFC Step 1-6', note: 'Step 3 & 4 Kontaktor Trip – Perlu penggantian fuse / kontaktor' },
-      { title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Forging Lines', note: 'PF 0,83 – Beban puncak mesin press 2000T' }
+      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Forging Substation 210V', severity: 'warning', badge: 'Cos φ 0,84', note: 'Beban impulsif mesin forging press memerlukan kompensasi APFC dinamis.', action: 'Jadwalkan switching step APFC bank untuk meredam beban reaktif impulsif.' },
+      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Forging APFC Step 1-6', severity: 'critical', badge: 'Kontaktor Trip', note: 'Step 3 & 4 kontaktor trip otomatis. Kapasitas kompensasi turun.', action: 'Periksa coil kontaktor dan setting proteksi arus lebih APFC.' },
+      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Forging Lines', severity: 'warning', badge: 'Beban Puncak', note: 'Beban puncak motor press 2000T meningkatkan tarikan daya reaktif kVAR.', action: 'Optimasi jadwal start mesin press untuk meredam lonjakan arus mula.' }
     ],
     heattreatment: [
-      { title: 'Semua Beban Heat Treatment Normal', area: 'Substation HT Fac 1, 2, 3', note: 'Cos φ rata-rata 0,94 – Pemanas induksi billet & furnace carburizing beroperasi stabil' }
+      { id: 'TRF-02', title: 'Semua Beban Heat Treatment Normal', area: 'Substation HT Fac 1, 2, 3', severity: 'normal', badge: 'Cos φ 0,94', note: 'Pemanas induksi billet & furnace carburizing beroperasi stabil dan efisien.', action: 'Pertahankan setting suhu dan monitoring data telemetri harian.' }
     ]
   };
 
@@ -852,28 +852,59 @@ document.addEventListener('DOMContentLoaded', () => {
     chartDonutInstance.update();
   }
 
-  // ================= 6. RENDER PERLU PERHATIAN LIST =================
+  // ================= 6. RENDER PERLU PERHATIAN LIST (SCADA-GRADE) =================
   function renderAttentionList(alerts) {
     if (!attentionList) return;
     if (!alerts || alerts.length === 0) {
       attentionList.innerHTML = `
-        <div style="padding:1rem; text-align:center; color:var(--text-muted); font-size:0.8rem;">
-          Semua meter di area ini beroperasi dalam batas normal.
+        <div class="attention-empty-state">
+          <span class="empty-icon">✓</span>
+          <div style="font-weight:700; color:var(--text-primary);">Kondisi Sistem Optimal</div>
+          <div style="font-size:0.75rem;">Semua meter dan kubikel gardu di area ini beroperasi dalam batas toleransi aman.</div>
         </div>
       `;
       return;
     }
 
-    attentionList.innerHTML = alerts.map(item => `
-      <div class="attention-item">
-        <div class="attention-header-text">
-          ${item.title} <span>(${item.area})</span>
+    attentionList.innerHTML = alerts.map(item => {
+      const sev = item.severity || 'warning';
+      const pillClass = sev === 'critical' ? 'critical' : (sev === 'normal' ? 'normal' : 'warning');
+      const badgeText = item.badge || (sev === 'critical' ? 'Kritis' : (sev === 'normal' ? 'Normal' : 'Perhatian'));
+      const meterId = item.id || '';
+
+      return `
+        <div class="attention-card ${sev}" onclick="${meterId ? `window.openMeterDetailById('${meterId}')` : ''}" title="Klik untuk membuka telemetri live ${meterId}">
+          <div class="attention-card-header">
+            <div class="attention-badge-group">
+              <span class="attention-pill ${pillClass}">
+                <span class="pulse-indicator"></span>
+                ${badgeText}
+              </span>
+              ${meterId ? `<span class="attention-id-badge">${meterId}</span>` : ''}
+            </div>
+            ${meterId ? `
+              <button class="btn-attention-action" onclick="window.openMeterDetailById('${meterId}'); event.stopPropagation();" title="Buka Detail Meter ${meterId}">
+                Detail ➔
+              </button>
+            ` : ''}
+          </div>
+          <div class="attention-card-body">
+            <div class="attention-title-text">${item.title}</div>
+            <div class="attention-location-text">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              ${item.area}
+            </div>
+          </div>
+          <div class="attention-card-footer">
+            <div class="attention-alert-desc">${item.note}</div>
+            ${item.action ? `<div class="attention-action-recommendation"><strong>Tindakan:</strong> ${item.action}</div>` : ''}
+          </div>
         </div>
-        <div class="attention-alert-text">
-          ${item.note}
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 
   // ================= 7. DAFTAR METER TABLE =================
@@ -1190,7 +1221,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (modalSubtitle) {
-      modalSubtitle.textContent = `ID: ${meter.id} · ${meter.factoryLabel || meter.factory} · ${meter.subArea || 'Electrical Room'} · Gateway IP: ${meter.ip || '10.41.47.x'}`;
+      const cleanSub = (meter.subArea || '').replace(/^Factory\s*\d+\s*[·\-–]\s*/i, '');
+      const areaDisplay = cleanSub || meter.subArea || 'Electrical Room';
+      modalSubtitle.innerHTML = `
+        <div class="modal-subtitle-row">
+          <span class="modal-sub-badge" style="background:rgba(255,255,255,0.08); font-family:var(--font-mono); border:1px solid var(--border-card);">ID: ${meter.id}</span>
+          <span class="modal-sub-badge fac">${meter.factoryLabel || 'Factory 1'}</span>
+          <span>${areaDisplay}</span>
+          <span class="modal-sub-badge ip">IP: ${meter.ip || '10.41.47.x'}</span>
+        </div>
+      `;
     }
 
     if (modalBody) {
@@ -1273,14 +1313,25 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="modal-actions-bar">
           <div class="modal-actions-left">
             <button class="btn-action-telemetry" onclick="window.copyTelemetry('${meter.id}')" title="Salin seluruh parameter teknis meter ke clipboard">
-              📋 Salin Telemetri
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Salin Telemetri
             </button>
-            <button class="btn-action-telemetry" onclick="window.testPingMeter('${meter.ip}')" title="Uji koneksi ping Modbus TCP ke meter ini">
-              ⚡ Uji Ping Gateway
+            <button class="btn-action-ping" onclick="window.testPingMeter('${meter.ip}')" title="Uji koneksi ping Modbus TCP ke meter ini">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Uji Ping Gateway
             </button>
           </div>
           <button class="btn-action-close-red" onclick="window.closeAllModals()">
-            ✕ Tutup Jendela
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Tutup Jendela
           </button>
         </div>
       `;
@@ -1426,13 +1477,19 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
       });
     }
 
-    // Export CSV (Header button & Pusat Laporan button)
+    // Export Modal (Header button & Pusat Laporan button)
     if (btnExportCsv) {
-      btnExportCsv.addEventListener('click', exportToCsv);
+      btnExportCsv.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.openExportModal();
+      });
     }
     const btnExportReports = document.getElementById('btnExportCsvFromReports');
     if (btnExportReports) {
-      btnExportReports.addEventListener('click', exportToCsv);
+      btnExportReports.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.openExportModal();
+      });
     }
     const sideNavReport = document.getElementById('sideNavReport');
     if (sideNavReport) {
@@ -1554,20 +1611,366 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
     }
   }
 
-  // ================= 11. CSV EXPORT =================
-  function exportToCsv() {
-    const headers = ['ID Meter', 'Nama Feeder/Panel', 'Kategori', 'Sub Area', 'IP Address', 'Daya kW', 'Tegangan V', 'Arus A', 'Cos Phi', 'Energi kWh', 'Emisi CO2 kg', 'Status'];
+  // ================= 11. EXCEL SPREADSHEET & CSV EXPORT =================
+  window.openExportModal = function() {
+    const modal = document.getElementById('exportModal');
+    if (modal) {
+      window.openModal(modal);
+    } else {
+      window.exportToExcelWithCharts();
+    }
+  };
+
+  window.exportToExcelWithCharts = function() {
+    const now = new Date();
+    const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const dateFormatted = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    const timeFormatted = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} WIB`;
+
+    // Metrics calculations
+    const totalKw = state.meters.reduce((acc, m) => acc + (m.kw || 0), 0);
+    const totalKwh = state.meters.reduce((acc, m) => acc + (m.kwhToday || 0), 0);
+    const totalCostRp = Math.round(totalKwh * 1444.70);
+    const avgPf = (state.meters.reduce((acc, m) => acc + (m.pf || 0.90), 0) / (state.meters.length || 1)).toFixed(2);
+    const totalCarbon = (totalKwh * 0.79).toFixed(1);
+    const onlineMeters = state.meters.filter(m => m.status === 'normal' || m.status === 'warning').length;
+
+    // Factory breakdowns
+    const fac1Meters = state.meters.filter(m => m.factory === 'fac1');
+    const fac2Meters = state.meters.filter(m => m.factory === 'fac2');
+    const fac3Meters = state.meters.filter(m => m.factory === 'fac3');
+
+    const fac1Kwh = fac1Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
+    const fac2Kwh = fac2Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
+    const fac3Kwh = fac3Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
+
+    const fac1Kw = fac1Meters.reduce((a, m) => a + (m.kw || 0), 0);
+    const fac2Kw = fac2Meters.reduce((a, m) => a + (m.kw || 0), 0);
+    const fac3Kw = fac3Meters.reduce((a, m) => a + (m.kw || 0), 0);
+
+    const fac1Pct = totalKwh > 0 ? Math.round((fac1Kwh / totalKwh) * 100) : 0;
+    const fac2Pct = totalKwh > 0 ? Math.round((fac2Kwh / totalKwh) * 100) : 0;
+    const fac3Pct = totalKwh > 0 ? Math.max(0, 100 - fac1Pct - fac2Pct) : 0;
+
+    // Top 8 Consumers
+    const top8 = [...state.meters].sort((a, b) => (b.kwhToday || 0) - (a.kwhToday || 0)).slice(0, 8);
+    const maxTop8Kwh = top8[0] ? (top8[0].kwhToday || 1) : 1;
+
+    // Generate XML/HTML content
+    const excelHtml = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:x="urn:schemas-microsoft-com:office:excel"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!--[if gte mso 9]>
+  <xml>
+    <x:ExcelWorkbook>
+      <x:ExcelWorksheets>
+        <x:ExcelWorksheet>
+          <x:Name>Audit Energi Musashi</x:Name>
+          <x:WorksheetOptions>
+            <x:DisplayGridlines/>
+            <x:Print>
+              <x:ValidPrinterInfo/>
+              <x:Orientation>Landscape</x:Orientation>
+            </x:Print>
+          </x:WorksheetOptions>
+        </x:ExcelWorksheet>
+      </x:ExcelWorksheets>
+    </x:ExcelWorkbook>
+  </xml>
+  <![endif]-->
+  <style>
+    body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; font-size: 10pt; color: #1e293b; background: #ffffff; }
+    .banner-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    .banner-title { background: #8C2924; color: #ffffff; font-size: 16pt; font-weight: bold; padding: 14px 18px; text-align: left; }
+    .banner-sub { background: #6b1f1b; color: #fed7aa; font-size: 9.5pt; padding: 6px 18px; text-align: left; }
+    .kpi-table { width: 100%; border-collapse: separate; border-spacing: 6px; margin-bottom: 16px; }
+    .kpi-box { background: #f8fafc; border: 1.5px solid #cbd5e1; padding: 10px; text-align: center; vertical-align: middle; }
+    .kpi-header { font-size: 8pt; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 3px; }
+    .kpi-number { font-size: 15pt; font-weight: bold; color: #0f172a; margin-bottom: 2px; }
+    .kpi-subtext { font-size: 7.5pt; color: #94a3b8; }
+    .section-header { font-size: 11pt; font-weight: bold; color: #8C2924; padding: 8px 4px; border-bottom: 2px solid #8C2924; margin-top: 15px; margin-bottom: 6px; }
+    .chart-box-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; border: 1px solid #cbd5e1; }
+    .chart-th { background: #f1f5f9; color: #334155; font-size: 9pt; font-weight: bold; padding: 7px 10px; border: 1px solid #cbd5e1; }
+    .chart-td { padding: 6px 10px; font-size: 9pt; border: 1px solid #e2e8f0; vertical-align: middle; }
+    .chart-bar-cell { width: 260px; padding: 4px 8px; }
+    .data-table { width: 100%; border-collapse: collapse; border: 1.5px solid #8C2924; margin-top: 8px; }
+    .data-table th { background: #8C2924; color: #ffffff; font-size: 9pt; font-weight: bold; padding: 8px 6px; border: 1px solid #6b1f1b; text-align: center; }
+    .data-table td { padding: 6px 8px; font-size: 8.5pt; border: 1px solid #cbd5e1; vertical-align: middle; }
+    .row-even { background: #f8fafc; }
+    .row-odd { background: #ffffff; }
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .badge-normal { background: #dcfce7; color: #166534; font-weight: bold; text-align: center; padding: 2px 6px; border-radius: 3px; }
+    .badge-warn { background: #fef3c7; color: #92400e; font-weight: bold; text-align: center; padding: 2px 6px; border-radius: 3px; }
+    .total-row td { background: #f1f5f9; font-weight: bold; color: #0f172a; border-top: 2.5px solid #8C2924; border-bottom: 2.5px solid #8C2924; padding: 8px 6px; }
+    .num-dec1 { mso-number-format: "\\#\\,\\#\\#0\\.0"; }
+    .num-dec2 { mso-number-format: "\\#\\,\\#\\#0\\.00"; }
+    .num-int { mso-number-format: "\\#\\,\\#\\#0"; }
+    .num-curr { mso-number-format: "\"Rp\"\\ \\#\\,\\#\\#0"; }
+  </style>
+</head>
+<body>
+  <!-- 1. Header Banner Kop Perusahaan -->
+  <table class="banner-table" cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="banner-title" colspan="14">
+        ⚡ PT MUSASHI AUTO PARTS INDONESIA · UTILITY & ENERGY MANAGEMENT SYSTEM
+      </td>
+    </tr>
+    <tr>
+      <td class="banner-sub" colspan="14">
+        Laporan Audit & Telemetri Realtime 38 Digital Power Meter · Tanggal: ${dateFormatted} · Pukul: ${timeFormatted} · Divisi: Engineering & Utility
+      </td>
+    </tr>
+  </table>
+
+  <!-- 2. Ringkasan Eksekutif KPI Cards -->
+  <table class="kpi-table" cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="kpi-box" width="16%">
+        <div class="kpi-header">TOTAL DAYA AKTIF</div>
+        <div class="kpi-number" style="color:#0284c7;">${totalKw.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kW</div>
+        <div class="kpi-subtext">38 Gardu & Beban Pabrik</div>
+      </td>
+      <td class="kpi-box" width="16%">
+        <div class="kpi-header">ENERGI LISTRIK HARI INI</div>
+        <div class="kpi-number" style="color:#d97706;">${totalKwh.toLocaleString('id-ID')} kWh</div>
+        <div class="kpi-subtext">Akumulasi shift 1 & 2</div>
+      </td>
+      <td class="kpi-box" width="18%">
+        <div class="kpi-header">ESTIMASI BIAYA LISTRIK</div>
+        <div class="kpi-number" style="color:#8C2924;">Rp ${totalCostRp.toLocaleString('id-ID')}</div>
+        <div class="kpi-subtext">Tarif PLN I-3: Rp 1.444,70/kWh</div>
+      </td>
+      <td class="kpi-box" width="16%">
+        <div class="kpi-header">POWER FACTOR RATA-RATA</div>
+        <div class="kpi-number" style="color:#059669;">${avgPf}</div>
+        <div class="kpi-subtext">Standar PLN ≥ 0,85 (Aman)</div>
+      </td>
+      <td class="kpi-box" width="16%">
+        <div class="kpi-header">STATUS JARINGAN METER</div>
+        <div class="kpi-number" style="color:#16a34a;">${onlineMeters} / ${state.meters.length}</div>
+        <div class="kpi-subtext">100% Online Polling Modbus</div>
+      </td>
+      <td class="kpi-box" width="18%">
+        <div class="kpi-header">JEJAK EMISI KARBON (ESG)</div>
+        <div class="kpi-number" style="color:#0d9488;">${totalCarbon.toLocaleString('id-ID')} kg</div>
+        <div class="kpi-subtext">Faktor Emisi 0,79 kg CO₂e/kWh</div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- 3. Grafik Visual 1: Distribusi Konsumsi Energi per Factory -->
+  <div class="section-header">📊 1. DISTRIBUSI KONSUMSI ENERGI LISTRIK PER AREA PABRIK (FACTORY DISTRIBUTION)</div>
+  <table class="chart-box-table" cellpadding="0" cellspacing="0">
+    <thead>
+      <tr>
+        <th class="chart-th" width="22%">Area Substation</th>
+        <th class="chart-th" width="10%">Unit Meter</th>
+        <th class="chart-th" width="14%">Daya Aktif (kW)</th>
+        <th class="chart-th" width="14%">Energi (kWh)</th>
+        <th class="chart-th" width="10%">Persentase</th>
+        <th class="chart-th" width="30%">Grafik Batang Proporsional</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="chart-td"><strong>Factory 1 (Electrical 20kV / 6.6kV)</strong></td>
+        <td class="chart-td text-center">15 Unit</td>
+        <td class="chart-td text-right num-dec1">${fac1Kw.toFixed(1)} kW</td>
+        <td class="chart-td text-right num-int">${fac1Kwh.toLocaleString('id-ID')} kWh</td>
+        <td class="chart-td text-center"><strong>${fac1Pct}%</strong></td>
+        <td class="chart-td chart-bar-cell">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="${fac1Pct}%" style="background:#0284c7; height:16px; border:none; border-radius:3px;"></td>
+              <td width="${100 - fac1Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="chart-td"><strong>Factory 2 (Forging & Heat Treatment)</strong></td>
+        <td class="chart-td text-center">12 Unit</td>
+        <td class="chart-td text-right num-dec1">${fac2Kw.toFixed(1)} kW</td>
+        <td class="chart-td text-right num-int">${fac2Kwh.toLocaleString('id-ID')} kWh</td>
+        <td class="chart-td text-center"><strong>${fac2Pct}%</strong></td>
+        <td class="chart-td chart-bar-cell">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="${fac2Pct}%" style="background:#d97706; height:16px; border:none; border-radius:3px;"></td>
+              <td width="${100 - fac2Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td class="chart-td"><strong>Factory 3 (Gardu Induk & Annealing)</strong></td>
+        <td class="chart-td text-center">11 Unit</td>
+        <td class="chart-td text-right num-dec1">${fac3Kw.toFixed(1)} kW</td>
+        <td class="chart-td text-right num-int">${fac3Kwh.toLocaleString('id-ID')} kWh</td>
+        <td class="chart-td text-center"><strong>${fac3Pct}%</strong></td>
+        <td class="chart-td chart-bar-cell">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="${fac3Pct}%" style="background:#059669; height:16px; border:none; border-radius:3px;"></td>
+              <td width="${100 - fac3Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 4. Grafik Visual 2: Top 8 Beban Listrik Terbesar -->
+  <div class="section-header">📈 2. TOP 8 KONSUMEN BEBAN LISTRIK TERBESAR (PEAK LOADERS)</div>
+  <table class="chart-box-table" cellpadding="0" cellspacing="0">
+    <thead>
+      <tr>
+        <th class="chart-th" width="5%">Rank</th>
+        <th class="chart-th" width="10%">ID Meter</th>
+        <th class="chart-th" width="25%">Nama Feeder / Mesin Produksi</th>
+        <th class="chart-th" width="18%">Sub Area Lokasi</th>
+        <th class="chart-th" width="12%">Daya Aktif (kW)</th>
+        <th class="chart-th" width="12%">Energi (kWh)</th>
+        <th class="chart-th" width="18%">Grafik Proporsi Beban</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${top8.map((m, idx) => {
+        const barPct = Math.max(8, Math.round(((m.kwhToday || 0) / maxTop8Kwh) * 100));
+        return `
+          <tr>
+            <td class="chart-td text-center"><strong>#${idx + 1}</strong></td>
+            <td class="chart-td text-center" style="font-family:Consolas, monospace;">${m.id}</td>
+            <td class="chart-td"><strong>${m.name}</strong></td>
+            <td class="chart-td">${m.factoryLabel || m.factory} - ${m.subArea}</td>
+            <td class="chart-td text-right num-dec1">${(m.kw || 0).toFixed(1)} kW</td>
+            <td class="chart-td text-right num-int"><strong>${(m.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></td>
+            <td class="chart-td chart-bar-cell">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td width="${barPct}%" style="background:#8C2924; height:14px; border:none; border-radius:2px;"></td>
+                  <td width="${100 - barPct}%" style="background:#f1f5f9; height:14px; border:none; border-radius:2px;"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        `;
+      }).join('')}
+    </tbody>
+  </table>
+
+  <!-- 5. Tabel Detail 38 Digital Power Meter -->
+  <div class="section-header">📋 3. TABEL TELEMETRI LENGKAP 38 DIGITAL POWER METER (SCHNEIDER & MITSUBISHI)</div>
+  <table class="data-table" cellpadding="0" cellspacing="0">
+    <thead>
+      <tr>
+        <th width="3%">No</th>
+        <th width="6%">ID Meter</th>
+        <th width="17%">Nama Feeder / Panel Distribusi</th>
+        <th width="8%">Kategori</th>
+        <th width="12%">Area & Substation</th>
+        <th width="12%">Brand Digital Meter</th>
+        <th width="9%">IP Gateway</th>
+        <th width="6%">Daya (kW)</th>
+        <th width="5%">Tegangan (V)</th>
+        <th width="5%">Arus (A)</th>
+        <th width="5%">Cos φ</th>
+        <th width="7%">Energi (kWh)</th>
+        <th width="8%">Biaya (Rp)</th>
+        <th width="6%">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${state.meters.map((m, idx) => {
+        const rowClass = idx % 2 === 0 ? 'row-even' : 'row-odd';
+        const costRp = Math.round((m.kwhToday || 0) * 1444.70);
+        const isWarn = m.pf < 0.85;
+        const statusBadge = isWarn
+          ? `<span class="badge-warn">Cos φ ${m.pf.toFixed(2)}</span>`
+          : `<span class="badge-normal">Normal Live</span>`;
+
+        return `
+          <tr class="${rowClass}">
+            <td class="text-center">${idx + 1}</td>
+            <td class="text-center" style="font-family:Consolas, monospace; font-weight:bold; color:#0284c7;">${m.id}</td>
+            <td><strong>${m.name}</strong></td>
+            <td class="text-center">${m.categoryLabel || m.category}</td>
+            <td>${m.factoryLabel || m.factory} - ${m.subArea}</td>
+            <td>${m.brand || 'Schneider PM5500'}</td>
+            <td class="text-center" style="font-family:Consolas, monospace;">${m.ip || '-'}</td>
+            <td class="text-right num-dec1">${(m.kw || 0).toFixed(1)}</td>
+            <td class="text-right num-dec1">${(m.voltage || 0).toFixed(1)}</td>
+            <td class="text-right num-dec1">${(m.current || 0).toFixed(1)}</td>
+            <td class="text-center num-dec2" style="font-weight:bold; color:${isWarn ? '#d97706' : '#059669'};">${(m.pf || 0.90).toFixed(2)}</td>
+            <td class="text-right num-int">${(m.kwhToday || 0).toLocaleString('id-ID')}</td>
+            <td class="text-right num-curr">Rp ${costRp.toLocaleString('id-ID')}</td>
+            <td class="text-center">${statusBadge}</td>
+          </tr>
+        `;
+      }).join('')}
+    </tbody>
+    <tfoot>
+      <tr class="total-row">
+        <td colspan="7" class="text-right" style="font-size:9.5pt;">TOTAL AKUMULASI SISTEM (38 METER):</td>
+        <td class="text-right num-dec1" style="font-size:9.5pt; color:#0284c7;">${totalKw.toFixed(1)}</td>
+        <td class="text-center">-</td>
+        <td class="text-center">-</td>
+        <td class="text-center num-dec2" style="font-size:9.5pt; color:#059669;">${avgPf}</td>
+        <td class="text-right num-int" style="font-size:9.5pt; color:#d97706;">${totalKwh.toLocaleString('id-ID')}</td>
+        <td class="text-right num-curr" style="font-size:9.5pt; color:#8C2924;">Rp ${totalCostRp.toLocaleString('id-ID')}</td>
+        <td class="text-center" style="color:#16a34a;">38 UNIT AKTIF</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- Footer Information -->
+  <table style="width:100%; margin-top:20px; border-collapse:collapse; font-size:8pt; color:#64748b;">
+    <tr>
+      <td style="text-align:left;">
+        Dicetak secara otomatis dari SCADA Energy Management System PT Musashi Auto Parts Indonesia · Pabrik Cikarang & Karawang
+      </td>
+      <td style="text-align:right;">
+        Dokumen Resmi Utility Engineering · Konfidensial Internal
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `;
+
+    const blob = new Blob([excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const dateFileStr = new Date().toISOString().slice(0, 10);
+    link.download = `Laporan_Audit_Energi_Musashi_Utility_${dateFileStr}.xls`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast('✓ Laporan Excel (Tabel Rapi & Grafik Visual) Berhasil Diunduh!');
+  };
+
+  window.exportToCsv = function() {
+    const headers = ['ID Meter', 'Nama Feeder/Panel', 'Kategori', 'Sub Area', 'Brand Meter', 'IP Address', 'Daya kW', 'Tegangan V', 'Arus A', 'Cos Phi', 'Energi kWh', 'Estimasi Biaya Rp', 'Emisi CO2 kg', 'Status'];
     const rows = state.meters.map(m => [
       m.id,
       `"${(m.name || '').replace(/"/g, '""')}"`,
-      m.categoryLabel || m.category,
+      `"${(m.categoryLabel || m.category || '').replace(/"/g, '""')}"`,
       `"${(m.subArea || '').replace(/"/g, '""')}"`,
+      `"${(m.brand || '').replace(/"/g, '""')}"`,
       m.ip || '',
-      m.kw || 0,
-      m.voltage || 0,
-      m.current || 0,
-      m.pf || 0.89,
+      (m.kw || 0).toFixed(1),
+      (m.voltage || 0).toFixed(1),
+      (m.current || 0).toFixed(1),
+      (m.pf || 0.89).toFixed(2),
       m.kwhToday || 0,
+      Math.round((m.kwhToday || 0) * 1444.70),
       ((m.kwhToday || 0) * 0.79).toFixed(1),
       m.status
     ]);
@@ -1581,7 +1984,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
     link.click();
     document.body.removeChild(link);
     showToast('✓ Laporan CSV 38 Meter Musashi berhasil diunduh!');
-  }
+  };
 
   // ================= 12. TV MODE & AUTO-CYCLE ROTATION =================
   let tvCountdownInterval = null;
