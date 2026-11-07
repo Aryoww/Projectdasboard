@@ -292,13 +292,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= 3. SIDEBAR SLIDE & COLLAPSE CONTROLLER =================
   function initSidebarController() {
     const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-    const sidebarBrandClickable = document.getElementById('sidebarBrandClickable');
-    const btnSidebarCollapseIcon = document.getElementById('btnSidebarCollapseIcon');
-    const sidebarBrandHint = document.getElementById('sidebarBrandHint');
-    const floatingSidebarTrigger = document.getElementById('floatingSidebarTrigger');
     const appSidebar = document.getElementById('appSidebar');
 
-    // 1. Header Banner Toggle Button (Clicking Logo / Menu button)
+    // Single Clean Trigger: Header Banner Menu Toggle Button
     if (btnToggleSidebar) {
       btnToggleSidebar.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -306,57 +302,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // 2. Sidebar Brand / Logo Area Click (Clicking Logo inside sidebar closes menu)
-    if (sidebarBrandClickable) {
-      sidebarBrandClickable.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleSidebar();
-      });
-      // Accessibility Enter/Space key on logo
-      sidebarBrandClickable.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleSidebar();
-        }
-      });
-    }
-
-    // 3. Dedicated Collapse Icon Button beside logo
-    if (btnSidebarCollapseIcon) {
-      btnSidebarCollapseIcon.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleSidebar();
-      });
-    }
-
-    // 4. Brand Hint Pill under logo
-    if (sidebarBrandHint) {
-      sidebarBrandHint.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleSidebar();
-      });
-    }
-
-    // 5. Floating Edge Trigger Button (Appears when collapsed)
-    if (floatingSidebarTrigger) {
-      floatingSidebarTrigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleSidebar();
-      });
-    }
-
-    // 6. Close mobile drawer when clicking main content
+    // Close mobile drawer when clicking main content
     const appMainContent = document.getElementById('appMainContent');
     if (appMainContent && appSidebar) {
       appMainContent.addEventListener('click', () => {
         if (window.innerWidth <= 1024 && appSidebar.classList.contains('open')) {
           appSidebar.classList.remove('open');
-          syncSidebarUIState(false, true);
+          syncSidebarUIState(false);
         }
       });
     }
 
-    // 7. Keyboard Shortcut: Press '[' or 'Ctrl+B' to toggle sidebar
+    // Keyboard Shortcut: Press '[' or 'Ctrl+B' to toggle sidebar
     window.addEventListener('keydown', (e) => {
       const isInput = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName);
       if (!isInput) {
@@ -376,45 +333,34 @@ document.addEventListener('DOMContentLoaded', () => {
       // Mobile / Tablet Drawer
       const willBeOpen = !appSidebar.classList.contains('open');
       appSidebar.classList.toggle('open');
-      syncSidebarUIState(willBeOpen, true);
+      syncSidebarUIState(willBeOpen);
     } else {
       // Desktop Slide In / Out
       const willBeCollapsed = !appSidebar.classList.contains('collapsed');
       appSidebar.classList.toggle('collapsed');
       state.isSidebarCollapsed = willBeCollapsed;
-      syncSidebarUIState(!willBeCollapsed, false);
+      syncSidebarUIState(!willBeCollapsed);
     }
   }
 
-  function syncSidebarUIState(isOpen, isMobile = false) {
+  function syncSidebarUIState(isOpen) {
     const btnToggleSidebar = document.getElementById('btnToggleSidebar');
     const toggleText = document.getElementById('btnSidebarToggleText');
-    const toggleArrow = document.getElementById('btnSidebarToggleArrow');
-    const floatingTrigger = document.getElementById('floatingSidebarTrigger');
 
     if (isOpen) {
       // Sidebar is OPEN
-      if (toggleText) toggleText.textContent = 'Tutup Menu';
-      if (toggleArrow) toggleArrow.textContent = '◀';
+      if (toggleText) toggleText.textContent = 'Menu Navigasi';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.remove('collapsed-mode');
-        btnToggleSidebar.title = 'Klik Logo Musashi untuk Menutup / Menyembunyikan Menu Sidebar';
-      }
-      if (floatingTrigger) {
-        floatingTrigger.classList.remove('visible');
+        btnToggleSidebar.title = 'Sembunyikan Menu Navigasi';
       }
     } else {
       // Sidebar is CLOSED / COLLAPSED
       if (toggleText) toggleText.textContent = 'Buka Menu';
-      if (toggleArrow) toggleArrow.textContent = '▶';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.add('collapsed-mode');
-        btnToggleSidebar.title = 'Klik Logo Musashi untuk Menampilkan Menu Navigasi';
+        btnToggleSidebar.title = 'Tampilkan Menu Navigasi';
       }
-      if (floatingTrigger && !isMobile) {
-        floatingTrigger.classList.add('visible');
-      }
-      showToast('Sidebar menu disembunyikan. Klik logo Musashi untuk membuka kembali.');
     }
   }
 

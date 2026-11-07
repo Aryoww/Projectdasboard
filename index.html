@@ -19,8 +19,8 @@
       <!-- Watermark Wave Pattern (Matches Musashi Style) -->
       <div class="sidebar-wave-watermark"></div>
 
-      <!-- Brand / Logo Area (Klik Logo untuk Buka/Tutup Menu) -->
-      <div class="sidebar-brand" id="sidebarBrandClickable" role="button" tabindex="0" title="Klik Logo Musashi untuk Menutup / Menyembunyikan Menu Navigasi">
+      <!-- Brand / Logo Area -->
+      <div class="sidebar-brand">
         <div class="brand-logo-wrap">
           <div class="brand-emblem-box">
             <img src="musashi_logo_clean.png" alt="Musashi Emblem" class="brand-logo-img">
@@ -33,19 +33,6 @@
             <span class="brand-subtitle">Power to Value</span>
           </div>
         </div>
-        <!-- Collapse Button Icon inside Brand Header -->
-        <button class="btn-sidebar-collapse-icon" id="btnSidebarCollapseIcon" title="Tutup / Sembunyikan Menu Navigasi" aria-label="Tutup Menu">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Quick Hint Indicator under Logo -->
-      <div class="sidebar-brand-hint" id="sidebarBrandHint" title="Klik untuk menyembunyikan sidebar menu">
-        <span class="hint-dot"></span>
-        <span class="hint-text">Klik Logo untuk Tutup Menu</span>
-        <span class="hint-arrow">◀</span>
       </div>
 
       <!-- Navigation Menu -->
@@ -161,18 +148,14 @@
       <header class="musashi-header-banner" id="mainBannerHeader">
         <div class="banner-left">
           <div class="banner-title-wrap">
-            <!-- Sidebar Slide/Toggle Button with Musashi Emblem (Desktop & Mobile) -->
-            <button class="btn-sidebar-toggle" id="btnToggleSidebar" title="Klik Logo Musashi untuk Buka / Tutup Menu Sidebar">
-              <div class="btn-toggle-emblem">
-                <img src="musashi_logo_clean.png" alt="Musashi Emblem" class="toggle-emblem-img">
-              </div>
-              <svg class="toggle-hamburger-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <!-- Sidebar Slide/Toggle Button (Desktop & Mobile) -->
+            <button class="btn-sidebar-toggle" id="btnToggleSidebar" title="Tampilkan / Sembunyikan Menu Navigasi">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <line x1="3" y1="18" x2="21" y2="18"></line>
               </svg>
-              <span id="btnSidebarToggleText">Tutup Menu</span>
-              <span class="toggle-arrow-pill" id="btnSidebarToggleArrow">◀</span>
+              <span id="btnSidebarToggleText">Menu Navigasi</span>
             </button>
             <h1 class="banner-title" id="bannerTitle">Dashboard Utama</h1>
           </div>
@@ -1022,18 +1005,6 @@
       </div>
 
     </main>
-
-    <!-- Floating Edge Logo Trigger (Muncul di Sisi Kiri Layar saat Menu Ditutup) -->
-    <button class="floating-sidebar-trigger" id="floatingSidebarTrigger" title="Klik Logo Musashi untuk Membuka Menu Navigasi" aria-label="Buka Menu">
-      <div class="floating-emblem">
-        <img src="musashi_logo_clean.png" alt="Musashi Emblem" class="floating-emblem-img">
-      </div>
-      <div class="floating-label-wrap">
-        <span class="floating-title">MENU</span>
-        <span class="floating-sub">Buka Navigasi</span>
-      </div>
-      <span class="floating-arrow">▶</span>
-    </button>
 
   </div>
 
