@@ -153,13 +153,103 @@ body.modal-open {
   z-index: 0;
 }
 
-/* Brand / Logo Section */
+/* Brand / Logo Section (Clickable to Collapse) */
 .sidebar-brand {
   position: relative;
   z-index: 1;
-  padding-bottom: 1.15rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  margin-bottom: 0.75rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 0.4rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.sidebar-brand:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-brand:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-sidebar-collapse-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.sidebar-brand:hover .btn-sidebar-collapse-icon {
+  background: #ffffff;
+  color: var(--musashi-red);
+  transform: translateX(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Subtle Hint Pill */
+.sidebar-brand-hint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 0.32rem 0.65rem;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0.65rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.sidebar-brand-hint:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-brand-hint .hint-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+  flex-shrink: 0;
+}
+
+.sidebar-brand-hint .hint-text {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.sidebar-brand-hint .hint-arrow {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease;
+}
+
+.sidebar-brand-hint:hover .hint-arrow {
+  transform: translateX(-2px);
+  color: #ffffff;
 }
 
 .brand-logo-wrap {
@@ -414,28 +504,165 @@ body.modal-open {
   gap: 0.75rem;
 }
 
-/* Prominent Menu Toggle Button (Slides / Collapses Sidebar) */
+/* Prominent Menu Toggle Button with Musashi Emblem (Slides / Collapses Sidebar) */
 .btn-sidebar-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.55rem;
   background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   color: #ffffff;
-  padding: 0.42rem 0.85rem;
+  padding: 0.38rem 0.85rem;
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .btn-sidebar-toggle:hover {
   background: rgba(255, 255, 255, 0.3);
   border-color: #ffffff;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.btn-sidebar-toggle:active {
+  transform: translateY(0);
+}
+
+.btn-toggle-emblem {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+  padding: 2px;
+  transition: all 0.2s ease;
+}
+
+.btn-sidebar-toggle:hover .btn-toggle-emblem {
+  background: #ffffff;
+  transform: scale(1.08);
+}
+
+.toggle-emblem-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.toggle-arrow-pill {
+  font-size: 0.68rem;
+  background: rgba(255, 255, 255, 0.22);
+  padding: 0.12rem 0.42rem;
+  border-radius: 4px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.btn-sidebar-toggle.collapsed-mode {
+  background: #ffffff;
+  color: var(--musashi-red);
+  border-color: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.btn-sidebar-toggle.collapsed-mode .btn-toggle-emblem {
+  background: rgba(140, 41, 36, 0.12);
+}
+
+.btn-sidebar-toggle.collapsed-mode .toggle-arrow-pill {
+  background: rgba(140, 41, 36, 0.15);
+  color: var(--musashi-red);
+}
+
+/* Floating Left Edge Logo Button (Appears when sidebar is collapsed) */
+.floating-sidebar-trigger {
+  position: fixed;
+  left: 0;
+  top: 130px;
+  z-index: 9999;
+  background: var(--musashi-red);
+  border: 1.5px solid var(--musashi-red-bright);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  padding: 0.55rem 0.85rem 0.55rem 0.65rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.3);
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.floating-sidebar-trigger.visible {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.floating-sidebar-trigger:hover {
+  background: var(--musashi-red-bright);
+  padding-left: 0.85rem;
+  box-shadow: 6px 8px 24px rgba(186, 28, 28, 0.4);
+}
+
+.floating-emblem {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.floating-emblem-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.floating-label-wrap {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.floating-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.floating-sub {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.floating-arrow {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s ease;
+}
+
+.floating-sidebar-trigger:hover .floating-arrow {
+  transform: translateX(3px);
 }
 
 .banner-title {
