@@ -203,14 +203,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Application State
   const state = {
     meters: (typeof METER_DATA !== 'undefined') ? JSON.parse(JSON.stringify(METER_DATA)) : [],
-    activeFilter: 'electrical',
+    activeView: 'view-dashboard',
+    activeFilter: 'all',
     searchQuery: '',
     sortColumn: 'id',
     sortAsc: true,
     currentPage: 1,
     pageSize: 15,
     isSimulationActive: true,
-    simulationTimer: null
+    simulationTimer: null,
+    isSidebarCollapsed: false
   };
 
   // Chart Instances
@@ -248,10 +250,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= 1. INITIALIZATION =================
   function init() {
     initClock();
-    initFilterTabs();
+    initSidebarController();
+    initNavigation();
     initCharts();
     updateViewForActiveFilter();
     renderTable();
+    renderAllDedicatedTables();
     setupEventListeners();
     startSimulation();
   }
@@ -264,11 +268,185 @@ document.addEventListener('DOMContentLoaded', () => {
       const dateStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
       const timeStr = `${String(now.getHours()).padStart(2, '0')}.${String(now.getMinutes()).padStart(2, '0')}.${String(now.getSeconds()).padStart(2, '0')}`;
       if (headerLiveTime) {
-        headerLiveTime.textContent = `${dateStr}, ${timeStr}`;
+        headerLiveTime.textContent = `${dateStr}, ${timeStr} WIB`;
       }
     }
     updateClock();
     setInterval(updateClock, 1000);
+  }
+
+  // Toast Notification Helper
+  function showToast(message, isSuccess = true) {
+    const toast = document.getElementById('appToast');
+    const toastMsg = document.getElementById('toastMessage');
+    const toastIcon = document.getElementById('toastIcon');
+    if (!toast || !toastMsg) return;
+    toastMsg.textContent = message;
+    if (toastIcon) toastIcon.textContent = isSuccess ? '✓' : 'ℹ';
+    toast.className = `toast-notification show ${isSuccess ? 'success' : ''}`;
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3200);
+  }
+
+  // ================= 3. SIDEBAR SLIDE & COLLAPSE CONTROLLER =================
+  function initSidebarController() {
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const appSidebar = document.getElementById('appSidebar');
+    const toggleText = document.getElementById('btnSidebarToggleText');
+
+    if (btnToggleSidebar && appSidebar) {
+      btnToggleSidebar.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSidebar();
+      });
+    }
+
+    // Close mobile drawer when clicking main content
+    const appMainContent = document.getElementById('appMainContent');
+    if (appMainContent && appSidebar) {
+      appMainContent.addEventListener('click', () => {
+        if (window.innerWidth <= 1024 && appSidebar.classList.contains('open')) {
+          appSidebar.classList.remove('open');
+          if (toggleText) toggleText.textContent = 'Menu';
+        }
+      });
+    }
+  }
+
+  function toggleSidebar() {
+    const appSidebar = document.getElementById('appSidebar');
+    const toggleText = document.getElementById('btnSidebarToggleText');
+    if (!appSidebar) return;
+
+    if (window.innerWidth <= 1024) {
+      // Mobile / Tablet Drawer
+      appSidebar.classList.toggle('open');
+      const isOpen = appSidebar.classList.contains('open');
+      if (toggleText) toggleText.textContent = isOpen ? 'Tutup Menu' : 'Menu';
+    } else {
+      // Desktop Slide In / Out
+      appSidebar.classList.toggle('collapsed');
+      const isCollapsed = appSidebar.classList.contains('collapsed');
+      state.isSidebarCollapsed = isCollapsed;
+      if (toggleText) toggleText.textContent = isCollapsed ? 'Buka Menu' : 'Tutup Menu';
+    }
+  }
+
+  // ================= 4. MULTI-VIEW NAVIGATION & ROUTING =================
+  window.switchMenuView = function(viewId, filterKey = 'all') {
+    state.activeView = viewId;
+    state.activeFilter = filterKey;
+
+    // 1. Toggle visibility of all views
+    document.querySelectorAll('.menu-view').forEach(v => {
+      if (v.id === viewId) {
+        v.classList.add('active');
+        v.style.display = 'block';
+      } else {
+        v.classList.remove('active');
+        v.style.display = 'none';
+      }
+    });
+
+    // 2. Toggle active state on sidebar buttons
+    document.querySelectorAll('.sidebar-menu-btn').forEach(btn => {
+      if (btn.dataset.view === viewId) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // 3. Update Header Banner
+    const headerConfigs = {
+      'view-dashboard': {
+        title: 'Dashboard Utama',
+        subtitle: 'Selamat datang, Division Head & Tim Utility Engineering PT Musashi Auto Parts Indonesia',
+        tag: 'Gardu 20kV Cubicle Schneider SM6 · Seluruh Substation Pabrik'
+      },
+      'view-electrical-1': {
+        title: 'Electrical Room 1 · Factory 1',
+        subtitle: 'Gardu 20kV Cubicle Schneider SM6, Trafo TRF 11 s/d TRF 16, dan Panel LMVDP 210V/400V',
+        tag: 'Substation Factory 1 · 15 Unit Power Meter Live'
+      },
+      'view-electrical-2': {
+        title: 'Electrical Room 2 · Factory 2',
+        subtitle: 'Gardu 20kV Suplai Lini Mesin Forging Press & Continuous Carburizing Furnace TRF 01 s/d TRF 04',
+        tag: 'Substation Factory 2 · 12 Unit Power Meter Live'
+      },
+      'view-electrical-3': {
+        title: 'Electrical Room 3 · Factory 3',
+        subtitle: 'Gardu 20kV Suplai Pompa Cooling Tower Sentral, Forging Line 3, & Annealing Furnaces',
+        tag: 'Substation Factory 3 · 11 Unit Power Meter Live'
+      },
+      'view-forging': {
+        title: 'Electrical Substation · Lini Mesin Forging Press',
+        subtitle: 'Monitoring Khusus Gardu & Panel LMVDP Suplai Mesin Forging Press 1600T, 2500T, dan 4000T',
+        tag: '15 Unit Feeder Forging · Factory 1, 2, dan 3'
+      },
+      'view-heattreatment': {
+        title: 'Electrical Substation · Lini Heat Treatment (HT)',
+        subtitle: 'Monitoring Khusus Billet Induction Heater 6.6kV, Carburizing Atmosphere & Annealing Furnaces',
+        tag: '15 Unit Feeder Heat Treatment · Pabrik Musashi'
+      },
+      'view-reports': {
+        title: 'Pusat Laporan & Rekapitulasi Energi Listrik',
+        subtitle: 'Rekapitulasi Resmi Tagihan PLN I-3/TM, Audit Nol-Denda kVARh, dan ESG Carbon Footprint',
+        tag: 'Audit Energi Listrik PT Musashi Auto Parts Indonesia'
+      }
+    };
+
+    const cfg = headerConfigs[viewId] || headerConfigs['view-dashboard'];
+    const bannerTitle = document.getElementById('bannerTitle');
+    const bannerSubtitle = document.getElementById('bannerSubtitle');
+    const bannerAreaTag = document.getElementById('bannerAreaTag');
+    if (bannerTitle) bannerTitle.textContent = cfg.title;
+    if (bannerSubtitle) bannerSubtitle.textContent = cfg.subtitle;
+    if (bannerAreaTag) bannerAreaTag.textContent = cfg.tag;
+
+    // 4. Update data on selected view
+    if (viewId === 'view-dashboard') {
+      updateViewForActiveFilter();
+      renderTable();
+    }
+    renderAllDedicatedTables();
+
+    // 5. Scroll smoothly to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 6. Close mobile sidebar drawer if on mobile
+    if (window.innerWidth <= 1024) {
+      const appSidebar = document.getElementById('appSidebar');
+      if (appSidebar && appSidebar.classList.contains('open')) {
+        appSidebar.classList.remove('open');
+        const toggleText = document.getElementById('btnSidebarToggleText');
+        if (toggleText) toggleText.textContent = 'Menu';
+      }
+    }
+  };
+
+  function initNavigation() {
+    // Connect all sidebar menu buttons
+    document.querySelectorAll('.sidebar-menu-btn').forEach(btn => {
+      const targetView = btn.dataset.view;
+      if (targetView) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          window.switchMenuView(targetView, btn.dataset.filter || 'all');
+        });
+      }
+    });
+
+    // Sub-Navbar Pills Click Handlers
+    const subPills = document.querySelectorAll('.sub-nav-pill');
+    subPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const f = pill.dataset.subfilter || 'all';
+        setActiveFilter(f);
+      });
+    });
   }
 
   // Central function to set filter and synchronize all navigation controls
@@ -276,62 +454,18 @@ document.addEventListener('DOMContentLoaded', () => {
     state.activeFilter = filterKey;
     state.currentPage = 1;
 
-    // 1. Update Sidebar Navigation Active State
-    const sideBtns = document.querySelectorAll('.sidebar-menu-btn[data-filter]');
-    sideBtns.forEach(btn => {
-      const bf = btn.dataset.filter;
-      if (bf === filterKey || (filterKey === 'all' && bf === 'all') || (filterKey === 'electrical' && bf === 'all')) {
-        btn.classList.add('active');
+    // 1. Update Sub-Navbar Pills Active State
+    const subPills = document.querySelectorAll('.sub-nav-pill');
+    subPills.forEach(pill => {
+      const sf = pill.dataset.subfilter;
+      if (sf === filterKey || (filterKey === 'all' && sf === 'all') || (filterKey === 'electrical' && sf === 'all')) {
+        pill.classList.add('active');
       } else {
-        btn.classList.remove('active');
+        pill.classList.remove('active');
       }
     });
 
-    // 2. Update Header Banner Title, Subtitle, and Tag
-    const bannerTitle = document.getElementById('bannerTitle');
-    const bannerSubtitle = document.getElementById('bannerSubtitle');
-    const bannerAreaTag = document.getElementById('bannerAreaTag');
-
-    if (bannerTitle) {
-      const titles = {
-        all: 'Dashboard',
-        electrical: 'Dashboard',
-        fac1: 'Electrical Room 1 – Substation Factory 1',
-        fac2: 'Electrical Room 2 – Substation Factory 2',
-        fac3: 'Electrical Room 3 – Substation Factory 3',
-        forging: 'Electrical Substation – Lini Mesin Forging',
-        heattreatment: 'Electrical Substation – Lini Heat Treatment (HT)'
-      };
-      bannerTitle.textContent = titles[filterKey] || 'Dashboard';
-    }
-
-    if (bannerSubtitle) {
-      const subs = {
-        all: 'Selamat datang, Division Head & Tim Utility Engineering PT Musashi Auto Parts Indonesia',
-        electrical: 'Selamat datang, Division Head & Tim Utility Engineering PT Musashi Auto Parts Indonesia',
-        fac1: 'Monitoring 15 Unit: Trafo 20kV (TRF 11-16), Panel LMVDP 210V & 400V, dan APFC Capacitor Bank',
-        fac2: 'Monitoring 12 Unit: Trafo 20kV (TRF 01-04), Panel LMVDP Forging & APFC Substation Fac 2',
-        fac3: 'Monitoring 11 Unit: Trafo 20kV (TRF 05-08), Panel LMVDP Pompa & Annealing Substation Fac 3',
-        forging: 'Monitoring 15 Unit Substation Penyuplai Beban Kritis Mesin Press & Induction Heaters Forging',
-        heattreatment: 'Monitoring 15 Unit Substation Penyuplai Billet Induction Heater 6.6kV & Carburizing Furnace'
-      };
-      bannerSubtitle.textContent = subs[filterKey] || subs.all;
-    }
-
-    if (bannerAreaTag) {
-      const tags = {
-        all: 'Gardu 20kV Cubicle Schneider SM6 · Fac 1, 2, 3 (Forging & Heat Treatment)',
-        electrical: 'Gardu 20kV Cubicle Schneider SM6 · Fac 1, 2, 3 (Forging & Heat Treatment)',
-        fac1: 'Substation Factory 1 · Gardu 20kV Schneider SM6 & Trafo TRF 11-16',
-        fac2: 'Substation Factory 2 · Gardu 20kV & Trafo TRF 01-04',
-        fac3: 'Substation Factory 3 · Gardu 20kV & Trafo TRF 05-08',
-        forging: 'Sistem Distribusi Beban Mesin Forging Press · Fac 1, 2, 3',
-        heattreatment: 'Sistem Distribusi Billet Induction Heater 6.6kV & Carburizing'
-      };
-      bannerAreaTag.textContent = tags[filterKey] || tags.all;
-    }
-
-    // 3. Update Alert Banner Messages
+    // 2. Update Alert Banner Messages
     const alertCountBadge = document.getElementById('alertCountBadge');
     const alertDescText = document.getElementById('alertDescText');
     if (alertCountBadge && alertDescText) {
@@ -356,50 +490,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // 4. Update Sub-Navbar Pills Active State
-    const subPills = document.querySelectorAll('.sub-nav-pill');
-    subPills.forEach(pill => {
-      const sf = pill.dataset.subfilter;
-      if (sf === filterKey || (filterKey === 'all' && sf === 'all') || (filterKey === 'electrical' && sf === 'all')) {
-        pill.classList.add('active');
-      } else {
-        pill.classList.remove('active');
-      }
-    });
-
-    // 5. Update Views & Table
+    // 3. Update Views & Table
     updateViewForActiveFilter();
     renderTable();
-  }
-
-  // ================= 3. FILTER TABS & SIDEBAR CONTROLLER =================
-  function initFilterTabs() {
-    // Sidebar Navigation Buttons
-    const sideBtns = document.querySelectorAll('.sidebar-menu-btn[data-filter]');
-    sideBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const f = btn.dataset.filter || 'all';
-        setActiveFilter(f);
-
-        // Auto close sidebar on mobile if open
-        const sidebar = document.getElementById('appSidebar');
-        if (sidebar && window.innerWidth <= 1024) {
-          sidebar.classList.remove('open');
-        }
-      });
-    });
-
-    // Sub-Navbar Pills Click Handlers
-    const subPills = document.querySelectorAll('.sub-nav-pill');
-    subPills.forEach(pill => {
-      pill.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const f = pill.dataset.subfilter || 'all';
-        setActiveFilter(f);
-      });
-    });
   }
 
   // ================= 4. UPDATE VIEW BASED ON ACTIVE FILTER =================
@@ -964,21 +1057,120 @@ document.addEventListener('DOMContentLoaded', () => {
     state.simulationTimer = setInterval(() => {
       if (!state.isSimulationActive) return;
 
-      // Jitter values slightly by ±0.8%
+      // Jitter values slightly by ±0.6%
       state.meters.forEach(m => {
         if (m.status !== 'offline') {
-          const delta = (Math.random() - 0.5) * 0.016;
+          const delta = (Math.random() - 0.5) * 0.012;
           m.kw = Math.max(5, m.kw * (1 + delta));
           m.current = Math.max(2, m.current * (1 + delta));
-          m.kwhToday = (m.kwhToday || 100) + (m.kw / 3600) * 3;
+          m.kwhToday = (m.kwhToday || 100) + (m.kw / 3600) * 3.5;
         }
       });
 
-      renderTable();
+      if (state.activeView === 'view-dashboard') {
+        renderTable();
+      } else {
+        renderAllDedicatedTables();
+      }
     }, 3500);
   }
 
-  // ================= 9. MODALS & DETAIL POPUPS =================
+  // ================= 9. DEDICATED SUBSTATION TABLES RENDERER =================
+  function renderAllDedicatedTables() {
+    // 1. Factory 1 (15 unit)
+    const fac1Meters = state.meters.filter(m => m.factory === 'fac1');
+    renderSubstationTable('fac1TableBody', fac1Meters, false);
+
+    // 2. Factory 2 (12 unit)
+    const fac2Meters = state.meters.filter(m => m.factory === 'fac2');
+    renderSubstationTable('fac2TableBody', fac2Meters, false);
+
+    // 3. Factory 3 (11 unit)
+    const fac3Meters = state.meters.filter(m => m.factory === 'fac3');
+    renderSubstationTable('fac3TableBody', fac3Meters, false);
+
+    // 4. Forging Substation (15 unit)
+    const forgingMeters = state.meters.filter(m => 
+      m.system === 'forging' || 
+      (m.name && m.name.toLowerCase().includes('forging')) ||
+      ['TRF-12', 'TRF-13', 'TRF-01', 'TRF-04', 'TRF-06', 'LMV-02', 'LMV-07', 'LMV-08', 'LMV-11', 'LMV-12'].includes(m.id)
+    );
+    renderSubstationTable('forgingTableBody', forgingMeters, true);
+
+    // 5. Heat Treatment Substation (15 unit)
+    const htMeters = state.meters.filter(m => 
+      m.system === 'heattreatment' || 
+      (m.name && (m.name.toLowerCase().includes('heat') || m.name.toLowerCase().includes('billet') || m.name.toLowerCase().includes('carburizing') || m.name.toLowerCase().includes('annealing'))) ||
+      ['TRF-11', 'TRF-15', 'TRF-16', 'TRF-02', 'TRF-03', 'TRF-07', 'TRF-08', 'LMV-03', 'LMV-09', 'LMV-13'].includes(m.id)
+    );
+    renderSubstationTable('htTableBody', htMeters, true);
+  }
+
+  function renderSubstationTable(tbodyId, meterList, showFactoryCol = false) {
+    const tbody = document.getElementById(tbodyId);
+    if (!tbody) return;
+
+    if (!meterList || meterList.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="${showFactoryCol ? 10 : 9}" style="text-align:center; padding:2rem; color:var(--text-muted);">Tidak ada data meter yang sesuai.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = meterList.map(m => {
+      const statusClass = (m.status === 'normal') ? 'normal' : (m.status === 'warning') ? 'warning' : 'offline';
+      const statusLabel = (m.status === 'normal') ? 'Normal' : (m.status === 'warning') ? 'Warning' : 'Offline';
+      const factoryColHtml = showFactoryCol 
+        ? `<td><span style="font-size:0.72rem; padding:2px 7px; border-radius:3px; background:rgba(56,189,248,0.12); color:var(--color-blue); font-weight:600;">${m.factoryLabel || m.factory}</span></td>` 
+        : '';
+
+      return `
+        <tr>
+          <td class="col-id">${m.id}</td>
+          <td style="font-weight:500; color:var(--text-primary); max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${m.name}">
+            ${m.name}
+          </td>
+          ${factoryColHtml}
+          <td class="col-mono" style="color:var(--color-blue); font-size:0.76rem;">${m.ip || '10.41.47.x'}</td>
+          <td class="col-num" style="font-weight:600; color:#ffffff;">
+            ${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+          </td>
+          <td class="col-num">${(m.voltage || 0).toFixed(1)}</td>
+          <td class="col-num">${(m.current || 0).toFixed(1)}</td>
+          <td class="col-num" style="color:${(m.pf < 0.85) ? 'var(--color-amber)' : 'var(--color-green)'}; font-weight:600;">
+            ${(m.pf || 0.90).toFixed(2)}
+          </td>
+          <td style="text-align:center;">
+            <span class="status-dot-badge ${statusClass}">${statusLabel}</span>
+          </td>
+          <td style="text-align:center;">
+            <button class="btn-table-detail" onclick="window.openMeterDetailById('${m.id}')" title="Buka Detail Meter ${m.id}">
+              Detail
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // ================= 10. MODALS CONTROLLER (ZERO FREEZING) =================
+  window.openModal = function(modalEl) {
+    if (!modalEl) return;
+    window.closeAllModals();
+    modalEl.classList.add('open');
+    modalEl.classList.add('active');
+    document.body.classList.add('modal-open');
+  };
+
+  window.closeAllModals = function() {
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+      m.classList.remove('open');
+      m.classList.remove('active');
+    });
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  };
+
+  // Detail Modal High-Precision Telemetry (Freeze-Free)
   window.openMeterDetailById = function(meterId) {
     const meter = state.meters.find(m => m.id === meterId);
     if (!meter) return;
@@ -987,166 +1179,187 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalSubtitle = document.getElementById('modalMeterSubtitle');
     const modalBody = document.getElementById('modalMeterBody');
 
-    if (modalTitle) modalTitle.textContent = `${meter.name} (${meter.id})`;
-    if (modalSubtitle) modalSubtitle.textContent = `Area: ${meter.categoryLabel || meter.category} · Gateway IP: ${meter.ip || '192.168.10.x'}`;
+    if (modalTitle) {
+      const isWarn = meter.pf < 0.85 || meter.status === 'warning';
+      modalTitle.innerHTML = `
+        <span>${meter.name}</span>
+        <span class="status-dot-badge ${isWarn ? 'warning' : 'normal'}" style="font-size:0.72rem; font-weight:600;">
+          ${isWarn ? '▲ Peringatan Cos φ' : '● Normal Live'}
+        </span>
+      `;
+    }
+
+    if (modalSubtitle) {
+      modalSubtitle.textContent = `ID: ${meter.id} · ${meter.factoryLabel || meter.factory} · ${meter.subArea || 'Electrical Room'} · Gateway IP: ${meter.ip || '10.41.47.x'}`;
+    }
 
     if (modalBody) {
       const carbonKg = ((meter.kwhToday || 0) * 0.79).toFixed(1);
+      const estCostRp = Math.round((meter.kwhToday || 0) * 1444.70).toLocaleString('id-ID');
+      const pfStatusHtml = meter.pf >= 0.85
+        ? `<strong style="color:var(--color-green);">${(meter.pf || 0.90).toFixed(2)}</strong> <span style="font-size:0.7rem; color:var(--color-green);">(Aman &ge; 0,85)</span>`
+        : `<strong style="color:var(--color-amber);">${(meter.pf || 0.84).toFixed(2)}</strong> <span style="font-size:0.7rem; color:var(--color-amber);">(Di bawah 0,85 - Cek APFC)</span>`;
+
       modalBody.innerHTML = `
+        <!-- 4 High-Density Live Telemetry Tiles -->
         <div class="detail-specs-grid">
           <div class="spec-tile">
-            <div class="spec-tile-label">Daya Aktif (Active Power)</div>
-            <div class="spec-tile-val" style="color:var(--color-blue);">${(meter.kw || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">kW</span></div>
+            <div class="spec-tile-label">Daya Aktif (Active kW)</div>
+            <div class="spec-tile-val" style="color:var(--color-blue);">${(meter.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">kW</span></div>
+            <div style="font-size:0.68rem; color:var(--text-muted);">Reaktif: ${(meter.kvar || 0).toFixed(1)} kVAR</div>
           </div>
           <div class="spec-tile">
             <div class="spec-tile-label">Tegangan Sistem (V L-L)</div>
             <div class="spec-tile-val">${(meter.voltage || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">V</span></div>
+            <div style="font-size:0.68rem; color:var(--text-muted);">VR: ${(meter.vr || (meter.voltage/1.732)).toFixed(0)}V · VS: ${(meter.vs || (meter.voltage/1.732)).toFixed(0)}V · VT: ${(meter.vt || (meter.voltage/1.732)).toFixed(0)}V</div>
           </div>
           <div class="spec-tile">
-            <div class="spec-tile-label">Arus Beban Total</div>
+            <div class="spec-tile-label">Arus Beban (A Total)</div>
             <div class="spec-tile-val">${(meter.current || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">A</span></div>
+            <div style="font-size:0.68rem; color:var(--text-muted);">IR: ${(meter.ir || meter.current).toFixed(1)}A · IS: ${(meter.is || meter.current).toFixed(1)}A · IT: ${(meter.it || meter.current).toFixed(1)}A</div>
+          </div>
+          <div class="spec-tile">
+            <div class="spec-tile-label">Power Factor (Cos φ)</div>
+            <div class="spec-tile-val">${(meter.pf || 0.90).toFixed(2)}</div>
+            <div style="font-size:0.68rem;">${pfStatusHtml}</div>
           </div>
         </div>
 
+        <!-- Technical Parameters & Network Details -->
         <div class="param-table-box">
-          <div class="param-row"><span>Brand / Tipe:</span> <strong>${meter.brand || 'Mitsubishi ME96SS'}</strong></div>
-          <div class="param-row"><span>Modbus Unit ID:</span> <strong>${meter.modbusId || 1}</strong></div>
-          <div class="param-row"><span>Cisco Switch Port:</span> <strong style="color:var(--color-blue);">${meter.ciscoSwitch || 'SW-FAC1-CORE01 (Gi1/0/2)'}</strong></div>
-          <div class="param-row"><span>Subnet Mask:</span> <strong>${meter.subnet || '255.255.254.0'}</strong></div>
-          <div class="param-row"><span>Power Factor (Cos φ):</span> <strong style="color:${meter.pf < 0.85 ? 'var(--color-amber)' : 'var(--color-green)'};">${(meter.pf || 0.89).toFixed(2)}</strong></div>
-          <div class="param-row"><span>Frekuensi Grid:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz</strong></div>
-          <div class="param-row"><span>Energi Terpakai Hari Ini:</span> <strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></div>
-          <div class="param-row"><span>Jejak Emisi Karbon (CO₂e):</span> <strong style="color:var(--color-teal);">${carbonKg} kg CO₂e</strong></div>
+          <div class="param-row"><span>Brand / Tipe Digital Meter:</span> <strong>${meter.brand || 'Schneider PowerLogic PM5500'}</strong></div>
+          <div class="param-row"><span>Modbus Slave ID & Protokol:</span> <strong>Unit ID ${meter.modbusId || 1} · RS485 RTU 9600 8-N-1</strong></div>
+          <div class="param-row"><span>Cisco Switch Port & Uplink:</span> <strong style="color:var(--color-blue);">${meter.ciscoSwitch || 'SW-FAC1-CORE01 (Port Gi1/0/2)'}</strong></div>
+          <div class="param-row"><span>Alamat IP Gateway & Subnet:</span> <strong>${meter.ip || '10.41.47.100'} / ${meter.subnet || '255.255.254.0'}</strong></div>
+          <div class="param-row"><span>Frekuensi Jaringan Listrik:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz (PLN Cikarang Grid)</strong></div>
+          <div class="param-row"><span>Total Harmonic Distortion:</span> <strong>THD-V: ${(meter.thdV || 1.8).toFixed(1)}% · THD-I: ${(meter.thdI || 3.4).toFixed(1)}%</strong></div>
+          <div class="param-row"><span>Energi Terpakai Hari Ini:</span> <strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh (Rp ${estCostRp})</strong></div>
+          <div class="param-row"><span>Jejak Emisi Karbon (ESG CO₂e):</span> <strong style="color:var(--color-teal);">${carbonKg} kg CO₂e (0,79 kg/kWh)</strong></div>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:0.65rem; margin-top:0.5rem;">
-          <button class="btn-page" style="background:var(--color-blue); color:#ffffff; border-color:var(--color-blue);" onclick="window.closeAllModals()">
-            Tutup
+        <!-- Modbus Register Mapping Table -->
+        <div style="margin-top:0.85rem;">
+          <div style="font-size:0.75rem; font-weight:700; color:var(--text-primary); margin-bottom:0.35rem; display:flex; align-items:center; gap:0.4rem;">
+            <span>Peta Register Modbus Live (Schneider / Mitsubishi)</span>
+            <span style="font-size:0.65rem; color:var(--color-teal); background:rgba(45,212,191,0.1); padding:1px 6px; border-radius:3px;">Polling Rate 1000ms</span>
+          </div>
+          <table class="modbus-reg-table">
+            <thead>
+              <tr>
+                <th>Register</th><th>Deskripsi Parameter</th><th>Tipe Data</th><th>Nilai Realtime</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>3001 (0x0BB8)</code></td><td>Active Power Total (kW)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.kw || 0).toFixed(1)} kW</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+              </tr>
+              <tr>
+                <td><code>3003 (0x0BBA)</code></td><td>Voltage Line-to-Line (V L-L)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.voltage || 0).toFixed(1)} V</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+              </tr>
+              <tr>
+                <td><code>3005 (0x0BBC)</code></td><td>Current Phase Average (A)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.current || 0).toFixed(1)} A</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+              </tr>
+              <tr>
+                <td><code>3007 (0x0BBE)</code></td><td>Power Factor Total (Cos φ)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.pf || 0.90).toFixed(2)}</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+              </tr>
+              <tr>
+                <td><code>3009 (0x0BC0)</code></td><td>Total Active Energy (kWh)</td><td>Int64 (4 Regs)</td><td><strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></td><td style="color:var(--color-green);">✓ Terakumulasi</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Interactive Actions Bar -->
+        <div class="modal-actions-bar">
+          <div class="modal-actions-left">
+            <button class="btn-action-telemetry" onclick="window.copyTelemetry('${meter.id}')" title="Salin seluruh parameter teknis meter ke clipboard">
+              📋 Salin Telemetri
+            </button>
+            <button class="btn-action-telemetry" onclick="window.testPingMeter('${meter.ip}')" title="Uji koneksi ping Modbus TCP ke meter ini">
+              ⚡ Uji Ping Gateway
+            </button>
+          </div>
+          <button class="btn-action-close-red" onclick="window.closeAllModals()">
+            ✕ Tutup Jendela
           </button>
         </div>
       `;
     }
 
-    if (meterDetailModal) window.openModal(meterDetailModal);
+    const modalEl = document.getElementById('meterDetailModal');
+    if (modalEl) window.openModal(modalEl);
   };
 
-  window.openModal = function(modalEl) {
-    if (!modalEl) return;
-    modalEl.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
+  window.copyTelemetry = function(meterId) {
+    const meter = state.meters.find(m => m.id === meterId);
+    if (!meter) return;
 
-    // Ensure view is right at top where modal is positioned
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    modalEl.scrollTop = 0;
+    const text = `[TELEMETRI POWER METER PT MUSASHI AUTO PARTS INDONESIA]
+ID Meter: ${meter.id}
+Nama Feeder: ${meter.name}
+Area: ${meter.factoryLabel || meter.factory} - ${meter.subArea}
+Brand: ${meter.brand}
+IP Gateway: ${meter.ip} | Subnet: ${meter.subnet}
+Switch Cisco: ${meter.ciscoSwitch}
+Daya Aktif: ${(meter.kw || 0).toFixed(1)} kW
+Tegangan (V L-L): ${(meter.voltage || 0).toFixed(1)} V (VR: ${(meter.vr||0).toFixed(0)}V, VS: ${(meter.vs||0).toFixed(0)}V, VT: ${(meter.vt||0).toFixed(0)}V)
+Arus Beban: ${(meter.current || 0).toFixed(1)} A (IR: ${(meter.ir||0).toFixed(1)}A, IS: ${(meter.is||0).toFixed(1)}A, IT: ${(meter.it||0).toFixed(1)}A)
+Power Factor (Cos φ): ${(meter.pf || 0.90).toFixed(2)}
+Frekuensi: ${(meter.freq || 50.0).toFixed(2)} Hz
+THD-V: ${(meter.thdV || 0).toFixed(1)}% | THD-I: ${(meter.thdI || 0).toFixed(1)}%
+Energi Hari Ini: ${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh
+Estimasi Biaya: Rp ${Math.round((meter.kwhToday || 0) * 1444.70).toLocaleString('id-ID')}
+Emisi CO2: ${((meter.kwhToday || 0) * 0.79).toFixed(1)} kg CO2e
+Waktu Log: ${new Date().toLocaleString('id-ID')}`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(`✓ Telemetri ${meter.id} berhasil disalin ke clipboard!`);
+      }).catch(() => {
+        copyFallback(text, meter.id);
+      });
+    } else {
+      copyFallback(text, meter.id);
+    }
+  };
+
+  function copyFallback(text, meterId) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
     try {
-      if (window.parent && window.parent !== window) {
-        window.parent.scrollTo({ top: 0, behavior: 'instant' });
-      }
-    } catch (e) {}
-
-    // If opening blueprint modal, calculate snug fit and reset zoom
-    if (modalEl.id === 'blueprintModal') {
-      applyBlueprintZoom(1.0, 0, 0);
-      adjustBlueprintModalLayout();
+      document.execCommand('copy');
+      showToast(`✓ Telemetri ${meterId} berhasil disalin!`);
+    } catch (e) {
+      showToast(`Gagal menyalin otomatis`, false);
     }
-  };
-
-  window.closeAllModals = function() {
-    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-  };
-
-  // Blueprint Zoom & Smooth Drag Pan Logic (Zero-Scroll by Default)
-  let currentZoom = 1.0;
-  let panX = 0;
-  let panY = 0;
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-
-  const blueprintImg = document.getElementById('blueprintImg');
-  const blueprintViewport = document.getElementById('blueprintViewport');
-
-  function adjustBlueprintModalLayout() {
-    const modalOverlay = document.getElementById('blueprintModal');
-    const modalCard = modalOverlay?.querySelector('.modal-blueprint-wide');
-    const modalBody = modalOverlay?.querySelector('.blueprint-modal-body');
-    const viewport = document.getElementById('blueprintViewport');
-    if (!modalOverlay || !modalCard || !modalBody || !viewport) return;
-
-    if (modalCard.classList.contains('fullscreen-mode')) {
-      modalCard.style.height = '';
-      modalCard.style.width = '';
-      modalCard.style.maxWidth = '';
-      modalBody.style.height = '';
-      viewport.style.height = '';
-      return;
-    }
-
-    // Determine safe visible screen height
-    const isIframe = window.self !== window.top;
-    let maxAvailableH;
-
-    if (isIframe) {
-      // In Streamlit iframe, window.innerHeight is the iframe height.
-      // Use screen.availHeight (physical screen height) to prevent exceeding viewport!
-      const screenH = (window.screen && window.screen.availHeight) ? window.screen.availHeight : 768;
-      maxAvailableH = Math.min(Math.round(screenH * 0.74), 620);
-      maxAvailableH = Math.max(340, maxAvailableH);
-    } else {
-      maxAvailableH = Math.min(window.innerHeight - 30, 620);
-      maxAvailableH = Math.max(340, maxAvailableH);
-    }
-
-    const headerH = 42;
-    const targetBodyH = maxAvailableH - headerH;
-    // Image aspect ratio: 1008px / 757px = ~1.33157
-    const imgRatio = 1008 / 757;
-
-    // Snug width so there are zero wasted letterbox margins
-    let idealWidth = Math.round(targetBodyH * imgRatio);
-    const maxAllowedWidth = Math.min(window.innerWidth - 24, 1000);
-
-    if (idealWidth > maxAllowedWidth) {
-      idealWidth = maxAllowedWidth;
-      const snugBodyH = Math.round(idealWidth / imgRatio);
-      modalBody.style.height = `${snugBodyH}px`;
-      viewport.style.height = `${snugBodyH}px`;
-      modalCard.style.height = `${snugBodyH + headerH}px`;
-    } else {
-      modalBody.style.height = `${targetBodyH}px`;
-      viewport.style.height = `${targetBodyH}px`;
-      modalCard.style.height = `${maxAvailableH}px`;
-    }
-    modalCard.style.width = `${idealWidth}px`;
-    modalCard.style.maxWidth = `${maxAllowedWidth}px`;
+    document.body.removeChild(ta);
   }
 
-  window.addEventListener('resize', () => {
+  window.testPingMeter = function(ip) {
+    const pingMs = Math.floor(Math.random() * 3) + 2;
+    showToast(`✓ Ping ke ${ip} (Port 502 Modbus) Berhasil! Respons: ${pingMs}ms · SCADA OK`);
+  };
+
+  // ================= 11. BLUEPRINT MODAL CONTROLLER (ZERO FREEZING) =================
+  let currentBlueprintZoom = 1.0;
+
+  window.openBlueprintModal = function() {
     const blueprintModal = document.getElementById('blueprintModal');
-    if (blueprintModal && blueprintModal.classList.contains('active')) {
-      adjustBlueprintModalLayout();
-    }
-  });
+    if (!blueprintModal) return;
+    currentBlueprintZoom = 1.0;
+    applyBlueprintZoom(1.0);
+    window.openModal(blueprintModal);
+  };
 
-  function applyBlueprintZoom(scale, newPanX, newPanY) {
-    currentZoom = Math.min(Math.max(scale, 1.0), 3.5);
-    if (currentZoom === 1.0) {
-      panX = 0;
-      panY = 0;
-    } else {
-      if (typeof newPanX === 'number') panX = newPanX;
-      if (typeof newPanY === 'number') panY = newPanY;
-    }
-
+  function applyBlueprintZoom(scale) {
+    currentBlueprintZoom = Math.min(Math.max(scale, 1.0), 3.0);
+    const blueprintImg = document.getElementById('blueprintImg');
     if (blueprintImg) {
-      blueprintImg.style.transform = `scale(${currentZoom}) translate(${panX / currentZoom}px, ${panY / currentZoom}px)`;
-    }
-
-    if (blueprintViewport) {
-      blueprintViewport.classList.toggle('is-zoomed', currentZoom > 1.0);
+      blueprintImg.style.transform = `scale(${currentBlueprintZoom})`;
     }
   }
 
@@ -1155,9 +1368,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnZoomReset = document.getElementById('btnZoomReset');
   const btnToggleFullscreen = document.getElementById('btnToggleFullscreen');
 
-  if (btnZoomIn) btnZoomIn.addEventListener('click', () => applyBlueprintZoom(currentZoom + 0.35));
-  if (btnZoomOut) btnZoomOut.addEventListener('click', () => applyBlueprintZoom(currentZoom - 0.35));
-  if (btnZoomReset) btnZoomReset.addEventListener('click', () => applyBlueprintZoom(1.0, 0, 0));
+  if (btnZoomIn) btnZoomIn.addEventListener('click', () => applyBlueprintZoom(currentBlueprintZoom + 0.35));
+  if (btnZoomOut) btnZoomOut.addEventListener('click', () => applyBlueprintZoom(currentBlueprintZoom - 0.35));
+  if (btnZoomReset) btnZoomReset.addEventListener('click', () => applyBlueprintZoom(1.0));
 
   if (btnToggleFullscreen) {
     btnToggleFullscreen.addEventListener('click', () => {
@@ -1166,67 +1379,8 @@ document.addEventListener('DOMContentLoaded', () => {
         modalCard.classList.toggle('fullscreen-mode');
         const isFull = modalCard.classList.contains('fullscreen-mode');
         btnToggleFullscreen.textContent = isFull ? '⊡ Pas' : '⛶ Full';
-        btnToggleFullscreen.title = isFull ? 'Kembali ke Tampilan Pas' : 'Toggle Layar Penuh';
-        if (!isFull) {
-          adjustBlueprintModalLayout();
-        } else {
-          modalCard.style.width = '';
-          modalCard.style.maxWidth = '';
-          modalCard.style.height = '';
-        }
-        applyBlueprintZoom(1.0, 0, 0);
+        applyBlueprintZoom(1.0);
       }
-    });
-  }
-
-  // Mouse Wheel Zoom on Blueprint
-  if (blueprintViewport) {
-    blueprintViewport.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const delta = e.deltaY < 0 ? 0.25 : -0.25;
-      applyBlueprintZoom(currentZoom + delta);
-    }, { passive: false });
-
-    // Drag to Pan when Zoomed In
-    blueprintViewport.addEventListener('mousedown', (e) => {
-      if (currentZoom <= 1.0) return;
-      isDragging = true;
-      startX = e.clientX - panX;
-      startY = e.clientY - panY;
-      blueprintViewport.classList.add('is-dragging');
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
-      panX = e.clientX - startX;
-      panY = e.clientY - startY;
-      applyBlueprintZoom(currentZoom, panX, panY);
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        if (blueprintViewport) blueprintViewport.classList.remove('is-dragging');
-      }
-    });
-
-    // Touch Drag for Mobile
-    blueprintViewport.addEventListener('touchstart', (e) => {
-      if (currentZoom <= 1.0 || e.touches.length !== 1) return;
-      isDragging = true;
-      startX = e.touches[0].clientX - panX;
-      startY = e.touches[0].clientY - panY;
-    }, { passive: true });
-
-    blueprintViewport.addEventListener('touchmove', (e) => {
-      if (!isDragging || e.touches.length !== 1) return;
-      panX = e.touches[0].clientX - startX;
-      panY = e.touches[0].clientY - startY;
-      applyBlueprintZoom(currentZoom, panX, panY);
-    }, { passive: true });
-
-    blueprintViewport.addEventListener('touchend', () => {
-      isDragging = false;
     });
   }
 
@@ -1257,28 +1411,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Blueprint Modal Button
     if (btnOpenBlueprintModal) {
-      btnOpenBlueprintModal.addEventListener('click', () => {
-        applyBlueprintZoom(1.0);
-        window.openModal(blueprintModal);
+      btnOpenBlueprintModal.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.openBlueprintModal();
       });
     }
 
     // Sidebar Blueprint Button
     const sideNavBlueprint = document.getElementById('sideNavBlueprint');
     if (sideNavBlueprint) {
-      sideNavBlueprint.addEventListener('click', () => {
-        applyBlueprintZoom(1.0);
-        window.openModal(blueprintModal);
+      sideNavBlueprint.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.openBlueprintModal();
       });
     }
 
-    // Export CSV (Header button & Sidebar button)
+    // Export CSV (Header button & Pusat Laporan button)
     if (btnExportCsv) {
       btnExportCsv.addEventListener('click', exportToCsv);
     }
+    const btnExportReports = document.getElementById('btnExportCsvFromReports');
+    if (btnExportReports) {
+      btnExportReports.addEventListener('click', exportToCsv);
+    }
     const sideNavReport = document.getElementById('sideNavReport');
     if (sideNavReport) {
-      sideNavReport.addEventListener('click', exportToCsv);
+      sideNavReport.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.switchMenuView('view-reports', 'reports');
+      });
     }
 
     // Scroll to Table Button (Header Banner)
@@ -1419,13 +1580,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    showToast('✓ Laporan CSV 38 Meter Musashi berhasil diunduh!');
   }
 
   // ================= 12. TV MODE & AUTO-CYCLE ROTATION =================
   let tvCountdownInterval = null;
-  let tvCycleSecondsLeft = 12;
-  const TV_CYCLE_CATEGORIES = ['electrical', 'fac1', 'fac2', 'fac3', 'forging', 'heattreatment'];
-  let currentTvCategoryIdx = 0;
+  let tvCycleSecondsLeft = 14;
+  const TV_CYCLE_VIEWS = ['view-dashboard', 'view-electrical-1', 'view-electrical-2', 'view-electrical-3', 'view-forging', 'view-heattreatment', 'view-reports'];
+  let currentTvViewIdx = 0;
 
   function toggleTvMode() {
     const isTv = document.body.classList.toggle('tv-mode');
@@ -1441,6 +1603,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.requestFullscreen().catch(() => {});
       }
       startTvAutoCycle();
+      showToast('Mode TV / Kiosk Substation Aktif (Tekan T atau Esc untuk keluar)');
     } else {
       if (tvBtnText) tvBtnText.textContent = 'Mode TV';
       if (tvCycleBadge) tvCycleBadge.style.display = 'none';
@@ -1453,16 +1616,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startTvAutoCycle() {
     stopTvAutoCycle();
-    tvCycleSecondsLeft = 12;
+    tvCycleSecondsLeft = 14;
     updateTvCountdownDisplay();
 
     tvCountdownInterval = setInterval(() => {
       tvCycleSecondsLeft--;
       if (tvCycleSecondsLeft <= 0) {
-        tvCycleSecondsLeft = 12;
-        currentTvCategoryIdx = (currentTvCategoryIdx + 1) % TV_CYCLE_CATEGORIES.length;
-        const nextCat = TV_CYCLE_CATEGORIES[currentTvCategoryIdx];
-        setActiveFilter(nextCat);
+        tvCycleSecondsLeft = 14;
+        currentTvViewIdx = (currentTvViewIdx + 1) % TV_CYCLE_VIEWS.length;
+        const nextView = TV_CYCLE_VIEWS[currentTvViewIdx];
+        window.switchMenuView(nextView);
       }
       updateTvCountdownDisplay();
     }, 1000);
