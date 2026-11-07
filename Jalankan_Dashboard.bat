@@ -1,9 +1,10 @@
 @echo off
 title Server Dashboard Musashi Utility
 cd /d "%~dp0"
+cls
 echo ========================================================
 echo  PT MUSASHI AUTO PARTS INDONESIA - UTILITY DIVISION
-echo  Membuka Dashboard di browser...
+echo  Memulai Server SCADA & Monitoring Electrical Room...
 echo ========================================================
 
 set "PY_EXE=python"
@@ -11,15 +12,12 @@ if exist "C:\Users\Acer Aspire Lite\AppData\Local\Programs\Python\Python313\pyth
     set "PY_EXE=C:\Users\Acer Aspire Lite\AppData\Local\Programs\Python\Python313\python.exe"
 )
 
-REM Buka browser ke alamat server
-start "" "http://127.0.0.1:8000/dashboard"
-
-REM Jalankan server lokal port 8000
+echo Menggunakan Python: %PY_EXE%
 "%PY_EXE%" server.py
 
-REM Cadangan jika port 8000 terblokir
 if errorlevel 1 (
-    echo Membuka berkas index.html langsung...
+    echo.
+    echo Server Python gagal dimulai, membuka berkas langsung...
     start "" "index.html"
 )
 pause
