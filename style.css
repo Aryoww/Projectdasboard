@@ -49,7 +49,7 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --sidebar-width: 242px;
+  --sidebar-width: 260px;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -115,12 +115,12 @@ body.modal-open {
   overflow-x: hidden;
 }
 
-/* ================= 2. SIDEBAR (PT MUSASHI UTILITY) ================= */
+/* ================= 2. SIDEBAR (PT MUSASHI UTILITY - EDITORIAL BLOG GRADE) ================= */
 .app-sidebar {
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border-sidebar);
+  background: linear-gradient(180deg, #8b1e19 0%, #721613 45%, #520f0c 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.12);
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -131,9 +131,24 @@ body.modal-open {
   z-index: 100;
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.22);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, margin-left;
+}
+
+/* Custom Slim Scrollbar for Editorial Look */
+.app-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.app-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+}
+.app-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
 }
 
 /* Collapsed state: slides away smoothly */
@@ -153,35 +168,40 @@ body.modal-open {
   z-index: 0;
 }
 
-/* Brand / Logo Section */
+/* Brand / Logo Editorial Masthead */
 .sidebar-brand {
   position: relative;
   z-index: 1;
-  padding-bottom: 1.15rem;
+  padding: 0.15rem 0.35rem 0.95rem 0.35rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .brand-logo-wrap {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.75rem;
   text-decoration: none;
 }
 
 .brand-emblem-box {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  padding: 4px;
 }
 
 .brand-logo-img {
   width: 100%;
-  height: auto;
-  max-height: 34px;
+  height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
 }
@@ -194,24 +214,25 @@ body.modal-open {
 .brand-title-row {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.45rem;
   line-height: 1.1;
 }
 
 .brand-title-musashi {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   color: #ffffff;
+  font-family: var(--font-sans);
 }
 
 .brand-badge-utility {
-  font-size: 0.65rem;
-  font-weight: 700;
+  font-size: 0.62rem;
+  font-weight: 800;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.22);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.12) 100%);
   border: 1px solid rgba(255, 255, 255, 0.35);
-  padding: 1px 6px;
+  padding: 1.5px 6px;
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -219,10 +240,49 @@ body.modal-open {
 
 .brand-subtitle {
   font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.72);
   font-weight: 500;
   letter-spacing: 0.02em;
-  margin-top: 2px;
+  margin-top: 3px;
+}
+
+/* Sidebar Section Headers (Editorial / Blog Style Grouping) */
+.sidebar-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 1.05rem 0.35rem 0.45rem 0.45rem;
+  font-size: 0.64rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.sidebar-section-header:first-of-type {
+  margin-top: 0.25rem;
+}
+
+.section-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  flex-shrink: 0;
+}
+
+.section-title-text {
+  flex: 1;
+}
+
+.section-count-badge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Sidebar Navigation Items */
@@ -231,150 +291,276 @@ body.modal-open {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
   flex: 1;
 }
 
-.sidebar-section-title {
-  font-size: 0.66rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.55);
-  margin: 0.85rem 0 0.35rem 0.5rem;
-}
-
+/* Sidebar Menu Button (Card-like with Icon Box & Subtitles) */
 .sidebar-menu-btn {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.7rem;
   width: 100%;
-  padding: 0.55rem 0.75rem;
+  padding: 0.55rem 0.7rem;
+  margin-bottom: 0.2rem;
   background: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  border-radius: 9px;
   color: rgba(255, 255, 255, 0.88);
   font-family: var(--font-sans);
-  font-size: 0.82rem;
-  font-weight: 500;
   text-align: left;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.15s ease;
   position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
 .sidebar-menu-btn:hover {
-  background: var(--bg-sidebar-hover);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
   color: #ffffff;
-  transform: translateX(2px);
+  transform: translateX(3px);
 }
 
+.sidebar-menu-btn:active {
+  transform: translateX(1px);
+}
+
+/* Active State (Signature Editorial Glow & Left Accent Bar) */
 .sidebar-menu-btn.active {
-  background: var(--bg-sidebar-active);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar-menu-btn.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 3.5px;
+  background: #ffffff;
+  border-radius: 0 4px 4px 0;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+}
+
+/* Icon Box inside Menu Button */
+.menu-icon-box {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu-btn:hover .menu-icon-box {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-menu-btn.active .menu-icon-box {
+  background: #ffffff;
+  color: var(--musashi-red);
+  border-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .sidebar-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
   stroke: currentColor;
+  stroke-width: 2;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-menu-btn:hover .sidebar-icon {
+  transform: scale(1.1);
+}
+
+/* Two-tier Typography inside Menu Button */
+.sidebar-btn-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  line-height: 1.15;
 }
 
 .sidebar-btn-label {
-  flex: 1;
+  font-size: 0.81rem;
+  font-weight: 600;
+  color: inherit;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.sidebar-badge {
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 1px 6px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  white-space: nowrap;
-}
-
-.sidebar-badge.forging-badge {
-  background: rgba(251, 146, 60, 0.35);
-  color: #ffedd5;
-}
-
-.sidebar-badge.ht-badge {
-  background: rgba(239, 68, 68, 0.35);
-  color: #fee2e2;
-}
-
-.sidebar-badge-new {
-  font-size: 0.62rem;
+.sidebar-menu-btn.active .sidebar-btn-label {
   font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 4px;
-  background: rgba(45, 212, 191, 0.25);
-  color: #ccfbf1;
 }
 
-/* Sidebar Profile Footer */
+.sidebar-btn-sub {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  margin-top: 1.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-menu-btn.active .sidebar-btn-sub {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Micro Pill Badges */
+.sidebar-badge {
+  font-size: 0.64rem;
+  font-weight: 700;
+  padding: 1.5px 7px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu-btn.active .sidebar-badge {
+  background: #ffffff;
+  color: var(--musashi-red);
+  border-color: #ffffff;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar-badge.badge-active {
+  background: rgba(34, 197, 94, 0.25);
+  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.sidebar-badge.badge-orange {
+  background: rgba(249, 115, 22, 0.22);
+  color: #fdba74;
+  border-color: rgba(249, 115, 22, 0.35);
+}
+
+.sidebar-badge.badge-rose {
+  background: rgba(244, 63, 94, 0.22);
+  color: #fda4af;
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+.sidebar-badge.badge-teal {
+  background: rgba(56, 189, 248, 0.2);
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+/* Profile / Operator Card Footer (Editorial Author Card) */
 .sidebar-profile-card {
   position: relative;
   z-index: 1;
   margin-top: auto;
-  padding: 0.65rem 0.75rem;
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
+  padding: 0.65rem 0.8rem;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.profile-avatar-box {
+  position: relative;
+  flex-shrink: 0;
 }
 
 .profile-avatar-circle {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.profile-live-ring {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 1.5px solid #6e1714;
+  box-shadow: 0 0 6px #22c55e;
+  animation: profilePulse 2s infinite;
+}
+
+@keyframes profilePulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 10px #22c55e; }
+  100% { transform: scale(0.95); opacity: 0.8; }
 }
 
 .profile-info-text {
   display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: hidden;
+  min-width: 0;
+}
+
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .profile-name {
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.77rem;
+  font-weight: 700;
   color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.profile-role {
-  font-size: 0.66rem;
-  color: rgba(255, 255, 255, 0.7);
-  white-space: nowrap;
+.profile-badge-div {
+  font-size: 0.58rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 0.5px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
 }
 
-.profile-status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 6px #34d399;
-  flex-shrink: 0;
+.profile-role {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
 }
 
 /* ================= 3. MAIN CONTENT AREA ================= */
