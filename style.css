@@ -112,7 +112,7 @@ body.modal-open {
   min-height: 100vh;
   width: 100%;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* ================= 2. SIDEBAR (PT MUSASHI UTILITY - EDITORIAL BLOG GRADE) ================= */
@@ -124,16 +124,19 @@ body.modal-open {
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed; /* ALWAYS FOLLOWS ALONG - NEVER SCROLLS OFF SCREEN */
   top: 0;
+  left: 0;
+  bottom: 0;
   height: 100vh;
+  height: 100dvh;
   padding: 1.15rem 0.85rem 1rem 0.85rem;
   z-index: 100;
   overflow-y: auto;
   overflow-x: hidden;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.22);
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, margin-left;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 /* Custom Slim Scrollbar for Editorial Look */
@@ -154,7 +157,6 @@ body.modal-open {
 /* Collapsed state: slides away smoothly */
 .app-sidebar.collapsed {
   transform: translateX(-100%);
-  margin-left: calc(-1 * var(--sidebar-width));
 }
 
 .sidebar-wave-watermark {
@@ -609,15 +611,133 @@ body.modal-open {
   margin-top: 1px;
 }
 
+/* Live SCADA Telemetry Capsule (Fills vertical space in sidebar) */
+.sidebar-scada-capsule {
+  position: relative;
+  z-index: 1;
+  margin-top: 1.15rem;
+  margin-bottom: 0.85rem;
+  padding: 0.75rem 0.8rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.06);
+}
+
+.scada-capsule-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.4rem;
+}
+
+.scada-pulse-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.scada-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+  animation: profilePulse 2s infinite;
+}
+
+.scada-head-title {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+}
+
+.scada-badge-live {
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: rgba(34, 197, 94, 0.25);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  color: #4ade80;
+  letter-spacing: 0.04em;
+}
+
+.scada-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.scada-stat-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 0.35rem 0.45rem;
+}
+
+.scada-stat-box .stat-lbl {
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+}
+
+.scada-stat-box .stat-val {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #ffffff;
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scada-footer-note {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.6);
+  padding-top: 0.2rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.scada-footer-note svg {
+  color: #fbbf24;
+  flex-shrink: 0;
+}
+
 /* ================= 3. MAIN CONTENT AREA ================= */
 .app-main-content {
   flex: 1;
   min-width: 0;
+  margin-left: var(--sidebar-width); /* Offsets the fixed desktop sidebar */
+  width: calc(100% - var(--sidebar-width));
   padding: 1.15rem 1.4rem 2.5rem 1.4rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  transition: all 0.28s ease;
+  transition: margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1), width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* When sidebar collapsed on desktop, main content expands to 100% */
+.app-sidebar.collapsed ~ .app-main-content,
+.app-layout.sidebar-collapsed .app-main-content {
+  margin-left: 0 !important;
+  width: 100% !important;
 }
 
 /* ================= 4. MUSASHI HEADER BANNER (CRIMSON CARD) ================= */

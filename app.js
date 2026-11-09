@@ -330,20 +330,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Window resize handler: clean up state if resizing between screen sizes
     window.addEventListener('resize', () => {
+      const appLayout = document.querySelector('.app-layout');
       if (window.innerWidth > 1024) {
         closeMobileSidebar();
         if (appSidebar) {
           if (state.isSidebarCollapsed) {
             appSidebar.classList.add('collapsed');
+            if (appLayout) appLayout.classList.add('sidebar-collapsed');
             syncSidebarUIState(false);
           } else {
             appSidebar.classList.remove('collapsed');
+            if (appLayout) appLayout.classList.remove('sidebar-collapsed');
             syncSidebarUIState(true);
           }
         }
       } else {
         if (appSidebar) {
           appSidebar.classList.remove('collapsed');
+          if (appLayout) appLayout.classList.remove('sidebar-collapsed');
           if (!appSidebar.classList.contains('open')) {
             syncSidebarUIState(false);
           }
@@ -398,6 +402,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       const willBeCollapsed = !appSidebar.classList.contains('collapsed');
       appSidebar.classList.toggle('collapsed');
+      const appLayout = document.querySelector('.app-layout');
+      if (appLayout) {
+        appLayout.classList.toggle('sidebar-collapsed', willBeCollapsed);
+      }
       state.isSidebarCollapsed = willBeCollapsed;
       syncSidebarUIState(!willBeCollapsed);
     }
@@ -607,6 +615,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
     if (kpiCarbonSub) kpiCarbonSub.textContent = 'Faktor grid Jamali 0,79 kg/kWh';
+
+    // Sidebar Live Capsule Telemetry Sync
+    const sideNavTotalKw = document.getElementById('sideNavTotalKw');
+    const sideNavAvgPf = document.getElementById('sideNavAvgPf');
+    const sideNavOnline = document.getElementById('sideNavOnline');
+    if (sideNavTotalKw) sideNavTotalKw.textContent = `${data.kw.toLocaleString('id-ID')} kW`;
+    if (sideNavAvgPf) sideNavAvgPf.textContent = data.pf;
+    if (sideNavOnline) sideNavOnline.textContent = data.online;
 
     // 2. Update 24h Line Chart
     update24hChart(data.curve24h, data.curveMax, data.curveStep);

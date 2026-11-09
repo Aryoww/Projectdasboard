@@ -182,6 +182,43 @@
         </a>
       </nav>
 
+      <!-- Live SCADA System Capsule (Fills vertical space with vital telemetry) -->
+      <div class="sidebar-scada-capsule">
+        <div class="scada-capsule-head">
+          <div class="scada-pulse-indicator">
+            <span class="scada-dot"></span>
+            <span class="scada-head-title">SISTEM SCADA 20kV</span>
+          </div>
+          <span class="scada-badge-live">ONLINE</span>
+        </div>
+        <div class="scada-stats-row">
+          <div class="scada-stat-box">
+            <span class="stat-lbl">TOTAL BEBAN</span>
+            <strong class="stat-val" id="sideNavTotalKw">14.129 kW</strong>
+          </div>
+          <div class="scada-stat-box">
+            <span class="stat-lbl">POWER FACTOR</span>
+            <strong class="stat-val" id="sideNavAvgPf" style="color:#4ade80;">0,90</strong>
+          </div>
+        </div>
+        <div class="scada-stats-row">
+          <div class="scada-stat-box">
+            <span class="stat-lbl">METER AKTIF</span>
+            <strong class="stat-val" id="sideNavOnline">38 / 38</strong>
+          </div>
+          <div class="scada-stat-box">
+            <span class="stat-lbl">VLAN SCADA</span>
+            <strong class="stat-val" style="color:#38bdf8;">NORMAL</strong>
+          </div>
+        </div>
+        <div class="scada-footer-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span>PLN Cikarang Grid · 50.00 Hz</span>
+        </div>
+      </div>
+
       <!-- Sidebar User Profile Footer (Editorial Author/Operator Card) -->
       <div class="sidebar-profile-card">
         <div class="profile-avatar-box">
