@@ -14,8 +14,10 @@ if exist "C:\Users\Acer Aspire Lite\AppData\Local\Programs\Python\Python313\pyth
 
 echo Menggunakan Python: %PY_EXE%
 echo.
+echo ========================================================
 echo Akses Komputer Lokal : http://localhost:8501
 echo Akses HP / LAN WiFi : http://192.168.100.182:8501
+echo ========================================================
 echo.
-"%PY_EXE%" -m streamlit run app_streamlit.py --server.port 8501 --server.address 0.0.0.0
+"%PY_EXE%" -m streamlit run app_streamlit.py --server.port 8501 --server.address 0.0.0.0 --browser.gatherUsageStats false
 pause
