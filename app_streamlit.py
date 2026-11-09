@@ -5,9 +5,9 @@ ENERGY MANAGEMENT SYSTEM (EMS) & SCADA - STREAMLIT EDITION
 =============================================================================
 Menjalankan dashboard SCADA & EMS lengkap PT Musashi di dalam framework Streamlit,
 sehingga dapat diakses oleh perangkat lain di jaringan lokal (LAN / Wi-Fi)
-maupun di-hosting gratis ke Streamlit Community Cloud (share.streamlit.io).
+maupun di-hosting publik ke Streamlit Community Cloud (share.streamlit.io).
 
-Akses:
+Akses Multi-Device:
 - Laptop Lokal: http://localhost:8501
 - Rekan Kerja / HP / Tablet (WiFi yang sama): http://192.168.100.182:8501
 =============================================================================
@@ -54,55 +54,157 @@ st.set_page_config(
 # =============================================================================
 # 3. STREAMLIT FULL-WIDTH & CLEAN STANDALONE STYLING
 # =============================================================================
-st.markdown("""
+st.markdown(f"""
 <style>
-    /* Hilangkan header bawaan streamlit agar tampilan bersih full-screen */
-    header[data-testid="stHeader"], [data-testid="stHeader"] {
+    /* Header & footer Streamlit */
+    header[data-testid="stHeader"], [data-testid="stHeader"] {{
+        background: #8b1e19 !important;
+        height: 2.2rem !important;
+    }}
+    footer {{
         display: none !important;
-        visibility: hidden !important;
-        height: 0px !important;
-    }
-    
-    /* Hilangkan footer streamlit */
-    footer {
-        display: none !important;
-    }
+    }}
 
-    /* Container utama Streamlit dibuat edge-to-edge tanpa margin/padding berlebih */
-    html, body, [data-testid="stAppViewContainer"], .main {
+    /* Container utama Streamlit dibuat edge-to-edge */
+    html, body, [data-testid="stAppViewContainer"], .main {{
         overflow-x: hidden !important;
         width: 100% !important;
         max-width: 100vw !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
+        background-color: #f4f5f9 !important;
+    }}
     
-    .block-container {
-        padding-top: 0rem !important;
+    .block-container {{
+        padding-top: 0.45rem !important;
         padding-bottom: 0rem !important;
-        padding-left: 0rem !important;
-        padding-right: 0rem !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
         margin: 0 !important;
         max-width: 100% !important;
         overflow-x: hidden !important;
-    }
+    }}
+
+    /* LAN Sharing Banner Styling (Persis seperti versi lama) */
+    .lan-banner-wrapper {{
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #8b1e19;
+        border-radius: 10px;
+        padding: 0.65rem 1.15rem;
+        margin-bottom: 0.65rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        font-size: 0.82rem;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        box-sizing: border-box;
+        width: 100%;
+    }}
+    .lan-banner-status {{
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        flex-wrap: wrap;
+    }}
+    .lan-status-dot {{
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #10b981;
+        box-shadow: 0 0 8px #10b981;
+        flex-shrink: 0;
+    }}
+    .lan-banner-urls {{
+        display: flex;
+        gap: 0.65rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }}
+    .lan-url-group {{
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }}
+    .lan-pill-badge {{
+        font-family: Consolas, monospace;
+        font-weight: 700;
+        font-size: 0.78rem;
+        padding: 0.22rem 0.6rem;
+        border-radius: 6px;
+        white-space: nowrap;
+    }}
+    .lan-pill-badge.wifi {{
+        color: #8b1e19;
+        background: #fee2e2;
+        border: 1px solid #fca5a5;
+    }}
+    .lan-pill-badge.local {{
+        color: #0f172a;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }}
 
     /* Iframe dashboard utama responsif penuh edge-to-edge */
-    iframe {
+    iframe {{
         border: none !important;
         width: 100% !important;
         max-width: 100% !important;
-        border-radius: 0px !important;
-        box-shadow: none !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
         margin: 0 !important;
         padding: 0 !important;
         display: block !important;
-    }
+    }}
+    
+    @media (max-width: 768px) {{
+        .lan-banner-wrapper {{
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0.55rem 0.75rem;
+        }}
+        .lan-banner-urls {{
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.35rem;
+        }}
+        .lan-url-group {{
+            justify-content: space-between;
+        }}
+    }}
 </style>
 """, unsafe_allow_html=True)
 
 # =============================================================================
-# 4. BUNDLING DASHBOARD UTAMA PT MUSASHI (MODERN SAAS TELEMETRY)
+# 4. LAN SHARING BANNER (PERSIS SEPERTI DULU)
+# =============================================================================
+st.markdown(f"""
+<div class="lan-banner-wrapper">
+    <div class="lan-banner-status">
+        <span class="lan-status-dot"></span>
+        <strong style="color:#0f172a;">🌐 Server SCADA PT Musashi Aktif</strong>
+        <span style="color:#64748b; font-size:0.75rem;">(Siap diakses orang lain di HP / Laptop)</span>
+    </div>
+    <div class="lan-banner-urls">
+        <div class="lan-url-group">
+            <span style="color:#64748b; font-size:0.75rem;">Akses Wi-Fi / LAN Orang Lain:</span>
+            <span class="lan-pill-badge wifi">http://{LOCAL_IP}:{STREAMLIT_PORT}</span>
+        </div>
+        <div class="lan-url-group">
+            <span style="color:#64748b; font-size:0.75rem;">Lokal:</span>
+            <span class="lan-pill-badge local">http://localhost:{STREAMLIT_PORT}</span>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# =============================================================================
+# 5. BUNDLING DASHBOARD UTAMA PT MUSASHI (MODERN SAAS TELEMETRY)
 # =============================================================================
 def load_bundled_dashboard():
     base_dir = os.path.dirname(os.path.abspath(__file__))
