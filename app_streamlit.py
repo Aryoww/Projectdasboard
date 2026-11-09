@@ -4,11 +4,12 @@ PT MUSASHI AUTO PARTS INDONESIA - MAINTENANCE UTILITY DIVISION
 ENERGY MANAGEMENT SYSTEM (EMS) & SCADA - STREAMLIT EDITION
 =============================================================================
 Menjalankan dashboard SCADA & EMS lengkap PT Musashi di dalam framework Streamlit,
-sehingga dapat diakses oleh perangkat lain di jaringan lokal (LAN / Wi-Fi).
+sehingga dapat diakses oleh perangkat lain di jaringan lokal (LAN / Wi-Fi)
+maupun di-hosting gratis ke Streamlit Community Cloud (share.streamlit.io).
 
 Akses:
 - Laptop Lokal: http://localhost:8501
-- Rekan Kerja / Supervisor: http://192.168.100.182:8501
+- Rekan Kerja / HP / Tablet (WiFi yang sama): http://192.168.100.182:8501
 =============================================================================
 """
 
@@ -44,7 +45,7 @@ STREAMLIT_PORT = 8501
 # 2. KONFIGURASI HALAMAN STREAMLIT
 # =============================================================================
 st.set_page_config(
-    page_title="Monitoring Electrical Room & Power Meter – PT Musashi",
+    page_title="Musashi Utility – Monitoring Electrical Room & Power Meter",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -101,7 +102,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =============================================================================
-# 5. BUNDLING DASHBOARD UTAMA PT MUSASHI (MODERN SAAS TELEMETRY)
+# 4. BUNDLING DASHBOARD UTAMA PT MUSASHI (MODERN SAAS TELEMETRY)
 # =============================================================================
 def load_bundled_dashboard():
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -111,7 +112,6 @@ def load_bundled_dashboard():
     chart_path = os.path.join(base_dir, "chart.umd.min.js")
     data_path = os.path.join(base_dir, "data.js")
     app_path = os.path.join(base_dir, "app.js")
-    img_path = os.path.join(base_dir, "schneider_room.jpg")
     
     with open(html_path, "r", encoding="utf-8") as f:
         html = f.read()
@@ -130,17 +130,12 @@ def load_bundled_dashboard():
         end_tag = html.find('>', start_tag) + 1
         html = html[:start_tag] + f"<style>\n{css}\n</style>" + html[end_tag:]
     
-    # Inlining Images as base64
+    # Inlining Logo as base64
     logo_path = os.path.join(base_dir, "musashi_logo_clean.png")
     if os.path.exists(logo_path):
         with open(logo_path, "rb") as logo_file:
             logo_b64 = base64.b64encode(logo_file.read()).decode("utf-8")
             html = html.replace('src="musashi_logo_clean.png"', f'src="data:image/png;base64,{logo_b64}"')
-
-    if os.path.exists(img_path):
-        with open(img_path, "rb") as img_file:
-            img_b64 = base64.b64encode(img_file.read()).decode("utf-8")
-            html = html.replace('src="schneider_room.jpg"', f'src="data:image/jpeg;base64,{img_b64}"')
     
     # Inlining Scripts
     html = html.replace('<script src="chart.umd.min.js"></script>', f"<script>\n{chart_js}\n</script>")
@@ -152,6 +147,6 @@ def load_bundled_dashboard():
 try:
     dashboard_html = load_bundled_dashboard()
     # Render dashboard lengkap di dalam Streamlit
-    components.html(dashboard_html, height=1450, scrolling=True)
+    components.html(dashboard_html, height=2200, scrolling=True)
 except Exception as e:
     st.error(f"Gagal memuat dashboard: {e}")
