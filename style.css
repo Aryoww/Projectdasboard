@@ -175,6 +175,52 @@ body.modal-open {
   padding: 0.15rem 0.35rem 0.95rem 0.35rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* Close button for Mobile / Tablet Drawer */
+.sidebar-close-mobile-btn {
+  display: none;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.sidebar-close-mobile-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+.sidebar-close-mobile-btn:active {
+  transform: scale(0.95);
+}
+
+/* Dark Frosted Backdrop for Mobile / Tablet Drawer */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s ease, visibility 0.28s ease;
+  pointer-events: none;
 }
 
 .brand-logo-wrap {
@@ -2019,39 +2065,104 @@ body.tv-mode .kpi-value {
   font-size: 2.2rem;
 }
 
-/* ================= 14. RESPONSIVE DESIGN ================= */
+/* ================= 14. RESPONSIVE DESIGN (TABLET & HP OPTIMIZED) ================= */
+
+/* Body locking when drawer is open */
+body.drawer-open {
+  overflow: hidden !important;
+}
+
+/* --- TABLET LANDSCAPE & DESKTOP COMPACT (<= 1200px) --- */
+@media (max-width: 1200px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+  }
+
+  .charts-grid-row {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  .mid-split-grid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+}
+
+/* --- TABLET PORTRAIT & MOBILE DRAWER (<= 1024px) --- */
 @media (max-width: 1024px) {
+  /* Activate backdrop overlay */
+  .sidebar-backdrop {
+    display: block;
+  }
+  .sidebar-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Show close button in drawer header */
+  .sidebar-close-mobile-btn {
+    display: flex;
+  }
+
+  /* Transform sidebar into an off-canvas slide-in drawer */
   .app-sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    transform: translateX(-100%);
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    width: 280px !important;
+    max-width: 82vw !important;
+    min-width: 0 !important;
+    z-index: 1050 !important;
+    margin-left: 0 !important;
+    transform: translateX(-100%) !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    box-shadow: none !important;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s ease !important;
   }
 
-  .app-sidebar:not(.collapsed) {
-    transform: translateX(0);
+  /* Open state on tablet/mobile */
+  .app-sidebar.open {
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    box-shadow: 12px 0 38px rgba(0, 0, 0, 0.45) !important;
   }
 
+  /* Prevent desktop collapsed state from conflicting */
   .app-sidebar.collapsed {
-    transform: translateX(-100%);
+    transform: translateX(-100%) !important;
+    margin-left: 0 !important;
   }
 
+  /* Main content takes full screen without being squished */
   .app-main-content {
-    padding: 0.85rem 0.95rem 2rem 0.95rem;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0.85rem 1rem 2.5rem 1rem !important;
   }
 
   .kpi-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
   }
 
-  .charts-grid-row, .mid-split-grid, .substation-panels-grid, .reports-summary-grid, .report-docs-grid {
+  /* Stack charts and split cards on tablet */
+  .charts-grid-row,
+  .mid-split-grid,
+  .reports-summary-grid,
+  .report-docs-grid {
     grid-template-columns: 1fr;
+    gap: 0.85rem;
   }
 
   .activity-cards-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 
   .detail-specs-grid {
@@ -2063,35 +2174,225 @@ body.tv-mode .kpi-value {
   }
 }
 
-@media (max-width: 640px) {
-  .kpi-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+/* --- MOBILE & PHABLET (<= 768px) --- */
+@media (max-width: 768px) {
+  .app-main-content {
+    padding: 0.65rem 0.75rem 2rem 0.75rem !important;
   }
 
-  .kpi-card {
-    min-height: 75px;
-    padding: 0.65rem 0.75rem;
+  /* Taskbar Header Banner Responsive */
+  .musashi-header-banner {
+    padding: 0.85rem 0.95rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 
-  .kpi-value {
-    font-size: 1.25rem;
+  .banner-left {
+    gap: 0.35rem;
+  }
+
+  .banner-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-sidebar-toggle {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.76rem;
+    border-radius: 6px;
   }
 
   .banner-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
+  }
+
+  .banner-subtitle {
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
+  .banner-meta {
+    font-size: 0.68rem;
+    gap: 0.35rem;
+    line-height: 1.35;
   }
 
   .banner-actions {
     width: 100%;
-    justify-content: flex-start;
+    display: flex;
+    gap: 0.5rem;
   }
 
-  .btn-banner-action {
+  .banner-actions .btn-banner-action {
     flex: 1;
     justify-content: center;
+    font-size: 0.74rem;
+    padding: 0.45rem 0.65rem;
+  }
+
+  /* Sub-Navbar Horizontal Scrollable Strip */
+  .sub-navbar-strip {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+    gap: 0.35rem;
+  }
+  .sub-navbar-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sub-nav-pill {
+    padding: 0.38rem 0.75rem;
+    font-size: 0.74rem;
+    flex-shrink: 0;
+  }
+
+  /* Alert Banner */
+  .alert-banner-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+  .btn-alert-action {
+    width: 100%;
+    justify-content: center;
+    padding: 0.45rem;
+  }
+
+  /* Dedicated Hero Banners */
+  .dedicated-hero-banner {
+    padding: 0.85rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+  .hero-title {
+    font-size: 1.15rem;
+  }
+  .hero-desc {
+    font-size: 0.74rem;
+  }
+
+  /* Critical Assets Stack */
+  .activity-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  /* Table Header & Search */
+  .table-card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+  .table-toolbar-right {
+    width: 100%;
+  }
+  .clean-search-input {
+    width: 100%;
+  }
+
+  /* Detail Modal on Mobile */
+  .modal-card {
+    max-width: 95vw !important;
+    width: 95vw !important;
+    max-height: 90vh !important;
+    padding: 0.95rem !important;
+  }
+  .detail-specs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.45rem !important;
+  }
+  .modal-actions-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+  }
+  .modal-actions-left {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 0.45rem !important;
+  }
+  .btn-action-telemetry,
+  .btn-action-ping,
+  .btn-action-close-red {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* --- SMALL MOBILE / HP (<= 520px) --- */
+@media (max-width: 520px) {
+  .app-main-content {
+    padding: 0.5rem 0.5rem 2rem 0.5rem !important;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.45rem;
+  }
+
+  .kpi-card {
+    min-height: 72px;
+    padding: 0.55rem 0.65rem;
+  }
+
+  .kpi-value {
+    font-size: 1.15rem;
+  }
+
+  .kpi-unit {
+    font-size: 0.68rem;
+  }
+
+  .kpi-title {
+    font-size: 0.68rem;
+  }
+
+  .kpi-subtitle {
+    font-size: 0.62rem;
+  }
+
+  .clean-card {
+    padding: 0.85rem 0.85rem;
+  }
+
+  .line-chart-container {
+    height: 210px;
+  }
+  .donut-canvas-box {
+    height: 180px;
+  }
+  .bar-chart-container {
+    height: 240px;
+  }
+
+  .attention-list-wrapper {
+    max-height: 300px;
+  }
+
+  .banner-title {
+    font-size: 1.05rem;
+  }
+
+  .btn-sidebar-toggle {
+    padding: 0.35rem 0.65rem;
     font-size: 0.72rem;
-    padding: 0.4rem 0.5rem;
+  }
+
+  .activity-card-item {
+    padding: 0.75rem 0.85rem;
+  }
+  .activity-card-title {
+    font-size: 0.82rem;
+  }
+  .act-metric-row {
+    font-size: 0.72rem;
   }
 }
 

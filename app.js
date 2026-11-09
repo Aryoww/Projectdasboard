@@ -292,9 +292,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= 3. SIDEBAR SLIDE & COLLAPSE CONTROLLER =================
   function initSidebarController() {
     const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const btnCloseSidebarMobile = document.getElementById('btnCloseSidebarMobile');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
     const appSidebar = document.getElementById('appSidebar');
 
-    // Single Clean Trigger: Header Banner Menu Toggle Button
+    // Header Banner Menu Toggle Button
     if (btnToggleSidebar) {
       btnToggleSidebar.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -302,27 +304,85 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Close mobile drawer when clicking main content
-    const appMainContent = document.getElementById('appMainContent');
-    if (appMainContent && appSidebar) {
-      appMainContent.addEventListener('click', () => {
-        if (window.innerWidth <= 1024 && appSidebar.classList.contains('open')) {
-          appSidebar.classList.remove('open');
-          syncSidebarUIState(false);
-        }
+    // Mobile / Tablet Drawer Close Button
+    if (btnCloseSidebarMobile) {
+      btnCloseSidebarMobile.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMobileSidebar();
       });
     }
 
-    // Keyboard Shortcut: Press '[' or 'Ctrl+B' to toggle sidebar
+    // Close mobile drawer when clicking backdrop
+    if (sidebarBackdrop) {
+      sidebarBackdrop.addEventListener('click', () => {
+        closeMobileSidebar();
+      });
+    }
+
+    // Auto-close mobile drawer when selecting any menu item
+    document.querySelectorAll('.sidebar-menu-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) {
+          closeMobileSidebar();
+        }
+      });
+    });
+
+    // Window resize handler: clean up state if resizing between screen sizes
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1024) {
+        closeMobileSidebar();
+        if (appSidebar) {
+          if (state.isSidebarCollapsed) {
+            appSidebar.classList.add('collapsed');
+            syncSidebarUIState(false);
+          } else {
+            appSidebar.classList.remove('collapsed');
+            syncSidebarUIState(true);
+          }
+        }
+      } else {
+        if (appSidebar) {
+          appSidebar.classList.remove('collapsed');
+          if (!appSidebar.classList.contains('open')) {
+            syncSidebarUIState(false);
+          }
+        }
+      }
+    });
+
+    // Keyboard Shortcut: Press '[' or 'Ctrl+B' to toggle, 'Esc' to close drawer
     window.addEventListener('keydown', (e) => {
       const isInput = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName);
       if (!isInput) {
         if (e.key === '[' || (e.ctrlKey && (e.key === 'b' || e.key === 'B'))) {
           e.preventDefault();
           toggleSidebar();
+        } else if (e.key === 'Escape') {
+          if (window.innerWidth <= 1024 && appSidebar?.classList.contains('open')) {
+            closeMobileSidebar();
+          }
         }
       }
     });
+  }
+
+  function openMobileSidebar() {
+    const appSidebar = document.getElementById('appSidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (appSidebar) appSidebar.classList.add('open');
+    if (backdrop) backdrop.classList.add('active');
+    document.body.classList.add('drawer-open');
+    syncSidebarUIState(true);
+  }
+
+  function closeMobileSidebar() {
+    const appSidebar = document.getElementById('appSidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    if (appSidebar) appSidebar.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.classList.remove('drawer-open');
+    syncSidebarUIState(false);
   }
 
   function toggleSidebar() {
@@ -330,12 +390,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!appSidebar) return;
 
     if (window.innerWidth <= 1024) {
-      // Mobile / Tablet Drawer
-      const willBeOpen = !appSidebar.classList.contains('open');
-      appSidebar.classList.toggle('open');
-      syncSidebarUIState(willBeOpen);
+      if (appSidebar.classList.contains('open')) {
+        closeMobileSidebar();
+      } else {
+        openMobileSidebar();
+      }
     } else {
-      // Desktop Slide In / Out
       const willBeCollapsed = !appSidebar.classList.contains('collapsed');
       appSidebar.classList.toggle('collapsed');
       state.isSidebarCollapsed = willBeCollapsed;
@@ -348,14 +408,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleText = document.getElementById('btnSidebarToggleText');
 
     if (isOpen) {
-      // Sidebar is OPEN
       if (toggleText) toggleText.textContent = 'Menu Navigasi';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.remove('collapsed-mode');
         btnToggleSidebar.title = 'Sembunyikan Menu Navigasi';
       }
     } else {
-      // Sidebar is CLOSED / COLLAPSED
       if (toggleText) toggleText.textContent = 'Buka Menu';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.add('collapsed-mode');
