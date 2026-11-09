@@ -161,23 +161,6 @@
           <span class="sidebar-badge">Excel</span>
         </button>
 
-        <button class="sidebar-menu-btn" id="sideNavBlueprint" title="Buka Blueprint Gardu Listrik Schneider SM6 20kV">
-          <div class="menu-icon-box">
-            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
-              <line x1="9" y1="3" x2="9" y2="21"></line>
-              <line x1="15" y1="3" x2="15" y2="21"></line>
-              <line x1="3" y1="9" x2="21" y2="9"></line>
-              <line x1="3" y1="15" x2="21" y2="15"></line>
-            </svg>
-          </div>
-          <div class="sidebar-btn-content">
-            <span class="sidebar-btn-label">Blueprint Gardu 20kV</span>
-            <span class="sidebar-btn-sub">SLD Cubicle HD</span>
-          </div>
-          <span class="sidebar-badge">20kV</span>
-        </button>
-
         <a class="sidebar-menu-btn" href="Panduan_Aksi_Harian_Dan_Materi_Belajar_EMS.html" target="_blank" title="Buka Panduan Aksi Harian &amp; Kurikulum EMS Schneider">
           <div class="menu-icon-box">
             <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -243,14 +226,6 @@
         </div>
 
         <div class="banner-actions">
-          <button class="btn-banner-action" id="btnOpenBlueprintModal" title="Lihat Blueprint Gardu Listrik 20kV HD">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="9" y1="3" x2="9" y2="21"></line>
-              <line x1="15" y1="3" x2="15" y2="21"></line>
-            </svg>
-            <span>Blueprint 20kV</span>
-          </button>
 
           <button class="btn-banner-action btn-tv-mode" id="btnToggleTvMode" title="Mode TV Pabrik / Kiosk Layar Besar">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -582,16 +557,6 @@
             <h2 class="hero-title">Electrical Room 1 · Gardu 20kV Cubicle Schneider SM6</h2>
             <p class="hero-desc">Pusat distribusi daya tegangan menengah 20kV ke tegangan 6.6kV, 400V, dan 210V untuk jalur produksi Factory 1 PT Musashi Auto Parts Indonesia.</p>
           </div>
-          <div class="dedicated-hero-right">
-            <button class="btn-banner-action" onclick="window.openModal(document.getElementById('blueprintModal'))">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="9" y1="3" x2="9" y2="21"></line>
-                <line x1="15" y1="3" x2="15" y2="21"></line>
-              </svg>
-              <span>Buka Blueprint SLD Gardu 20kV</span>
-            </button>
-          </div>
         </div>
 
         <!-- KPI Grid Factory 1 -->
@@ -628,78 +593,49 @@
           </div>
         </section>
 
-        <!-- Schematics & Trafo Grid Fac 1 -->
-        <div class="substation-panels-grid">
-          <div class="clean-card">
-            <h3 class="card-title">Struktur Cubicle Schneider SM6 Factory 1</h3>
-            <p class="card-subtitle">Panel kubikel tegangan menengah 20kV incoming PLN & penyalur trafo.</p>
-            <div class="cubicle-diagram-flow">
-              <div class="cubicle-cell-box incoming">
-                <span class="cell-tag">INCOMING 20kV</span>
-                <strong>Cubicle IM</strong>
-                <span>Switch Disconnector</span>
-                <span class="cell-status-pill ok">● Bertegangan</span>
+        <!-- Trafo Utama Electrical Room 1 -->
+        <div class="clean-card" style="margin-top: 0.85rem; margin-bottom: 0.85rem;">
+          <h3 class="card-title">Transformator Utama Electrical Room 1</h3>
+          <p class="card-subtitle">Klik salah satu trafo untuk membuka live telemetri 3-fasa:</p>
+          <div class="trafo-mini-grid">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-12')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #12 (2.000 kVA - 210V)</strong>
+                <span>Main Low Voltage Panel Penyuplai 20+ Feeder Forging</span>
               </div>
-              <div class="cubicle-arrow">➔</div>
-              <div class="cubicle-cell-box metering">
-                <span class="cell-tag">METERING PLN</span>
-                <strong>Cubicle CM</strong>
-                <span>PT 20kV / CT 100A</span>
-                <span class="cell-status-pill ok">● Tersegel PLN</span>
-              </div>
-              <div class="cubicle-arrow">➔</div>
-              <div class="cubicle-cell-box feeder">
-                <span class="cell-tag">PROTEKSI TRAFO</span>
-                <strong>Cubicle QM #1-6</strong>
-                <span>Fuse Combiner 50A</span>
-                <span class="cell-status-pill ok">● 6 Feeder Aktif</span>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">1.381 kW</span>
+                <button class="btn-table-detail">Detail</button>
               </div>
             </div>
-          </div>
-
-          <div class="clean-card">
-            <h3 class="card-title">Transformator Utama Electrical Room 1</h3>
-            <p class="card-subtitle">Klik salah satu trafo untuk membuka live telemetri 3-fasa:</p>
-            <div class="trafo-mini-list">
-              <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-12')">
-                <div class="trafo-mini-info">
-                  <strong>Trafo #12 (2.000 kVA - 210V)</strong>
-                  <span>Main Low Voltage Panel Penyuplai 20+ Feeder Forging</span>
-                </div>
-                <div class="trafo-mini-metrics">
-                  <span class="val-kw">1.381 kW</span>
-                  <button class="btn-table-detail">Detail</button>
-                </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-11')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #11 (1.000 kVA - 6.6kV)</strong>
+                <span>Penyuplai Billet Induction Heater (Tegangan Menengah)</span>
               </div>
-              <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-11')">
-                <div class="trafo-mini-info">
-                  <strong>Trafo #11 (1.000 kVA - 6.6kV)</strong>
-                  <span>Penyuplai Billet Induction Heater (Tegangan Menengah)</span>
-                </div>
-                <div class="trafo-mini-metrics">
-                  <span class="val-kw">620 kW</span>
-                  <button class="btn-table-detail">Detail</button>
-                </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">620 kW</span>
+                <button class="btn-table-detail">Detail</button>
               </div>
-              <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-13')">
-                <div class="trafo-mini-info">
-                  <strong>Trafo #13 (1.500 kVA) & APFC Cap Bank</strong>
-                  <span>Sub-Distribution Panel 210V & Kompensator 600 kVAR</span>
-                </div>
-                <div class="trafo-mini-metrics">
-                  <span class="val-kw" style="color:var(--color-amber);">980 kW (PF 0,84)</span>
-                  <button class="btn-table-detail">Detail</button>
-                </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-13')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #13 (1.500 kVA) &amp; APFC Cap Bank</strong>
+                <span>Sub-Distribution Panel 210V &amp; Kompensator 600 kVAR</span>
               </div>
-              <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-14')">
-                <div class="trafo-mini-info">
-                  <strong>Trafo #14 (1.500 kVA - 400V)</strong>
-                  <span>Kompresor Udara Sentral, Chiller, & Utility Factory 1</span>
-                </div>
-                <div class="trafo-mini-metrics">
-                  <span class="val-kw">790 kW</span>
-                  <button class="btn-table-detail">Detail</button>
-                </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw" style="color:var(--color-amber);">980 kW (PF 0,84)</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-14')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #14 (1.500 kVA - 400V)</strong>
+                <span>Kompresor Udara Sentral, Chiller, &amp; Utility Factory 1</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">790 kW</span>
+                <button class="btn-table-detail">Detail</button>
               </div>
             </div>
           </div>
@@ -1065,14 +1001,7 @@
               <span class="doc-btn-view">Buka ↗</span>
             </a>
 
-            <div class="doc-card-link" onclick="window.openModal(document.getElementById('blueprintModal'))" style="cursor:pointer;">
-              <div class="doc-icon">📐</div>
-              <div class="doc-text">
-                <strong>Blueprint SLD Gardu 20kV Cubicle Schneider SM6 HD</strong>
-                <p>Cetak biru instalasi kubikel 20kV, trafo TRF-11..16, dan panel LMVDP Factory 1.</p>
-              </div>
-              <span class="doc-btn-view">Buka ↗</span>
-            </div>
+
           </div>
         </div>
       </div>
@@ -1095,37 +1024,6 @@
       </div>
       <div class="modal-body" id="modalMeterBody">
         <!-- Dynamically populated by app.js -->
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= MODAL: BLUEPRINT ELECTRICAL ROOM ================= -->
-  <div class="modal-overlay blueprint-overlay-fullscreen" id="blueprintModal">
-    <div class="modal-card modal-blueprint-wide">
-      <div class="modal-header blueprint-modal-header">
-        <div class="modal-title-wrap">
-          <h3 style="font-size:0.95rem; display:flex; align-items:center; gap:0.5rem;">
-            <span>Blueprint Gardu Listrik 20kV Schneider SM6</span>
-            <span style="font-size:0.68rem; font-weight:600; color:var(--color-teal); background:rgba(45,212,191,0.12); border:1px solid rgba(45,212,191,0.3); padding:2px 8px; border-radius:4px;">Factory 1 · 20kV / 6.6kV / 210V</span>
-          </h3>
-          <p style="font-size:0.72rem; color:var(--text-secondary); margin:0;">Single Line Diagram (SLD) & Tata Letak Cubicle Gardu Induk PT Musashi Auto Parts Indonesia</p>
-        </div>
-        <div class="blueprint-controls-group">
-          <button class="btn-page" id="btnZoomIn" title="Perbesar (+)">🔍 +</button>
-          <button class="btn-page" id="btnZoomReset" title="Reset (Fit Layar)">Fit Layar</button>
-          <button class="btn-page" id="btnZoomOut" title="Perkecil (−)">−</button>
-          <button class="btn-page" id="btnToggleFullscreen" title="Toggle Layar Penuh">⛶ Full</button>
-          <button class="modal-close-btn" onclick="window.closeAllModals()" title="Tutup (Esc)">✕</button>
-        </div>
-      </div>
-      <div class="modal-body blueprint-modal-body">
-        <div class="blueprint-img-viewport" id="blueprintViewport">
-          <img src="schneider_room.jpg" id="blueprintImg" alt="Blueprint Gardu Listrik 20kV Musashi" loading="lazy">
-        </div>
-      </div>
-      <div class="modal-actions-bar" style="padding: 0.65rem 1.25rem; background: var(--bg-card-hover); margin-top:0;">
-        <span style="font-size:0.75rem; color:var(--text-secondary);">Gunakan tombol di atas untuk memperbesar atau reset tampilan.</span>
-        <button class="btn-action-close-red" onclick="window.closeAllModals()">✕ Tutup Blueprint</button>
       </div>
     </div>
   </div>
