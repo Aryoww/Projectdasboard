@@ -572,40 +572,18 @@
           </div>
         </section>
 
-        <!-- ASET UTAMA -->
-        <section aria-label="Aset Utama Electrical Room">
+        <!-- ASET UTAMA: CONTINUOUS LINE DRIVE (CLD) -->
+        <section aria-label="Continuous Line Drive CLD Heat Treatment">
           <div class="card-header-block" style="margin-bottom:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
             <div>
-              <h2 class="card-title">Transformator Kritis Gardu 20kV</h2>
-              <p class="card-subtitle">Pemantauan realtime Transformator 20kV, Panel LMVDP 210V/400V, dan APFC Capacitor Bank</p>
+              <h2 class="card-title">Continuous Line Drive (CLD) Heat Treatment</h2>
+              <p class="card-subtitle">Pemantauan realtime Continuous Line Drive CLD-003, CLD-005, dan CLD-001 Substation Factory 1</p>
             </div>
           </div>
 
           <div class="activity-cards-grid">
-            <!-- Activity Card 1: Trafo 12 Fo & HT 200V (TR-12) -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('TR-12')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
-              <div class="activity-card-top">
-                <div class="activity-icon-box orange">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="activity-card-title">Trafo 12 (Fo &amp; HT 200V)</h3>
-                  <span class="activity-card-time">Substation LMVDP 20kV / 200V · IP 192.168.20.12</span>
-                </div>
-                <div class="activity-kw-pill">1.381 <span>kW</span></div>
-              </div>
-              <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Beban Mesin Forging</span><strong>Lini Press Fac 2</strong></div>
-                <div class="act-metric-row"><span>Arus Sekunder (R-S-T)</span><strong>4.028 A</strong></div>
-                <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>200 V / 115 V</strong></div>
-                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,94 (Optimal)</strong></div>
-              </div>
-            </div>
-
-            <!-- Activity Card 2: Trafo 10 BH Komatsu 6.6kV (TR-10) -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('TR-10')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
+            <!-- Activity Card 1: Continuous Line Drive CLD-003 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-003')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus CLD-003">
               <div class="activity-card-top">
                 <div class="activity-icon-box blue">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -613,38 +591,60 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="activity-card-title">Trafo 10 (BH Komatsu 1600 6.6kV)</h3>
-                  <span class="activity-card-time">Electrical Room 2.1 · IP 192.168.20.10</span>
+                  <h3 class="activity-card-title">Continuous Line Drive CLD-003</h3>
+                  <span class="activity-card-time">Lini Heat Treatment 1 · IP 10.41.47.264</span>
                 </div>
-                <div class="activity-kw-pill">850 <span>kW</span></div>
+                <div class="activity-kw-pill">238,7 <span>kW</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Billet Heater Komatsu 1600T</strong></div>
-                <div class="act-metric-row"><span>Arus TM 6.6kV</span><strong>74,3 A</strong></div>
-                <div class="act-metric-row"><span>Tegangan Menengah</span><strong>6.600 V</strong></div>
-                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,95 (Normal)</strong></div>
+                <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Continuous Drive HT Fac 1</strong></div>
+                <div class="act-metric-row"><span>Arus Motor (R-S-T)</span><strong>390,0 A</strong></div>
+                <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>380 V / 220 V</strong></div>
+                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,93 (Optimal)</strong></div>
               </div>
             </div>
 
-            <!-- Activity Card 3: Trafo 01 BH FO 6.6kV (TR-01) -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('TR-01')" style="cursor:pointer;" title="Klik untuk lihat detail PF & Kapasitor Bank">
+            <!-- Activity Card 2: Continuous Line Drive CLD-005 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-005')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus CLD-005">
               <div class="activity-card-top">
-                <div class="activity-icon-box amber">
+                <div class="activity-icon-box orange">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
                 </div>
                 <div>
-                  <h3 class="activity-card-title">Trafo 01 (BH FO 6.6kV)</h3>
-                  <span class="activity-card-time">Electrical Room 1 · IP 192.168.10.1</span>
+                  <h3 class="activity-card-title">Continuous Line Drive CLD-005</h3>
+                  <span class="activity-card-time">Lini Heat Treatment 1 · IP 10.41.47.265</span>
                 </div>
-                <div class="activity-kw-pill" style="background:rgba(251,191,36,0.15); color:var(--color-amber);">PF 0,84 <span>⚠️</span></div>
+                <div class="activity-kw-pill">249,2 <span>kW</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Status Regulasi PF</span><strong style="color:var(--color-amber);">Perlu Cek APFC F1</strong></div>
-                <div class="act-metric-row"><span>Kompensasi Reaktif</span><strong>520 kVAR</strong></div>
-                <div class="act-metric-row"><span>Target Regulasi PLN</span><strong>Cos φ ≥ 0,85</strong></div>
-                <div class="act-metric-row"><span>Denda kVARh PLN</span><strong style="color:var(--color-green);">Rp 0 (Terkendali)</strong></div>
+                <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Continuous Drive HT Fac 1</strong></div>
+                <div class="act-metric-row"><span>Arus Motor (R-S-T)</span><strong>407,2 A</strong></div>
+                <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>380 V / 220 V</strong></div>
+                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,93 (Optimal)</strong></div>
+              </div>
+            </div>
+
+            <!-- Activity Card 3: Continuous Line Drive CLD-001 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-001')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus CLD-001">
+              <div class="activity-card-top">
+                <div class="activity-icon-box teal">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="activity-card-title">Continuous Line Drive CLD-001</h3>
+                  <span class="activity-card-time">Lini Heat Treatment 1 · IP 10.41.47.263</span>
+                </div>
+                <div class="activity-kw-pill">232,3 <span>kW</span></div>
+              </div>
+              <div class="activity-metric-rows">
+                <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Continuous Drive HT Fac 1</strong></div>
+                <div class="act-metric-row"><span>Arus Motor (R-S-T)</span><strong>379,5 A</strong></div>
+                <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>380 V / 220 V</strong></div>
+                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,93 (Optimal)</strong></div>
               </div>
             </div>
           </div>
