@@ -859,7 +859,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ================= 3B. TIMEFRAME CONTROLLER =================
+  // ================= 3B. TIMEFRAME & DAY CONTROLLER =================
   function initTimeframeController() {
     const pills = document.querySelectorAll('.timeframe-pill');
     pills.forEach(pill => {
@@ -869,6 +869,58 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeframePeriod(period);
       });
     });
+
+    // Day navigation buttons (Prev Day / Next Day)
+    const btnPrevDay = document.getElementById('btnPrevDay');
+    const btnNextDay = document.getElementById('btnNextDay');
+    const nativeDatePicker = document.getElementById('nativeDatePicker');
+
+    if (btnPrevDay) {
+      btnPrevDay.addEventListener('click', () => {
+        if (state.activePeriod === 'today') {
+          setTimeframePeriod('yesterday');
+        } else {
+          setTimeframePeriod('yesterday');
+        }
+      });
+    }
+
+    if (btnNextDay) {
+      btnNextDay.addEventListener('click', () => {
+        setTimeframePeriod('today');
+      });
+    }
+
+    if (nativeDatePicker) {
+      nativeDatePicker.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (!val) return;
+        const now = new Date();
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
+        const todayStr = `${y}-${m}-${d}`;
+
+        const yest = new Date();
+        yest.setDate(now.getDate() - 1);
+        const yestStr = `${yest.getFullYear()}-${String(yest.getMonth() + 1).padStart(2, '0')}-${String(yest.getDate()).padStart(2, '0')}`;
+
+        if (val === todayStr) {
+          setTimeframePeriod('today');
+        } else if (val === yestStr) {
+          setTimeframePeriod('yesterday');
+        } else {
+          setTimeframePeriod('yesterday');
+          const activeDateDisplay = document.getElementById('activeDateDisplay');
+          if (activeDateDisplay) {
+            const parts = val.split('-');
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const mIdx = parseInt(parts[1], 10) - 1;
+            activeDateDisplay.textContent = `Tercatat · ${parts[2]} ${months[mIdx]} ${parts[0]}`;
+          }
+        }
+      });
+    }
   }
 
   function setTimeframePeriod(period) {
@@ -882,6 +934,36 @@ document.addEventListener('DOMContentLoaded', () => {
         pill.classList.remove('active');
       }
     });
+
+    // Update Active Date Display & Nav Stepper state
+    const activeDateDisplay = document.getElementById('activeDateDisplay');
+    const btnPrevDay = document.getElementById('btnPrevDay');
+    const btnNextDay = document.getElementById('btnNextDay');
+    const monitoringStatusText = document.getElementById('monitoringStatusText');
+
+    if (activeDateDisplay) {
+      if (period === 'today') {
+        activeDateDisplay.textContent = 'Hari Ini · 10 Nov 2026';
+        if (btnPrevDay) btnPrevDay.disabled = false;
+        if (btnNextDay) btnNextDay.disabled = true;
+        if (monitoringStatusText) monitoringStatusText.textContent = 'Live SCADA';
+      } else if (period === 'yesterday') {
+        activeDateDisplay.textContent = 'Kemarin · 09 Nov 2026';
+        if (btnPrevDay) btnPrevDay.disabled = true;
+        if (btnNextDay) btnNextDay.disabled = false;
+        if (monitoringStatusText) monitoringStatusText.textContent = 'Rekap H-1';
+      } else if (period === '7days') {
+        activeDateDisplay.textContent = 'Rentang 7 Hari Terakhir';
+        if (btnPrevDay) btnPrevDay.disabled = false;
+        if (btnNextDay) btnNextDay.disabled = false;
+        if (monitoringStatusText) monitoringStatusText.textContent = 'Rekap 7 Hari';
+      } else if (period === 'month') {
+        activeDateDisplay.textContent = 'Bulan Ini · MTD Nov 2026';
+        if (btnPrevDay) btnPrevDay.disabled = false;
+        if (btnNextDay) btnNextDay.disabled = false;
+        if (monitoringStatusText) monitoringStatusText.textContent = 'Rekap MTD';
+      }
+    }
 
     updateViewForActiveFilter();
     renderTable();
@@ -987,13 +1069,26 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = `${data.deltaPeak ? data.deltaPeak.replace('-', '▼ -') : '▼ Efisien'}`;
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Utilisasi Beban Trafo';
-      if (kpiUtilVal) kpiUtilVal.textContent = data.util || '69,4%';
-      if (kpiUtilSub) kpiUtilSub.textContent = data.utilSub || 'Tr 01 s/d Tr 19 (20.350 kVA)';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Kemarin: ${data.utilYesterday || data.util}`;
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Pemakaian Utilitas';
+      const dKwh = (data.deltaKwh !== undefined) ? data.deltaKwh : -7086;
+      const dPct = data.deltaKwhPct || '-3,5%';
+      const isSaved = dKwh <= 0;
+      const sign = dKwh > 0 ? '+' : '';
+      if (kpiUtilVal) {
+        kpiUtilVal.textContent = `${sign}${dKwh.toLocaleString('id-ID')}`;
+        kpiUtilVal.style.color = isSaved ? 'var(--color-green)' : 'var(--color-amber)';
+      }
+      const kpiUtilUnit = document.getElementById('kpiUtilUnit');
+      if (kpiUtilUnit) kpiUtilUnit.textContent = 'kWh';
+      if (kpiUtilSub) {
+        kpiUtilSub.textContent = isSaved 
+          ? `▼ Lebih hemat ${Math.abs(dKwh).toLocaleString('id-ID')} kWh (${dPct}) vs kemarin`
+          : `▲ Naik ${dKwh.toLocaleString('id-ID')} kWh (${dPct}) vs kemarin`;
+      }
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Kemarin: ${(data.kwhYesterday || 0).toLocaleString('id-ID')} kWh`;
       if (kpiUtilDelta) {
-        kpiUtilDelta.className = `kpi-delta-tag ${data.deltaUtil && data.deltaUtil.startsWith('-') ? 'down' : 'up'}`;
-        kpiUtilDelta.textContent = `${data.deltaUtil ? data.deltaUtil.replace('-', '▼ -') : '▼ Beban aman'}`;
+        kpiUtilDelta.className = `kpi-delta-tag ${isSaved ? 'down' : 'up'}`;
+        kpiUtilDelta.textContent = isSaved ? `▼ ${dPct}` : `▲ ${dPct}`;
       }
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon CO₂ Hari Ini';
@@ -1052,13 +1147,18 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = 'Peak H-1';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Rata-rata Utilisasi Kemarin';
-      if (kpiUtilVal) kpiUtilVal.textContent = data.utilYesterday || data.util;
-      if (kpiUtilSub) kpiUtilSub.textContent = '19 Transformator Musashi';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Hari Ini: ${data.util}`;
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Utilitas Kemarin (vs H-2)';
+      if (kpiUtilVal) {
+        kpiUtilVal.textContent = '-2.850';
+        kpiUtilVal.style.color = 'var(--color-green)';
+      }
+      const kpiUtilUnitY = document.getElementById('kpiUtilUnit');
+      if (kpiUtilUnitY) kpiUtilUnitY.textContent = 'kWh';
+      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Lebih hemat 2.850 kWh (-1,4%) vs H-2';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = 'H-2: 207.000 kWh';
       if (kpiUtilDelta) {
-        kpiUtilDelta.className = 'kpi-delta-tag neutral';
-        kpiUtilDelta.textContent = 'Optimal';
+        kpiUtilDelta.className = 'kpi-delta-tag down';
+        kpiUtilDelta.textContent = '▼ -1,4%';
       }
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon Kemarin';
@@ -1118,13 +1218,18 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = 'Bebas Penalti';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Rata-rata Utilisasi 7 Hari';
-      if (kpiUtilVal) kpiUtilVal.textContent = '68,7%';
-      if (kpiUtilSub) kpiUtilSub.textContent = 'Kapasitas terpasang optimal';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = 'Target: 65 - 75%';
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Utilitas 7 Hari';
+      if (kpiUtilVal) {
+        kpiUtilVal.textContent = '-26.486';
+        kpiUtilVal.style.color = 'var(--color-green)';
+      }
+      const kpiUtilUnit7 = document.getElementById('kpiUtilUnit');
+      if (kpiUtilUnit7) kpiUtilUnit7.textContent = 'kWh';
+      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Lebih hemat 26.486 kWh (-1,9%) vs minggu lalu';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Minggu Lalu: 1.380.000 kWh`;
       if (kpiUtilDelta) {
         kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = 'Optimal';
+        kpiUtilDelta.textContent = '▼ -1,9%';
       }
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon 7 Hari';
@@ -1186,13 +1291,18 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = 'Bebas Penalti';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Rata-rata Utilisasi MTD';
-      if (kpiUtilVal) kpiUtilVal.textContent = mMtd.util;
-      if (kpiUtilSub) kpiUtilSub.textContent = '19 Transformator Musashi';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = 'Target: 65 - 75%';
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Utilitas Bulan Ini (MTD)';
+      if (kpiUtilVal) {
+        kpiUtilVal.textContent = '-31.200';
+        kpiUtilVal.style.color = 'var(--color-green)';
+      }
+      const kpiUtilUnitM = document.getElementById('kpiUtilUnit');
+      if (kpiUtilUnitM) kpiUtilUnitM.textContent = 'kWh';
+      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Tren hemat 31.200 kWh (-1,4%) vs bulan lalu';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Bulan Lalu: 2.181.600 kWh`;
       if (kpiUtilDelta) {
         kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = 'Efisiensi Tinggi';
+        kpiUtilDelta.textContent = '▼ -1,4%';
       }
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Akumulasi Karbon MTD';

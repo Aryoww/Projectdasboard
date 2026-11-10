@@ -334,29 +334,54 @@
           </div>
         </section>
 
-        <!-- TIMEFRAME & DAY COMPARISON CONTROL BAR -->
-        <section class="timeframe-control-bar" aria-label="Pemilihan Hari dan Selisih Pemakaian Utilitas">
-          <div class="timeframe-left">
-            <span class="timeframe-label">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-              Periode Pantauan:
-            </span>
-            <div class="timeframe-pills" id="timeframePills">
-              <button class="timeframe-pill active" data-period="today">⚡ Hari Ini (Live)</button>
-              <button class="timeframe-pill" data-period="yesterday">⏮️ Kemarin (H-1)</button>
-              <button class="timeframe-pill" data-period="7days">📊 7 Hari Terakhir</button>
-              <button class="timeframe-pill" data-period="month">🗓️ Bulan Ini (MTD)</button>
+        <!-- HARI PEMANTAUAN & KONTROL RENTANG WAKTU (EXECUTIVE SCADA TOOLBAR) -->
+        <section class="monitoring-date-toolbar" aria-label="Kontrol Hari Pemantauan Utilitas">
+          <div class="toolbar-left">
+            <div class="monitoring-label-wrap">
+              <span class="monitoring-icon-circle">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </span>
+              <span class="monitoring-label-text">Hari Pemantauan:</span>
+            </div>
+
+            <!-- Day-by-Day Navigator with Date Picker -->
+            <div class="day-stepper">
+              <button class="btn-step-day" id="btnPrevDay" title="Pindah ke Hari Kemarin (H-1)" aria-label="Hari Kemarin">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+
+              <div class="active-date-capsule" id="activeDateCapsule" title="Klik untuk memilih tanggal dari kalender">
+                <span class="active-date-string" id="activeDateDisplay">Hari Ini · 10 Nov 2026</span>
+                <input type="date" id="nativeDatePicker" class="stepper-hidden-date" value="2026-11-10" />
+              </div>
+
+              <button class="btn-step-day" id="btnNextDay" title="Pindah ke Hari Berikutnya" aria-label="Hari Berikutnya" disabled>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
             </div>
           </div>
-          <div class="timeframe-right">
-            <div class="comparison-summary-badge" id="timeframeSummaryBadge">
+
+          <div class="toolbar-right">
+            <!-- Modern Segmented Pill Switch (Clean corporate typography without emojis) -->
+            <div class="segmented-timeframe-switch" role="tablist" aria-label="Pilihan Rentang Waktu">
+              <button class="timeframe-pill active" data-period="today">Hari Ini</button>
+              <button class="timeframe-pill" data-period="yesterday">Kemarin</button>
+              <button class="timeframe-pill" data-period="7days">7 Hari</button>
+              <button class="timeframe-pill" data-period="month">Bulan Ini</button>
+            </div>
+
+            <div class="monitoring-live-badge" id="monitoringLiveBadge">
               <span class="pulse-indicator"></span>
-              <span id="timeframeSummaryText">Selisih vs Kemarin: <strong>▼ -7.086 kWh (-3,5% Lebih Hemat)</strong></span>
+              <span id="monitoringStatusText">Live SCADA</span>
             </div>
           </div>
         </section>
@@ -430,19 +455,20 @@
             </div>
           </div>
 
-          <!-- Card 5: Utilisasi 19 Trafo Gardu -->
-          <div class="kpi-card">
+          <!-- Card 5: Selisih Pemakaian Utilitas (Hari Ini vs Hari Sebelumnya) -->
+          <div class="kpi-card" id="kpiCardUtilitas">
             <div class="kpi-top-row">
-              <span class="kpi-icon-pill kpi-icon-blue">TR</span>
-              <div class="kpi-title" id="kpiUtilTitle">Utilisasi 19 Trafo</div>
+              <span class="kpi-icon-pill kpi-icon-teal" style="font-weight:700;">Δ</span>
+              <div class="kpi-title" id="kpiUtilTitle">Selisih Pemakaian Utilitas</div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="kpiUtilVal">69,4%</span>
+              <span class="kpi-value" id="kpiUtilVal" style="color:var(--color-green);">-7.086</span>
+              <span class="kpi-unit" id="kpiUtilUnit">kWh</span>
             </div>
-            <div class="kpi-subtitle" id="kpiUtilSub">Tr 01 s/d Tr 19 (20.350 kVA)</div>
+            <div class="kpi-subtitle" id="kpiUtilSub">▼ Lebih hemat 3,5% dari kemarin</div>
             <div class="kpi-comparison-row">
-              <span class="kpi-prev-val" id="kpiUtilPrev">Kemarin: 71,8%</span>
-              <span class="kpi-delta-tag delta-down" id="kpiUtilDelta">▼ -2,4%</span>
+              <span class="kpi-prev-val" id="kpiUtilPrev">Kemarin: 204.150 kWh</span>
+              <span class="kpi-delta-tag delta-down" id="kpiUtilDelta">▼ -3,5%</span>
             </div>
           </div>
 
