@@ -69,7 +69,7 @@
         <div class="sidebar-section-header">
           <span class="section-dot"></span>
           <span class="section-title-text">ELECTRICAL ROOM (20kV)</span>
-          <span class="section-count-badge">3 Gardu</span>
+          <span class="section-count-badge">4 Gardu</span>
         </div>
 
         <button class="sidebar-menu-btn" data-view="view-electrical-1" data-filter="fac1" id="sideNavFac1" title="Masuk ke Halaman Khusus Electrical Room Factory 1">
@@ -82,7 +82,7 @@
             <span class="sidebar-btn-label">Electrical Room 1</span>
             <span class="sidebar-btn-sub">Substation Fac 1</span>
           </div>
-          <span class="sidebar-badge">15 Unit</span>
+          <span class="sidebar-badge">Tr 01-05</span>
         </button>
 
         <button class="sidebar-menu-btn" data-view="view-electrical-2" data-filter="fac2" id="sideNavFac2" title="Masuk ke Halaman Khusus Electrical Room Factory 2">
@@ -95,7 +95,20 @@
             <span class="sidebar-btn-label">Electrical Room 2</span>
             <span class="sidebar-btn-sub">Substation Fac 2</span>
           </div>
-          <span class="sidebar-badge">12 Unit</span>
+          <span class="sidebar-badge">Tr 11-16</span>
+        </button>
+
+        <button class="sidebar-menu-btn" data-view="view-electrical-2-1" data-filter="fac2_1" id="sideNavFac2_1" title="Masuk ke Halaman Khusus Electrical Room 2.1 Factory 2.1">
+          <div class="menu-icon-box">
+            <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <div class="sidebar-btn-content">
+            <span class="sidebar-btn-label">Electrical Room 2.1</span>
+            <span class="sidebar-btn-sub">Substation Fac 2.1</span>
+          </div>
+          <span class="sidebar-badge badge-orange">Tr 06-10</span>
         </button>
 
         <button class="sidebar-menu-btn" data-view="view-electrical-3" data-filter="fac3" id="sideNavFac3" title="Masuk ke Halaman Khusus Electrical Room Factory 3">
@@ -108,7 +121,7 @@
             <span class="sidebar-btn-label">Electrical Room 3</span>
             <span class="sidebar-btn-sub">Substation Fac 3</span>
           </div>
-          <span class="sidebar-badge">11 Unit</span>
+          <span class="sidebar-badge">Tr 17-19</span>
         </button>
 
         <!-- Section: PRODUKSI & UTILITAS -->
@@ -126,9 +139,9 @@
           </div>
           <div class="sidebar-btn-content">
             <span class="sidebar-btn-label">Forging Lines</span>
-            <span class="sidebar-btn-sub">Mesin Press 2000T</span>
+            <span class="sidebar-btn-sub">Press &amp; Billet Heater</span>
           </div>
-          <span class="sidebar-badge badge-orange">15 Feeder</span>
+          <span class="sidebar-badge badge-orange">39 Feeder</span>
         </button>
 
         <button class="sidebar-menu-btn" data-view="view-heattreatment" data-filter="heattreatment" id="sideNavHt" title="Masuk ke Halaman Khusus Substation Heat Treatment">
@@ -139,9 +152,9 @@
           </div>
           <div class="sidebar-btn-content">
             <span class="sidebar-btn-label">Heat Treatment</span>
-            <span class="sidebar-btn-sub">Carburizing Furnace</span>
+            <span class="sidebar-btn-sub">Furnace &amp; Washing</span>
           </div>
-          <span class="sidebar-badge badge-rose">15 Furnace</span>
+          <span class="sidebar-badge badge-rose">29 Unit</span>
         </button>
 
         <!-- Section: LAPORAN & DOKUMENTASI -->
@@ -204,7 +217,7 @@
         <div class="scada-stats-row">
           <div class="scada-stat-box">
             <span class="stat-lbl">METER AKTIF</span>
-            <strong class="stat-val" id="sideNavOnline">38 / 38</strong>
+            <strong class="stat-val" id="sideNavOnline">111 / 111</strong>
           </div>
           <div class="scada-stat-box">
             <span class="stat-lbl">VLAN SCADA</span>
@@ -361,28 +374,29 @@
             <div class="kpi-subtitle" id="kpiBiayaSub">Berdasarkan tarif asumsi</div>
           </div>
 
-          <!-- Card 4: Power Factor Rata-rata -->
-          <div class="kpi-card">
-            <div class="kpi-top-row">
-              <span class="kpi-icon-pill kpi-icon-blue">PF</span>
-              <div class="kpi-title">Power factor rata-rata</div>
-            </div>
-            <div class="kpi-value-row">
-              <span class="kpi-value" id="kpiPfVal">0,90</span>
-            </div>
-            <div class="kpi-subtitle" id="kpiPfSub">Baik (target ≥ 0,85)</div>
-          </div>
-
-          <!-- Card 5: Meter Online -->
+          <!-- Card 4: Beban Puncak (Peak Demand) - Menggantikan Power Factor -->
           <div class="kpi-card">
             <div class="kpi-top-row">
               <span class="kpi-icon-pill kpi-icon-rose">⚡</span>
-              <div class="kpi-title">Meter online</div>
+              <div class="kpi-title">Beban puncak (Peak)</div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="kpiOnlineVal">38 / 38</span>
+              <span class="kpi-value" id="kpiPeakVal">16.820</span>
+              <span class="kpi-unit">kW</span>
             </div>
-            <div class="kpi-subtitle" id="kpiOnlineSub">3 meter perlu dicek</div>
+            <div class="kpi-subtitle" id="kpiPeakSub">Puncak hari ini · Batas PLN aman</div>
+          </div>
+
+          <!-- Card 5: Utilisasi 19 Trafo Gardu - Menggantikan Meter Online -->
+          <div class="kpi-card">
+            <div class="kpi-top-row">
+              <span class="kpi-icon-pill kpi-icon-blue">TR</span>
+              <div class="kpi-title">Utilisasi 19 Trafo</div>
+            </div>
+            <div class="kpi-value-row">
+              <span class="kpi-value" id="kpiUtilVal">69,4%</span>
+            </div>
+            <div class="kpi-subtitle" id="kpiUtilSub">Tr 01 s/d Tr 19 (20.350 kVA)</div>
           </div>
 
           <!-- Card 6: Emisi Karbon ESG -->
@@ -479,8 +493,8 @@
           </div>
 
           <div class="activity-cards-grid">
-            <!-- Activity Card 1: Trafo 2.000 kVA (TRF-12) -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-12')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
+            <!-- Activity Card 1: Trafo 12 Fo & HT 200V (TR-12) -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('TR-12')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
               <div class="activity-card-top">
                 <div class="activity-icon-box orange">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -488,21 +502,21 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="activity-card-title">Transformer 2.000 kVA (TRF-12)</h3>
-                  <span class="activity-card-time">Substation LMVDP 20kV / 210V · IP 10.41.47.122</span>
+                  <h3 class="activity-card-title">Trafo 12 (Fo &amp; HT 200V)</h3>
+                  <span class="activity-card-time">Substation LMVDP 20kV / 200V · IP 192.168.20.12</span>
                 </div>
                 <div class="activity-kw-pill">1.381 <span>kW</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Beban Mesin Forging</span><strong>20+ Feeder Line</strong></div>
+                <div class="act-metric-row"><span>Beban Mesin Forging</span><strong>Lini Press Fac 2</strong></div>
                 <div class="act-metric-row"><span>Arus Sekunder (R-S-T)</span><strong>4.028 A</strong></div>
-                <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>210 V / 121 V</strong></div>
+                <div class="act-metric-row"><span>Tegangan L-L / L-N</span><strong>200 V / 115 V</strong></div>
                 <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,94 (Optimal)</strong></div>
               </div>
             </div>
 
-            <!-- Activity Card 2: Trafo 1.000 kVA (TRF-11) -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-11')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
+            <!-- Activity Card 2: Trafo 10 BH Komatsu 6.6kV (TR-10) -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('TR-10')" style="cursor:pointer;" title="Klik untuk lihat telemetri 3-Fasa R-S-T & register Modbus">
               <div class="activity-card-top">
                 <div class="activity-icon-box blue">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -510,40 +524,36 @@
                   </svg>
                 </div>
                 <div>
-                  <h3 class="activity-card-title">Transformer 1.000 kVA (TRF-11)</h3>
-                  <span class="activity-card-time">Billet Heater 6.6kV · IP 10.41.47.111</span>
+                  <h3 class="activity-card-title">Trafo 10 (BH Komatsu 1600 6.6kV)</h3>
+                  <span class="activity-card-time">Electrical Room 2.1 · IP 192.168.20.10</span>
                 </div>
-                <div class="activity-kw-pill">620 <span>kW</span></div>
+                <div class="activity-kw-pill">850 <span>kW</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Induction Heater Fac 1</strong></div>
-                <div class="act-metric-row"><span>Arus TM 6.6kV</span><strong>57,3 A</strong></div>
+                <div class="act-metric-row"><span>Aplikasi Beban</span><strong>Billet Heater Komatsu 1600T</strong></div>
+                <div class="act-metric-row"><span>Arus TM 6.6kV</span><strong>74,3 A</strong></div>
                 <div class="act-metric-row"><span>Tegangan Menengah</span><strong>6.600 V</strong></div>
                 <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0,95 (Normal)</strong></div>
               </div>
             </div>
 
-            <!-- Activity Card 3: Capacitor Bank & LMVDP (CAP-01 / TRF-13) -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('TRF-13')" style="cursor:pointer;" title="Klik untuk lihat detail PF & Kapasitor Bank">
+            <!-- Activity Card 3: Trafo 01 BH FO 6.6kV (TR-01) -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('TR-01')" style="cursor:pointer;" title="Klik untuk lihat detail PF & Kapasitor Bank">
               <div class="activity-card-top">
                 <div class="activity-icon-box amber">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="6" width="18" height="12" rx="2"></rect>
-                    <line x1="8" y1="2" x2="8" y2="6"></line>
-                    <line x1="16" y1="2" x2="16" y2="6"></line>
-                    <line x1="8" y1="18" x2="8" y2="22"></line>
-                    <line x1="16" y1="18" x2="16" y2="22"></line>
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
                 </div>
                 <div>
-                  <h3 class="activity-card-title">Panel LMVDP & Capacitor Bank</h3>
-                  <span class="activity-card-time">APFC 600 kVAR & Trafo #13 (1500 kVA)</span>
+                  <h3 class="activity-card-title">Trafo 01 (BH FO 6.6kV)</h3>
+                  <span class="activity-card-time">Electrical Room 1 · IP 192.168.10.1</span>
                 </div>
                 <div class="activity-kw-pill" style="background:rgba(251,191,36,0.15); color:var(--color-amber);">PF 0,84 <span>⚠️</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Status Regulasi PF</span><strong style="color:var(--color-amber);">Perlu Cek Step 4</strong></div>
-                <div class="act-metric-row"><span>Kompensasi Reaktif</span><strong>620 kVAR</strong></div>
+                <div class="act-metric-row"><span>Status Regulasi PF</span><strong style="color:var(--color-amber);">Perlu Cek APFC F1</strong></div>
+                <div class="act-metric-row"><span>Kompensasi Reaktif</span><strong>520 kVAR</strong></div>
                 <div class="act-metric-row"><span>Target Regulasi PLN</span><strong>Cos φ ≥ 0,85</strong></div>
                 <div class="act-metric-row"><span>Denda kVARh PLN</span><strong style="color:var(--color-green);">Rp 0 (Terkendali)</strong></div>
               </div>
@@ -605,7 +615,7 @@
           <div class="dedicated-hero-left">
             <span class="hero-badge-pill">⚡ SUBSTATION FACTORY 1</span>
             <h2 class="hero-title">Electrical Room 1 · Gardu 20kV Cubicle Schneider SM6</h2>
-            <p class="hero-desc">Pusat distribusi daya tegangan menengah 20kV ke tegangan 6.6kV, 400V, dan 210V untuk jalur produksi Factory 1 PT Musashi Auto Parts Indonesia.</p>
+            <p class="hero-desc">Pusat distribusi daya tegangan menengah 20kV ke tegangan 6.6kV, 400V, dan 210V untuk feeder F1-0 s/d F1-8 serta Transformator Tr 01 s/d Tr 05 Factory 1.</p>
           </div>
         </div>
 
@@ -613,78 +623,88 @@
         <section class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">kW</span><div class="kpi-title">Beban Factory 1</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">6.277</span><span class="kpi-unit">kW</span></div>
-            <div class="kpi-subtitle">Trafo TRF 11 s/d TRF 16</div>
+            <div class="kpi-value-row"><span class="kpi-value">4.850</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Trafo Tr 01 s/d Tr 05</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-amber">kWh</span><div class="kpi-title">Energi Fac 1 Hari Ini</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">86.724</span><span class="kpi-unit">kWh</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">67.200</span><span class="kpi-unit">kWh</span></div>
             <div class="kpi-subtitle">Terakumulasi sejak 00.00 WIB</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-green">Rp</span><div class="kpi-title">Estimasi Biaya Fac 1</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">Rp 125 jt</span></div>
-            <div class="kpi-subtitle">44% dari total biaya pabrik</div>
+            <div class="kpi-value-row"><span class="kpi-value">Rp 97 jt</span></div>
+            <div class="kpi-subtitle">Tarif industri I-3/TM</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">PF</span><div class="kpi-title">Power Factor Fac 1</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">0,91</span></div>
-            <div class="kpi-subtitle">APFC 600 kVAR aktif</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Beban Puncak Fac 1</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">5.620</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Puncak Shift Siang · Kapasitas Aman</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Meter Online Fac 1</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">15 / 15</span></div>
-            <div class="kpi-subtitle">100% normal terhubung VLAN 20</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">TR</span><div class="kpi-title">Utilisasi Trafo Fac 1</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">72,1%</span></div>
+            <div class="kpi-subtitle">Trafo Tr 01 s/d Tr 05 (6.500 kVA)</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">CO₂</span><div class="kpi-title">Emisi CO₂ Fac 1</div></div>
-            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">68,5</span><span class="kpi-unit">ton</span></div>
+            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">53,1</span><span class="kpi-unit">ton</span></div>
             <div class="kpi-subtitle">ESG audit Factory 1</div>
           </div>
         </section>
 
-        <!-- Trafo Utama Electrical Room 1 -->
+        <!-- Trafo Utama Electrical Room 1 (Tr 01 s/d Tr 05) -->
         <div class="clean-card" style="margin-top: 0.85rem; margin-bottom: 0.85rem;">
-          <h3 class="card-title">Transformator Utama Electrical Room 1</h3>
+          <h3 class="card-title">Transformator Utama Electrical Room 1 (Tr 01 s/d Tr 05)</h3>
           <p class="card-subtitle">Klik salah satu trafo untuk membuka live telemetri 3-fasa:</p>
           <div class="trafo-mini-grid">
-            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-12')">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-01')">
               <div class="trafo-mini-info">
-                <strong>Trafo #12 (2.000 kVA - 210V)</strong>
-                <span>Main Low Voltage Panel Penyuplai 20+ Feeder Forging</span>
+                <strong>Trafo #01 (1.250 kVA - 6.6kV)</strong>
+                <span>BH FO 6.6 kV · Billet Heater Forging</span>
               </div>
               <div class="trafo-mini-metrics">
-                <span class="val-kw">1.381 kW</span>
+                <span class="val-kw">920 kW</span>
                 <button class="btn-table-detail">Detail</button>
               </div>
             </div>
-            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-11')">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-02')">
               <div class="trafo-mini-info">
-                <strong>Trafo #11 (1.000 kVA - 6.6kV)</strong>
-                <span>Penyuplai Billet Induction Heater (Tegangan Menengah)</span>
+                <strong>Trafo #02 (1.250 kVA - 380V)</strong>
+                <span>UTY 380 V · Kompresor Udara, Chiller, &amp; Common</span>
               </div>
               <div class="trafo-mini-metrics">
-                <span class="val-kw">620 kW</span>
+                <span class="val-kw">840 kW</span>
                 <button class="btn-table-detail">Detail</button>
               </div>
             </div>
-            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-13')">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-03')">
               <div class="trafo-mini-info">
-                <strong>Trafo #13 (1.500 kVA) &amp; APFC Cap Bank</strong>
-                <span>Sub-Distribution Panel 210V &amp; Kompensator 600 kVAR</span>
+                <strong>Trafo #03 (1.500 kVA - 200V)</strong>
+                <span>FO &amp; HT 200 V · Beban Forging &amp; Heat Treatment</span>
               </div>
               <div class="trafo-mini-metrics">
-                <span class="val-kw" style="color:var(--color-amber);">980 kW (PF 0,84)</span>
+                <span class="val-kw" style="color:var(--color-amber);">1.180 kW (PF 0,84)</span>
                 <button class="btn-table-detail">Detail</button>
               </div>
             </div>
-            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TRF-14')">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-04')">
               <div class="trafo-mini-info">
-                <strong>Trafo #14 (1.500 kVA - 400V)</strong>
-                <span>Kompresor Udara Sentral, Chiller, &amp; Utility Factory 1</span>
+                <strong>Trafo #04 (1.000 kVA - 200V)</strong>
+                <span>Mach 200 V · Jalur Mesin Machining</span>
               </div>
               <div class="trafo-mini-metrics">
-                <span class="val-kw">790 kW</span>
+                <span class="val-kw">680 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-05')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #05 (1.500 kVA - 200V)</strong>
+                <span>FO &amp; HT 200 V · Lini Forging Press &amp; Tungku HT</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">950 kW</span>
                 <button class="btn-table-detail">Detail</button>
               </div>
             </div>
@@ -694,8 +714,8 @@
         <!-- Tabel Khusus Meter Factory 1 -->
         <div class="clean-card">
           <div class="card-header-block">
-            <h3 class="card-title">Daftar Lengkap 15 Power Meter Factory 1</h3>
-            <p class="card-subtitle">Semua meter Schneider Electric PowerLogic terhubung switch Cisco VLAN 20.</p>
+            <h3 class="card-title">Daftar Lengkap Feeder &amp; Trafo Electrical Room 1</h3>
+            <p class="card-subtitle">Feeder F1-0 s/d F1-8 serta Transformator Tr 01 s/d Tr 05 Schneider Electric SM6 &amp; PowerLogic.</p>
           </div>
           <div class="clean-table-responsive">
             <table class="clean-table">
@@ -718,48 +738,116 @@
           <div class="dedicated-hero-left">
             <span class="hero-badge-pill" style="background:rgba(56,189,248,0.2); color:var(--color-blue); border-color:rgba(56,189,248,0.4);">⚡ SUBSTATION FACTORY 2</span>
             <h2 class="hero-title">Electrical Room 2 · Gardu 20kV Factory 2</h2>
-            <p class="hero-desc">Pusat suplai daya untuk Lini Mesin Forging Press Factory 2 dan Continuous Carburizing Furnace Heat Treatment (12 Unit Power Meter).</p>
+            <p class="hero-desc">Pusat suplai daya untuk Feeder F2-1 s/d F2-6 serta Transformator Tr 11 s/d Tr 16 Factory 2 PT Musashi Auto Parts Indonesia.</p>
           </div>
         </div>
 
         <section class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">kW</span><div class="kpi-title">Beban Factory 2</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">5.398</span><span class="kpi-unit">kW</span></div>
-            <div class="kpi-subtitle">Trafo TRF 01 s/d TRF 04</div>
+            <div class="kpi-value-row"><span class="kpi-value">4.250</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Trafo Tr 11 s/d Tr 16</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-amber">kWh</span><div class="kpi-title">Energi Fac 2 Hari Ini</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">74.744</span><span class="kpi-unit">kWh</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">58.900</span><span class="kpi-unit">kWh</span></div>
             <div class="kpi-subtitle">Sejak 00.00 WIB</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-green">Rp</span><div class="kpi-title">Estimasi Biaya Fac 2</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">Rp 108 jt</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">Rp 85 jt</span></div>
             <div class="kpi-subtitle">Tarif industri I-3/TM</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">PF</span><div class="kpi-title">Power Factor Fac 2</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">0,88</span></div>
-            <div class="kpi-subtitle">Di atas target PLN (≥ 0,85)</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Beban Puncak Fac 2</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">4.950</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Puncak Shift 1 · Kapasitas Aman</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Meter Online Fac 2</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">12 / 12</span></div>
-            <div class="kpi-subtitle">Koneksi Cisco Normal</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">TR</span><div class="kpi-title">Utilisasi Trafo Fac 2</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">71,5%</span></div>
+            <div class="kpi-subtitle">Trafo Tr 11 s/d Tr 16 (8.000 kVA)</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">CO₂</span><div class="kpi-title">Emisi CO₂ Fac 2</div></div>
-            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">59,0</span><span class="kpi-unit">ton</span></div>
+            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">46,5</span><span class="kpi-unit">ton</span></div>
             <div class="kpi-subtitle">ESG audit Factory 2</div>
           </div>
         </section>
 
+        <!-- Trafo Utama Electrical Room 2 (Tr 11 s/d Tr 16) -->
+        <div class="clean-card" style="margin-top: 0.85rem; margin-bottom: 0.85rem;">
+          <h3 class="card-title">Transformator Utama Electrical Room 2 (Tr 11 s/d Tr 16)</h3>
+          <p class="card-subtitle">Klik salah satu trafo untuk membuka live telemetri 3-fasa:</p>
+          <div class="trafo-mini-grid">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-11')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #11 (1.250 kVA - 6.6kV)</strong>
+                <span>BH N1300 6.6 kV · Billet Heater N1300</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">880 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-12')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #12 (2.000 kVA - 200V)</strong>
+                <span>FO &amp; HT 200 V · Lini Utama Forging &amp; HT</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">1.380 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-13')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #13 (1.000 kVA - 200V)</strong>
+                <span>Mach 200 V · Jalur Machining Factory 2</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">620 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-14')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #14 (1.000 kVA - 380V)</strong>
+                <span>UTY 380 V · Utility &amp; Fasilitas Pabrik</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">710 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-15')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #15 (1.250 kVA - 6.6kV)</strong>
+                <span>BH Kurimoto 6.6 kV · Billet Heater Kurimoto</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">940 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-16')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #16 (1.500 kVA - 6.6kV)</strong>
+                <span>BH N1600 6.6 kV · Billet Heater N1600</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">1.050 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Tabel Khusus Meter Factory 2 -->
         <div class="clean-card">
           <div class="card-header-block">
-            <h3 class="card-title">Daftar Lengkap 12 Power Meter Factory 2</h3>
-            <p class="card-subtitle">Trafo TRF 01-04, Panel LMVDP 210V Forging, dan APFC Substation Factory 2.</p>
+            <h3 class="card-title">Daftar Lengkap Feeder &amp; Trafo Electrical Room 2</h3>
+            <p class="card-subtitle">Feeder F2-1 s/d F2-6 (PF, MF, UF, MV) serta Transformator Tr 11 s/d Tr 16.</p>
           </div>
           <div class="clean-table-responsive">
             <table class="clean-table">
@@ -776,54 +864,214 @@
         </div>
       </div>
 
+      <!-- ================= VIEW 3.1: ELECTRICAL ROOM 2.1 (FACTORY 2.1) ================= -->
+      <div class="menu-view" id="view-electrical-2-1">
+        <div class="dedicated-hero-banner">
+          <div class="dedicated-hero-left">
+            <span class="hero-badge-pill" style="background:rgba(249,115,22,0.22); color:#fdba74; border-color:rgba(249,115,22,0.4);">⚡ SUBSTATION FACTORY 2.1</span>
+            <h2 class="hero-title">Electrical Room 2.1 · Gardu 20kV Factory 2.1</h2>
+            <p class="hero-desc">Pusat distribusi daya tegangan 20kV, panel LV-MDB 3P 380V &amp; 200V, Feeder F4-0 s/d F4-5, serta Transformator Tr 06 s/d Tr 10.</p>
+          </div>
+        </div>
+
+        <section class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">kW</span><div class="kpi-title">Beban Factory 2.1</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">3.600</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Trafo Tr 06 s/d Tr 10</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-amber">kWh</span><div class="kpi-title">Energi Fac 2.1 Hari Ini</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">49.800</span><span class="kpi-unit">kWh</span></div>
+            <div class="kpi-subtitle">Sejak 00.00 WIB</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-green">Rp</span><div class="kpi-title">Estimasi Biaya Fac 2.1</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">Rp 72 jt</span></div>
+            <div class="kpi-subtitle">Tarif industri I-3/TM</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Beban Puncak Fac 2.1</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">4.180</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Billet Heater &amp; Forging Aktif</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">TR</span><div class="kpi-title">Utilisasi Trafo Fac 2.1</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">68,2%</span></div>
+            <div class="kpi-subtitle">Trafo Tr 06 s/d Tr 10 (6.100 kVA)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">CO₂</span><div class="kpi-title">Emisi CO₂ Fac 2.1</div></div>
+            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">39,3</span><span class="kpi-unit">ton</span></div>
+            <div class="kpi-subtitle">ESG audit Factory 2.1</div>
+          </div>
+        </section>
+
+        <!-- Trafo Utama Electrical Room 2.1 (Tr 06 s/d Tr 10) -->
+        <div class="clean-card" style="margin-top: 0.85rem; margin-bottom: 0.85rem;">
+          <h3 class="card-title">Transformator Utama Electrical Room 2.1 (Tr 06 s/d Tr 10)</h3>
+          <p class="card-subtitle">Klik salah satu trafo untuk membuka live telemetri 3-fasa:</p>
+          <div class="trafo-mini-grid">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-06')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #06 (1.000 kVA - 380V)</strong>
+                <span>UTY &amp; FO 380 V · Utility &amp; Forging Aux</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">780 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-07')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #07 (1.250 kVA - 200V)</strong>
+                <span>FO 200 V · Jalur Mesin Forging Press</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">890 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-08')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #08 (1.500 kVA - 200V)</strong>
+                <span>FO &amp; HT 200 V · Forging &amp; Heat Treatment</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">960 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-09')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #09 (750 kVA - 380V)</strong>
+                <span>UTY 380 V · Utility Pompa &amp; Penerangan</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">520 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-10')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #10 (1.600 kVA - 6.6kV)</strong>
+                <span>BH Komatsu 1600 6.6 kV · Billet Heater Heavy Duty</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">1.150 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabel Khusus Meter Factory 2.1 -->
+        <div class="clean-card">
+          <div class="card-header-block">
+            <h3 class="card-title">Daftar Lengkap Feeder &amp; Trafo Electrical Room 2.1</h3>
+            <p class="card-subtitle">Feeder F4-0 s/d F4-5 (Incoming, LV-MDB, BH 1100kVA) serta Trafo Tr 06 s/d Tr 10.</p>
+          </div>
+          <div class="clean-table-responsive">
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th>ID</th><th>Nama Feeder/Panel</th><th>IP Address</th><th style="text-align:right;">Daya (kW)</th><th style="text-align:right;">Tegangan</th><th style="text-align:right;">Arus (A)</th><th style="text-align:right;">Cos φ</th><th style="text-align:center;">Status</th><th style="text-align:center;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="fac2_1TableBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <!-- ================= VIEW 4: ELECTRICAL ROOM 3 (FACTORY 3) ================= -->
       <div class="menu-view" id="view-electrical-3">
         <div class="dedicated-hero-banner">
           <div class="dedicated-hero-left">
             <span class="hero-badge-pill" style="background:rgba(22,163,74,0.18); color:var(--color-green); border-color:rgba(22,163,74,0.35);">⚡ SUBSTATION FACTORY 3</span>
             <h2 class="hero-title">Electrical Room 3 · Gardu 20kV Factory 3</h2>
-            <p class="hero-desc">Pusat penyuplai Pompa Cooling Tower Utama, Forging Press 3, dan Annealing Atmosphere Furnace (11 Unit Power Meter).</p>
+            <p class="hero-desc">Pusat suplai daya untuk Feeder F3-0 s/d F3-3 (MV-MDB 20kV &amp; LV-MDB) serta Transformator Tr 17 s/d Tr 19 Factory 3 PT Musashi Auto Parts Indonesia.</p>
           </div>
         </div>
 
         <section class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">kW</span><div class="kpi-title">Beban Factory 3</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">2.454</span><span class="kpi-unit">kW</span></div>
-            <div class="kpi-subtitle">Trafo TRF 05 s/d TRF 08</div>
+            <div class="kpi-value-row"><span class="kpi-value">2.450</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Trafo Tr 17 s/d Tr 19</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-amber">kWh</span><div class="kpi-title">Energi Fac 3 Hari Ini</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">35.596</span><span class="kpi-unit">kWh</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">34.100</span><span class="kpi-unit">kWh</span></div>
             <div class="kpi-subtitle">Sejak 00.00 WIB</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-green">Rp</span><div class="kpi-title">Estimasi Biaya Fac 3</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">Rp 51 jt</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">Rp 49 jt</span></div>
             <div class="kpi-subtitle">Efisiensi Pompa Tinggi</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">PF</span><div class="kpi-title">Power Factor Fac 3</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">0,92</span></div>
-            <div class="kpi-subtitle">Kategori Sangat Baik</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Beban Puncak Fac 3</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">2.890</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Puncak Pompa &amp; Cooling Sentral</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Meter Online Fac 3</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">11 / 11</span></div>
-            <div class="kpi-subtitle">Semua Beroperasi Normal</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">TR</span><div class="kpi-title">Utilisasi Trafo Fac 3</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">62,8%</span></div>
+            <div class="kpi-subtitle">Trafo Tr 17 s/d Tr 19 (3.750 kVA)</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">CO₂</span><div class="kpi-title">Emisi CO₂ Fac 3</div></div>
-            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">28,1</span><span class="kpi-unit">ton</span></div>
+            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">26,9</span><span class="kpi-unit">ton</span></div>
             <div class="kpi-subtitle">ESG audit Factory 3</div>
           </div>
         </section>
 
+        <!-- Trafo Utama Electrical Room 3 (Tr 17 s/d Tr 19) -->
+        <div class="clean-card" style="margin-top: 0.85rem; margin-bottom: 0.85rem;">
+          <h3 class="card-title">Transformator Utama Electrical Room 3 (Tr 17 s/d Tr 19)</h3>
+          <p class="card-subtitle">Klik salah satu trafo untuk membuka live telemetri 3-fasa:</p>
+          <div class="trafo-mini-grid">
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-17')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #17 (1.250 kVA - 380V)</strong>
+                <span>UTY &amp; Forg 380 V · Utility Pompa Sentral &amp; Forging 3</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">880 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-18')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #18 (1.000 kVA - 200V)</strong>
+                <span>Mach 200 V · Jalur Mesin Machining Factory 3</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">610 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+            <div class="trafo-mini-row" onclick="window.openMeterDetailById('TR-19')">
+              <div class="trafo-mini-info">
+                <strong>Trafo #19 (1.500 kVA - 200V)</strong>
+                <span>HT 200 V · Jalur Heat Treatment &amp; Annealing Fac 3</span>
+              </div>
+              <div class="trafo-mini-metrics">
+                <span class="val-kw">960 kW</span>
+                <button class="btn-table-detail">Detail</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Tabel Khusus Meter Factory 3 -->
         <div class="clean-card">
           <div class="card-header-block">
-            <h3 class="card-title">Daftar Lengkap 11 Power Meter Factory 3</h3>
-            <p class="card-subtitle">Trafo TRF 05-08 (Pompa, Forging, Annealing HT), Panel LMVDP, dan APFC Substation Factory 3.</p>
+            <h3 class="card-title">Daftar Lengkap Feeder &amp; Trafo Electrical Room 3</h3>
+            <p class="card-subtitle">Feeder F3-0 s/d F3-3 serta Transformator Tr 17 s/d Tr 19 Schneider Electric SM6 &amp; PowerLogic.</p>
           </div>
           <div class="clean-table-responsive">
             <table class="clean-table">
@@ -845,40 +1093,40 @@
         <div class="dedicated-hero-banner">
           <div class="dedicated-hero-left">
             <span class="hero-badge-pill" style="background:rgba(234,88,12,0.2); color:var(--color-orange); border-color:rgba(234,88,12,0.4);">⚡ SISTEM BEBAN FORGING</span>
-            <h2 class="hero-title">Substation Penyuplai Lini Mesin Forging Press</h2>
-            <p class="hero-desc">Monitoring khusus 15 unit gardu dan panel LMVDP penyuplai mesin Forging Press 1.600T, 2.500T, dan 4.000T di Factory 1, 2, dan 3.</p>
+            <h2 class="hero-title">Lini Mesin Forging Press &amp; Billet Heater</h2>
+            <p class="hero-desc">Monitoring komprehensif mesin Forging Press Komatsu (1600T, 630T, 2500T), Billet Induction Heater (6.6kV), Normalizing Furnaces, dan Shot Blast di seluruh lini Factory 1, 2, dan 3.</p>
           </div>
         </div>
 
         <section class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">kW</span><div class="kpi-title">Daya Total Forging</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">7.400</span><span class="kpi-unit">kW</span></div>
-            <div class="kpi-subtitle">52% dari beban pabrik</div>
+            <div class="kpi-value-row"><span class="kpi-value">7.820</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">55% dari total beban pabrik</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-amber">kWh</span><div class="kpi-title">Energi Forging Hari Ini</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">104.404</span><span class="kpi-unit">kWh</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">108.400</span><span class="kpi-unit">kWh</span></div>
             <div class="kpi-subtitle">Konsumen energi terbesar</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-green">Rp</span><div class="kpi-title">Estimasi Biaya Forging</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">Rp 151 jt</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">Rp 156 jt</span></div>
             <div class="kpi-subtitle">Perhitungan shift produksi</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">PF</span><div class="kpi-title">Power Factor Forging</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">0,89</span></div>
-            <div class="kpi-subtitle">Dukungan APFC Bank</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Beban Puncak Forging</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">9.210</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Puncak Mesin Press &amp; Billet Heater</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Unit Meter Forging</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">15 / 15</span></div>
-            <div class="kpi-subtitle">Semua Feeder Aktif</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">TR</span><div class="kpi-title">Utilisasi Lini Forging</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">74,6%</span></div>
+            <div class="kpi-subtitle">39 Unit Mesin &amp; Feeder Aktif</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">CO₂</span><div class="kpi-title">Emisi CO₂ Forging</div></div>
-            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">82,5</span><span class="kpi-unit">ton</span></div>
+            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">85,6</span><span class="kpi-unit">ton</span></div>
             <div class="kpi-subtitle">Faktor 0,79 kg/kWh</div>
           </div>
         </section>
@@ -886,14 +1134,14 @@
         <!-- Tabel Khusus Forging -->
         <div class="clean-card">
           <div class="card-header-block">
-            <h3 class="card-title">Daftar 15 Power Meter Lini Forging Press</h3>
-            <p class="card-subtitle">Trafo & Panel LMVDP 210V penyuplai lini mesin Forging Press Factory 1, 2, dan 3.</p>
+            <h3 class="card-title">Daftar Lengkap 39 Unit Mesin Forging Press &amp; Billet Heater</h3>
+            <p class="card-subtitle">Mesin Press Komatsu (61024, 61018, 61026, 61007, 61010, 61019, 81023), Billet Heater, dan Normalizing.</p>
           </div>
           <div class="clean-table-responsive">
             <table class="clean-table">
               <thead>
                 <tr>
-                  <th>ID</th><th>Nama Feeder/Panel</th><th>Factory</th><th>IP Address</th><th style="text-align:right;">Daya (kW)</th><th style="text-align:right;">Tegangan</th><th style="text-align:right;">Arus (A)</th><th style="text-align:right;">Cos φ</th><th style="text-align:center;">Status</th><th style="text-align:center;">Aksi</th>
+                  <th>ID</th><th>Nama Mesin / Feeder</th><th>Factory</th><th>IP Address</th><th style="text-align:right;">Daya (kW)</th><th style="text-align:right;">Tegangan</th><th style="text-align:right;">Arus (A)</th><th style="text-align:right;">Cos φ</th><th style="text-align:center;">Status</th><th style="text-align:center;">Aksi</th>
                 </tr>
               </thead>
               <tbody id="forgingTableBody">
@@ -909,40 +1157,40 @@
         <div class="dedicated-hero-banner">
           <div class="dedicated-hero-left">
             <span class="hero-badge-pill" style="background:rgba(225,29,72,0.2); color:var(--color-rose); border-color:rgba(225,29,72,0.4);">🔥 SISTEM BEBAN HEAT TREATMENT</span>
-            <h2 class="hero-title">Substation Penyuplai Heat Treatment (HT)</h2>
-            <p class="hero-desc">Monitoring khusus 15 unit gardu penyuplai Billet Induction Heater Tegangan Menengah 6.6kV, Continuous Carburizing, dan Annealing Furnaces.</p>
+            <h2 class="hero-title">Lini Heat Treatment (HT) &amp; Tungku Karburisasi</h2>
+            <p class="hero-desc">Monitoring Continuous Carburizing Furnaces, Vacuum Furnace 74002, Tempering Furnaces, Washing Machines, Shot Blast, dan CLD Drives.</p>
           </div>
         </div>
 
         <section class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">kW</span><div class="kpi-title">Daya Total HT</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">5.110</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">5.120</span><span class="kpi-unit">kW</span></div>
             <div class="kpi-subtitle">Beban pemanasan kontinyu</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-amber">kWh</span><div class="kpi-title">Energi HT Hari Ini</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">69.704</span><span class="kpi-unit">kWh</span></div>
-            <div class="kpi-subtitle">Billet Heater & Furnace</div>
+            <div class="kpi-value-row"><span class="kpi-value">71.200</span><span class="kpi-unit">kWh</span></div>
+            <div class="kpi-subtitle">Carburizing, Tempering, Washing</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-green">Rp</span><div class="kpi-title">Estimasi Biaya HT</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">Rp 101 jt</span></div>
+            <div class="kpi-value-row"><span class="kpi-value">Rp 103 jt</span></div>
             <div class="kpi-subtitle">Efisiensi termal tinggi</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">PF</span><div class="kpi-title">Power Factor HT</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">0,94</span></div>
-            <div class="kpi-subtitle">Sangat Optimal</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Beban Puncak HT</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">6.140</span><span class="kpi-unit">kW</span></div>
+            <div class="kpi-subtitle">Puncak Karburisasi &amp; Vacuum</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-rose">⚡</span><div class="kpi-title">Unit Meter HT</div></div>
-            <div class="kpi-value-row"><span class="kpi-value">15 / 15</span></div>
-            <div class="kpi-subtitle">Operasi Stabil</div>
+            <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-blue">TR</span><div class="kpi-title">Utilisasi Tungku HT</div></div>
+            <div class="kpi-value-row"><span class="kpi-value">66,5%</span></div>
+            <div class="kpi-subtitle">29 Unit Tungku &amp; Feeder Aktif</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top-row"><span class="kpi-icon-pill kpi-icon-teal">CO₂</span><div class="kpi-title">Emisi CO₂ HT</div></div>
-            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">55,1</span><span class="kpi-unit">ton</span></div>
+            <div class="kpi-value-row"><span class="kpi-value" style="color:var(--color-teal);">56,2</span><span class="kpi-unit">ton</span></div>
             <div class="kpi-subtitle">Faktor 0,79 kg/kWh</div>
           </div>
         </section>
@@ -950,14 +1198,14 @@
         <!-- Tabel Khusus HT -->
         <div class="clean-card">
           <div class="card-header-block">
-            <h3 class="card-title">Daftar 15 Power Meter Lini Heat Treatment</h3>
-            <p class="card-subtitle">Penyuplai Billet Induction Heater 6.6kV, Furnace Carburizing, dan Annealing.</p>
+            <h3 class="card-title">Daftar Lengkap 29 Unit Tungku Carburizing, Tempering &amp; Washing</h3>
+            <p class="card-subtitle">Furnace Carburizing (74003, 74026, dll), Vacuum Furnace 74002, Washing, dan Continuous Line Drives.</p>
           </div>
           <div class="clean-table-responsive">
             <table class="clean-table">
               <thead>
                 <tr>
-                  <th>ID</th><th>Nama Feeder/Panel</th><th>Factory</th><th>IP Address</th><th style="text-align:right;">Daya (kW)</th><th style="text-align:right;">Tegangan</th><th style="text-align:right;">Arus (A)</th><th style="text-align:right;">Cos φ</th><th style="text-align:center;">Status</th><th style="text-align:center;">Aksi</th>
+                  <th>ID</th><th>Nama Mesin / Furnace</th><th>Factory</th><th>IP Address</th><th style="text-align:right;">Daya (kW)</th><th style="text-align:right;">Tegangan</th><th style="text-align:right;">Arus (A)</th><th style="text-align:right;">Cos φ</th><th style="text-align:center;">Status</th><th style="text-align:center;">Aksi</th>
                 </tr>
               </thead>
               <tbody id="htTableBody">

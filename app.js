@@ -5,14 +5,18 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Baseline Calibration for Electrical Room Substation (38 Digital Power Meters Schneider & Mitsubishi)
+  // Baseline Calibration for Electrical Room Substation (Schneider & Mitsubishi)
   const CATEGORY_BASELINES = {
     all: {
       kw: 14129,
       kwh: 197064,
       cost: 'Rp 285 jt',
+      peak: '16.820',
+      peakSub: 'Puncak hari ini · Batas PLN aman',
+      util: '69,4%',
+      utilSub: 'Tr 01 s/d Tr 19 (20.350 kVA)',
       pf: '0,90',
-      online: '38 / 38',
+      online: '111 / 111',
       alertCount: '3 meter perlu dicek',
       carbonTon: '155,7',
       curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
@@ -23,8 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
       kw: 14129,
       kwh: 197064,
       cost: 'Rp 285 jt',
+      peak: '16.820',
+      peakSub: 'Puncak hari ini · Batas PLN aman',
+      util: '69,4%',
+      utilSub: 'Tr 01 s/d Tr 19 (20.350 kVA)',
       pf: '0,90',
-      online: '38 / 38',
+      online: '42 / 42',
       alertCount: '3 meter perlu dicek',
       carbonTon: '155,7',
       curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
@@ -32,35 +40,63 @@ document.addEventListener('DOMContentLoaded', () => {
       curveStep: 3000
     },
     fac1: {
-      kw: 6277,
-      kwh: 86724,
-      cost: 'Rp 125 jt',
+      kw: 5420,
+      kwh: 76200,
+      cost: 'Rp 110 jt',
+      peak: '6.450',
+      peakSub: 'Puncak Fac 1 · Shift 1 Aktif',
+      util: '71,2%',
+      utilSub: 'Trafo Tr 01 s/d Tr 05 (5.400 kVA)',
       pf: '0,91',
-      online: '15 / 15',
+      online: '14 / 14 Unit',
       alertCount: '1 meter perlu dicek',
-      carbonTon: '68,5',
-      curve24h: [3760, 3430, 4720, 6880, 5930, 6980, 5100, 3970],
-      curveMax: 8000,
+      carbonTon: '60,2',
+      curve24h: [3250, 2960, 4070, 5940, 5120, 6030, 4410, 3440],
+      curveMax: 7000,
+      curveStep: 1000
+    },
+    fac2_1: {
+      kw: 3600,
+      kwh: 49800,
+      cost: 'Rp 72 jt',
+      peak: '4.180',
+      peakSub: 'Puncak Fac 2.1 · Billet Heater Aktif',
+      util: '68,2%',
+      utilSub: 'Trafo Tr 06 s/d Tr 10 (6.100 kVA)',
+      pf: '0,93',
+      online: '11 / 11 Unit',
+      alertCount: '0 meter perlu dicek',
+      carbonTon: '39,3',
+      curve24h: [2160, 1960, 2700, 3940, 3400, 4010, 2930, 2280],
+      curveMax: 5000,
       curveStep: 1000
     },
     fac2: {
-      kw: 5398,
-      kwh: 74744,
-      cost: 'Rp 108 jt',
+      kw: 4850,
+      kwh: 68100,
+      cost: 'Rp 98 jt',
+      peak: '5.820',
+      peakSub: 'Puncak Fac 2 · Forging Heavy Line',
+      util: '66,8%',
+      utilSub: 'Trafo Tr 11 s/d Tr 16 (4.850 kVA)',
       pf: '0,88',
-      online: '12 / 12',
+      online: '12 / 12 Unit',
       alertCount: '2 meter perlu dicek',
-      carbonTon: '59,0',
-      curve24h: [3240, 2950, 4060, 5920, 5100, 6000, 4390, 3420],
-      curveMax: 7000,
+      carbonTon: '53,8',
+      curve24h: [2910, 2650, 3640, 5310, 4580, 5390, 3940, 3070],
+      curveMax: 6500,
       curveStep: 1000
     },
     fac3: {
       kw: 2454,
       kwh: 35596,
       cost: 'Rp 51 jt',
+      peak: '2.890',
+      peakSub: 'Puncak Fac 3 · Pompa Cooling Tower',
+      util: '70,5%',
+      utilSub: 'Trafo Tr 17 s/d Tr 19 (4.000 kVA)',
       pf: '0,92',
-      online: '11 / 11',
+      online: '7 / 7 Unit',
       alertCount: '0 meter perlu dicek',
       carbonTon: '28,1',
       curve24h: [1470, 1340, 1850, 2690, 2320, 2730, 2000, 1550],
@@ -71,9 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
       kw: 7400,
       kwh: 104404,
       cost: 'Rp 151 jt',
+      peak: '8.850',
+      peakSub: 'Puncak Forging Press Shift 1 & 2',
+      util: '74,1%',
+      utilSub: 'Beban Kompresor & Motor Press',
       pf: '0,89',
-      online: '15 / 15',
-      alertCount: '3 meter perlu dicek',
+      online: '39 / 39 Unit',
+      alertCount: '2 meter perlu dicek',
       carbonTon: '82,5',
       curve24h: [4440, 4050, 5570, 8110, 6990, 8230, 6020, 4690],
       curveMax: 9000,
@@ -83,8 +123,12 @@ document.addEventListener('DOMContentLoaded', () => {
       kw: 5110,
       kwh: 69704,
       cost: 'Rp 101 jt',
+      peak: '6.120',
+      peakSub: 'Puncak Billet Induction & Carburizing',
+      util: '67,3%',
+      utilSub: 'Billet Heater 6.6kV & Vacuum Furnace',
       pf: '0,94',
-      online: '15 / 15',
+      online: '29 / 29 Unit',
       alertCount: '0 meter perlu dicek',
       carbonTon: '55,1',
       curve24h: [3070, 2800, 3850, 5600, 4830, 5680, 4160, 3240],
@@ -96,107 +140,119 @@ document.addEventListener('DOMContentLoaded', () => {
   // Top 8 Consumers Data by Category & Factory Substation
   const TOP_8_DATA = {
     all: [
-      { name: 'Trafo #12 LMVDP 210V (TRF-12)', val: 18450 },
-      { name: 'Trafo #13 Sub-Dist 210V (TRF-13)', val: 12840 },
-      { name: 'Trafo #14 Utility 400V (TRF-14)', val: 10570 },
-      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
-      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
-      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
-      { name: 'Trafo #05 Pompa Fac 3 (TRF-05)', val: 6240 },
-      { name: 'Trafo #01 Forging Fac 2 (TRF-01)', val: 5420 }
+      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
+      { name: 'Trafo 03 Fo & HT 200V (Tr 03)', val: 14200 },
+      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
+      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
+      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
+      { name: 'Trafo 19 HT 200V Fac 3 (Tr 19)', val: 7850 },
+      { name: 'Trafo 05 Fo & HT 200V (Tr 05)', val: 6920 },
+      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 }
     ],
     electrical: [
-      { name: 'Trafo #12 LMVDP 210V (TRF-12)', val: 18450 },
-      { name: 'Trafo #13 Sub-Dist 210V (TRF-13)', val: 12840 },
-      { name: 'Trafo #14 Utility 400V (TRF-14)', val: 10570 },
-      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
-      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
-      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
-      { name: 'Trafo #05 Pompa Fac 3 (TRF-05)', val: 6240 },
-      { name: 'Trafo #01 Forging Fac 2 (TRF-01)', val: 5420 }
+      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
+      { name: 'Trafo 03 Fo & HT 200V (Tr 03)', val: 14200 },
+      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
+      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
+      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
+      { name: 'Trafo 19 HT 200V Fac 3 (Tr 19)', val: 7850 },
+      { name: 'Trafo 05 Fo & HT 200V (Tr 05)', val: 6920 },
+      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 }
     ],
     fac1: [
-      { name: 'Trafo #12 LMVDP 210V (TRF-12)', val: 18450 },
-      { name: 'Trafo #13 Sub-Dist 210V (TRF-13)', val: 12840 },
-      { name: 'Trafo #14 Utility 400V (TRF-14)', val: 10570 },
-      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
-      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
-      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
-      { name: 'Panel LMVDP #02 Forging (LMV-02)', val: 5820 },
-      { name: 'Panel LMVDP #01 Main (LMV-01)', val: 4950 }
+      { name: 'Trafo 01 BH FO 6.6kV (Tr 01)', val: 15400 },
+      { name: 'Trafo 03 Fo & HT 200V (Tr 03)', val: 14200 },
+      { name: 'Trafo 05 Fo & HT 200V (Tr 05)', val: 10800 },
+      { name: 'Trafo 02 UTY 380V (Tr 02)', val: 8900 },
+      { name: 'Trafo 04 Mach 200V (Tr 04)', val: 7600 },
+      { name: 'Feeder F1-3 MDB Press 200V', val: 6800 },
+      { name: 'Feeder F1-4 LVMDB Y/C 380V', val: 5900 },
+      { name: 'Feeder F1-8 BH Press Auto', val: 5200 }
+    ],
+    fac2_1: [
+      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
+      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
+      { name: 'Trafo 06 UTY & FO 380V (Tr 06)', val: 7200 },
+      { name: 'Trafo 07 FO 200V (Tr 07)', val: 6800 },
+      { name: 'Trafo 09 UTY 380V (Tr 09)', val: 5400 },
+      { name: 'Feeder F4-5 BH 1100 kVA', val: 4900 },
+      { name: 'Feeder F4-1 LVMDB 3P 380V', val: 3800 },
+      { name: 'Feeder F4-2 LVMDB 3P 200V', val: 3200 }
     ],
     fac2: [
-      { name: 'Trafo #01 Forging 210V (TRF-01)', val: 5420 },
-      { name: 'Trafo #04 Forging 210V (TRF-04)', val: 5180 },
-      { name: 'Trafo #03 Carburizing HT (TRF-03)', val: 3320 },
-      { name: 'Trafo #02 Carburizing HT (TRF-02)', val: 3250 },
-      { name: 'Panel LMVDP #07 Forging (LMV-07)', val: 4120 },
-      { name: 'Panel LMVDP #08 Forging (LMV-08)', val: 3890 },
-      { name: 'Panel LMVDP #09 HT (LMV-09)', val: 3450 },
-      { name: 'Panel LMVDP #06 Main (LMV-06)', val: 2890 }
+      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
+      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
+      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 },
+      { name: 'Trafo 11 BH N1300 6.6kV (Tr 11)', val: 5800 },
+      { name: 'Trafo 13 Mach 200V (Tr 13)', val: 4900 },
+      { name: 'Trafo 14 UTY 380V (Tr 14)', val: 4200 },
+      { name: 'Feeder F2-6 MV Titan 1200T', val: 3800 },
+      { name: 'Feeder F2-5 MV Kurimoto', val: 3200 }
     ],
     fac3: [
-      { name: 'Trafo #05 Pompa & Util (TRF-05)', val: 6240 },
-      { name: 'Trafo #06 Forging 210V (TRF-06)', val: 3920 },
-      { name: 'Trafo #07 Annealing HT (TRF-07)', val: 2890 },
-      { name: 'Trafo #08 Annealing HT (TRF-08)', val: 2650 },
-      { name: 'Panel LMVDP #11 Forging (LMV-11)', val: 3200 },
-      { name: 'Panel LMVDP #12 Forging (LMV-12)', val: 2910 },
-      { name: 'Panel LMVDP #13 HT (LMV-13)', val: 2450 },
-      { name: 'Panel LMVDP #10 Main (LMV-10)', val: 2180 }
+      { name: 'Trafo 17 UTY & Forg 380V (Tr 17)', val: 9800 },
+      { name: 'Trafo 19 HT 200V (Tr 19)', val: 7850 },
+      { name: 'Trafo 18 Mach 200V (Tr 18)', val: 6100 },
+      { name: 'Feeder F3-1 LVMDB 380V (1600 kVA)', val: 5400 },
+      { name: 'Feeder F3-3 LVMDB 200V (1500 kVA)', val: 4600 },
+      { name: 'Feeder F3-2 LVMDB 200V (1000 kVA)', val: 3900 },
+      { name: 'Feeder F3-0 MV-MDB 20kV', val: 3100 },
+      { name: 'Carburizing HT 74026', val: 2600 }
     ],
     forging: [
-      { name: 'Trafo #12 Fac 1 210V (TRF-12)', val: 18450 },
-      { name: 'Trafo #13 Fac 1 210V (TRF-13)', val: 12840 },
-      { name: 'Trafo #01 Fac 2 Forging (TRF-01)', val: 5420 },
-      { name: 'Trafo #04 Fac 2 Forging (TRF-04)', val: 5180 },
-      { name: 'Trafo #06 Fac 3 Forging (TRF-06)', val: 3920 },
-      { name: 'Panel LMVDP #02 Fac 1 (LMV-02)', val: 5820 },
-      { name: 'Panel LMVDP #07 Fac 2 (LMV-07)', val: 4120 },
-      { name: 'Panel LMVDP #11 Fac 3 (LMV-11)', val: 3200 }
+      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
+      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
+      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
+      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
+      { name: 'Press Komatsu 1600T (61026)', val: 6400 },
+      { name: 'Press Komatsu (81023)', val: 5900 },
+      { name: 'Press 94476 Forging F2', val: 5100 },
+      { name: 'Press Komatsu 630T (61018)', val: 4800 }
     ],
     heattreatment: [
-      { name: 'Trafo #11 Billet 6.6kV (TRF-11)', val: 8250 },
-      { name: 'Trafo #16 Billet 6.6kV (TRF-16)', val: 7920 },
-      { name: 'Trafo #15 Billet 6.6kV (TRF-15)', val: 7650 },
-      { name: 'Trafo #03 Carburizing (TRF-03)', val: 3320 },
-      { name: 'Trafo #02 Carburizing (TRF-02)', val: 3250 },
-      { name: 'Trafo #07 Annealing (TRF-07)', val: 2890 },
-      { name: 'Trafo #08 Annealing (TRF-08)', val: 2650 },
-      { name: 'Panel LMVDP #03 Fac 1 (LMV-03)', val: 4410 }
+      { name: 'Trafo 01 BH FO 6.6kV (Tr 01)', val: 15400 },
+      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
+      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
+      { name: 'Trafo 19 HT 200V Fac 3 (Tr 19)', val: 7850 },
+      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 },
+      { name: 'Vacuum Furnace (74002)', val: 5200 },
+      { name: 'Carburizing Furnace (74003)', val: 4600 },
+      { name: 'Billet Heater 1600T (74020)', val: 4100 }
     ]
   };
 
   // Perlu Perhatian Alert Items by Category & Factory (SCADA-Grade)
   const ATTENTION_ALERTS = {
     all: [
-      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank Step 4.' },
-      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', severity: 'critical', badge: 'Kontaktor Trip', note: 'Kontaktor step 3 & 4 trip otomatis. Kapasitas kompensasi daya reaktif turun 150 kVAR.', action: 'Reset APFC controller & ganti fuse pengaman kontaktor.' },
-      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift 2 tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada feeder LMV-07.' }
+      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank APFC.' },
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press Titan 1200T meningkat pada shift 1.', action: 'Pantau arus kubikel TM 6.6kV dan koordinasi APFC.' },
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift siang tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada panel distribusi.' }
     ],
     electrical: [
-      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank Step 4.' },
-      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Kapasitor Bank Forging', severity: 'critical', badge: 'Kontaktor Trip', note: 'Kontaktor step 3 & 4 trip otomatis. Kapasitas kompensasi daya reaktif turun 150 kVAR.', action: 'Reset APFC controller & ganti fuse pengaman kontaktor.' },
-      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Panel LMVDP 210V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift 2 tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada feeder LMV-07.' }
+      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank APFC.' },
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press Titan 1200T meningkat pada shift 1.', action: 'Pantau arus kubikel TM 6.6kV dan koordinasi APFC.' },
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift siang tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada panel distribusi.' }
     ],
     fac1: [
-      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Substation Sub-Panel 210V', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah ambang PLN. Perlu aktivasi bank kapasitor tambahan.', action: 'Cek Kapasitor Bank Step 4 APFC Panel CAP-01.' },
-      { id: 'TRF-11', title: 'Transformer 1.000 kVA (TRF-11)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'THD-I 4,8%', note: 'Harmonik beban non-linear heater induksi terdeteksi mendekati ambang 5,0%.', action: 'Pantau filter harmonik aktif (AHF) pada kubikel 20kV.' }
+      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah ambang PLN. Perlu aktivasi bank kapasitor tambahan.', action: 'Cek Kapasitor Bank APFC Panel F1.' },
+      { id: 'F1-8', title: 'Feeder F1-8 BH Press Auto', area: 'Factory 1 · Feeder TM 6.6kV', severity: 'warning', badge: 'THD-I 4,8%', note: 'Harmonik beban non-linear heater induksi terdeteksi mendekati ambang 5,0%.', action: 'Pantau filter harmonik aktif (AHF) pada kubikel 20kV.' }
+    ],
+    fac2_1: [
+      { id: 'TR-10', title: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', area: 'Electrical Room 2.1 · Gardu 20kV', severity: 'normal', badge: 'Sistem Optimal', note: 'Billet Heater Komatsu 1600T dan LVMDB 3P beroperasi normal Cos φ 0,93.', action: 'Monitoring telemetri online aktif, tidak ada anomali.' }
     ],
     fac2: [
-      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Substation Forging APFC', severity: 'critical', badge: 'Kontaktor Trip', note: 'Step 3 & 4 kontaktor trip otomatis. Kapasitas kompensasi daya turun 150 kVAR.', action: 'Reset APFC controller & ganti fuse pengaman kontaktor.' },
-      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · LMVDP 210V', severity: 'warning', badge: 'Cos φ 0,83', note: 'Beban induktif motor forging press shift 2 meningkat saat produksi komponen poros.', action: 'Aktifkan kompensasi lokal pada feeder LMV-07.' }
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Substation Forging APFC', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press Titan 1200T mendekati kapasitas feeder.', action: 'Reset APFC controller & cek temperatur kubikel.' },
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · LMVDP 200V', severity: 'warning', badge: 'Cos φ 0,83', note: 'Beban induktif motor forging press shift siang meningkat.', action: 'Aktifkan kompensasi lokal pada panel LMVDP.' }
     ],
     fac3: [
-      { id: 'TRF-05', title: 'Semua Trafo & Panel Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'Sistem Optimal', note: 'Cos φ rata-rata 0,92 – Bebas denda kVARh PLN, suhu trafo stabil 65°C.', action: 'Operasional normal, pertahankan jadwal inspeksi preventif mingguan.' }
+      { id: 'TR-17', title: 'Semua Trafo & Panel Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'Sistem Optimal', note: 'Cos φ rata-rata 0,92 – Bebas denda kVARh PLN, suhu trafo stabil 65°C.', action: 'Operasional normal, pertahankan jadwal inspeksi preventif mingguan.' }
     ],
     forging: [
-      { id: 'TRF-13', title: 'Transformer 1.500 kVA (TRF-13)', area: 'Factory 1 · Forging Substation 210V', severity: 'warning', badge: 'Cos φ 0,84', note: 'Beban impulsif mesin forging press memerlukan kompensasi APFC dinamis.', action: 'Jadwalkan switching step APFC bank untuk meredam beban reaktif impulsif.' },
-      { id: 'CAP-04', title: 'Capacitor Bank Panel #4 (CAP-04)', area: 'Factory 2 · Forging APFC Step 1-6', severity: 'critical', badge: 'Kontaktor Trip', note: 'Step 3 & 4 kontaktor trip otomatis. Kapasitas kompensasi turun.', action: 'Periksa coil kontaktor dan setting proteksi arus lebih APFC.' },
-      { id: 'LMV-07', title: 'Panel LMVDP Feeder #07 (LMV-07)', area: 'Factory 2 · Forging Lines', severity: 'warning', badge: 'Beban Puncak', note: 'Beban puncak motor press 2000T meningkatkan tarikan daya reaktif kVAR.', action: 'Optimasi jadwal start mesin press untuk meredam lonjakan arus mula.' }
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Forging Substation 200V', severity: 'warning', badge: 'Cos φ 0,84', note: 'Beban impulsif mesin forging press memerlukan kompensasi APFC dinamis.', action: 'Jadwalkan switching step APFC bank untuk meredam beban reaktif impulsif.' },
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Forging APFC Feeder', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press 1200T meningkatkan tarikan daya reaktif kVAR.', action: 'Periksa setting proteksi arus lebih kubikel TM.' }
     ],
     heattreatment: [
-      { id: 'TRF-02', title: 'Semua Beban Heat Treatment Normal', area: 'Substation HT Fac 1, 2, 3', severity: 'normal', badge: 'Cos φ 0,94', note: 'Pemanas induksi billet & furnace carburizing beroperasi stabil dan efisien.', action: 'Pertahankan setting suhu dan monitoring data telemetri harian.' }
+      { id: 'TR-01', title: 'Semua Beban Heat Treatment Normal', area: 'Substation HT Fac 1, 2, 2.1, 3', severity: 'normal', badge: 'Cos φ 0,94', note: 'Pemanas induksi billet & furnace carburizing beroperasi stabil dan efisien.', action: 'Pertahankan setting suhu dan monitoring data telemetri harian.' }
     ]
   };
 
@@ -230,6 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const kpiBiayaSub = document.getElementById('kpiBiayaSub');
   const kpiPfVal = document.getElementById('kpiPfVal');
   const kpiPfSub = document.getElementById('kpiPfSub');
+  const kpiPeakVal = document.getElementById('kpiPeakVal');
+  const kpiPeakSub = document.getElementById('kpiPeakSub');
+  const kpiUtilVal = document.getElementById('kpiUtilVal');
+  const kpiUtilSub = document.getElementById('kpiUtilSub');
   const kpiOnlineVal = document.getElementById('kpiOnlineVal');
   const kpiOnlineSub = document.getElementById('kpiOnlineSub');
   const kpiCarbonVal = document.getElementById('kpiCarbonVal');
@@ -464,28 +524,33 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       'view-electrical-1': {
         title: 'Electrical Room 1 · Factory 1',
-        subtitle: 'Gardu 20kV Cubicle Schneider SM6, Trafo TRF 11 s/d TRF 16, dan Panel LMVDP 210V/400V',
-        tag: 'Substation Factory 1 · 15 Unit Power Meter Live'
+        subtitle: 'Gardu 20kV Suplai Billet Heater Komatsu, LVMDB 380V/200V, dan Trafo Tr 01 s/d Tr 05',
+        tag: 'Substation Factory 1 · 14 Unit Feeder & Trafo Live'
+      },
+      'view-electrical-2-1': {
+        title: 'Electrical Room 2.1 · Factory 2.1',
+        subtitle: 'Gardu 20kV Suplai Billet Heater 1100 kVA, LV-MDB, dan Trafo Tr 06 s/d Tr 10',
+        tag: 'Substation Factory 2.1 · 11 Unit Feeder & Trafo Live'
       },
       'view-electrical-2': {
         title: 'Electrical Room 2 · Factory 2',
-        subtitle: 'Gardu 20kV Suplai Lini Mesin Forging Press & Continuous Carburizing Furnace TRF 01 s/d TRF 04',
-        tag: 'Substation Factory 2 · 12 Unit Power Meter Live'
+        subtitle: 'Gardu 20kV Suplai Forging Titan 1200T, Kurimoto, dan Trafo Tr 11 s/d Tr 16',
+        tag: 'Substation Factory 2 · 12 Unit Feeder & Trafo Live'
       },
       'view-electrical-3': {
         title: 'Electrical Room 3 · Factory 3',
-        subtitle: 'Gardu 20kV Suplai Pompa Cooling Tower Sentral, Forging Line 3, & Annealing Furnaces',
-        tag: 'Substation Factory 3 · 11 Unit Power Meter Live'
+        subtitle: 'Gardu 20kV Suplai Pompa Cooling Tower Sentral, HT Carburizing, dan Trafo Tr 17 s/d Tr 19',
+        tag: 'Substation Factory 3 · 7 Unit Feeder & Trafo Live'
       },
       'view-forging': {
         title: 'Electrical Substation · Lini Mesin Forging Press',
-        subtitle: 'Monitoring Khusus Gardu & Panel LMVDP Suplai Mesin Forging Press 1600T, 2500T, dan 4000T',
-        tag: '15 Unit Feeder Forging · Factory 1, 2, dan 3'
+        subtitle: 'Monitoring Khusus Feeder Komatsu 630T/1600T, Kurimoto, Titan 1200T, dan Billet Heater',
+        tag: '39 Unit Feeder Forging · Factory 1, 2, dan 3'
       },
       'view-heattreatment': {
         title: 'Electrical Substation · Lini Heat Treatment (HT)',
-        subtitle: 'Monitoring Khusus Billet Induction Heater 6.6kV, Carburizing Atmosphere & Annealing Furnaces',
-        tag: '15 Unit Feeder Heat Treatment · Pabrik Musashi'
+        subtitle: 'Monitoring Khusus Billet Heater 6.6kV, Carburizing, Tempering, Washing, & Normalizing',
+        tag: '29 Unit Feeder Heat Treatment · Pabrik Musashi'
       },
       'view-reports': {
         title: 'Pusat Laporan & Rekapitulasi Energi Listrik',
@@ -568,22 +633,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (alertCountBadge && alertDescText) {
       if (filterKey === 'fac1') {
         alertCountBadge.textContent = '1 Meter Perlu Pengecekan';
-        alertDescText.textContent = 'Power factor Trafo TRF-13 bernilai 0,84 (di bawah standar target PLN ≥ 0,85). Periksa step kapasitor APFC #13 untuk mencegah penalti kVARh.';
+        alertDescText.textContent = 'Power factor Trafo Tr 01 bernilai 0,84 (di bawah standar target PLN ≥ 0,85). Periksa step kapasitor APFC #01 untuk mencegah penalti kVARh.';
+      } else if (filterKey === 'fac2_1') {
+        alertCountBadge.textContent = 'Semua Normal';
+        alertDescText.textContent = 'Kondisi beban Transformator Tr 06 s/d Tr 10 dan Feeder F4-0 s/d F4-5 beroperasi dalam rentang optimal (> 0,90).';
       } else if (filterKey === 'fac2') {
         alertCountBadge.textContent = '2 Meter Perlu Pengecekan';
-        alertDescText.textContent = 'Trafo TRF-01 beban mendekati 85% saat peak forging shift 1. Pantau suhu transformator dan arus sekunder.';
+        alertDescText.textContent = 'Trafo Tr 12 beban mendekati 85% saat peak forging shift 1. Pantau suhu transformator dan arus sekunder.';
       } else if (filterKey === 'fac3') {
         alertCountBadge.textContent = 'Semua Normal';
-        alertDescText.textContent = 'Kondisi beban Transformator TRF 05-08 dan power factor beroperasi dalam rentang optimal (> 0,90).';
+        alertDescText.textContent = 'Kondisi beban Transformator Tr 17 s/d Tr 19 dan power factor beroperasi dalam rentang optimal (> 0,90).';
       } else if (filterKey === 'forging') {
         alertCountBadge.textContent = '2 Trafo Beban Tinggi';
-        alertDescText.textContent = 'Lini Mesin Forging Press TRF-12 & TRF-01 mengalami lonjakan arus saat shift siang. Pastikan APFC aktif penuh.';
+        alertDescText.textContent = 'Lini Mesin Forging Press Tr 12 & Tr 03 mengalami lonjakan arus saat shift siang. Pastikan APFC aktif penuh.';
       } else if (filterKey === 'heattreatment') {
         alertCountBadge.textContent = 'Operasi Stabil';
-        alertDescText.textContent = 'Billet Induction Heater TRF-11, 15, 16 pada tegangan 6.6kV beroperasi stabil dengan PF 0,95.';
+        alertDescText.textContent = 'Billet Induction Heater Tr 01, 10, 15, 16 pada tegangan 6.6kV beroperasi stabil dengan PF 0,95.';
       } else {
         alertCountBadge.textContent = '3 Meter Perlu Pengecekan';
-        alertDescText.textContent = 'Power factor di bawah standar PLN (< 0,85) terdeteksi pada Trafo TRF-13 (0,84) dan APFC Cap Bank. Mohon segera periksa step regulator kapasitor untuk mencegah denda kVARh PLN.';
+        alertDescText.textContent = 'Power factor di bawah standar PLN (< 0,85) terdeteksi pada Trafo Tr 01 (0,84) dan APFC Cap Bank. Mohon segera periksa step regulator kapasitor untuk mencegah denda kVARh PLN.';
       }
     }
 
@@ -606,6 +674,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (kpiBiayaVal) kpiBiayaVal.textContent = data.cost;
     if (kpiBiayaSub) kpiBiayaSub.textContent = 'Berdasarkan tarif asumsi';
+
+    if (kpiPeakVal) kpiPeakVal.textContent = data.peak || '16.820';
+    if (kpiPeakSub) kpiPeakSub.textContent = data.peakSub || 'Puncak hari ini · Batas PLN aman';
+
+    if (kpiUtilVal) kpiUtilVal.textContent = data.util || '69,4%';
+    if (kpiUtilSub) kpiUtilSub.textContent = data.utilSub || 'Tr 01 s/d Tr 19 (20.350 kVA)';
 
     if (kpiPfVal) kpiPfVal.textContent = data.pf;
     if (kpiPfSub) kpiPfSub.textContent = 'Baik (target ≥ 0,85)';
@@ -641,23 +715,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableSectionSub = document.getElementById('tableSectionSub');
     if (tableSectionTitle && tableSectionSub) {
       if (filterKey === 'fac1') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 1 (15 Unit)';
-        tableSectionSub.textContent = 'Trafo TRF 11-16 (20kV / 6.6kV / 210V / 400V), Panel LMVDP, dan Capacitor Bank APFC Substation Factory 1.';
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 1 (14 Unit)';
+        tableSectionSub.textContent = 'Feeder F1-0 s/d F1-8 dan Trafo Tr 01 s/d Tr 05 Substation Factory 1.';
+      } else if (filterKey === 'fac2_1') {
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 2.1 (11 Unit)';
+        tableSectionSub.textContent = 'Feeder F4-0 s/d F4-5 dan Trafo Tr 06 s/d Tr 10 Substation Factory 2.1.';
       } else if (filterKey === 'fac2') {
         tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 2 (12 Unit)';
-        tableSectionSub.textContent = 'Trafo TRF 01-04 (Forging & Carburizing HT), Panel LMVDP 210V, dan APFC Substation Factory 2.';
+        tableSectionSub.textContent = 'Feeder F2-1 s/d F2-6 dan Trafo Tr 11 s/d Tr 16 Substation Factory 2.';
       } else if (filterKey === 'fac3') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 3 (11 Unit)';
-        tableSectionSub.textContent = 'Trafo TRF 05-08 (Pompa, Forging, Annealing HT), Panel LMVDP, dan APFC Substation Factory 3.';
+        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 3 (7 Unit)';
+        tableSectionSub.textContent = 'Feeder F3-0 s/d F3-3 dan Trafo Tr 17 s/d Tr 19 Substation Factory 3.';
       } else if (filterKey === 'forging') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Sistem Beban Forging (15 Unit)';
-        tableSectionSub.textContent = 'Trafo & Panel LMVDP 210V penyuplai lini mesin Forging Press Factory 1, 2, dan 3.';
+        tableSectionTitle.textContent = 'Daftar Feeder Mesin Forging Press & Billet Heater (39 Unit)';
+        tableSectionSub.textContent = 'Mesin Press Komatsu 630T/1600T, Kurimoto, Titan 1200T, dan Billet Heater.';
       } else if (filterKey === 'heattreatment') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Sistem Beban Heat Treatment (15 Unit)';
-        tableSectionSub.textContent = 'Trafo & Panel penyuplai Billet Induction Heater 6.6kV, Furnace Carburizing, dan Annealing.';
+        tableSectionTitle.textContent = 'Daftar Feeder & Furnace Heat Treatment (29 Unit)';
+        tableSectionSub.textContent = 'Carburizing, Tempering, Washing, Normalizing, Shot Blast, & Vacuum Furnace.';
       } else {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room (38 Unit)';
-        tableSectionSub.textContent = 'Telemetri realtime 16 Transformator 20kV, Cubicle Schneider SM6, Panel LMVDP, dan APFC Cap Bank seluruh factory.';
+        tableSectionTitle.textContent = 'Daftar Lengkap Peralatan Substation & Mesin Produksi (111 Unit)';
+        tableSectionSub.textContent = 'Telemetri realtime 19 Transformator 20kV, 23 Feeder Gardu, 39 Lini Forging, dan 29 Furnace HT.';
       }
     }
   }
@@ -880,6 +957,20 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Panel LMVDP</span></div>
         `;
       }
+    } else if (filterKey === 'fac2_1') {
+      if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Substation Factory 2.1';
+      if (donutSubEl) donutSubEl.textContent = 'Distribusi beban Billet Heater 1100 kVA, LVMDB 3P, dan Trafo Tr 06-10.';
+      chartDonutInstance.data.labels = ['Trafo 10 BH 6.6kV', 'Trafo 08 Fo & HT', 'Trafo 06/07 Forg', 'Feeder LVMDB 3P'];
+      chartDonutInstance.data.datasets[0].data = [11800, 8650, 14000, 15350];
+      chartDonutInstance.data.datasets[0].backgroundColor = ['#2dd4bf', '#38bdf8', '#fb923c', '#a78bfa'];
+      if (donutLegendRow) {
+        donutLegendRow.innerHTML = `
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>BH 6.6kV</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Tr 08 Fo/HT</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Tr 06/07</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Feeder LVMDB</span></div>
+        `;
+      }
     } else if (filterKey === 'fac2') {
       if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Substation Factory 2';
       if (donutSubEl) donutSubEl.textContent = 'Beban Substation Forging vs Furnace Heat Treatment Fac 2.';
@@ -938,17 +1029,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       if (donutTitleEl) donutTitleEl.textContent = 'Pembagian Beban Substation Musashi';
-      if (donutSubEl) donutSubEl.textContent = 'Proporsi konsumsi energi gardu listrik antar Factory 1, 2, dan 3.';
-      chartDonutInstance.data.labels = ['Factory 1', 'Factory 2', 'Factory 3', '⚡ Forging Total', '🔥 HT Total'];
-      chartDonutInstance.data.datasets[0].data = [86724, 74744, 35596, 104404, 69704];
+      if (donutSubEl) donutSubEl.textContent = 'Proporsi konsumsi energi gardu listrik antar Factory 1, 2.1, 2, dan 3.';
+      chartDonutInstance.data.labels = ['Factory 1', 'Factory 2.1', 'Factory 2', 'Factory 3', '⚡ Forging Total', '🔥 HT Total'];
+      chartDonutInstance.data.datasets[0].data = [76200, 49800, 68100, 35596, 104404, 69704];
       chartDonutInstance.data.datasets[0].backgroundColor = [
-        '#38bdf8', '#2dd4bf', '#34d399', '#f59e0b', '#f43f5e'
+        '#38bdf8', '#06b6d4', '#2dd4bf', '#34d399', '#f59e0b', '#f43f5e'
       ];
       if (donutLegendRow) {
         donutLegendRow.innerHTML = `
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Factory 1 (44%)</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Factory 2 (38%)</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#34d399;"></span><span>Factory 3 (18%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Factory 1 (33%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#06b6d4;"></span><span>Factory 2.1 (22%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Factory 2 (30%)</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#34d399;"></span><span>Factory 3 (15%)</span></div>
           <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f59e0b;"></span><span>⚡ Forging</span></div>
           <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f43f5e;"></span><span>🔥 HT</span></div>
         `;
@@ -1026,6 +1118,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (f === 'fac1') {
           return m.factory === 'fac1';
         }
+        if (f === 'fac2_1') {
+          return m.factory === 'fac2_1';
+        }
         if (f === 'fac2') {
           return m.factory === 'fac2';
         }
@@ -1033,10 +1128,10 @@ document.addEventListener('DOMContentLoaded', () => {
           return m.factory === 'fac3';
         }
         if (f === 'forging') {
-          return m.system === 'forging';
+          return m.system === 'forging' || m.category === 'forging';
         }
         if (f === 'heattreatment' || f === 'ht') {
-          return m.system === 'heattreatment';
+          return m.system === 'heattreatment' || m.category === 'heattreatment';
         }
         return true;
       });
@@ -1213,31 +1308,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= 9. DEDICATED SUBSTATION TABLES RENDERER =================
   function renderAllDedicatedTables() {
-    // 1. Factory 1 (15 unit)
+    // 1. Factory 1
     const fac1Meters = state.meters.filter(m => m.factory === 'fac1');
     renderSubstationTable('fac1TableBody', fac1Meters, false);
 
-    // 2. Factory 2 (12 unit)
+    // 2. Factory 2.1
+    const fac2_1Meters = state.meters.filter(m => m.factory === 'fac2_1');
+    renderSubstationTable('fac2_1TableBody', fac2_1Meters, false);
+
+    // 3. Factory 2
     const fac2Meters = state.meters.filter(m => m.factory === 'fac2');
     renderSubstationTable('fac2TableBody', fac2Meters, false);
 
-    // 3. Factory 3 (11 unit)
+    // 4. Factory 3
     const fac3Meters = state.meters.filter(m => m.factory === 'fac3');
     renderSubstationTable('fac3TableBody', fac3Meters, false);
 
-    // 4. Forging Substation (15 unit)
+    // 5. Forging Substation
     const forgingMeters = state.meters.filter(m => 
+      m.category === 'forging' || 
       m.system === 'forging' || 
       (m.name && m.name.toLowerCase().includes('forging')) ||
-      ['TRF-12', 'TRF-13', 'TRF-01', 'TRF-04', 'TRF-06', 'LMV-02', 'LMV-07', 'LMV-08', 'LMV-11', 'LMV-12'].includes(m.id)
+      (m.id && m.id.startsWith('F-'))
     );
     renderSubstationTable('forgingTableBody', forgingMeters, true);
 
-    // 5. Heat Treatment Substation (15 unit)
+    // 6. Heat Treatment Substation
     const htMeters = state.meters.filter(m => 
+      m.category === 'heattreatment' || 
       m.system === 'heattreatment' || 
-      (m.name && (m.name.toLowerCase().includes('heat') || m.name.toLowerCase().includes('billet') || m.name.toLowerCase().includes('carburizing') || m.name.toLowerCase().includes('annealing'))) ||
-      ['TRF-11', 'TRF-15', 'TRF-16', 'TRF-02', 'TRF-03', 'TRF-07', 'TRF-08', 'LMV-03', 'LMV-09', 'LMV-13'].includes(m.id)
+      (m.name && (m.name.toLowerCase().includes('heat') || m.name.toLowerCase().includes('billet') || m.name.toLowerCase().includes('carburizing') || m.name.toLowerCase().includes('annealing') || m.name.toLowerCase().includes('tempering') || m.name.toLowerCase().includes('furnace'))) ||
+      (m.id && m.id.startsWith('HT-'))
     );
     renderSubstationTable('htTableBody', htMeters, true);
   }
@@ -1725,20 +1826,24 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
 
     // Factory breakdowns
     const fac1Meters = state.meters.filter(m => m.factory === 'fac1');
+    const fac2_1Meters = state.meters.filter(m => m.factory === 'fac2_1');
     const fac2Meters = state.meters.filter(m => m.factory === 'fac2');
     const fac3Meters = state.meters.filter(m => m.factory === 'fac3');
 
     const fac1Kwh = fac1Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
+    const fac2_1Kwh = fac2_1Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
     const fac2Kwh = fac2Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
     const fac3Kwh = fac3Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
 
     const fac1Kw = fac1Meters.reduce((a, m) => a + (m.kw || 0), 0);
+    const fac2_1Kw = fac2_1Meters.reduce((a, m) => a + (m.kw || 0), 0);
     const fac2Kw = fac2Meters.reduce((a, m) => a + (m.kw || 0), 0);
     const fac3Kw = fac3Meters.reduce((a, m) => a + (m.kw || 0), 0);
 
     const fac1Pct = totalKwh > 0 ? Math.round((fac1Kwh / totalKwh) * 100) : 0;
+    const fac2_1Pct = totalKwh > 0 ? Math.round((fac2_1Kwh / totalKwh) * 100) : 0;
     const fac2Pct = totalKwh > 0 ? Math.round((fac2Kwh / totalKwh) * 100) : 0;
-    const fac3Pct = totalKwh > 0 ? Math.max(0, 100 - fac1Pct - fac2Pct) : 0;
+    const fac3Pct = totalKwh > 0 ? Math.max(0, 100 - fac1Pct - fac2_1Pct - fac2Pct) : 0;
 
     // Top 8 Consumers
     const top8 = [...state.meters].sort((a, b) => (b.kwhToday || 0) - (a.kwhToday || 0)).slice(0, 8);
@@ -1867,7 +1972,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
     <tbody>
       <tr>
         <td class="chart-td"><strong>Factory 1 (Electrical 20kV / 6.6kV)</strong></td>
-        <td class="chart-td text-center">15 Unit</td>
+        <td class="chart-td text-center">${fac1Meters.length} Unit</td>
         <td class="chart-td text-right num-dec1">${fac1Kw.toFixed(1)} kW</td>
         <td class="chart-td text-right num-int">${fac1Kwh.toLocaleString('id-ID')} kWh</td>
         <td class="chart-td text-center"><strong>${fac1Pct}%</strong></td>
@@ -1881,8 +1986,23 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
         </td>
       </tr>
       <tr>
+        <td class="chart-td"><strong>Factory 2.1 (Electrical Room 2.1)</strong></td>
+        <td class="chart-td text-center">${fac2_1Meters.length} Unit</td>
+        <td class="chart-td text-right num-dec1">${fac2_1Kw.toFixed(1)} kW</td>
+        <td class="chart-td text-right num-int">${fac2_1Kwh.toLocaleString('id-ID')} kWh</td>
+        <td class="chart-td text-center"><strong>${fac2_1Pct}%</strong></td>
+        <td class="chart-td chart-bar-cell">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td width="${fac2_1Pct}%" style="background:#06b6d4; height:16px; border:none; border-radius:3px;"></td>
+              <td width="${100 - fac2_1Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
         <td class="chart-td"><strong>Factory 2 (Forging & Heat Treatment)</strong></td>
-        <td class="chart-td text-center">12 Unit</td>
+        <td class="chart-td text-center">${fac2Meters.length} Unit</td>
         <td class="chart-td text-right num-dec1">${fac2Kw.toFixed(1)} kW</td>
         <td class="chart-td text-right num-int">${fac2Kwh.toLocaleString('id-ID')} kWh</td>
         <td class="chart-td text-center"><strong>${fac2Pct}%</strong></td>
@@ -1897,7 +2017,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
       </tr>
       <tr>
         <td class="chart-td"><strong>Factory 3 (Gardu Induk & Annealing)</strong></td>
-        <td class="chart-td text-center">11 Unit</td>
+        <td class="chart-td text-center">${fac3Meters.length} Unit</td>
         <td class="chart-td text-right num-dec1">${fac3Kw.toFixed(1)} kW</td>
         <td class="chart-td text-right num-int">${fac3Kwh.toLocaleString('id-ID')} kWh</td>
         <td class="chart-td text-center"><strong>${fac3Pct}%</strong></td>
@@ -2077,7 +2197,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
   // ================= 12. TV MODE & AUTO-CYCLE ROTATION =================
   let tvCountdownInterval = null;
   let tvCycleSecondsLeft = 14;
-  const TV_CYCLE_VIEWS = ['view-dashboard', 'view-electrical-1', 'view-electrical-2', 'view-electrical-3', 'view-forging', 'view-heattreatment', 'view-reports'];
+  const TV_CYCLE_VIEWS = ['view-dashboard', 'view-electrical-1', 'view-electrical-2-1', 'view-electrical-2', 'view-electrical-3', 'view-forging', 'view-heattreatment', 'view-reports'];
   let currentTvViewIdx = 0;
 
   function toggleTvMode() {
