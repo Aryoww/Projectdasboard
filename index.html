@@ -334,91 +334,154 @@
           </div>
         </section>
 
-        <!-- KPI CARDS ROW -->
+        <!-- TIMEFRAME & DAY COMPARISON CONTROL BAR -->
+        <section class="timeframe-control-bar" aria-label="Pemilihan Hari dan Selisih Pemakaian Utilitas">
+          <div class="timeframe-left">
+            <span class="timeframe-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              Periode Pantauan:
+            </span>
+            <div class="timeframe-pills" id="timeframePills">
+              <button class="timeframe-pill active" data-period="today">⚡ Hari Ini (Live)</button>
+              <button class="timeframe-pill" data-period="yesterday">⏮️ Kemarin (H-1)</button>
+              <button class="timeframe-pill" data-period="7days">📊 7 Hari Terakhir</button>
+              <button class="timeframe-pill" data-period="month">🗓️ Bulan Ini (MTD)</button>
+            </div>
+          </div>
+          <div class="timeframe-right">
+            <div class="comparison-summary-badge" id="timeframeSummaryBadge">
+              <span class="pulse-indicator"></span>
+              <span id="timeframeSummaryText">Selisih vs Kemarin: <strong>▼ -7.086 kWh (-3,5% Lebih Hemat)</strong></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- KPI CARDS ROW (DILENGKAPI DATA HARI SEBELUMNYA & SELISIH PEMAKAIAN) -->
         <section class="kpi-grid" aria-label="Ringkasan Beban dan Energi Seluruh Pabrik">
           <!-- Card 1: Daya Saat Ini -->
           <div class="kpi-card">
             <div class="kpi-top-row">
               <span class="kpi-icon-pill kpi-icon-teal">kW</span>
-              <div class="kpi-title">Daya saat ini</div>
+              <div class="kpi-title" id="kpiDayaTitle">Daya saat ini</div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiDayaVal">14.129</span>
               <span class="kpi-unit">kW</span>
             </div>
             <div class="kpi-subtitle" id="kpiDayaSub">Total beban listrik sekarang</div>
+            <div class="kpi-comparison-row">
+              <span class="kpi-prev-val" id="kpiDayaPrev">Kemarin: 14.409 kW</span>
+              <span class="kpi-delta-tag delta-down" id="kpiDayaDelta">▼ -280 kW</span>
+            </div>
           </div>
 
           <!-- Card 2: Energi Hari Ini -->
           <div class="kpi-card">
             <div class="kpi-top-row">
               <span class="kpi-icon-pill kpi-icon-amber">kWh</span>
-              <div class="kpi-title">Energi hari ini</div>
+              <div class="kpi-title" id="kpiEnergiTitle">Energi hari ini</div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiEnergiVal">197.064</span>
               <span class="kpi-unit">kWh</span>
             </div>
-            <div class="kpi-subtitle" id="kpiEnergiSub">Sejak pukul 00.00</div>
+            <div class="kpi-subtitle" id="kpiEnergiSub">Sejak pukul 00.00 WIB</div>
+            <div class="kpi-comparison-row">
+              <span class="kpi-prev-val" id="kpiEnergiPrev">Kemarin: 204.150 kWh</span>
+              <span class="kpi-delta-tag delta-down" id="kpiEnergiDelta">▼ -7.086 kWh (-3,5%)</span>
+            </div>
           </div>
 
-          <!-- Card 3: Estimasi Biaya Hari Ini -->
+          <!-- Card 3: Estimasi Biaya Listrik -->
           <div class="kpi-card">
             <div class="kpi-top-row">
               <span class="kpi-icon-pill kpi-icon-green">Rp</span>
-              <div class="kpi-title">Estimasi biaya hari ini</div>
+              <div class="kpi-title" id="kpiBiayaTitle">Estimasi biaya hari ini</div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiBiayaVal">Rp 285 jt</span>
             </div>
-            <div class="kpi-subtitle" id="kpiBiayaSub">Berdasarkan tarif asumsi</div>
+            <div class="kpi-subtitle" id="kpiBiayaSub">Berdasarkan tarif asumsi PLN</div>
+            <div class="kpi-comparison-row">
+              <span class="kpi-prev-val" id="kpiBiayaPrev">Kemarin: Rp 295 jt</span>
+              <span class="kpi-delta-tag delta-down" id="kpiBiayaDelta">▼ -Rp 10 jt</span>
+            </div>
           </div>
 
-          <!-- Card 4: Beban Puncak (Peak Demand) - Menggantikan Power Factor -->
+          <!-- Card 4: Beban Puncak (Peak Demand) -->
           <div class="kpi-card">
             <div class="kpi-top-row">
               <span class="kpi-icon-pill kpi-icon-rose">⚡</span>
-              <div class="kpi-title">Beban puncak (Peak)</div>
+              <div class="kpi-title" id="kpiPeakTitle">Beban puncak (Peak)</div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiPeakVal">16.820</span>
               <span class="kpi-unit">kW</span>
             </div>
             <div class="kpi-subtitle" id="kpiPeakSub">Puncak hari ini · Batas PLN aman</div>
+            <div class="kpi-comparison-row">
+              <span class="kpi-prev-val" id="kpiPeakPrev">Puncak Kemarin: 17.150 kW</span>
+              <span class="kpi-delta-tag delta-down" id="kpiPeakDelta">▼ -330 kW</span>
+            </div>
           </div>
 
-          <!-- Card 5: Utilisasi 19 Trafo Gardu - Menggantikan Meter Online -->
+          <!-- Card 5: Utilisasi 19 Trafo Gardu -->
           <div class="kpi-card">
             <div class="kpi-top-row">
               <span class="kpi-icon-pill kpi-icon-blue">TR</span>
-              <div class="kpi-title">Utilisasi 19 Trafo</div>
+              <div class="kpi-title" id="kpiUtilTitle">Utilisasi 19 Trafo</div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiUtilVal">69,4%</span>
             </div>
             <div class="kpi-subtitle" id="kpiUtilSub">Tr 01 s/d Tr 19 (20.350 kVA)</div>
+            <div class="kpi-comparison-row">
+              <span class="kpi-prev-val" id="kpiUtilPrev">Kemarin: 71,8%</span>
+              <span class="kpi-delta-tag delta-down" id="kpiUtilDelta">▼ -2,4%</span>
+            </div>
           </div>
 
           <!-- Card 6: Emisi Karbon ESG -->
           <div class="kpi-card">
             <div class="kpi-top-row">
               <span class="kpi-icon-pill kpi-icon-teal">CO₂</span>
-              <div class="kpi-title">Emisi karbon (CO₂e)</div>
+              <div class="kpi-title" id="kpiCarbonTitle">Emisi karbon (CO₂e)</div>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiCarbonVal" style="color:var(--color-teal);">155,7</span>
               <span class="kpi-unit">ton</span>
             </div>
             <div class="kpi-subtitle" id="kpiCarbonSub">Faktor grid Jamali 0,79 kg/kWh</div>
+            <div class="kpi-comparison-row">
+              <span class="kpi-prev-val" id="kpiCarbonPrev">Kemarin: 161,3 ton</span>
+              <span class="kpi-delta-tag delta-down" id="kpiCarbonDelta">▼ -5,6 ton</span>
+            </div>
           </div>
         </section>
 
         <!-- CHARTS GRID (24H & DONUT) -->
         <section class="charts-grid-row" aria-label="Grafik Beban 24 Jam dan Donut Distribusi">
           <div class="clean-card">
-            <div class="card-header-block">
-              <h2 class="card-title">Beban listrik 24 jam terakhir</h2>
-              <p class="card-subtitle">Total daya (kW). Naik saat jam produksi shift 1 & 2, turun malam hari.</p>
+            <div class="card-header-block" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem;">
+              <div>
+                <h2 class="card-title" id="chart24hTitle">Beban listrik 24 jam: Hari Ini vs Hari Sebelumnya</h2>
+                <p class="card-subtitle" id="chart24hSub">Total daya (kW). Garis biru: Hari Ini (Live) · Garis abu putus-putus: Kemarin (hari sebelumnya).</p>
+              </div>
+              <div style="display:inline-flex; align-items:center; gap:0.75rem; font-size:0.72rem; font-weight:600;">
+                <span style="display:inline-flex; align-items:center; gap:4px; color:#0284c7;">
+                  <span style="display:inline-block; width:12px; height:3px; background:#0284c7; border-radius:2px;"></span>
+                  Hari Ini
+                </span>
+                <span style="display:inline-flex; align-items:center; gap:4px; color:#94a3b8;">
+                  <span style="display:inline-block; width:12px; height:2px; border-top:2px dashed #94a3b8;"></span>
+                  Kemarin
+                </span>
+              </div>
             </div>
             <div class="line-chart-container">
               <canvas id="chart24h"></canvas>
@@ -584,8 +647,10 @@
                   <th data-sort="kw" style="text-align:right;">Daya (kW) ⇕</th>
                   <th data-sort="voltage" style="text-align:right;">Tegangan (V) ⇕</th>
                   <th data-sort="current" style="text-align:right;">Arus (A) ⇕</th>
-                  <th data-sort="pf" style="text-align:right;">Power factor ⇕</th>
-                  <th data-sort="kwhToday" style="text-align:right;">Energi hari ini (kWh) ⇕</th>
+                  <th data-sort="pf" style="text-align:right;">Cos φ ⇕</th>
+                  <th data-sort="kwhToday" style="text-align:right;">Hari Ini (kWh) ⇕</th>
+                  <th data-sort="kwhYesterday" style="text-align:right;">Kemarin (kWh) ⇕</th>
+                  <th data-sort="deltaKwh" style="text-align:right;">Selisih (Δ) ⇕</th>
                   <th data-sort="carbon" style="text-align:right;">Emisi CO₂ (kg) ⇕</th>
                   <th data-sort="status" style="text-align:center;">Status ⇕</th>
                   <th style="text-align:center;">Aksi</th>
@@ -599,7 +664,7 @@
 
           <div class="table-pagination-row">
             <div>
-              Menampilkan <strong id="pageRangeText">1 - 15</strong> dari <strong id="totalMetersText">38</strong> meter
+              Menampilkan <strong id="pageRangeText">1 - 15</strong> dari <strong id="totalMetersText">111</strong> unit
             </div>
             <div class="pagination-btn-group" id="paginationButtons">
               <!-- Dynamically populated by app.js -->

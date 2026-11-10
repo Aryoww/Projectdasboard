@@ -20,8 +20,36 @@ document.addEventListener('DOMContentLoaded', () => {
       alertCount: '3 meter perlu dicek',
       carbonTon: '155,7',
       curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
-      curveMax: 17000,
-      curveStep: 3000
+      curveMax: 18000,
+      curveStep: 3000,
+      kwYesterday: 14409,
+      kwhYesterday: 204150,
+      costYesterday: 'Rp 295 jt',
+      peakYesterday: '17.150',
+      utilYesterday: '71,8%',
+      carbonYesterday: '161,3',
+      curve24hYesterday: [8820, 8040, 11050, 15920, 13780, 16180, 11840, 9210],
+      deltaKwh: -7086,
+      deltaKwhPct: '-3,5%',
+      deltaCost: '-Rp 10 jt',
+      deltaPeak: '-330 kW',
+      deltaUtil: '-2,4%',
+      deltaCarbon: '-5,6 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800],
+        kwPeak: [16450, 16980, 17350, 17120, 17150, 16820, 12400],
+        totalKwh: 1353514,
+        avgKwh: 193359,
+        totalCost: 'Rp 1,95 M',
+        peakMax: 17350
+      },
+      monthMtd: {
+        kwh: 2150400,
+        cost: 'Rp 3,11 M',
+        peak: '17.480',
+        util: '70,2%'
+      }
     },
     electrical: {
       kw: 14129,
@@ -36,8 +64,35 @@ document.addEventListener('DOMContentLoaded', () => {
       alertCount: '3 meter perlu dicek',
       carbonTon: '155,7',
       curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
-      curveMax: 17000,
-      curveStep: 3000
+      curveMax: 18000,
+      curveStep: 3000,
+      kwYesterday: 14409,
+      kwhYesterday: 204150,
+      costYesterday: 'Rp 295 jt',
+      peakYesterday: '17.150',
+      utilYesterday: '71,8%',
+      carbonYesterday: '161,3',
+      curve24hYesterday: [8820, 8040, 11050, 15920, 13780, 16180, 11840, 9210],
+      deltaKwh: -7086,
+      deltaKwhPct: '-3,5%',
+      deltaCost: '-Rp 10 jt',
+      deltaPeak: '-330 kW',
+      deltaUtil: '-2,4%',
+      deltaCarbon: '-5,6 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800],
+        totalKwh: 1353514,
+        avgKwh: 193359,
+        totalCost: 'Rp 1,95 M',
+        peakMax: 17350
+      },
+      monthMtd: {
+        kwh: 2150400,
+        cost: 'Rp 3,11 M',
+        peak: '17.480',
+        util: '70,2%'
+      }
     },
     fac1: {
       kw: 5420,
@@ -52,8 +107,35 @@ document.addEventListener('DOMContentLoaded', () => {
       alertCount: '1 meter perlu dicek',
       carbonTon: '60,2',
       curve24h: [3250, 2960, 4070, 5940, 5120, 6030, 4410, 3440],
-      curveMax: 7000,
-      curveStep: 1000
+      curveMax: 7500,
+      curveStep: 1500,
+      kwYesterday: 5530,
+      kwhYesterday: 78900,
+      costYesterday: 'Rp 114 jt',
+      peakYesterday: '6.590',
+      utilYesterday: '73,5%',
+      carbonYesterday: '62,3',
+      curve24hYesterday: [3380, 3080, 4230, 6150, 5320, 6220, 4590, 3570],
+      deltaKwh: -2700,
+      deltaKwhPct: '-3,4%',
+      deltaCost: '-Rp 4 jt',
+      deltaPeak: '-140 kW',
+      deltaUtil: '-2,3%',
+      deltaCarbon: '-2,1 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [75100, 77800, 80400, 79200, 78900, 76200, 55200],
+        totalKwh: 522800,
+        avgKwh: 74686,
+        totalCost: 'Rp 755 jt',
+        peakMax: 6650
+      },
+      monthMtd: {
+        kwh: 831200,
+        cost: 'Rp 1,20 M',
+        peak: '6.720',
+        util: '72,0%'
+      }
     },
     fac2_1: {
       kw: 3600,
@@ -69,7 +151,34 @@ document.addEventListener('DOMContentLoaded', () => {
       carbonTon: '39,3',
       curve24h: [2160, 1960, 2700, 3940, 3400, 4010, 2930, 2280],
       curveMax: 5000,
-      curveStep: 1000
+      curveStep: 1000,
+      kwYesterday: 3720,
+      kwhYesterday: 51600,
+      costYesterday: 'Rp 75 jt',
+      peakYesterday: '4.290',
+      utilYesterday: '70,5%',
+      carbonYesterday: '40,8',
+      curve24hYesterday: [2240, 2040, 2810, 4090, 3530, 4170, 3050, 2370],
+      deltaKwh: -1800,
+      deltaKwhPct: '-3,5%',
+      deltaCost: '-Rp 3 jt',
+      deltaPeak: '-110 kW',
+      deltaUtil: '-2,3%',
+      deltaCarbon: '-1,5 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [48900, 50800, 52600, 51900, 51600, 49800, 36100],
+        totalKwh: 341700,
+        avgKwh: 48814,
+        totalCost: 'Rp 494 jt',
+        peakMax: 4350
+      },
+      monthMtd: {
+        kwh: 543000,
+        cost: 'Rp 784 jt',
+        peak: '4.410',
+        util: '69,1%'
+      }
     },
     fac2: {
       kw: 4850,
@@ -85,7 +194,34 @@ document.addEventListener('DOMContentLoaded', () => {
       carbonTon: '53,8',
       curve24h: [2910, 2650, 3640, 5310, 4580, 5390, 3940, 3070],
       curveMax: 6500,
-      curveStep: 1000
+      curveStep: 1000,
+      kwYesterday: 4950,
+      kwhYesterday: 70400,
+      costYesterday: 'Rp 102 jt',
+      peakYesterday: '5.940',
+      utilYesterday: '68,9%',
+      carbonYesterday: '55,6',
+      curve24hYesterday: [3020, 2750, 3780, 5520, 4760, 5600, 4100, 3190],
+      deltaKwh: -2300,
+      deltaKwhPct: '-3,3%',
+      deltaCost: '-Rp 4 jt',
+      deltaPeak: '-120 kW',
+      deltaUtil: '-2,1%',
+      deltaCarbon: '-1,8 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [67100, 69500, 71900, 70900, 70400, 68100, 49300],
+        totalKwh: 467200,
+        avgKwh: 66742,
+        totalCost: 'Rp 675 jt',
+        peakMax: 6010
+      },
+      monthMtd: {
+        kwh: 742000,
+        cost: 'Rp 1,07 M',
+        peak: '6.080',
+        util: '67,5%'
+      }
     },
     fac3: {
       kw: 2454,
@@ -101,7 +237,34 @@ document.addEventListener('DOMContentLoaded', () => {
       carbonTon: '28,1',
       curve24h: [1470, 1340, 1850, 2690, 2320, 2730, 2000, 1550],
       curveMax: 3500,
-      curveStep: 500
+      curveStep: 500,
+      kwYesterday: 2530,
+      kwhYesterday: 36800,
+      costYesterday: 'Rp 53 jt',
+      peakYesterday: '2.970',
+      utilYesterday: '72,4%',
+      carbonYesterday: '29,1',
+      curve24hYesterday: [1530, 1390, 1920, 2790, 2410, 2840, 2080, 1610],
+      deltaKwh: -1204,
+      deltaKwhPct: '-3,3%',
+      deltaCost: '-Rp 2 jt',
+      deltaPeak: '-80 kW',
+      deltaUtil: '-1,9%',
+      deltaCarbon: '-1,0 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [35000, 36300, 37500, 37000, 36800, 35596, 25800],
+        totalKwh: 243996,
+        avgKwh: 34856,
+        totalCost: 'Rp 352 jt',
+        peakMax: 3020
+      },
+      monthMtd: {
+        kwh: 387000,
+        cost: 'Rp 559 jt',
+        peak: '3.080',
+        util: '71,1%'
+      }
     },
     forging: {
       kw: 7400,
@@ -116,8 +279,35 @@ document.addEventListener('DOMContentLoaded', () => {
       alertCount: '2 meter perlu dicek',
       carbonTon: '82,5',
       curve24h: [4440, 4050, 5570, 8110, 6990, 8230, 6020, 4690],
-      curveMax: 9000,
-      curveStep: 1500
+      curveMax: 9500,
+      curveStep: 1500,
+      kwYesterday: 7580,
+      kwhYesterday: 108150,
+      costYesterday: 'Rp 156 jt',
+      peakYesterday: '9.040',
+      utilYesterday: '76,3%',
+      carbonYesterday: '85,4',
+      curve24hYesterday: [4620, 4210, 5790, 8390, 7270, 8560, 6260, 4880],
+      deltaKwh: -3746,
+      deltaKwhPct: '-3,5%',
+      deltaCost: '-Rp 5 jt',
+      deltaPeak: '-190 kW',
+      deltaUtil: '-2,2%',
+      deltaCarbon: '-2,9 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [102800, 106500, 110400, 108900, 108150, 104404, 75600],
+        totalKwh: 716754,
+        avgKwh: 102393,
+        totalCost: 'Rp 1,04 M',
+        peakMax: 9150
+      },
+      monthMtd: {
+        kwh: 1139000,
+        cost: 'Rp 1,65 M',
+        peak: '9.280',
+        util: '74,8%'
+      }
     },
     heattreatment: {
       kw: 5110,
@@ -133,7 +323,34 @@ document.addEventListener('DOMContentLoaded', () => {
       carbonTon: '55,1',
       curve24h: [3070, 2800, 3850, 5600, 4830, 5680, 4160, 3240],
       curveMax: 6500,
-      curveStep: 1000
+      curveStep: 1000,
+      kwYesterday: 5220,
+      kwhYesterday: 72200,
+      costYesterday: 'Rp 104 jt',
+      peakYesterday: '6.250',
+      utilYesterday: '69,2%',
+      carbonYesterday: '57,0',
+      curve24hYesterday: [3190, 2910, 4000, 5820, 5020, 5910, 4320, 3370],
+      deltaKwh: -2496,
+      deltaKwhPct: '-3,5%',
+      deltaCost: '-Rp 3 jt',
+      deltaPeak: '-130 kW',
+      deltaUtil: '-1,9%',
+      deltaCarbon: '-1,9 ton',
+      days7: {
+        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+        kwh: [68700, 71200, 73800, 72800, 72200, 69704, 50500],
+        totalKwh: 478904,
+        avgKwh: 68415,
+        totalCost: 'Rp 692 jt',
+        peakMax: 6320
+      },
+      monthMtd: {
+        kwh: 761000,
+        cost: 'Rp 1,10 M',
+        peak: '6.400',
+        util: '68,0%'
+      }
     }
   };
 
@@ -261,6 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
     meters: (typeof METER_DATA !== 'undefined') ? JSON.parse(JSON.stringify(METER_DATA)) : [],
     activeView: 'view-dashboard',
     activeFilter: 'all',
+    activePeriod: 'today',
     searchQuery: '',
     sortColumn: 'id',
     sortAsc: true,
@@ -280,20 +498,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const headerLiveTime = document.getElementById('headerLiveTime');
   const kpiDayaVal = document.getElementById('kpiDayaVal');
   const kpiDayaSub = document.getElementById('kpiDayaSub');
+  const kpiDayaTitle = document.getElementById('kpiDayaTitle');
+  const kpiDayaPrev = document.getElementById('kpiDayaPrev');
+  const kpiDayaDelta = document.getElementById('kpiDayaDelta');
+
   const kpiEnergiVal = document.getElementById('kpiEnergiVal');
   const kpiEnergiSub = document.getElementById('kpiEnergiSub');
+  const kpiEnergiTitle = document.getElementById('kpiEnergiTitle');
+  const kpiEnergiPrev = document.getElementById('kpiEnergiPrev');
+  const kpiEnergiDelta = document.getElementById('kpiEnergiDelta');
+
   const kpiBiayaVal = document.getElementById('kpiBiayaVal');
   const kpiBiayaSub = document.getElementById('kpiBiayaSub');
+  const kpiBiayaTitle = document.getElementById('kpiBiayaTitle');
+  const kpiBiayaPrev = document.getElementById('kpiBiayaPrev');
+  const kpiBiayaDelta = document.getElementById('kpiBiayaDelta');
+
   const kpiPfVal = document.getElementById('kpiPfVal');
   const kpiPfSub = document.getElementById('kpiPfSub');
+
   const kpiPeakVal = document.getElementById('kpiPeakVal');
   const kpiPeakSub = document.getElementById('kpiPeakSub');
+  const kpiPeakTitle = document.getElementById('kpiPeakTitle');
+  const kpiPeakPrev = document.getElementById('kpiPeakPrev');
+  const kpiPeakDelta = document.getElementById('kpiPeakDelta');
+
   const kpiUtilVal = document.getElementById('kpiUtilVal');
   const kpiUtilSub = document.getElementById('kpiUtilSub');
+  const kpiUtilTitle = document.getElementById('kpiUtilTitle');
+  const kpiUtilPrev = document.getElementById('kpiUtilPrev');
+  const kpiUtilDelta = document.getElementById('kpiUtilDelta');
+
   const kpiOnlineVal = document.getElementById('kpiOnlineVal');
   const kpiOnlineSub = document.getElementById('kpiOnlineSub');
+
   const kpiCarbonVal = document.getElementById('kpiCarbonVal');
   const kpiCarbonSub = document.getElementById('kpiCarbonSub');
+  const kpiCarbonTitle = document.getElementById('kpiCarbonTitle');
+  const kpiCarbonPrev = document.getElementById('kpiCarbonPrev');
+  const kpiCarbonDelta = document.getElementById('kpiCarbonDelta');
+
+  const timeframeSummaryText = document.getElementById('timeframeSummaryText');
+  const chart24hTitle = document.getElementById('chart24hTitle');
+  const chart24hSub = document.getElementById('chart24hSub');
 
   const attentionList = document.getElementById('attentionList');
   const meterTableBody = document.getElementById('meterTableBody');
@@ -312,6 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initClock();
     initSidebarController();
     initNavigation();
+    initTimeframeController();
     initCharts();
     updateViewForActiveFilter();
     renderTable();
@@ -611,6 +859,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ================= 3B. TIMEFRAME CONTROLLER =================
+  function initTimeframeController() {
+    const pills = document.querySelectorAll('.timeframe-pill');
+    pills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        const period = pill.dataset.period || 'today';
+        setTimeframePeriod(period);
+      });
+    });
+  }
+
+  function setTimeframePeriod(period) {
+    state.activePeriod = period;
+
+    // Update active pill styling
+    document.querySelectorAll('.timeframe-pill').forEach(pill => {
+      if (pill.dataset.period === period) {
+        pill.classList.add('active');
+      } else {
+        pill.classList.remove('active');
+      }
+    });
+
+    updateViewForActiveFilter();
+    renderTable();
+  }
+  window.setTimeframePeriod = setTimeframePeriod;
+
   // Central function to set filter and synchronize all navigation controls
   function setActiveFilter(filterKey) {
     state.activeFilter = filterKey;
@@ -660,35 +937,288 @@ document.addEventListener('DOMContentLoaded', () => {
     renderTable();
   }
 
-  // ================= 4. UPDATE VIEW BASED ON ACTIVE FILTER =================
+  // ================= 4. UPDATE VIEW BASED ON ACTIVE FILTER & TIMEFRAME =================
   function updateViewForActiveFilter() {
     const filterKey = state.activeFilter;
     const data = CATEGORY_BASELINES[filterKey] || CATEGORY_BASELINES.electrical || CATEGORY_BASELINES.all;
+    const period = state.activePeriod || 'today';
 
-    // 1. Update KPI Values
-    if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
-    if (kpiDayaSub) kpiDayaSub.textContent = 'Total beban listrik sekarang';
+    // 1. Update KPI Values & Timeframe Comparison Badges
+    if (period === 'today') {
+      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Daya Total';
+      if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Total beban listrik sekarang';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = `Kemarin: ${(data.kwYesterday || data.kw).toLocaleString('id-ID')} kW`;
+      if (kpiDayaDelta) {
+        const dKw = (data.kw - (data.kwYesterday || data.kw));
+        const dSign = dKw > 0 ? '+' : '';
+        const dArrow = dKw <= 0 ? '▼' : '▲';
+        kpiDayaDelta.className = `kpi-delta-tag ${dKw <= 0 ? 'down' : 'up'}`;
+        kpiDayaDelta.textContent = `${dArrow} ${dSign}${dKw.toLocaleString('id-ID')} kW`;
+      }
 
-    if (kpiEnergiVal) kpiEnergiVal.textContent = data.kwh.toLocaleString('id-ID');
-    if (kpiEnergiSub) kpiEnergiSub.textContent = 'Sejak pukul 00.00';
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Energi Hari Ini';
+      if (kpiEnergiVal) kpiEnergiVal.textContent = data.kwh.toLocaleString('id-ID');
+      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Sejak pukul 00.00 WIB';
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = `Kemarin: ${(data.kwhYesterday || data.kwh).toLocaleString('id-ID')} kWh`;
+      if (kpiEnergiDelta) {
+        const dKwh = data.deltaKwh || 0;
+        const dPct = data.deltaKwhPct || '0%';
+        const dArrow = dKwh <= 0 ? '▼' : '▲';
+        kpiEnergiDelta.className = `kpi-delta-tag ${dKwh <= 0 ? 'down' : 'up'}`;
+        kpiEnergiDelta.textContent = `${dArrow} ${Math.abs(dKwh).toLocaleString('id-ID')} kWh (${dPct})`;
+      }
 
-    if (kpiBiayaVal) kpiBiayaVal.textContent = data.cost;
-    if (kpiBiayaSub) kpiBiayaSub.textContent = 'Berdasarkan tarif asumsi';
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Estimasi Biaya Hari Ini';
+      if (kpiBiayaVal) kpiBiayaVal.textContent = data.cost;
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Tarif PLN Golongan I-3/TM';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = `Kemarin: ${data.costYesterday || data.cost}`;
+      if (kpiBiayaDelta) {
+        kpiBiayaDelta.className = `kpi-delta-tag ${data.deltaCost && data.deltaCost.startsWith('-') ? 'down' : 'up'}`;
+        kpiBiayaDelta.textContent = `${data.deltaCost ? data.deltaCost.replace('-', '▼ -') : '▼ Hemat'} vs H-1`;
+      }
 
-    if (kpiPeakVal) kpiPeakVal.textContent = data.peak || '16.820';
-    if (kpiPeakSub) kpiPeakSub.textContent = data.peakSub || 'Puncak hari ini · Batas PLN aman';
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Beban Puncak (Peak)';
+      if (kpiPeakVal) kpiPeakVal.textContent = data.peak || '16.820';
+      if (kpiPeakSub) kpiPeakSub.textContent = data.peakSub || 'Puncak hari ini · Batas PLN aman';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = `Kemarin: ${data.peakYesterday || data.peak} kW`;
+      if (kpiPeakDelta) {
+        kpiPeakDelta.className = `kpi-delta-tag ${data.deltaPeak && data.deltaPeak.startsWith('-') ? 'down' : 'up'}`;
+        kpiPeakDelta.textContent = `${data.deltaPeak ? data.deltaPeak.replace('-', '▼ -') : '▼ Efisien'}`;
+      }
 
-    if (kpiUtilVal) kpiUtilVal.textContent = data.util || '69,4%';
-    if (kpiUtilSub) kpiUtilSub.textContent = data.utilSub || 'Tr 01 s/d Tr 19 (20.350 kVA)';
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Utilisasi Beban Trafo';
+      if (kpiUtilVal) kpiUtilVal.textContent = data.util || '69,4%';
+      if (kpiUtilSub) kpiUtilSub.textContent = data.utilSub || 'Tr 01 s/d Tr 19 (20.350 kVA)';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Kemarin: ${data.utilYesterday || data.util}`;
+      if (kpiUtilDelta) {
+        kpiUtilDelta.className = `kpi-delta-tag ${data.deltaUtil && data.deltaUtil.startsWith('-') ? 'down' : 'up'}`;
+        kpiUtilDelta.textContent = `${data.deltaUtil ? data.deltaUtil.replace('-', '▼ -') : '▼ Beban aman'}`;
+      }
 
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon CO₂ Hari Ini';
+      if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Faktor grid Jamali 0,79 kg/kWh';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = `Kemarin: ${data.carbonYesterday || data.carbonTon} ton`;
+      if (kpiCarbonDelta) {
+        kpiCarbonDelta.className = `kpi-delta-tag ${data.deltaCarbon && data.deltaCarbon.startsWith('-') ? 'down' : 'up'}`;
+        kpiCarbonDelta.textContent = `${data.deltaCarbon ? data.deltaCarbon.replace('-', '▼ -') : '▼ Berkurang'}`;
+      }
+
+      if (timeframeSummaryText) {
+        const dKwh = Math.abs(data.deltaKwh || 0);
+        timeframeSummaryText.innerHTML = `Hari Ini: <strong>${data.kwh.toLocaleString('id-ID')} kWh</strong> (hemat <strong>${dKwh.toLocaleString('id-ID')} kWh / ${data.deltaKwhPct || '0%'}</strong> vs kemarin)`;
+      }
+
+      if (chart24hTitle) chart24hTitle.textContent = 'Profil Beban Listrik: Hari Ini vs Kemarin (24 Jam)';
+      if (chart24hSub) chart24hSub.textContent = 'Perbandingan kurva beban interval 3 jam: Hari Ini (Area Biru) vs Kemarin (Garis Putus-putus Abu-abu)';
+
+      update24hChart(data.curve24h, data.curveMax, data.curveStep, data.curve24hYesterday, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']);
+
+    } else if (period === 'yesterday') {
+      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Puncak Kemarin';
+      if (kpiDayaVal) kpiDayaVal.textContent = (data.kwYesterday || data.kw).toLocaleString('id-ID');
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Rata-rata beban jam sibuk H-1';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = `Hari Ini: ${data.kw.toLocaleString('id-ID')} kW`;
+      if (kpiDayaDelta) {
+        kpiDayaDelta.className = 'kpi-delta-tag up';
+        kpiDayaDelta.textContent = 'H-1 Audited';
+      }
+
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Total Energi Kemarin (H-1)';
+      if (kpiEnergiVal) kpiEnergiVal.textContent = (data.kwhYesterday || data.kwh).toLocaleString('id-ID');
+      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Audited penuh 24 jam PLN';
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = `Hari Ini: ${data.kwh.toLocaleString('id-ID')} kWh`;
+      if (kpiEnergiDelta) {
+        kpiEnergiDelta.className = 'kpi-delta-tag up';
+        kpiEnergiDelta.textContent = 'Rekap Harian';
+      }
+
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Realisasi Biaya Kemarin';
+      if (kpiBiayaVal) kpiBiayaVal.textContent = data.costYesterday || data.cost;
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Realisasi tagihan penuh H-1';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = `Hari Ini: ${data.cost}`;
+      if (kpiBiayaDelta) {
+        kpiBiayaDelta.className = 'kpi-delta-tag neutral';
+        kpiBiayaDelta.textContent = 'Audited I-3/TM';
+      }
+
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Beban Tertinggi Kemarin';
+      if (kpiPeakVal) kpiPeakVal.textContent = data.peakYesterday || data.peak;
+      if (kpiPeakSub) kpiPeakSub.textContent = 'Pukul 14.15 WIB kemarin';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = `Hari Ini: ${data.peak} kW`;
+      if (kpiPeakDelta) {
+        kpiPeakDelta.className = 'kpi-delta-tag neutral';
+        kpiPeakDelta.textContent = 'Peak H-1';
+      }
+
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Rata-rata Utilisasi Kemarin';
+      if (kpiUtilVal) kpiUtilVal.textContent = data.utilYesterday || data.util;
+      if (kpiUtilSub) kpiUtilSub.textContent = '19 Transformator Musashi';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Hari Ini: ${data.util}`;
+      if (kpiUtilDelta) {
+        kpiUtilDelta.className = 'kpi-delta-tag neutral';
+        kpiUtilDelta.textContent = 'Optimal';
+      }
+
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon Kemarin';
+      if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonYesterday || data.carbonTon;
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Emisi terverifikasi H-1';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = `Hari Ini: ${data.carbonTon} ton`;
+      if (kpiCarbonDelta) {
+        kpiCarbonDelta.className = 'kpi-delta-tag neutral';
+        kpiCarbonDelta.textContent = 'Verified H-1';
+      }
+
+      if (timeframeSummaryText) {
+        timeframeSummaryText.innerHTML = `Kemarin: <strong>${(data.kwhYesterday || data.kwh).toLocaleString('id-ID')} kWh</strong> (Beban puncak ${data.peakYesterday || data.peak} kW · Realisasi ${data.costYesterday || data.cost})`;
+      }
+
+      if (chart24hTitle) chart24hTitle.textContent = 'Profil Beban Kemarin (24 Jam Penuh)';
+      if (chart24hSub) chart24hSub.textContent = 'Rekam kurva beban listrik historis 24 jam H-1 per interval 3 jam';
+
+      update24hChart(data.curve24hYesterday || data.curve24h, data.curveMax, data.curveStep, null, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']);
+
+    } else if (period === '7days') {
+      const d7 = data.days7 || { totalKwh: 1353514, avgKwh: 193359, totalCost: 'Rp 1,95 M', peakMax: 17350, labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800] };
+
+      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Puncak 7 Hari';
+      if (kpiDayaVal) kpiDayaVal.textContent = d7.peakMax.toLocaleString('id-ID');
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Peak mingguan tertinggi (kW)';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = 'Target Beban: 18.000 kW';
+      if (kpiDayaDelta) {
+        kpiDayaDelta.className = 'kpi-delta-tag down';
+        kpiDayaDelta.textContent = '▼ Margin 650 kW';
+      }
+
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Total Energi 7 Hari';
+      if (kpiEnergiVal) kpiEnergiVal.textContent = d7.totalKwh.toLocaleString('id-ID');
+      if (kpiEnergiSub) kpiEnergiSub.textContent = `Rata-rata: ${d7.avgKwh.toLocaleString('id-ID')} kWh/hari`;
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = 'Minggu Lalu: 1.380.000 kWh';
+      if (kpiEnergiDelta) {
+        kpiEnergiDelta.className = 'kpi-delta-tag down';
+        kpiEnergiDelta.textContent = '▼ -1,9% Hemat';
+      }
+
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Estimasi Biaya 7 Hari';
+      if (kpiBiayaVal) kpiBiayaVal.textContent = d7.totalCost;
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Akumulasi konsumsi 7 hari';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = 'Minggu Lalu: Rp 1,99 M';
+      if (kpiBiayaDelta) {
+        kpiBiayaDelta.className = 'kpi-delta-tag down';
+        kpiBiayaDelta.textContent = '▼ Hemat Rp 40 jt';
+      }
+
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Rata-rata Peak Harian';
+      if (kpiPeakVal) kpiPeakVal.textContent = '16.420';
+      if (kpiPeakSub) kpiPeakSub.textContent = 'Puncak stabil antar shift';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = 'Kapasitas PLN: 20.000 kVA';
+      if (kpiPeakDelta) {
+        kpiPeakDelta.className = 'kpi-delta-tag down';
+        kpiPeakDelta.textContent = 'Bebas Penalti';
+      }
+
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Rata-rata Utilisasi 7 Hari';
+      if (kpiUtilVal) kpiUtilVal.textContent = '68,7%';
+      if (kpiUtilSub) kpiUtilSub.textContent = 'Kapasitas terpasang optimal';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = 'Target: 65 - 75%';
+      if (kpiUtilDelta) {
+        kpiUtilDelta.className = 'kpi-delta-tag down';
+        kpiUtilDelta.textContent = 'Optimal';
+      }
+
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon 7 Hari';
+      if (kpiCarbonVal) kpiCarbonVal.textContent = ((d7.totalKwh * 0.79) / 1000).toFixed(1);
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Akumulasi ton CO₂ 7 hari';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = 'Minggu Lalu: 1.090 ton';
+      if (kpiCarbonDelta) {
+        kpiCarbonDelta.className = 'kpi-delta-tag down';
+        kpiCarbonDelta.textContent = '▼ -21 ton CO₂';
+      }
+
+      if (timeframeSummaryText) {
+        timeframeSummaryText.innerHTML = `7 Hari Terakhir: Total <strong>${d7.totalKwh.toLocaleString('id-ID')} kWh</strong> (Rata-rata ${d7.avgKwh.toLocaleString('id-ID')} kWh/hari · Biaya ${d7.totalCost})`;
+      }
+
+      if (chart24hTitle) chart24hTitle.textContent = 'Tren Konsumsi Energi 7 Hari Terakhir (Senin - Minggu)';
+      if (chart24hSub) chart24hSub.textContent = 'Total pemakaian energi harian seluruh gardu dan lini produksi Musashi';
+
+      const maxKwh = Math.max(...d7.kwh);
+      const chartMax = Math.ceil((maxKwh * 1.2) / 20000) * 20000;
+      update24hChart(d7.kwh, chartMax, Math.round(chartMax / 4), null, d7.labels);
+
+    } else if (period === 'month') {
+      const mMtd = data.monthMtd || { kwh: 2150400, cost: 'Rp 3,11 M', peak: '17.480', util: '70,2%' };
+
+      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Puncak Bulan Ini';
+      if (kpiDayaVal) kpiDayaVal.textContent = mMtd.peak;
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Tertinggi selama bulan berjalan (kW)';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = 'Kontrak PLN: 20.000 kVA';
+      if (kpiDayaDelta) {
+        kpiDayaDelta.className = 'kpi-delta-tag down';
+        kpiDayaDelta.textContent = 'Margin 2.520 kVA';
+      }
+
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Akumulasi Energi MTD';
+      if (kpiEnergiVal) kpiEnergiVal.textContent = mMtd.kwh.toLocaleString('id-ID');
+      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Month-to-Date (1 s/d hari ini)';
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = 'Proyeksi: 5,90 M kWh';
+      if (kpiEnergiDelta) {
+        kpiEnergiDelta.className = 'kpi-delta-tag down';
+        kpiEnergiDelta.textContent = 'On Track KPI';
+      }
+
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Akumulasi Biaya Bulan Ini';
+      if (kpiBiayaVal) kpiBiayaVal.textContent = mMtd.cost;
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Proyeksi akhir bulan: Rp 8,50 M';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = 'Bulan Lalu: Rp 8,62 M';
+      if (kpiBiayaDelta) {
+        kpiBiayaDelta.className = 'kpi-delta-tag down';
+        kpiBiayaDelta.textContent = '▼ Tren Hemat -1,4%';
+      }
+
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Batas Puncak PLN (WBP)';
+      if (kpiPeakVal) kpiPeakVal.textContent = mMtd.peak;
+      if (kpiPeakSub) kpiPeakSub.textContent = 'Waktu Beban Puncak 17:00-22:00';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = 'Target Maksimal: 18.000 kW';
+      if (kpiPeakDelta) {
+        kpiPeakDelta.className = 'kpi-delta-tag down';
+        kpiPeakDelta.textContent = 'Bebas Penalti';
+      }
+
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Rata-rata Utilisasi MTD';
+      if (kpiUtilVal) kpiUtilVal.textContent = mMtd.util;
+      if (kpiUtilSub) kpiUtilSub.textContent = '19 Transformator Musashi';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = 'Target: 65 - 75%';
+      if (kpiUtilDelta) {
+        kpiUtilDelta.className = 'kpi-delta-tag down';
+        kpiUtilDelta.textContent = 'Efisiensi Tinggi';
+      }
+
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Akumulasi Karbon MTD';
+      if (kpiCarbonVal) kpiCarbonVal.textContent = ((mMtd.kwh * 0.79) / 1000).toFixed(1);
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Emisi CO₂ MTD (Jamali grid)';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = 'Target: < 4.700 ton';
+      if (kpiCarbonDelta) {
+        kpiCarbonDelta.className = 'kpi-delta-tag down';
+        kpiCarbonDelta.textContent = 'On Track';
+      }
+
+      if (timeframeSummaryText) {
+        timeframeSummaryText.innerHTML = `Bulan Ini (MTD): Akumulasi <strong>${mMtd.kwh.toLocaleString('id-ID')} kWh</strong> (Biaya berjalan ${mMtd.cost} · Utilisasi rata-rata ${mMtd.util})`;
+      }
+
+      if (chart24hTitle) chart24hTitle.textContent = 'Akumulasi Konsumsi Energi Mingguan Bulan Ini (MTD)';
+      if (chart24hSub) chart24hSub.textContent = 'Pergerakan konsumsi energi dari Minggu 1 hingga Minggu berjalan';
+
+      update24hChart([510000, 524000, 538000, 482000, 96400], 650000, 150000, null, ['Mgg 1', 'Mgg 2', 'Mgg 3', 'Mgg 4', 'Berjalan']);
+    }
+
+    // Common KPI updates
     if (kpiPfVal) kpiPfVal.textContent = data.pf;
     if (kpiPfSub) kpiPfSub.textContent = 'Baik (target ≥ 0,85)';
-
     if (kpiOnlineVal) kpiOnlineVal.textContent = data.online;
     if (kpiOnlineSub) kpiOnlineSub.textContent = data.alertCount;
-
-    if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
-    if (kpiCarbonSub) kpiCarbonSub.textContent = 'Faktor grid Jamali 0,79 kg/kWh';
 
     // Sidebar Live Capsule Telemetry Sync
     const sideNavTotalKw = document.getElementById('sideNavTotalKw');
@@ -697,9 +1227,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sideNavTotalKw) sideNavTotalKw.textContent = `${data.kw.toLocaleString('id-ID')} kW`;
     if (sideNavAvgPf) sideNavAvgPf.textContent = data.pf;
     if (sideNavOnline) sideNavOnline.textContent = data.online;
-
-    // 2. Update 24h Line Chart
-    update24hChart(data.curve24h, data.curveMax, data.curveStep);
 
     // 3. Update Top 8 Horizontal Bar Chart
     updateTop8Chart(TOP_8_DATA[filterKey] || TOP_8_DATA.electrical || TOP_8_DATA.all);
@@ -748,7 +1275,7 @@ document.addEventListener('DOMContentLoaded', () => {
     Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
     Chart.defaults.color = defaultTextColor;
 
-    // --- 1. Line Chart: Beban 24 Jam Terakhir ---
+    // --- 1. Line Chart: Beban 24 Jam Terakhir (Dual Curve Hari Ini vs Kemarin) ---
     const ctx24h = document.getElementById('chart24h');
     if (ctx24h) {
       const gradient = ctx24h.getContext('2d').createLinearGradient(0, 0, 0, 240);
@@ -759,36 +1286,76 @@ document.addEventListener('DOMContentLoaded', () => {
         type: 'line',
         data: {
           labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
-          datasets: [{
-            label: 'Daya Listrik',
-            data: CATEGORY_BASELINES.all.curve24h,
-            borderColor: '#0284c7',
-            borderWidth: 2.8,
-            backgroundColor: gradient,
-            fill: true,
-            tension: 0.45,
-            pointRadius: 0,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: '#0284c7',
-            pointHoverBorderColor: '#ffffff',
-            pointHoverBorderWidth: 2
-          }]
+          datasets: [
+            {
+              label: 'Hari Ini (Live)',
+              data: CATEGORY_BASELINES.all.curve24h,
+              borderColor: '#0284c7',
+              borderWidth: 2.8,
+              backgroundColor: gradient,
+              fill: true,
+              tension: 0.45,
+              pointRadius: 3,
+              pointHoverRadius: 6,
+              pointHoverBackgroundColor: '#0284c7',
+              pointHoverBorderColor: '#ffffff',
+              pointHoverBorderWidth: 2
+            },
+            {
+              label: 'Kemarin (H-1)',
+              data: CATEGORY_BASELINES.all.curve24hYesterday,
+              borderColor: '#94a3b8',
+              borderWidth: 2,
+              borderDash: [5, 4],
+              backgroundColor: 'transparent',
+              fill: false,
+              tension: 0.45,
+              pointRadius: 2,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: '#94a3b8',
+              pointHoverBorderColor: '#ffffff',
+              pointHoverBorderWidth: 2
+            }
+          ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
               backgroundColor: '#0f172a',
               titleColor: '#ffffff',
-              bodyColor: '#38bdf8',
+              bodyColor: '#e2e8f0',
               borderColor: 'rgba(255, 255, 255, 0.1)',
               borderWidth: 1,
               padding: 10,
-              displayColors: false,
+              mode: 'index',
+              intersect: false,
               callbacks: {
-                label: (ctx) => `${ctx.parsed.y.toLocaleString('id-ID')} kW`
+                label: (ctx) => {
+                  const label = ctx.dataset.label || '';
+                  const val = ctx.parsed.y !== null ? ctx.parsed.y.toLocaleString('id-ID') : '0';
+                  const unit = (state.activePeriod === '7days' || state.activePeriod === 'month') ? 'kWh' : 'kW';
+                  return `${label}: ${val} ${unit}`;
+                },
+                afterBody: (tooltipItems) => {
+                  if (tooltipItems.length >= 2 && state.activePeriod === 'today') {
+                    const todayVal = tooltipItems[0].parsed.y;
+                    const yestVal = tooltipItems[1].parsed.y;
+                    if (todayVal !== undefined && yestVal !== undefined) {
+                      const diff = todayVal - yestVal;
+                      const pct = yestVal ? ((diff / yestVal) * 100).toFixed(1) : '0';
+                      const sign = diff > 0 ? '+' : '';
+                      return `Selisih (Δ): ${sign}${diff.toLocaleString('id-ID')} kW (${sign}${pct}%)`;
+                    }
+                  }
+                  return '';
+                }
               }
             }
           },
@@ -920,11 +1487,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function update24hChart(newData, newMax, newStep) {
+  function update24hChart(newData, newMax, newStep, newYesterdayData = null, labels = null) {
     if (!chart24hInstance) return;
+    if (labels) {
+      chart24hInstance.data.labels = labels;
+    } else {
+      chart24hInstance.data.labels = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+    }
+
+    // Dataset 0: Primary series
     chart24hInstance.data.datasets[0].data = newData;
-    chart24hInstance.options.scales.y.max = newMax;
-    chart24hInstance.options.scales.y.ticks.stepSize = newStep;
+    chart24hInstance.data.datasets[0].label = (state.activePeriod === 'yesterday') ? 'Kemarin' : (state.activePeriod === '7days' ? 'Konsumsi Harian (kWh)' : (state.activePeriod === 'month' ? 'Konsumsi Mingguan (kWh)' : 'Hari Ini (Live)'));
+
+    // Dataset 1: Comparison series (Kemarin H-1)
+    if (chart24hInstance.data.datasets[1]) {
+      if (newYesterdayData && state.activePeriod === 'today') {
+        chart24hInstance.data.datasets[1].data = newYesterdayData;
+        chart24hInstance.data.datasets[1].hidden = false;
+      } else {
+        chart24hInstance.data.datasets[1].data = [];
+        chart24hInstance.data.datasets[1].hidden = true;
+      }
+    }
+
+    if (newMax) chart24hInstance.options.scales.y.max = newMax;
+    if (newStep) chart24hInstance.options.scales.y.ticks.stepSize = newStep;
     chart24hInstance.update();
   }
 
@@ -1160,8 +1747,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sorting
     filtered.sort((a, b) => {
-      let valA = (state.sortColumn === 'carbon') ? ((a.kwhToday || 0) * 0.79) : a[state.sortColumn];
-      let valB = (state.sortColumn === 'carbon') ? ((b.kwhToday || 0) * 0.79) : b[state.sortColumn];
+      let valA, valB;
+      if (state.sortColumn === 'carbon') {
+        valA = (a.kwhToday || 0) * 0.79;
+        valB = (b.kwhToday || 0) * 0.79;
+      } else if (state.sortColumn === 'deltaKwh') {
+        valA = (a.deltaKwh !== undefined) ? a.deltaKwh : ((a.kwhToday || 0) - (a.kwhYesterday || 0));
+        valB = (b.deltaKwh !== undefined) ? b.deltaKwh : ((b.kwhToday || 0) - (b.kwhYesterday || 0));
+      } else if (state.sortColumn === 'kwhYesterday') {
+        valA = a.kwhYesterday || 0;
+        valB = b.kwhYesterday || 0;
+      } else {
+        valA = a[state.sortColumn];
+        valB = b[state.sortColumn];
+      }
       if (typeof valA === 'string') valA = valA.toLowerCase();
       if (typeof valB === 'string') valB = valB.toLowerCase();
       if (valA < valB) return state.sortAsc ? -1 : 1;
@@ -1191,7 +1790,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pageItems.length === 0) {
       meterTableBody.innerHTML = `
         <tr>
-          <td colspan="12" style="text-align:center; padding:2.5rem; color:var(--text-muted);">
+          <td colspan="14" style="text-align:center; padding:2.5rem; color:var(--text-muted);">
             Tidak ditemukan data meter digital yang sesuai pencarian "${state.searchQuery}".
           </td>
         </tr>
@@ -1204,6 +1803,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const statusClass = (m.status === 'normal') ? 'normal' : (m.status === 'warning') ? 'warning' : 'offline';
       const statusLabel = (m.status === 'normal') ? 'Normal' : (m.status === 'warning') ? 'Warning' : 'Offline';
       const carbonKg = ((m.kwhToday || 0) * 0.79).toFixed(1);
+
+      const kwhTodayVal = m.kwhToday || 0;
+      const kwhYestVal = (m.kwhYesterday !== undefined) ? m.kwhYesterday : Math.round(kwhTodayVal * 1.035);
+      const deltaKwh = (m.deltaKwh !== undefined) ? m.deltaKwh : (kwhTodayVal - kwhYestVal);
+      const deltaPct = (m.deltaPct !== undefined) ? m.deltaPct : (kwhYestVal ? ((deltaKwh / kwhYestVal) * 100).toFixed(1) : '0.0');
+      const isDown = deltaKwh <= 0;
+      const deltaClass = isDown ? 'down' : 'up';
+      const deltaArrow = isDown ? '▼' : '▲';
+      const deltaSign = deltaKwh > 0 ? '+' : '';
+      const deltaBadgeHtml = `<span class="delta-badge ${deltaClass}" title="${deltaSign}${deltaKwh.toLocaleString('id-ID')} kWh (${deltaSign}${deltaPct}%) vs kemarin">${deltaArrow} ${deltaSign}${deltaKwh.toLocaleString('id-ID')} (${deltaSign}${deltaPct}%)</span>`;
 
       return `
         <tr>
@@ -1221,8 +1830,14 @@ document.addEventListener('DOMContentLoaded', () => {
           <td class="col-num" style="color:${(m.pf < 0.85) ? 'var(--color-amber)' : 'var(--color-green)'};">
             ${(m.pf || 0.89).toFixed(2)}
           </td>
-          <td class="col-num" style="color:#ffffff;">
-            ${(m.kwhToday || 0).toLocaleString('id-ID')}
+          <td class="col-num" style="color:#ffffff; font-weight:600;">
+            ${kwhTodayVal.toLocaleString('id-ID')}
+          </td>
+          <td class="col-num" style="color:var(--text-secondary);">
+            ${kwhYestVal.toLocaleString('id-ID')}
+          </td>
+          <td class="col-num" style="text-align:right;">
+            ${deltaBadgeHtml}
           </td>
           <td class="col-num" style="color:var(--color-teal); font-weight:600;">
             ${carbonKg}
