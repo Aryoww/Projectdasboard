@@ -724,16 +724,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleText = document.getElementById('btnSidebarToggleText');
 
     if (isOpen) {
-      if (toggleText) toggleText.textContent = 'Menu Navigasi';
+      if (toggleText) toggleText.textContent = 'Navigation Menu';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.remove('collapsed-mode');
-        btnToggleSidebar.title = 'Sembunyikan Menu Navigasi';
+        btnToggleSidebar.title = 'Hide Navigation Menu';
       }
     } else {
-      if (toggleText) toggleText.textContent = 'Buka Menu';
+      if (toggleText) toggleText.textContent = 'Open Menu';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.add('collapsed-mode');
-        btnToggleSidebar.title = 'Tampilkan Menu Navigasi';
+        btnToggleSidebar.title = 'Show Navigation Menu';
       }
     }
   }
@@ -943,25 +943,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (activeDateDisplay) {
       if (period === 'today') {
-        activeDateDisplay.textContent = 'Hari Ini · 10 Nov 2026';
+        activeDateDisplay.textContent = 'Today · 10 Nov 2026';
         if (btnPrevDay) btnPrevDay.disabled = false;
         if (btnNextDay) btnNextDay.disabled = true;
         if (monitoringStatusText) monitoringStatusText.textContent = 'Live SCADA';
       } else if (period === 'yesterday') {
-        activeDateDisplay.textContent = 'Kemarin · 09 Nov 2026';
+        activeDateDisplay.textContent = 'Yesterday · 09 Nov 2026';
         if (btnPrevDay) btnPrevDay.disabled = true;
         if (btnNextDay) btnNextDay.disabled = false;
-        if (monitoringStatusText) monitoringStatusText.textContent = 'Rekap H-1';
+        if (monitoringStatusText) monitoringStatusText.textContent = 'H-1 Audited';
       } else if (period === '7days') {
-        activeDateDisplay.textContent = 'Rentang 7 Hari Terakhir';
+        activeDateDisplay.textContent = 'Last 7 Days';
         if (btnPrevDay) btnPrevDay.disabled = false;
         if (btnNextDay) btnNextDay.disabled = false;
-        if (monitoringStatusText) monitoringStatusText.textContent = 'Rekap 7 Hari';
+        if (monitoringStatusText) monitoringStatusText.textContent = '7-Day Summary';
       } else if (period === 'month') {
-        activeDateDisplay.textContent = 'Bulan Ini · MTD Nov 2026';
+        activeDateDisplay.textContent = 'This Month · MTD Nov 2026';
         if (btnPrevDay) btnPrevDay.disabled = false;
         if (btnNextDay) btnNextDay.disabled = false;
-        if (monitoringStatusText) monitoringStatusText.textContent = 'Rekap MTD';
+        if (monitoringStatusText) monitoringStatusText.textContent = 'MTD Summary';
       }
     }
 
@@ -1027,10 +1027,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Update KPI Values & Timeframe Comparison Badges
     if (period === 'today') {
-      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Daya Total';
+      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Total Active Power';
       if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
-      if (kpiDayaSub) kpiDayaSub.textContent = 'Total beban listrik sekarang';
-      if (kpiDayaPrev) kpiDayaPrev.textContent = `Kemarin: ${(data.kwYesterday || data.kw).toLocaleString('id-ID')} kW`;
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Total live electrical load';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = `Yesterday: ${(data.kwYesterday || data.kw).toLocaleString('id-ID')} kW`;
       if (kpiDayaDelta) {
         const dKw = (data.kw - (data.kwYesterday || data.kw));
         const dSign = dKw > 0 ? '+' : '';
@@ -1039,10 +1039,10 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiDayaDelta.textContent = `${dArrow} ${dSign}${dKw.toLocaleString('id-ID')} kW`;
       }
 
-      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Energi Hari Ini';
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Energy Today';
       if (kpiEnergiVal) kpiEnergiVal.textContent = data.kwh.toLocaleString('id-ID');
-      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Sejak pukul 00.00 WIB';
-      if (kpiEnergiPrev) kpiEnergiPrev.textContent = `Kemarin: ${(data.kwhYesterday || data.kwh).toLocaleString('id-ID')} kWh`;
+      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Accumulated since 00:00 WIB';
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = `Yesterday: ${(data.kwhYesterday || data.kwh).toLocaleString('id-ID')} kWh`;
       if (kpiEnergiDelta) {
         const dKwh = data.deltaKwh || 0;
         const dPct = data.deltaKwhPct || '0%';
@@ -1051,27 +1051,27 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiEnergiDelta.textContent = `${dArrow} ${Math.abs(dKwh).toLocaleString('id-ID')} kWh (${dPct})`;
       }
 
-      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Estimasi Biaya Hari Ini';
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Estimated Cost';
       if (kpiBiayaVal) kpiBiayaVal.textContent = data.cost;
-      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Tarif PLN Golongan I-3/TM';
-      if (kpiBiayaPrev) kpiBiayaPrev.textContent = `Kemarin: ${data.costYesterday || data.cost}`;
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'PLN industrial tariff (I-3/TM)';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = `Yesterday: ${data.costYesterday || data.cost}`;
       if (kpiBiayaDelta) {
         kpiBiayaDelta.className = `kpi-delta-tag ${data.deltaCost && data.deltaCost.startsWith('-') ? 'down' : 'up'}`;
-        kpiBiayaDelta.textContent = `${data.deltaCost ? data.deltaCost.replace('-', '▼ -') : '▼ Hemat'} vs H-1`;
+        kpiBiayaDelta.textContent = `${data.deltaCost ? data.deltaCost.replace('-', '▼ -') : '▼ Saving'} vs H-1`;
       }
 
-      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Beban Puncak (Peak)';
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Peak Demand';
       if (kpiPeakVal) kpiPeakVal.textContent = data.peak || '16.820';
-      if (kpiPeakSub) kpiPeakSub.textContent = data.peakSub || 'Puncak hari ini · Batas PLN aman';
-      if (kpiPeakPrev) kpiPeakPrev.textContent = `Kemarin: ${data.peakYesterday || data.peak} kW`;
+      if (kpiPeakSub) kpiPeakSub.textContent = data.peakSub || 'Today\'s peak · Safe grid margin';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = `Yesterday Peak: ${data.peakYesterday || data.peak} kW`;
       if (kpiPeakDelta) {
         kpiPeakDelta.className = `kpi-delta-tag ${data.deltaPeak && data.deltaPeak.startsWith('-') ? 'down' : 'up'}`;
-        kpiPeakDelta.textContent = `${data.deltaPeak ? data.deltaPeak.replace('-', '▼ -') : '▼ Efisien'}`;
+        kpiPeakDelta.textContent = `${data.deltaPeak ? data.deltaPeak.replace('-', '▼ -') : '▼ Efficient'}`;
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Pemakaian Utilitas';
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Utility Delta (vs Yesterday)';
       const dKwh = (data.deltaKwh !== undefined) ? data.deltaKwh : -7086;
-      const dPct = data.deltaKwhPct || '-3,5%';
+      const dPct = data.deltaKwhPct || '-3.5%';
       const isSaved = dKwh <= 0;
       const sign = dKwh > 0 ? '+' : '';
       if (kpiUtilVal) {
@@ -1082,171 +1082,171 @@ document.addEventListener('DOMContentLoaded', () => {
       if (kpiUtilUnit) kpiUtilUnit.textContent = 'kWh';
       if (kpiUtilSub) {
         kpiUtilSub.textContent = isSaved 
-          ? `▼ Lebih hemat ${Math.abs(dKwh).toLocaleString('id-ID')} kWh (${dPct}) vs kemarin`
-          : `▲ Naik ${dKwh.toLocaleString('id-ID')} kWh (${dPct}) vs kemarin`;
+          ? `▼ -${Math.abs(dKwh).toLocaleString('id-ID')} kWh (${dPct}) vs Yesterday (Saving)`
+          : `▲ +${dKwh.toLocaleString('id-ID')} kWh (${dPct}) vs Yesterday`;
       }
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Kemarin: ${(data.kwhYesterday || 0).toLocaleString('id-ID')} kWh`;
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Yesterday: ${(data.kwhYesterday || 0).toLocaleString('id-ID')} kWh`;
       if (kpiUtilDelta) {
         kpiUtilDelta.className = `kpi-delta-tag ${isSaved ? 'down' : 'up'}`;
         kpiUtilDelta.textContent = isSaved ? `▼ ${dPct}` : `▲ ${dPct}`;
       }
 
-      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon CO₂ Hari Ini';
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Carbon Emission (CO₂e)';
       if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
-      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Faktor grid Jamali 0,79 kg/kWh';
-      if (kpiCarbonPrev) kpiCarbonPrev.textContent = `Kemarin: ${data.carbonYesterday || data.carbonTon} ton`;
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Jamali grid factor 0.79 kg/kWh';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = `Yesterday: ${data.carbonYesterday || data.carbonTon} ton`;
       if (kpiCarbonDelta) {
         kpiCarbonDelta.className = `kpi-delta-tag ${data.deltaCarbon && data.deltaCarbon.startsWith('-') ? 'down' : 'up'}`;
-        kpiCarbonDelta.textContent = `${data.deltaCarbon ? data.deltaCarbon.replace('-', '▼ -') : '▼ Berkurang'}`;
+        kpiCarbonDelta.textContent = `${data.deltaCarbon ? data.deltaCarbon.replace('-', '▼ -') : '▼ Reduced'}`;
       }
 
       if (timeframeSummaryText) {
         const dKwh = Math.abs(data.deltaKwh || 0);
-        timeframeSummaryText.innerHTML = `Hari Ini: <strong>${data.kwh.toLocaleString('id-ID')} kWh</strong> (hemat <strong>${dKwh.toLocaleString('id-ID')} kWh / ${data.deltaKwhPct || '0%'}</strong> vs kemarin)`;
+        timeframeSummaryText.innerHTML = `Today: <strong>${data.kwh.toLocaleString('id-ID')} kWh</strong> (saving <strong>${dKwh.toLocaleString('id-ID')} kWh / ${data.deltaKwhPct || '0%'}</strong> vs yesterday)`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = 'Profil Beban Listrik: Hari Ini vs Kemarin (24 Jam)';
-      if (chart24hSub) chart24hSub.textContent = 'Perbandingan kurva beban interval 3 jam: Hari Ini (Area Biru) vs Kemarin (Garis Putus-putus Abu-abu)';
+      if (chart24hTitle) chart24hTitle.textContent = '24-Hour Load Profile: Today vs Yesterday';
+      if (chart24hSub) chart24hSub.textContent = '3-Hour interval electrical load comparison: Today (Solid Blue) vs Yesterday (Dashed Gray)';
 
       update24hChart(data.curve24h, data.curveMax, data.curveStep, data.curve24hYesterday, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']);
 
     } else if (period === 'yesterday') {
-      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Puncak Kemarin';
+      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Yesterday Peak Demand';
       if (kpiDayaVal) kpiDayaVal.textContent = (data.kwYesterday || data.kw).toLocaleString('id-ID');
-      if (kpiDayaSub) kpiDayaSub.textContent = 'Rata-rata beban jam sibuk H-1';
-      if (kpiDayaPrev) kpiDayaPrev.textContent = `Hari Ini: ${data.kw.toLocaleString('id-ID')} kW`;
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Average peak hours load';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = `Today: ${data.kw.toLocaleString('id-ID')} kW`;
       if (kpiDayaDelta) {
         kpiDayaDelta.className = 'kpi-delta-tag up';
         kpiDayaDelta.textContent = 'H-1 Audited';
       }
 
-      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Total Energi Kemarin (H-1)';
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Yesterday Total Energy';
       if (kpiEnergiVal) kpiEnergiVal.textContent = (data.kwhYesterday || data.kwh).toLocaleString('id-ID');
-      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Audited penuh 24 jam PLN';
-      if (kpiEnergiPrev) kpiEnergiPrev.textContent = `Hari Ini: ${data.kwh.toLocaleString('id-ID')} kWh`;
+      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Full 24h audited grid consumption';
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = `Today: ${data.kwh.toLocaleString('id-ID')} kWh`;
       if (kpiEnergiDelta) {
         kpiEnergiDelta.className = 'kpi-delta-tag up';
-        kpiEnergiDelta.textContent = 'Rekap Harian';
+        kpiEnergiDelta.textContent = 'Daily Recap';
       }
 
-      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Realisasi Biaya Kemarin';
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Yesterday Energy Cost';
       if (kpiBiayaVal) kpiBiayaVal.textContent = data.costYesterday || data.cost;
-      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Realisasi tagihan penuh H-1';
-      if (kpiBiayaPrev) kpiBiayaPrev.textContent = `Hari Ini: ${data.cost}`;
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Full audited daily billing';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = `Today: ${data.cost}`;
       if (kpiBiayaDelta) {
         kpiBiayaDelta.className = 'kpi-delta-tag neutral';
         kpiBiayaDelta.textContent = 'Audited I-3/TM';
       }
 
-      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Beban Tertinggi Kemarin';
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Yesterday Highest Peak';
       if (kpiPeakVal) kpiPeakVal.textContent = data.peakYesterday || data.peak;
-      if (kpiPeakSub) kpiPeakSub.textContent = 'Pukul 14.15 WIB kemarin';
-      if (kpiPeakPrev) kpiPeakPrev.textContent = `Hari Ini: ${data.peak} kW`;
+      if (kpiPeakSub) kpiPeakSub.textContent = 'Recorded at 14:15 WIB';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = `Today: ${data.peak} kW`;
       if (kpiPeakDelta) {
         kpiPeakDelta.className = 'kpi-delta-tag neutral';
         kpiPeakDelta.textContent = 'Peak H-1';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Utilitas Kemarin (vs H-2)';
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Yesterday Delta (vs H-2)';
       if (kpiUtilVal) {
         kpiUtilVal.textContent = '-2.850';
         kpiUtilVal.style.color = 'var(--color-green)';
       }
       const kpiUtilUnitY = document.getElementById('kpiUtilUnit');
       if (kpiUtilUnitY) kpiUtilUnitY.textContent = 'kWh';
-      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Lebih hemat 2.850 kWh (-1,4%) vs H-2';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = 'H-2: 207.000 kWh';
+      if (kpiUtilSub) kpiUtilSub.textContent = '▼ -2,850 kWh (-1.4%) vs H-2 (Saving)';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = 'H-2: 207,000 kWh';
       if (kpiUtilDelta) {
         kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = '▼ -1,4%';
+        kpiUtilDelta.textContent = '▼ -1.4%';
       }
 
-      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon Kemarin';
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Yesterday Carbon Emission';
       if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonYesterday || data.carbonTon;
-      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Emisi terverifikasi H-1';
-      if (kpiCarbonPrev) kpiCarbonPrev.textContent = `Hari Ini: ${data.carbonTon} ton`;
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'H-1 verified operational emissions';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = `Today: ${data.carbonTon} ton`;
       if (kpiCarbonDelta) {
         kpiCarbonDelta.className = 'kpi-delta-tag neutral';
         kpiCarbonDelta.textContent = 'Verified H-1';
       }
 
       if (timeframeSummaryText) {
-        timeframeSummaryText.innerHTML = `Kemarin: <strong>${(data.kwhYesterday || data.kwh).toLocaleString('id-ID')} kWh</strong> (Beban puncak ${data.peakYesterday || data.peak} kW · Realisasi ${data.costYesterday || data.cost})`;
+        timeframeSummaryText.innerHTML = `Yesterday: <strong>${(data.kwhYesterday || data.kwh).toLocaleString('id-ID')} kWh</strong> (Peak load ${data.peakYesterday || data.peak} kW · Cost ${data.costYesterday || data.cost})`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = 'Profil Beban Kemarin (24 Jam Penuh)';
-      if (chart24hSub) chart24hSub.textContent = 'Rekam kurva beban listrik historis 24 jam H-1 per interval 3 jam';
+      if (chart24hTitle) chart24hTitle.textContent = 'Yesterday Load Profile (Full 24 Hours)';
+      if (chart24hSub) chart24hSub.textContent = 'Historical 24-hour load curve per 3-hour interval';
 
       update24hChart(data.curve24hYesterday || data.curve24h, data.curveMax, data.curveStep, null, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']);
 
     } else if (period === '7days') {
-      const d7 = data.days7 || { totalKwh: 1353514, avgKwh: 193359, totalCost: 'Rp 1,95 M', peakMax: 17350, labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800] };
+      const d7 = data.days7 || { totalKwh: 1353514, avgKwh: 193359, totalCost: 'Rp 1,95 M', peakMax: 17350, labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800] };
 
-      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Puncak 7 Hari';
+      if (kpiDayaTitle) kpiDayaTitle.textContent = '7-Day Peak Demand';
       if (kpiDayaVal) kpiDayaVal.textContent = d7.peakMax.toLocaleString('id-ID');
-      if (kpiDayaSub) kpiDayaSub.textContent = 'Peak mingguan tertinggi (kW)';
-      if (kpiDayaPrev) kpiDayaPrev.textContent = 'Target Beban: 18.000 kW';
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Highest weekly peak (kW)';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = 'Target Limit: 18,000 kW';
       if (kpiDayaDelta) {
         kpiDayaDelta.className = 'kpi-delta-tag down';
         kpiDayaDelta.textContent = '▼ Margin 650 kW';
       }
 
-      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Total Energi 7 Hari';
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = '7-Day Total Energy';
       if (kpiEnergiVal) kpiEnergiVal.textContent = d7.totalKwh.toLocaleString('id-ID');
-      if (kpiEnergiSub) kpiEnergiSub.textContent = `Rata-rata: ${d7.avgKwh.toLocaleString('id-ID')} kWh/hari`;
-      if (kpiEnergiPrev) kpiEnergiPrev.textContent = 'Minggu Lalu: 1.380.000 kWh';
+      if (kpiEnergiSub) kpiEnergiSub.textContent = `Average: ${d7.avgKwh.toLocaleString('id-ID')} kWh/day`;
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = 'Previous Week: 1,380,000 kWh';
       if (kpiEnergiDelta) {
         kpiEnergiDelta.className = 'kpi-delta-tag down';
-        kpiEnergiDelta.textContent = '▼ -1,9% Hemat';
+        kpiEnergiDelta.textContent = '▼ -1.9% Saving';
       }
 
-      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Estimasi Biaya 7 Hari';
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = '7-Day Estimated Cost';
       if (kpiBiayaVal) kpiBiayaVal.textContent = d7.totalCost;
-      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Akumulasi konsumsi 7 hari';
-      if (kpiBiayaPrev) kpiBiayaPrev.textContent = 'Minggu Lalu: Rp 1,99 M';
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Cumulative 7-day cost';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = 'Previous Week: Rp 1.99 M';
       if (kpiBiayaDelta) {
         kpiBiayaDelta.className = 'kpi-delta-tag down';
-        kpiBiayaDelta.textContent = '▼ Hemat Rp 40 jt';
+        kpiBiayaDelta.textContent = '▼ Saved Rp 40 jt';
       }
 
-      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Rata-rata Peak Harian';
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Average Daily Peak';
       if (kpiPeakVal) kpiPeakVal.textContent = '16.420';
-      if (kpiPeakSub) kpiPeakSub.textContent = 'Puncak stabil antar shift';
-      if (kpiPeakPrev) kpiPeakPrev.textContent = 'Kapasitas PLN: 20.000 kVA';
+      if (kpiPeakSub) kpiPeakSub.textContent = 'Stable shift peak load';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = 'Contract Limit: 20,000 kVA';
       if (kpiPeakDelta) {
         kpiPeakDelta.className = 'kpi-delta-tag down';
-        kpiPeakDelta.textContent = 'Bebas Penalti';
+        kpiPeakDelta.textContent = 'Compliant';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Utilitas 7 Hari';
+      if (kpiUtilTitle) kpiUtilTitle.textContent = '7-Day Utility Delta';
       if (kpiUtilVal) {
         kpiUtilVal.textContent = '-26.486';
         kpiUtilVal.style.color = 'var(--color-green)';
       }
       const kpiUtilUnit7 = document.getElementById('kpiUtilUnit');
       if (kpiUtilUnit7) kpiUtilUnit7.textContent = 'kWh';
-      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Lebih hemat 26.486 kWh (-1,9%) vs minggu lalu';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Minggu Lalu: 1.380.000 kWh`;
+      if (kpiUtilSub) kpiUtilSub.textContent = '▼ -26,486 kWh (-1.9%) vs previous week';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Previous Week: 1,380,000 kWh`;
       if (kpiUtilDelta) {
         kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = '▼ -1,9%';
+        kpiUtilDelta.textContent = '▼ -1.9%';
       }
 
-      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Emisi Karbon 7 Hari';
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = '7-Day Carbon Emission';
       if (kpiCarbonVal) kpiCarbonVal.textContent = ((d7.totalKwh * 0.79) / 1000).toFixed(1);
-      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Akumulasi ton CO₂ 7 hari';
-      if (kpiCarbonPrev) kpiCarbonPrev.textContent = 'Minggu Lalu: 1.090 ton';
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Cumulative 7-day CO₂ tons';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = 'Previous Week: 1,090 ton';
       if (kpiCarbonDelta) {
         kpiCarbonDelta.className = 'kpi-delta-tag down';
         kpiCarbonDelta.textContent = '▼ -21 ton CO₂';
       }
 
       if (timeframeSummaryText) {
-        timeframeSummaryText.innerHTML = `7 Hari Terakhir: Total <strong>${d7.totalKwh.toLocaleString('id-ID')} kWh</strong> (Rata-rata ${d7.avgKwh.toLocaleString('id-ID')} kWh/hari · Biaya ${d7.totalCost})`;
+        timeframeSummaryText.innerHTML = `Last 7 Days: Total <strong>${d7.totalKwh.toLocaleString('id-ID')} kWh</strong> (Average ${d7.avgKwh.toLocaleString('id-ID')} kWh/day · Cost ${d7.totalCost})`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = 'Tren Konsumsi Energi 7 Hari Terakhir (Senin - Minggu)';
-      if (chart24hSub) chart24hSub.textContent = 'Total pemakaian energi harian seluruh gardu dan lini produksi Musashi';
+      if (chart24hTitle) chart24hTitle.textContent = '7-Day Energy Consumption Trend (Monday - Sunday)';
+      if (chart24hSub) chart24hSub.textContent = 'Daily energy consumption across all substations and production lines';
 
       const maxKwh = Math.max(...d7.kwh);
       const chartMax = Math.ceil((maxKwh * 1.2) / 20000) * 20000;
@@ -1255,78 +1255,78 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (period === 'month') {
       const mMtd = data.monthMtd || { kwh: 2150400, cost: 'Rp 3,11 M', peak: '17.480', util: '70,2%' };
 
-      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Beban Puncak Bulan Ini';
+      if (kpiDayaTitle) kpiDayaTitle.textContent = 'Month Peak Demand';
       if (kpiDayaVal) kpiDayaVal.textContent = mMtd.peak;
-      if (kpiDayaSub) kpiDayaSub.textContent = 'Tertinggi selama bulan berjalan (kW)';
-      if (kpiDayaPrev) kpiDayaPrev.textContent = 'Kontrak PLN: 20.000 kVA';
+      if (kpiDayaSub) kpiDayaSub.textContent = 'Highest during current month (kW)';
+      if (kpiDayaPrev) kpiDayaPrev.textContent = 'Contract: 20,000 kVA';
       if (kpiDayaDelta) {
         kpiDayaDelta.className = 'kpi-delta-tag down';
-        kpiDayaDelta.textContent = 'Margin 2.520 kVA';
+        kpiDayaDelta.textContent = 'Margin 2,520 kVA';
       }
 
-      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Akumulasi Energi MTD';
+      if (kpiEnergiTitle) kpiEnergiTitle.textContent = 'Month Total Energy (MTD)';
       if (kpiEnergiVal) kpiEnergiVal.textContent = mMtd.kwh.toLocaleString('id-ID');
-      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Month-to-Date (1 s/d hari ini)';
-      if (kpiEnergiPrev) kpiEnergiPrev.textContent = 'Proyeksi: 5,90 M kWh';
+      if (kpiEnergiSub) kpiEnergiSub.textContent = 'Month-to-Date cumulative';
+      if (kpiEnergiPrev) kpiEnergiPrev.textContent = 'Forecast: 5.90M kWh';
       if (kpiEnergiDelta) {
         kpiEnergiDelta.className = 'kpi-delta-tag down';
-        kpiEnergiDelta.textContent = 'On Track KPI';
+        kpiEnergiDelta.textContent = 'On Track';
       }
 
-      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Akumulasi Biaya Bulan Ini';
+      if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Month Energy Cost (MTD)';
       if (kpiBiayaVal) kpiBiayaVal.textContent = mMtd.cost;
-      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Proyeksi akhir bulan: Rp 8,50 M';
-      if (kpiBiayaPrev) kpiBiayaPrev.textContent = 'Bulan Lalu: Rp 8,62 M';
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'End of month forecast: Rp 8.50 M';
+      if (kpiBiayaPrev) kpiBiayaPrev.textContent = 'Last Month: Rp 8.62 M';
       if (kpiBiayaDelta) {
         kpiBiayaDelta.className = 'kpi-delta-tag down';
-        kpiBiayaDelta.textContent = '▼ Tren Hemat -1,4%';
+        kpiBiayaDelta.textContent = '▼ Trend -1.4%';
       }
 
-      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Batas Puncak PLN (WBP)';
+      if (kpiPeakTitle) kpiPeakTitle.textContent = 'Peak Grid Allowance (WBP)';
       if (kpiPeakVal) kpiPeakVal.textContent = mMtd.peak;
-      if (kpiPeakSub) kpiPeakSub.textContent = 'Waktu Beban Puncak 17:00-22:00';
-      if (kpiPeakPrev) kpiPeakPrev.textContent = 'Target Maksimal: 18.000 kW';
+      if (kpiPeakSub) kpiPeakSub.textContent = 'Peak hours interval 17:00-22:00';
+      if (kpiPeakPrev) kpiPeakPrev.textContent = 'Target Limit: 18,000 kW';
       if (kpiPeakDelta) {
         kpiPeakDelta.className = 'kpi-delta-tag down';
-        kpiPeakDelta.textContent = 'Bebas Penalti';
+        kpiPeakDelta.textContent = 'Compliant';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Selisih Utilitas Bulan Ini (MTD)';
+      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Month Utility Delta (MTD)';
       if (kpiUtilVal) {
         kpiUtilVal.textContent = '-31.200';
         kpiUtilVal.style.color = 'var(--color-green)';
       }
       const kpiUtilUnitM = document.getElementById('kpiUtilUnit');
       if (kpiUtilUnitM) kpiUtilUnitM.textContent = 'kWh';
-      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Tren hemat 31.200 kWh (-1,4%) vs bulan lalu';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Bulan Lalu: 2.181.600 kWh`;
+      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Saving trend 31,200 kWh (-1.4%) vs last month';
+      if (kpiUtilPrev) kpiUtilPrev.textContent = `Last Month: 2,181,600 kWh`;
       if (kpiUtilDelta) {
         kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = '▼ -1,4%';
+        kpiUtilDelta.textContent = '▼ -1.4%';
       }
 
-      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Akumulasi Karbon MTD';
+      if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Month Carbon Emission (MTD)';
       if (kpiCarbonVal) kpiCarbonVal.textContent = ((mMtd.kwh * 0.79) / 1000).toFixed(1);
-      if (kpiCarbonSub) kpiCarbonSub.textContent = 'Emisi CO₂ MTD (Jamali grid)';
-      if (kpiCarbonPrev) kpiCarbonPrev.textContent = 'Target: < 4.700 ton';
+      if (kpiCarbonSub) kpiCarbonSub.textContent = 'CO₂ emissions MTD (Jamali grid)';
+      if (kpiCarbonPrev) kpiCarbonPrev.textContent = 'Target: < 4,700 ton';
       if (kpiCarbonDelta) {
         kpiCarbonDelta.className = 'kpi-delta-tag down';
         kpiCarbonDelta.textContent = 'On Track';
       }
 
       if (timeframeSummaryText) {
-        timeframeSummaryText.innerHTML = `Bulan Ini (MTD): Akumulasi <strong>${mMtd.kwh.toLocaleString('id-ID')} kWh</strong> (Biaya berjalan ${mMtd.cost} · Utilisasi rata-rata ${mMtd.util})`;
+        timeframeSummaryText.innerHTML = `This Month (MTD): Total <strong>${mMtd.kwh.toLocaleString('id-ID')} kWh</strong> (Current Cost ${mMtd.cost} · Average Utilization ${mMtd.util})`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = 'Akumulasi Konsumsi Energi Mingguan Bulan Ini (MTD)';
-      if (chart24hSub) chart24hSub.textContent = 'Pergerakan konsumsi energi dari Minggu 1 hingga Minggu berjalan';
+      if (chart24hTitle) chart24hTitle.textContent = 'Weekly Energy Consumption (MTD)';
+      if (chart24hSub) chart24hSub.textContent = 'Energy consumption progression from Week 1 to current week';
 
-      update24hChart([510000, 524000, 538000, 482000, 96400], 650000, 150000, null, ['Mgg 1', 'Mgg 2', 'Mgg 3', 'Mgg 4', 'Berjalan']);
+      update24hChart([510000, 524000, 538000, 482000, 96400], 650000, 150000, null, ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Current']);
     }
 
     // Common KPI updates
     if (kpiPfVal) kpiPfVal.textContent = data.pf;
-    if (kpiPfSub) kpiPfSub.textContent = 'Baik (target ≥ 0,85)';
+    if (kpiPfSub) kpiPfSub.textContent = 'Optimal (target ≥ 0.85)';
     if (kpiOnlineVal) kpiOnlineVal.textContent = data.online;
     if (kpiOnlineSub) kpiOnlineSub.textContent = data.alertCount;
 
@@ -1352,26 +1352,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableSectionSub = document.getElementById('tableSectionSub');
     if (tableSectionTitle && tableSectionSub) {
       if (filterKey === 'fac1') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 1 (14 Unit)';
-        tableSectionSub.textContent = 'Feeder F1-0 s/d F1-8 dan Trafo Tr 01 s/d Tr 05 Substation Factory 1.';
+        tableSectionTitle.textContent = 'Electrical Room · Factory 1 Directory (14 Units)';
+        tableSectionSub.textContent = 'Feeders F1-0 to F1-8 and Transformers Tr 01 to Tr 05 Substation Factory 1.';
       } else if (filterKey === 'fac2_1') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 2.1 (11 Unit)';
-        tableSectionSub.textContent = 'Feeder F4-0 s/d F4-5 dan Trafo Tr 06 s/d Tr 10 Substation Factory 2.1.';
+        tableSectionTitle.textContent = 'Electrical Room · Factory 2.1 Directory (11 Units)';
+        tableSectionSub.textContent = 'Feeders F4-0 to F4-5 and Transformers Tr 06 to Tr 10 Substation Factory 2.1.';
       } else if (filterKey === 'fac2') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 2 (12 Unit)';
-        tableSectionSub.textContent = 'Feeder F2-1 s/d F2-6 dan Trafo Tr 11 s/d Tr 16 Substation Factory 2.';
+        tableSectionTitle.textContent = 'Electrical Room · Factory 2 Directory (12 Units)';
+        tableSectionSub.textContent = 'Feeders F2-1 to F2-6 and Transformers Tr 11 to Tr 16 Substation Factory 2.';
       } else if (filterKey === 'fac3') {
-        tableSectionTitle.textContent = 'Daftar Meter Electrical Room · Factory 3 (7 Unit)';
-        tableSectionSub.textContent = 'Feeder F3-0 s/d F3-3 dan Trafo Tr 17 s/d Tr 19 Substation Factory 3.';
+        tableSectionTitle.textContent = 'Electrical Room · Factory 3 Directory (7 Units)';
+        tableSectionSub.textContent = 'Feeders F3-0 to F3-3 and Transformers Tr 17 to Tr 19 Substation Factory 3.';
       } else if (filterKey === 'forging') {
-        tableSectionTitle.textContent = 'Daftar Feeder Mesin Forging Press & Billet Heater (39 Unit)';
-        tableSectionSub.textContent = 'Mesin Press Komatsu 630T/1600T, Kurimoto, Titan 1200T, dan Billet Heater.';
+        tableSectionTitle.textContent = 'Forging Press & Billet Heater Directory (39 Units)';
+        tableSectionSub.textContent = 'Komatsu Presses 630T/1600T, Kurimoto, Titan 1200T, and Billet Heaters.';
       } else if (filterKey === 'heattreatment') {
-        tableSectionTitle.textContent = 'Daftar Feeder & Furnace Heat Treatment (29 Unit)';
-        tableSectionSub.textContent = 'Carburizing, Tempering, Washing, Normalizing, Shot Blast, & Vacuum Furnace.';
+        tableSectionTitle.textContent = 'Heat Treatment Furnace & Feeder Directory (29 Units)';
+        tableSectionSub.textContent = 'Carburizing, Tempering, Washing, Normalizing, Shot Blast, & Vacuum Furnaces.';
       } else {
-        tableSectionTitle.textContent = 'Daftar Lengkap Peralatan Substation & Mesin Produksi (111 Unit)';
-        tableSectionSub.textContent = 'Telemetri realtime 19 Transformator 20kV, 23 Feeder Gardu, 39 Lini Forging, dan 29 Furnace HT.';
+        tableSectionTitle.textContent = 'Digital Power Meter Directory (111 Units)';
+        tableSectionSub.textContent = 'Realtime telemetry for 19 Transformers 20kV, 23 Substation Feeders, 39 Forging Lines, and 29 HT Furnaces.';
       }
     }
   }
@@ -1753,8 +1753,8 @@ document.addEventListener('DOMContentLoaded', () => {
       attentionList.innerHTML = `
         <div class="attention-empty-state">
           <span class="empty-icon">✓</span>
-          <div style="font-weight:700; color:var(--text-primary);">Kondisi Sistem Optimal</div>
-          <div style="font-size:0.75rem;">Semua meter dan kubikel gardu di area ini beroperasi dalam batas toleransi aman.</div>
+          <div style="font-weight:700; color:var(--text-primary);">System Operating Normally</div>
+          <div style="font-size:0.75rem;">All meters and substation switchgear in this area are operating within safe tolerance limits.</div>
         </div>
       `;
       return;
@@ -1763,11 +1763,11 @@ document.addEventListener('DOMContentLoaded', () => {
     attentionList.innerHTML = alerts.map(item => {
       const sev = item.severity || 'warning';
       const pillClass = sev === 'critical' ? 'critical' : (sev === 'normal' ? 'normal' : 'warning');
-      const badgeText = item.badge || (sev === 'critical' ? 'Kritis' : (sev === 'normal' ? 'Normal' : 'Perhatian'));
+      const badgeText = item.badge || (sev === 'critical' ? 'Critical' : (sev === 'normal' ? 'Normal' : 'Warning'));
       const meterId = item.id || '';
 
       return `
-        <div class="attention-card ${sev}" onclick="${meterId ? `window.openMeterDetailById('${meterId}')` : ''}" title="Klik untuk membuka telemetri live ${meterId}">
+        <div class="attention-card ${sev}" onclick="${meterId ? `window.openMeterDetailById('${meterId}')` : ''}" title="Click to view live telemetry ${meterId}">
           <div class="attention-card-header">
             <div class="attention-badge-group">
               <span class="attention-pill ${pillClass}">
@@ -1777,7 +1777,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ${meterId ? `<span class="attention-id-badge">${meterId}</span>` : ''}
             </div>
             ${meterId ? `
-              <button class="btn-attention-action" onclick="window.openMeterDetailById('${meterId}'); event.stopPropagation();" title="Buka Detail Meter ${meterId}">
+              <button class="btn-attention-action" onclick="window.openMeterDetailById('${meterId}'); event.stopPropagation();" title="View Detail ${meterId}">
                 Detail ➔
               </button>
             ` : ''}
@@ -1794,7 +1794,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="attention-card-footer">
             <div class="attention-alert-desc">${item.note}</div>
-            ${item.action ? `<div class="attention-action-recommendation"><strong>Tindakan:</strong> ${item.action}</div>` : ''}
+            ${item.action ? `<div class="attention-action-recommendation"><strong>Action:</strong> ${item.action}</div>` : ''}
           </div>
         </div>
       `;
@@ -1901,7 +1901,7 @@ document.addEventListener('DOMContentLoaded', () => {
       meterTableBody.innerHTML = `
         <tr>
           <td colspan="14" style="text-align:center; padding:2.5rem; color:var(--text-muted);">
-            Tidak ditemukan data meter digital yang sesuai pencarian "${state.searchQuery}".
+            No digital power meter found matching "${state.searchQuery}".
           </td>
         </tr>
       `;
@@ -1922,7 +1922,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const deltaClass = isDown ? 'down' : 'up';
       const deltaArrow = isDown ? '▼' : '▲';
       const deltaSign = deltaKwh > 0 ? '+' : '';
-      const deltaBadgeHtml = `<span class="delta-badge ${deltaClass}" title="${deltaSign}${deltaKwh.toLocaleString('id-ID')} kWh (${deltaSign}${deltaPct}%) vs kemarin">${deltaArrow} ${deltaSign}${deltaKwh.toLocaleString('id-ID')} (${deltaSign}${deltaPct}%)</span>`;
+      const deltaBadgeHtml = `<span class="delta-badge ${deltaClass}" title="${deltaSign}${deltaKwh.toLocaleString('id-ID')} kWh (${deltaSign}${deltaPct}%) vs yesterday">${deltaArrow} ${deltaSign}${deltaKwh.toLocaleString('id-ID')} (${deltaSign}${deltaPct}%)</span>`;
 
       return `
         <tr>
@@ -2073,7 +2073,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!tbody) return;
 
     if (!meterList || meterList.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="${showFactoryCol ? 10 : 9}" style="text-align:center; padding:2rem; color:var(--text-muted);">Tidak ada data meter yang sesuai.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="${showFactoryCol ? 10 : 9}" style="text-align:center; padding:2rem; color:var(--text-muted);">No matching meter data found.</td></tr>`;
       return;
     }
 
@@ -2146,7 +2146,7 @@ document.addEventListener('DOMContentLoaded', () => {
       modalTitle.innerHTML = `
         <span>${meter.name}</span>
         <span class="status-dot-badge ${isWarn ? 'warning' : 'normal'}" style="font-size:0.72rem; font-weight:600;">
-          ${isWarn ? '▲ Peringatan Cos φ' : '● Normal Live'}
+          ${isWarn ? '▲ Cos φ Warning' : '● Normal Live'}
         </span>
       `;
     }
@@ -2168,24 +2168,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const carbonKg = ((meter.kwhToday || 0) * 0.79).toFixed(1);
       const estCostRp = Math.round((meter.kwhToday || 0) * 1444.70).toLocaleString('id-ID');
       const pfStatusHtml = meter.pf >= 0.85
-        ? `<strong style="color:var(--color-green);">${(meter.pf || 0.90).toFixed(2)}</strong> <span style="font-size:0.7rem; color:var(--color-green);">(Aman &ge; 0,85)</span>`
-        : `<strong style="color:var(--color-amber);">${(meter.pf || 0.84).toFixed(2)}</strong> <span style="font-size:0.7rem; color:var(--color-amber);">(Di bawah 0,85 - Cek APFC)</span>`;
+        ? `<strong style="color:var(--color-green);">${(meter.pf || 0.90).toFixed(2)}</strong> <span style="font-size:0.7rem; color:var(--color-green);">(Compliant &ge; 0.85)</span>`
+        : `<strong style="color:var(--color-amber);">${(meter.pf || 0.84).toFixed(2)}</strong> <span style="font-size:0.7rem; color:var(--color-amber);">(Below 0.85 - Check APFC)</span>`;
 
       modalBody.innerHTML = `
         <!-- 4 High-Density Live Telemetry Tiles -->
         <div class="detail-specs-grid">
           <div class="spec-tile">
-            <div class="spec-tile-label">Daya Aktif (Active kW)</div>
+            <div class="spec-tile-label">Active Power (kW)</div>
             <div class="spec-tile-val" style="color:var(--color-blue);">${(meter.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">kW</span></div>
-            <div style="font-size:0.68rem; color:var(--text-muted);">Reaktif: ${(meter.kvar || 0).toFixed(1)} kVAR</div>
+            <div style="font-size:0.68rem; color:var(--text-muted);">Reactive: ${(meter.kvar || 0).toFixed(1)} kVAR</div>
           </div>
           <div class="spec-tile">
-            <div class="spec-tile-label">Tegangan Sistem (V L-L)</div>
+            <div class="spec-tile-label">System Voltage (V L-L)</div>
             <div class="spec-tile-val">${(meter.voltage || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">V</span></div>
             <div style="font-size:0.68rem; color:var(--text-muted);">VR: ${(meter.vr || (meter.voltage/1.732)).toFixed(0)}V · VS: ${(meter.vs || (meter.voltage/1.732)).toFixed(0)}V · VT: ${(meter.vt || (meter.voltage/1.732)).toFixed(0)}V</div>
           </div>
           <div class="spec-tile">
-            <div class="spec-tile-label">Arus Beban (A Total)</div>
+            <div class="spec-tile-label">Load Current (A Total)</div>
             <div class="spec-tile-val">${(meter.current || 0).toFixed(1)} <span style="font-size:0.8rem; font-weight:400; color:var(--text-secondary);">A</span></div>
             <div style="font-size:0.68rem; color:var(--text-muted);">IR: ${(meter.ir || meter.current).toFixed(1)}A · IS: ${(meter.is || meter.current).toFixed(1)}A · IT: ${(meter.it || meter.current).toFixed(1)}A</div>
           </div>
@@ -2198,43 +2198,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <!-- Technical Parameters & Network Details -->
         <div class="param-table-box">
-          <div class="param-row"><span>Brand / Tipe Digital Meter:</span> <strong>${meter.brand || 'Schneider PowerLogic PM5500'}</strong></div>
-          <div class="param-row"><span>Modbus Slave ID & Protokol:</span> <strong>Unit ID ${meter.modbusId || 1} · RS485 RTU 9600 8-N-1</strong></div>
-          <div class="param-row"><span>Cisco Switch Port & Uplink:</span> <strong style="color:var(--color-blue);">${meter.ciscoSwitch || 'SW-FAC1-CORE01 (Port Gi1/0/2)'}</strong></div>
-          <div class="param-row"><span>Alamat IP Gateway & Subnet:</span> <strong>${meter.ip || '10.41.47.100'} / ${meter.subnet || '255.255.254.0'}</strong></div>
-          <div class="param-row"><span>Frekuensi Jaringan Listrik:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz (PLN Cikarang Grid)</strong></div>
+          <div class="param-row"><span>Brand / Meter Model:</span> <strong>${meter.brand || 'Schneider PowerLogic PM5500'}</strong></div>
+          <div class="param-row"><span>Modbus Slave ID &amp; Protocol:</span> <strong>Unit ID ${meter.modbusId || 1} · RS485 RTU 9600 8-N-1</strong></div>
+          <div class="param-row"><span>Cisco Switch Port &amp; Uplink:</span> <strong style="color:var(--color-blue);">${meter.ciscoSwitch || 'SW-FAC1-CORE01 (Port Gi1/0/2)'}</strong></div>
+          <div class="param-row"><span>Gateway IP &amp; Subnet:</span> <strong>${meter.ip || '10.41.47.100'} / ${meter.subnet || '255.255.254.0'}</strong></div>
+          <div class="param-row"><span>Grid Frequency:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz (PLN Cikarang Grid)</strong></div>
           <div class="param-row"><span>Total Harmonic Distortion:</span> <strong>THD-V: ${(meter.thdV || 1.8).toFixed(1)}% · THD-I: ${(meter.thdI || 3.4).toFixed(1)}%</strong></div>
-          <div class="param-row"><span>Energi Terpakai Hari Ini:</span> <strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh (Rp ${estCostRp})</strong></div>
-          <div class="param-row"><span>Jejak Emisi Karbon (ESG CO₂e):</span> <strong style="color:var(--color-teal);">${carbonKg} kg CO₂e (0,79 kg/kWh)</strong></div>
+          <div class="param-row"><span>Energy Consumed Today:</span> <strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh (Rp ${estCostRp})</strong></div>
+          <div class="param-row"><span>Carbon Footprint (ESG CO₂e):</span> <strong style="color:var(--color-teal);">${carbonKg} kg CO₂e (0.79 kg/kWh)</strong></div>
         </div>
 
         <!-- Modbus Register Mapping Table -->
         <div style="margin-top:0.85rem;">
           <div style="font-size:0.75rem; font-weight:700; color:var(--text-primary); margin-bottom:0.35rem; display:flex; align-items:center; gap:0.4rem;">
-            <span>Peta Register Modbus Live (Schneider / Mitsubishi)</span>
+            <span>Live Modbus Register Map (Schneider / Mitsubishi)</span>
             <span style="font-size:0.65rem; color:var(--color-teal); background:rgba(45,212,191,0.1); padding:1px 6px; border-radius:3px;">Polling Rate 1000ms</span>
           </div>
           <table class="modbus-reg-table">
             <thead>
               <tr>
-                <th>Register</th><th>Deskripsi Parameter</th><th>Tipe Data</th><th>Nilai Realtime</th><th>Status</th>
+                <th>Register</th><th>Parameter Description</th><th>Data Type</th><th>Realtime Value</th><th>Status</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><code>3001 (0x0BB8)</code></td><td>Active Power Total (kW)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.kw || 0).toFixed(1)} kW</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+                <td><code>3001 (0x0BB8)</code></td><td>Active Power Total (kW)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.kw || 0).toFixed(1)} kW</strong></td><td style="color:var(--color-green);">✓ Synchronized</td>
               </tr>
               <tr>
-                <td><code>3003 (0x0BBA)</code></td><td>Voltage Line-to-Line (V L-L)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.voltage || 0).toFixed(1)} V</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+                <td><code>3003 (0x0BBA)</code></td><td>Voltage Line-to-Line (V L-L)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.voltage || 0).toFixed(1)} V</strong></td><td style="color:var(--color-green);">✓ Synchronized</td>
               </tr>
               <tr>
-                <td><code>3005 (0x0BBC)</code></td><td>Current Phase Average (A)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.current || 0).toFixed(1)} A</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+                <td><code>3005 (0x0BBC)</code></td><td>Current Phase Average (A)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.current || 0).toFixed(1)} A</strong></td><td style="color:var(--color-green);">✓ Synchronized</td>
               </tr>
               <tr>
-                <td><code>3007 (0x0BBE)</code></td><td>Power Factor Total (Cos φ)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.pf || 0.90).toFixed(2)}</strong></td><td style="color:var(--color-green);">✓ Sinkron</td>
+                <td><code>3007 (0x0BBE)</code></td><td>Power Factor Total (Cos φ)</td><td>Float32 (2 Regs)</td><td><strong>${(meter.pf || 0.90).toFixed(2)}</strong></td><td style="color:var(--color-green);">✓ Synchronized</td>
               </tr>
               <tr>
-                <td><code>3009 (0x0BC0)</code></td><td>Total Active Energy (kWh)</td><td>Int64 (4 Regs)</td><td><strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></td><td style="color:var(--color-green);">✓ Terakumulasi</td>
+                <td><code>3009 (0x0BC0)</code></td><td>Total Active Energy (kWh)</td><td>Int64 (4 Regs)</td><td><strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></td><td style="color:var(--color-green);">✓ Accumulated</td>
               </tr>
             </tbody>
           </table>
@@ -2243,18 +2243,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <!-- Interactive Actions Bar -->
         <div class="modal-actions-bar">
           <div class="modal-actions-left">
-            <button class="btn-action-telemetry" onclick="window.copyTelemetry('${meter.id}')" title="Salin seluruh parameter teknis meter ke clipboard">
+            <button class="btn-action-telemetry" onclick="window.copyTelemetry('${meter.id}')" title="Copy all meter telemetry parameters to clipboard">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
               </svg>
-              Salin Telemetri
+              Copy Telemetry
             </button>
-            <button class="btn-action-ping" onclick="window.testPingMeter('${meter.ip}')" title="Uji koneksi ping Modbus TCP ke meter ini">
+            <button class="btn-action-ping" onclick="window.testPingMeter('${meter.ip}')" title="Test Modbus TCP ping connection to this meter">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
               </svg>
-              Uji Ping Gateway
+              Ping Gateway
             </button>
           </div>
           <button class="btn-action-close-red" onclick="window.closeAllModals()">
@@ -2262,7 +2262,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
-            Tutup Jendela
+            Close Window
           </button>
         </div>
       `;
@@ -2466,7 +2466,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
       btnToggleTheme.addEventListener('click', () => {
         const isDark = document.body.classList.toggle('dark-theme');
         if (themeToggleIcon) themeToggleIcon.textContent = isDark ? '☀️' : '🌙';
-        if (themeToggleText) themeToggleText.textContent = isDark ? 'Terang' : 'Gelap';
+        if (themeToggleText) themeToggleText.textContent = isDark ? 'Light' : 'Dark';
         applyThemeToCharts(isDark);
       });
     }
@@ -2890,7 +2890,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
   };
 
   window.exportToCsv = function() {
-    const headers = ['ID Meter', 'Nama Feeder/Panel', 'Kategori', 'Sub Area', 'Brand Meter', 'IP Address', 'Daya kW', 'Tegangan V', 'Arus A', 'Cos Phi', 'Energi kWh', 'Estimasi Biaya Rp', 'Emisi CO2 kg', 'Status'];
+    const headers = ['Meter ID', 'Feeder / Panel Name', 'Category', 'Sub Area', 'Meter Brand', 'IP Address', 'Active Power (kW)', 'Voltage (V)', 'Current (A)', 'Power Factor (Cos φ)', 'Energy Today (kWh)', 'Estimated Cost (Rp)', 'CO2 Emission (kg)', 'Status'];
     const rows = state.meters.map(m => [
       m.id,
       `"${(m.name || '').replace(/"/g, '""')}"`,
@@ -2916,7 +2916,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    showToast('✓ Laporan CSV 38 Meter Musashi berhasil diunduh!');
+    showToast('✓ CSV Report for 111 Musashi Meters exported successfully!');
   };
 
   // ================= 12. TV MODE & AUTO-CYCLE ROTATION =================
@@ -2931,7 +2931,7 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
     const tvCycleBadge = document.getElementById('tvCycleBadge');
 
     if (isTv) {
-      if (tvBtnText) tvBtnText.textContent = 'Keluar TV';
+      if (tvBtnText) tvBtnText.textContent = 'Exit TV';
       if (tvCycleBadge) tvCycleBadge.style.display = 'inline-flex';
       
       // Request fullscreen if supported
@@ -2939,9 +2939,9 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
         document.documentElement.requestFullscreen().catch(() => {});
       }
       startTvAutoCycle();
-      showToast('Mode TV / Kiosk Substation Aktif (Tekan T atau Esc untuk keluar)');
+      showToast('TV / Substation Kiosk Mode Active (Press T or Esc to exit)');
     } else {
-      if (tvBtnText) tvBtnText.textContent = 'Mode TV';
+      if (tvBtnText) tvBtnText.textContent = 'TV Mode';
       if (tvCycleBadge) tvCycleBadge.style.display = 'none';
       stopTvAutoCycle();
       if (document.fullscreenElement && document.exitFullscreen) {
