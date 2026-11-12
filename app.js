@@ -2277,7 +2277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!meter) return;
 
     const text = `[POWER METER TELEMETRY · PT MUSASHI AUTO PARTS INDONESIA]
-Meter ID: ${meter.id}
+Machine Code: ${meter.id}
 Feeder Name: ${meter.name}
 Area: ${meter.factoryLabel || meter.factory} - ${meter.subArea}
 Brand: ${meter.brand}
