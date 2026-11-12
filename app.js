@@ -438,38 +438,38 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   };
 
-  // Perlu Perhatian Alert Items by Category & Factory (SCADA-Grade)
+  // Attention Required Alert Items by Category & Factory (SCADA-Grade)
   const ATTENTION_ALERTS = {
     all: [
-      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank APFC.' },
-      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press Titan 1200T meningkat pada shift 1.', action: 'Pantau arus kubikel TM 6.6kV dan koordinasi APFC.' },
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift siang tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada panel distribusi.' }
+      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
     ],
     electrical: [
-      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah standar PLN (≥ 0,85). Berisiko denda penalti kVARh bulanan.', action: 'Inspeksi & periksa step regulator kapasitor bank APFC.' },
-      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press Titan 1200T meningkat pada shift 1.', action: 'Pantau arus kubikel TM 6.6kV dan koordinasi APFC.' },
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'Beban Induktif Tinggi', note: 'Beban induktif mesin forging press shift siang tinggi (Cos φ 0,83).', action: 'Aktifkan kompensasi lokal pada panel distribusi.' }
+      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
     ],
     fac1: [
-      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Cos φ Rendah (0,84)', note: 'Power factor 0,84 di bawah ambang PLN. Perlu aktivasi bank kapasitor tambahan.', action: 'Cek Kapasitor Bank APFC Panel F1.' },
-      { id: 'F1-8', title: 'Feeder F1-8 BH Press Auto', area: 'Factory 1 · Feeder TM 6.6kV', severity: 'warning', badge: 'THD-I 4,8%', note: 'Harmonik beban non-linear heater induksi terdeteksi mendekati ambang 5,0%.', action: 'Pantau filter harmonik aktif (AHF) pada kubikel 20kV.' }
+      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 below PLN threshold. Capacitor bank step activation required.', action: 'Check APFC Capacitor Bank Panel F1.' },
+      { id: 'F1-8', title: 'Feeder F1-8 BH Press Auto', area: 'Factory 1 · Feeder TM 6.6kV', severity: 'warning', badge: 'THD-I 4.8%', note: 'Non-linear induction heater harmonic distortion approaching 5.0% threshold.', action: 'Monitor Active Harmonic Filter (AHF) on 20kV cubicle.' }
     ],
     fac2_1: [
-      { id: 'TR-10', title: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', area: 'Electrical Room 2.1 · Gardu 20kV', severity: 'normal', badge: 'Sistem Optimal', note: 'Billet Heater Komatsu 1600T dan LVMDB 3P beroperasi normal Cos φ 0,93.', action: 'Monitoring telemetri online aktif, tidak ada anomali.' }
+      { id: 'TR-10', title: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', area: 'Electrical Room 2.1 · Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Billet Heater Komatsu 1600T & LVMDB 3P operating normally at Cos φ 0.93.', action: 'Live telemetry active, no anomalies detected.' }
     ],
     fac2: [
-      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Substation Forging APFC', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press Titan 1200T mendekati kapasitas feeder.', action: 'Reset APFC controller & cek temperatur kubikel.' },
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · LMVDP 200V', severity: 'warning', badge: 'Cos φ 0,83', note: 'Beban induktif motor forging press shift siang meningkat.', action: 'Aktifkan kompensasi lokal pada panel LMVDP.' }
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Substation Forging APFC', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load approaching feeder capacity.', action: 'Reset APFC controller & check cubicle temperature.' },
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · LMVDP 200V', severity: 'warning', badge: 'Cos φ 0.83', note: 'Day shift inductive motor load on forging press increased.', action: 'Enable local compensation on LMVDP panel.' }
     ],
     fac3: [
-      { id: 'TR-17', title: 'Semua Trafo & Panel Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'Sistem Optimal', note: 'Cos φ rata-rata 0,92 – Bebas denda kVARh PLN, suhu trafo stabil 65°C.', action: 'Operasional normal, pertahankan jadwal inspeksi preventif mingguan.' }
+      { id: 'TR-17', title: 'All Transformers & Panels Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Average Cos φ 0.92 – Penalty-free PLN compliance, transformer oil temperature stable 65°C.', action: 'Normal operation, maintain weekly preventive inspection schedule.' }
     ],
     forging: [
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Forging Substation 200V', severity: 'warning', badge: 'Cos φ 0,84', note: 'Beban impulsif mesin forging press memerlukan kompensasi APFC dinamis.', action: 'Jadwalkan switching step APFC bank untuk meredam beban reaktif impulsif.' },
-      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Forging APFC Feeder', severity: 'critical', badge: 'Beban Puncak', note: 'Beban motor press 1200T meningkatkan tarikan daya reaktif kVAR.', action: 'Periksa setting proteksi arus lebih kubikel TM.' }
+      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Forging Substation 200V', severity: 'warning', badge: 'Cos φ 0.84', note: 'Impulsive forging press load requires dynamic APFC switching.', action: 'Schedule APFC step switching to dampen impulsive reactive power.' },
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Forging APFC Feeder', severity: 'critical', badge: 'Peak Demand', note: '1200T press motor increasing kVAR reactive demand.', action: 'Verify overcurrent protection relay settings on MV cubicle.' }
     ],
     heattreatment: [
-      { id: 'TR-01', title: 'Semua Beban Heat Treatment Normal', area: 'Substation HT Fac 1, 2, 2.1, 3', severity: 'normal', badge: 'Cos φ 0,94', note: 'Pemanas induksi billet & furnace carburizing beroperasi stabil dan efisien.', action: 'Pertahankan setting suhu dan monitoring data telemetri harian.' }
+      { id: 'TR-01', title: 'All Heat Treatment Loads Normal', area: 'Substation HT Fac 1, 2, 2.1, 3', severity: 'normal', badge: 'Cos φ 0.94', note: 'Induction billet heaters & carburizing furnaces operating stably and efficiently.', action: 'Maintain temperature setpoints and daily telemetry monitoring.' }
     ]
   };
 
@@ -1398,7 +1398,7 @@ document.addEventListener('DOMContentLoaded', () => {
           labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
           datasets: [
             {
-              label: 'Hari Ini (Live)',
+              label: 'Today (Live)',
               data: CATEGORY_BASELINES.all.curve24h,
               borderColor: '#0284c7',
               borderWidth: 2.8,
@@ -1412,7 +1412,7 @@ document.addEventListener('DOMContentLoaded', () => {
               pointHoverBorderWidth: 2
             },
             {
-              label: 'Kemarin (H-1)',
+              label: 'Yesterday (H-1)',
               data: CATEGORY_BASELINES.all.curve24hYesterday,
               borderColor: '#94a3b8',
               borderWidth: 2,
@@ -1461,7 +1461,7 @@ document.addEventListener('DOMContentLoaded', () => {
                       const diff = todayVal - yestVal;
                       const pct = yestVal ? ((diff / yestVal) * 100).toFixed(1) : '0';
                       const sign = diff > 0 ? '+' : '';
-                      return `Selisih (Δ): ${sign}${diff.toLocaleString('id-ID')} kW (${sign}${pct}%)`;
+                      return `Delta (Δ): ${sign}${diff.toLocaleString('id-ID')} kW (${sign}${pct}%)`;
                     }
                   }
                   return '';
@@ -1607,7 +1607,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dataset 0: Primary series
     chart24hInstance.data.datasets[0].data = newData;
-    chart24hInstance.data.datasets[0].label = (state.activePeriod === 'yesterday') ? 'Kemarin' : (state.activePeriod === '7days' ? 'Konsumsi Harian (kWh)' : (state.activePeriod === 'month' ? 'Konsumsi Mingguan (kWh)' : 'Hari Ini (Live)'));
+    chart24hInstance.data.datasets[0].label = (state.activePeriod === 'yesterday') ? 'Yesterday' : (state.activePeriod === '7days' ? 'Daily Consumption (kWh)' : (state.activePeriod === 'month' ? 'Weekly Consumption (kWh)' : 'Today (Live)'));
 
     // Dataset 1: Comparison series (Kemarin H-1)
     if (chart24hInstance.data.datasets[1]) {
@@ -2276,27 +2276,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const meter = state.meters.find(m => m.id === meterId);
     if (!meter) return;
 
-    const text = `[TELEMETRI POWER METER PT MUSASHI AUTO PARTS INDONESIA]
-ID Meter: ${meter.id}
-Nama Feeder: ${meter.name}
+    const text = `[POWER METER TELEMETRY · PT MUSASHI AUTO PARTS INDONESIA]
+Meter ID: ${meter.id}
+Feeder Name: ${meter.name}
 Area: ${meter.factoryLabel || meter.factory} - ${meter.subArea}
 Brand: ${meter.brand}
-IP Gateway: ${meter.ip} | Subnet: ${meter.subnet}
-Switch Cisco: ${meter.ciscoSwitch}
-Daya Aktif: ${(meter.kw || 0).toFixed(1)} kW
-Tegangan (V L-L): ${(meter.voltage || 0).toFixed(1)} V (VR: ${(meter.vr||0).toFixed(0)}V, VS: ${(meter.vs||0).toFixed(0)}V, VT: ${(meter.vt||0).toFixed(0)}V)
-Arus Beban: ${(meter.current || 0).toFixed(1)} A (IR: ${(meter.ir||0).toFixed(1)}A, IS: ${(meter.is||0).toFixed(1)}A, IT: ${(meter.it||0).toFixed(1)}A)
+Gateway IP: ${meter.ip} | Subnet: ${meter.subnet}
+Cisco Switch: ${meter.ciscoSwitch}
+Active Power: ${(meter.kw || 0).toFixed(1)} kW
+System Voltage (V L-L): ${(meter.voltage || 0).toFixed(1)} V (VR: ${(meter.vr||0).toFixed(0)}V, VS: ${(meter.vs||0).toFixed(0)}V, VT: ${(meter.vt||0).toFixed(0)}V)
+Load Current: ${(meter.current || 0).toFixed(1)} A (IR: ${(meter.ir||0).toFixed(1)}A, IS: ${(meter.is||0).toFixed(1)}A, IT: ${(meter.it||0).toFixed(1)}A)
 Power Factor (Cos φ): ${(meter.pf || 0.90).toFixed(2)}
-Frekuensi: ${(meter.freq || 50.0).toFixed(2)} Hz
+Frequency: ${(meter.freq || 50.0).toFixed(2)} Hz
 THD-V: ${(meter.thdV || 0).toFixed(1)}% | THD-I: ${(meter.thdI || 0).toFixed(1)}%
-Energi Hari Ini: ${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh
-Estimasi Biaya: Rp ${Math.round((meter.kwhToday || 0) * 1444.70).toLocaleString('id-ID')}
-Emisi CO2: ${((meter.kwhToday || 0) * 0.79).toFixed(1)} kg CO2e
-Waktu Log: ${new Date().toLocaleString('id-ID')}`;
+Energy Today: ${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh
+Estimated Cost: Rp ${Math.round((meter.kwhToday || 0) * 1444.70).toLocaleString('id-ID')}
+CO2 Emission: ${((meter.kwhToday || 0) * 0.79).toFixed(1)} kg CO2e
+Timestamp: ${new Date().toLocaleString('id-ID')}`;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(() => {
-        showToast(`✓ Telemetri ${meter.id} berhasil disalin ke clipboard!`);
+        showToast(`✓ Telemetry for ${meter.id} copied to clipboard!`);
       }).catch(() => {
         copyFallback(text, meter.id);
       });
@@ -2682,16 +2682,16 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
   </table>
 
   <!-- 3. Grafik Visual 1: Distribusi Konsumsi Energi per Factory -->
-  <div class="section-header">📊 1. DISTRIBUSI KONSUMSI ENERGI LISTRIK PER AREA PABRIK (FACTORY DISTRIBUTION)</div>
+  <div class="section-header">📊 1. ENERGY CONSUMPTION DISTRIBUTION BY FACTORY AREA</div>
   <table class="chart-box-table" cellpadding="0" cellspacing="0">
     <thead>
       <tr>
-        <th class="chart-th" width="22%">Area Substation</th>
-        <th class="chart-th" width="10%">Unit Meter</th>
-        <th class="chart-th" width="14%">Daya Aktif (kW)</th>
-        <th class="chart-th" width="14%">Energi (kWh)</th>
-        <th class="chart-th" width="10%">Persentase</th>
-        <th class="chart-th" width="30%">Grafik Batang Proporsional</th>
+        <th class="chart-th" width="22%">Substation Area</th>
+        <th class="chart-th" width="10%">Meter Units</th>
+        <th class="chart-th" width="14%">Active Power (kW)</th>
+        <th class="chart-th" width="14%">Energy (kWh)</th>
+        <th class="chart-th" width="10%">Share (%)</th>
+        <th class="chart-th" width="30%">Proportional Bar Chart</th>
       </tr>
     </thead>
     <tbody>
@@ -2759,17 +2759,17 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
   </table>
 
   <!-- 4. Grafik Visual 2: Top 8 Beban Listrik Terbesar -->
-  <div class="section-header">📈 2. TOP 8 KONSUMEN BEBAN LISTRIK TERBESAR (PEAK LOADERS)</div>
+  <div class="section-header">📈 2. TOP 8 HIGHEST ELECTRICAL CONSUMERS (PEAK LOADERS)</div>
   <table class="chart-box-table" cellpadding="0" cellspacing="0">
     <thead>
       <tr>
         <th class="chart-th" width="5%">Rank</th>
-        <th class="chart-th" width="10%">ID Meter</th>
-        <th class="chart-th" width="25%">Nama Feeder / Mesin Produksi</th>
-        <th class="chart-th" width="18%">Sub Area Lokasi</th>
-        <th class="chart-th" width="12%">Daya Aktif (kW)</th>
-        <th class="chart-th" width="12%">Energi (kWh)</th>
-        <th class="chart-th" width="18%">Grafik Proporsi Beban</th>
+        <th class="chart-th" width="10%">Meter ID</th>
+        <th class="chart-th" width="25%">Feeder / Machine Name</th>
+        <th class="chart-th" width="18%">Sub Area Location</th>
+        <th class="chart-th" width="12%">Active Power (kW)</th>
+        <th class="chart-th" width="12%">Energy (kWh)</th>
+        <th class="chart-th" width="18%">Load Proportion Bar</th>
       </tr>
     </thead>
     <tbody>
@@ -2797,24 +2797,24 @@ Waktu Log: ${new Date().toLocaleString('id-ID')}`;
     </tbody>
   </table>
 
-  <!-- 5. Tabel Detail 38 Digital Power Meter -->
-  <div class="section-header">📋 3. TABEL TELEMETRI LENGKAP 38 DIGITAL POWER METER (SCHNEIDER & MITSUBISHI)</div>
+  <!-- 5. Tabel Detail Digital Power Meter -->
+  <div class="section-header">📋 3. COMPLETE DIGITAL POWER METER TELEMETRY TABLE (SCHNEIDER &amp; MITSUBISHI)</div>
   <table class="data-table" cellpadding="0" cellspacing="0">
     <thead>
       <tr>
         <th width="3%">No</th>
-        <th width="6%">ID Meter</th>
-        <th width="17%">Nama Feeder / Panel Distribusi</th>
-        <th width="8%">Kategori</th>
-        <th width="12%">Area & Substation</th>
-        <th width="12%">Brand Digital Meter</th>
+        <th width="6%">Meter ID</th>
+        <th width="17%">Feeder / Distribution Panel Name</th>
+        <th width="8%">Category</th>
+        <th width="12%">Area &amp; Substation</th>
+        <th width="12%">Digital Meter Brand</th>
         <th width="9%">IP Gateway</th>
-        <th width="6%">Daya (kW)</th>
-        <th width="5%">Tegangan (V)</th>
-        <th width="5%">Arus (A)</th>
+        <th width="6%">Power (kW)</th>
+        <th width="5%">Voltage (V)</th>
+        <th width="5%">Current (A)</th>
         <th width="5%">Cos φ</th>
-        <th width="7%">Energi (kWh)</th>
-        <th width="8%">Biaya (Rp)</th>
+        <th width="7%">Energy (kWh)</th>
+        <th width="8%">Cost (Rp)</th>
         <th width="6%">Status</th>
       </tr>
     </thead>
