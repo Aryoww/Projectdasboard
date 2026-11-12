@@ -1932,7 +1932,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
           <td style="color:var(--text-secondary);">${m.categoryLabel || m.category}</td>
           <td class="col-mono" style="color:var(--color-blue); font-size:0.78rem;">${m.ip || '192.168.10.x'}</td>
-          <td class="col-num" style="font-weight:600; color:#ffffff;">
+          <td class="col-num" style="font-weight:600; color:var(--text-primary);">
             ${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </td>
           <td class="col-num">${(m.voltage || 0).toFixed(1)}</td>
@@ -1940,7 +1940,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td class="col-num" style="color:${(m.pf < 0.85) ? 'var(--color-amber)' : 'var(--color-green)'};">
             ${(m.pf || 0.89).toFixed(2)}
           </td>
-          <td class="col-num" style="color:#ffffff; font-weight:600;">
+          <td class="col-num" style="color:var(--text-primary); font-weight:600;">
             ${kwhTodayVal.toLocaleString('id-ID')}
           </td>
           <td class="col-num" style="color:var(--text-secondary);">
@@ -2092,7 +2092,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
           ${factoryColHtml}
           <td class="col-mono" style="color:var(--color-blue); font-size:0.76rem;">${m.ip || '10.41.47.x'}</td>
-          <td class="col-num" style="font-weight:600; color:#ffffff;">
+          <td class="col-num" style="font-weight:600; color:var(--text-primary);">
             ${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </td>
           <td class="col-num">${(m.voltage || 0).toFixed(1)}</td>

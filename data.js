@@ -267,7 +267,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-01",
-    "name": "Transformer 01 - BH FO 6.6kV",
+    "name": "BH FO 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -305,7 +305,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-02",
-    "name": "Transformer 02 - UTY 380V",
+    "name": "UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -343,7 +343,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-03",
-    "name": "Transformer 03 - FO & HT 200V",
+    "name": "FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -381,7 +381,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-04",
-    "name": "Transformer 04 - Mach 200V",
+    "name": "Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -419,7 +419,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-05",
-    "name": "Transformer 05 - FO & HT 200V",
+    "name": "FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -685,7 +685,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-06",
-    "name": "Transformer 06 - UTY & FO 380V",
+    "name": "UTY & FO 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -723,7 +723,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-07",
-    "name": "Transformer 07 - FO 200V",
+    "name": "FO 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -761,7 +761,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-08",
-    "name": "Transformer 08 - FO & HT 200V",
+    "name": "FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -799,7 +799,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-09",
-    "name": "Transformer 09 - UTY 380V",
+    "name": "UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -837,7 +837,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-10",
-    "name": "Transformer 10 - BH Komatsu 1600 6.6kV",
+    "name": "BH Komatsu 1600 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1103,7 +1103,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-11",
-    "name": "Transformer 11 - BH N1300 6.6kV",
+    "name": "BH N1300 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1141,7 +1141,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-12",
-    "name": "Transformer 12 - FO & HT 200V",
+    "name": "FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1179,7 +1179,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-13",
-    "name": "Transformer 13 - Mach 200V",
+    "name": "Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1217,7 +1217,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-14",
-    "name": "Transformer 14 - UTY 380V",
+    "name": "UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1255,7 +1255,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-15",
-    "name": "Transformer 15 - BH Kurimoto 6.6kV",
+    "name": "BH Kurimoto 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1293,7 +1293,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-16",
-    "name": "Transformer 16 - BH N1600 6.6kV",
+    "name": "BH N1600 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1483,7 +1483,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-17",
-    "name": "Transformer 17 - UTY & Forg 380V",
+    "name": "UTY & Forg 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1521,7 +1521,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-18",
-    "name": "Transformer 18 - Mach 200V",
+    "name": "Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1559,7 +1559,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-19",
-    "name": "Transformer 19 - HT 200V",
+    "name": "HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
