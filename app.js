@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
       kwh: 197064,
       cost: 'Rp 285 jt',
       peak: '16.820',
-      peakSub: 'Puncak hari ini · Batas PLN aman',
+      peakSub: "Today's peak · Within Cikarang Listrindo limit",
       util: '69,4%',
       utilSub: 'Tr 01 s/d Tr 19 (20.350 kVA)',
       pf: '0,90',
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       kwh: 197064,
       cost: 'Rp 285 jt',
       peak: '16.820',
-      peakSub: 'Puncak hari ini · Batas PLN aman',
+      peakSub: "Today's peak · Within Cikarang Listrindo limit",
       util: '69,4%',
       utilSub: 'Tr 01 s/d Tr 19 (20.350 kVA)',
       pf: '0,90',
@@ -441,28 +441,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // Attention Required Alert Items by Category & Factory (SCADA-Grade)
   const ATTENTION_ALERTS = {
     all: [
-      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below Cikarang Listrindo standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
       { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
       { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
     ],
     electrical: [
-      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below Cikarang Listrindo standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
       { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
       { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
     ],
     fac1: [
-      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 below PLN threshold. Capacitor bank step activation required.', action: 'Check APFC Capacitor Bank Panel F1.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 below Cikarang Listrindo threshold. Capacitor bank step activation required.', action: 'Check APFC Capacitor Bank Panel F1.' },
       { id: 'F1-8', title: 'Feeder F1-8 Billet Heater Press Auto', area: 'Factory 1 · Feeder TM 6.6kV', severity: 'warning', badge: 'THD-I 4.8%', note: 'Non-linear induction heater harmonic distortion approaching 5.0% threshold.', action: 'Monitor Active Harmonic Filter (AHF) on 20kV cubicle.' }
     ],
     fac2_1: [
-      { id: 'TR-10', title: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', area: 'Electrical Room 2.1 · Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Billet Heater Komatsu 1600T & LV-MDB 3P operating normally at Cos φ 0.93.', action: 'Live telemetry active, no anomalies detected.' }
+      { id: 'TR-10', title: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', area: 'Electrical Room 2.1 · 20kV Substation', severity: 'normal', badge: 'System Optimal', note: 'Billet Heater Komatsu 1600T & LV-MDB 3P operating normally at Cos φ 0.93.', action: 'Live telemetry active, no anomalies detected.' }
     ],
     fac2: [
       { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Substation Forging APFC', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load approaching feeder capacity.', action: 'Reset APFC controller & check cubicle temperature.' },
       { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · LMVDP 200V', severity: 'warning', badge: 'Cos φ 0.83', note: 'Day shift inductive motor load on forging press increased.', action: 'Enable local compensation on LMVDP panel.' }
     ],
     fac3: [
-      { id: 'TR-17', title: 'All Outgoing Trafos & Panels Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Average Cos φ 0.92 – Penalty-free PLN compliance, transformer oil temperature stable 65°C.', action: 'Normal operation, maintain weekly preventive inspection schedule.' }
+      { id: 'TR-17', title: 'All Outgoing Trafos & Panels Normal', area: 'Factory 3 · Electrical Room 3', severity: 'normal', badge: 'System Optimal', note: 'Average Cos φ 0.92 – Penalty-free Cikarang Listrindo compliance, transformer oil temperature stable 65°C.', action: 'Normal operation, maintain weekly preventive inspection schedule.' }
     ],
     forging: [
       { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Forging Substation 200V', severity: 'warning', badge: 'Cos φ 0.84', note: 'Impulsive forging press load requires dynamic APFC switching.', action: 'Schedule APFC step switching to dampen impulsive reactive power.' },
@@ -766,44 +766,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Update Header Banner
     const headerConfigs = {
       'view-dashboard': {
-        title: 'Dashboard Utama',
-        subtitle: 'Selamat datang, Division Head & Tim Utility Engineering PT Musashi Auto Parts Indonesia',
-        tag: 'Gardu 20kV Cubicle Schneider SM6 · Seluruh Substation Pabrik'
+        title: 'Main Dashboard',
+        subtitle: 'Division Head & Utility Engineering Team · PT Musashi Auto Parts Indonesia',
+        tag: 'Cubicle Schneider SM6 · All Factory Substations'
       },
       'view-electrical-1': {
         title: 'Electrical Room 1 · Factory 1',
-        subtitle: 'Gardu 20kV Suplai Billet Heater Komatsu, LVMDB 380V/200V, dan Trafo Tr 01 s/d Tr 05',
-        tag: 'Substation Factory 1 · 14 Unit Feeder & Trafo Live'
+        subtitle: 'Supplying Billet Heater Komatsu, LV-MDB 380V/200V, and Outgoing Trafo 01 to 05',
+        tag: 'Substation Factory 1 · 14 Live Feeder & Trafo Units'
       },
       'view-electrical-2-1': {
         title: 'Electrical Room 2.1 · Factory 2.1',
-        subtitle: 'Gardu 20kV Suplai Billet Heater 1100 kVA, LV-MDB, dan Trafo Tr 06 s/d Tr 10',
-        tag: 'Substation Factory 2.1 · 11 Unit Feeder & Trafo Live'
+        subtitle: 'Supplying Billet Heater 1100 kVA, LV-MDB 3P, and Outgoing Trafo 06 to 10',
+        tag: 'Substation Factory 2.1 · 11 Live Feeder & Trafo Units'
       },
       'view-electrical-2': {
         title: 'Electrical Room 2 · Factory 2',
-        subtitle: 'Gardu 20kV Suplai Forging Titan 1200T, Kurimoto, dan Trafo Tr 11 s/d Tr 16',
-        tag: 'Substation Factory 2 · 12 Unit Feeder & Trafo Live'
+        subtitle: 'Supplying Forging Titan 1200T, Kurimoto, and Outgoing Trafo 11 to 16',
+        tag: 'Substation Factory 2 · 12 Live Feeder & Trafo Units'
       },
       'view-electrical-3': {
         title: 'Electrical Room 3 · Factory 3',
-        subtitle: 'Gardu 20kV Suplai Pompa Cooling Tower Sentral, HT Carburizing, dan Trafo Tr 17 s/d Tr 19',
-        tag: 'Substation Factory 3 · 7 Unit Feeder & Trafo Live'
+        subtitle: 'Supplying Central Cooling Tower Pumps, HT Carburizing, and Outgoing Trafo 17 to 19',
+        tag: 'Substation Factory 3 · 7 Live Feeder & Trafo Units'
       },
       'view-forging': {
-        title: 'Electrical Substation · Lini Mesin Forging Press',
-        subtitle: 'Monitoring Khusus Feeder Komatsu 630T/1600T, Kurimoto, Titan 1200T, dan Billet Heater',
-        tag: '39 Unit Feeder Forging · Factory 1, 2, dan 3'
+        title: 'Electrical Substation · Forging Press Lines',
+        subtitle: 'Dedicated Monitoring for Komatsu 630T/1600T, Kurimoto, Titan 1200T, and Billet Heater Feeders',
+        tag: '39 Forging Feeders · Factory 1, 2, and 3'
       },
       'view-heattreatment': {
-        title: 'Electrical Substation · Lini Heat Treatment (HT)',
-        subtitle: 'Monitoring Khusus Billet Heater 6.6kV, Carburizing, Tempering, Washing, & Normalizing',
-        tag: '29 Unit Feeder Heat Treatment · Pabrik Musashi'
+        title: 'Electrical Substation · Heat Treatment (HT) Lines',
+        subtitle: 'Dedicated Monitoring for Billet Heater 6.6kV, Carburizing, Tempering, Washing, & Normalizing',
+        tag: '29 Heat Treatment Feeders · Musashi Plant'
       },
       'view-reports': {
-        title: 'Pusat Laporan & Rekapitulasi Energi Listrik',
-        subtitle: 'Rekapitulasi Resmi Tagihan PLN I-3/TM, Audit Nol-Denda kVARh, dan ESG Carbon Footprint',
-        tag: 'Audit Energi Listrik PT Musashi Auto Parts Indonesia'
+        title: 'Energy Reports & Audit Center',
+        subtitle: 'Cikarang Listrindo Tariff Billing Recap, Zero-Penalty kVARh Audit, and ESG Carbon Footprint',
+        tag: 'Electrical Energy Audit · PT Musashi Auto Parts Indonesia'
       }
     };
 
@@ -991,26 +991,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const alertDescText = document.getElementById('alertDescText');
     if (alertCountBadge && alertDescText) {
       if (filterKey === 'fac1') {
-        alertCountBadge.textContent = '1 Meter Perlu Pengecekan';
-        alertDescText.textContent = 'Power factor Trafo Tr 01 bernilai 0,84 (di bawah standar target PLN ≥ 0,85). Periksa step kapasitor APFC #01 untuk mencegah penalti kVARh.';
+        alertCountBadge.textContent = '1 Meter Requires Inspection';
+        alertDescText.textContent = 'Outgoing Trafo 01 power factor is 0.84 (below Cikarang Listrindo target ≥ 0.85). Check APFC #01 capacitor step to prevent kVARh surcharge.';
       } else if (filterKey === 'fac2_1') {
-        alertCountBadge.textContent = 'Semua Normal';
-        alertDescText.textContent = 'Kondisi beban Transformator Tr 06 s/d Tr 10 dan Feeder F4-0 s/d F4-5 beroperasi dalam rentang optimal (> 0,90).';
+        alertCountBadge.textContent = 'All Normal';
+        alertDescText.textContent = 'Outgoing Trafo 06 to 10 and Feeders F4-0 to F4-5 are operating within optimal range (> 0.90).';
       } else if (filterKey === 'fac2') {
-        alertCountBadge.textContent = '2 Meter Perlu Pengecekan';
-        alertDescText.textContent = 'Trafo Tr 12 beban mendekati 85% saat peak forging shift 1. Pantau suhu transformator dan arus sekunder.';
+        alertCountBadge.textContent = '2 Meters Require Inspection';
+        alertDescText.textContent = 'Outgoing Trafo 12 load is approaching 85% during Shift 1 forging peak. Monitor transformer temperature and secondary current.';
       } else if (filterKey === 'fac3') {
-        alertCountBadge.textContent = 'Semua Normal';
-        alertDescText.textContent = 'Kondisi beban Transformator Tr 17 s/d Tr 19 dan power factor beroperasi dalam rentang optimal (> 0,90).';
+        alertCountBadge.textContent = 'All Normal';
+        alertDescText.textContent = 'Outgoing Trafo 17 to 19 load and power factor are operating within optimal range (> 0.90).';
       } else if (filterKey === 'forging') {
-        alertCountBadge.textContent = '2 Trafo Beban Tinggi';
-        alertDescText.textContent = 'Lini Mesin Forging Press Tr 12 & Tr 03 mengalami lonjakan arus saat shift siang. Pastikan APFC aktif penuh.';
+        alertCountBadge.textContent = '2 High-Load Trafos';
+        alertDescText.textContent = 'Forging Press lines Outgoing Trafo 12 & Trafo 03 experienced current spikes during day shift. Ensure APFC is fully active.';
       } else if (filterKey === 'heattreatment') {
-        alertCountBadge.textContent = 'Operasi Stabil';
-        alertDescText.textContent = 'Billet Induction Heater Tr 01, 10, 15, 16 pada tegangan 6.6kV beroperasi stabil dengan PF 0,95.';
+        alertCountBadge.textContent = 'Stable Operation';
+        alertDescText.textContent = '6.6kV Induction Billet Heaters on Outgoing Trafo 01, 10, 15, 16 are operating stably at PF 0.95.';
       } else {
-        alertCountBadge.textContent = '3 Meter Perlu Pengecekan';
-        alertDescText.textContent = 'Power factor di bawah standar PLN (< 0,85) terdeteksi pada Trafo Tr 01 (0,84) dan APFC Cap Bank. Mohon segera periksa step regulator kapasitor untuk mencegah denda kVARh PLN.';
+        alertCountBadge.textContent = '3 Meters Require Inspection';
+        alertDescText.textContent = 'Power factor below Cikarang Listrindo threshold (< 0.85) detected on Outgoing Trafo 01 (0.84) and APFC Cap Bank. Please inspect capacitor step regulator to prevent kVARh surcharge.';
       }
     }
 
@@ -1053,7 +1053,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (kpiBiayaTitle) kpiBiayaTitle.textContent = 'Estimated Cost';
       if (kpiBiayaVal) kpiBiayaVal.textContent = data.cost;
-      if (kpiBiayaSub) kpiBiayaSub.textContent = 'PLN industrial tariff (I-3/TM)';
+      if (kpiBiayaSub) kpiBiayaSub.textContent = 'Cikarang Listrindo industrial tariff';
       if (kpiBiayaPrev) kpiBiayaPrev.textContent = `Yesterday: ${data.costYesterday || data.cost}`;
       if (kpiBiayaDelta) {
         kpiBiayaDelta.className = `kpi-delta-tag ${data.deltaCost && data.deltaCost.startsWith('-') ? 'down' : 'up'}`;
@@ -1725,8 +1725,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
       }
     } else {
-      if (donutTitleEl) donutTitleEl.textContent = 'Pembagian Beban Substation Musashi';
-      if (donutSubEl) donutSubEl.textContent = 'Proporsi konsumsi energi gardu listrik antar Factory 1, 2.1, 2, dan 3.';
+      if (donutTitleEl) donutTitleEl.textContent = 'Musashi Substation Load Share';
+      if (donutSubEl) donutSubEl.textContent = 'Substation energy consumption share across Factory 1, 2.1, 2, and 3.';
       chartDonutInstance.data.labels = ['Factory 1', 'Factory 2.1', 'Factory 2', 'Factory 3', '⚡ Forging Total', '🔥 HT Total'];
       chartDonutInstance.data.datasets[0].data = [76200, 49800, 68100, 35596, 104404, 69704];
       chartDonutInstance.data.datasets[0].backgroundColor = [
@@ -2202,7 +2202,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="param-row"><span>Modbus Slave ID &amp; Protocol:</span> <strong>Unit ID ${meter.modbusId || 1} · RS485 RTU 9600 8-N-1</strong></div>
           <div class="param-row"><span>Cisco Switch Port &amp; Uplink:</span> <strong style="color:var(--color-blue);">${meter.ciscoSwitch || 'SW-FAC1-CORE01 (Port Gi1/0/2)'}</strong></div>
           <div class="param-row"><span>Gateway IP &amp; Subnet:</span> <strong>${meter.ip || '10.41.47.100'} / ${meter.subnet || '255.255.254.0'}</strong></div>
-          <div class="param-row"><span>Grid Frequency:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz (PLN Cikarang Grid)</strong></div>
+          <div class="param-row"><span>Grid Frequency:</span> <strong>${(meter.freq || 50.0).toFixed(2)} Hz (Cikarang Listrindo Grid)</strong></div>
           <div class="param-row"><span>Total Harmonic Distortion:</span> <strong>THD-V: ${(meter.thdV || 1.8).toFixed(1)}% · THD-I: ${(meter.thdI || 3.4).toFixed(1)}%</strong></div>
           <div class="param-row"><span>Energy Consumed Today:</span> <strong>${(meter.kwhToday || 0).toLocaleString('id-ID')} kWh (Rp ${estCostRp})</strong></div>
           <div class="param-row"><span>Carbon Footprint (ESG CO₂e):</span> <strong style="color:var(--color-teal);">${carbonKg} kg CO₂e (0.79 kg/kWh)</strong></div>
@@ -2651,7 +2651,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
       <td class="kpi-box" width="16%">
         <div class="kpi-header">TOTAL DAYA AKTIF</div>
         <div class="kpi-number" style="color:#0284c7;">${totalKw.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kW</div>
-        <div class="kpi-subtext">38 Gardu & Beban Pabrik</div>
+        <div class="kpi-subtext">All Electrical Rooms &amp; Plant Loads</div>
       </td>
       <td class="kpi-box" width="16%">
         <div class="kpi-header">ENERGI LISTRIK HARI INI</div>
@@ -2661,12 +2661,12 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
       <td class="kpi-box" width="18%">
         <div class="kpi-header">ESTIMASI BIAYA LISTRIK</div>
         <div class="kpi-number" style="color:#8C2924;">Rp ${totalCostRp.toLocaleString('id-ID')}</div>
-        <div class="kpi-subtext">Tarif PLN I-3: Rp 1.444,70/kWh</div>
+        <div class="kpi-subtext">Cikarang Listrindo Tariff: Rp 1.444,70/kWh</div>
       </td>
       <td class="kpi-box" width="16%">
         <div class="kpi-header">POWER FACTOR RATA-RATA</div>
         <div class="kpi-number" style="color:#059669;">${avgPf}</div>
-        <div class="kpi-subtext">Standar PLN ≥ 0,85 (Aman)</div>
+        <div class="kpi-subtext">Cikarang Listrindo Target ≥ 0,85 (Safe)</div>
       </td>
       <td class="kpi-box" width="16%">
         <div class="kpi-header">STATUS JARINGAN METER</div>
@@ -2741,7 +2741,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
         </td>
       </tr>
       <tr>
-        <td class="chart-td"><strong>Factory 3 (Gardu Induk & Annealing)</strong></td>
+        <td class="chart-td"><strong>Factory 3 (Electrical Room 3 &amp; Annealing)</strong></td>
         <td class="chart-td text-center">${fac3Meters.length} Unit</td>
         <td class="chart-td text-right num-dec1">${fac3Kw.toFixed(1)} kW</td>
         <td class="chart-td text-right num-int">${fac3Kwh.toLocaleString('id-ID')} kWh</td>
