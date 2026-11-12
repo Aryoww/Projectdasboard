@@ -1,11 +1,7 @@
-// PT MUSASHI AUTO PARTS INDONESIA - ENERGY MANAGEMENT SYSTEM (EMS) & SCADA
-// Database Master Digital Power Meter, Transformator Tr 01-19, dan Feeder Gardu 20kV
-// Roster Lengkap Sesuai Catatan Teknis Lapangan (Electrical Room 1, 2, 2.1, 3, Forging, HT)
-
 const METER_DATA = [
   {
     "id": "F1-0",
-    "name": "Incoming 20 kV (Cubicle 6.9836 kVA)",
+    "name": "Incoming 20kV (Cubicle 6.9836 kVA)",
     "brand": "Schneider Electric SM6 Incomer",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -43,7 +39,7 @@ const METER_DATA = [
   },
   {
     "id": "F1-1",
-    "name": "Feeder F1-1 - Press 200V (Press Y/c)",
+    "name": "Feeder F1-1 - Press L/C 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -81,7 +77,7 @@ const METER_DATA = [
   },
   {
     "id": "F1-2",
-    "name": "Feeder F1-2 - MF 200V (MF Y/c)",
+    "name": "Feeder F1-2 - MF L/C 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -157,7 +153,7 @@ const METER_DATA = [
   },
   {
     "id": "F1-4",
-    "name": "Feeder F1-4 - LVMDB 380V (LVMDB Y/c 380V)",
+    "name": "Feeder F1-4 - LV-MDB L/C 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -190,12 +186,12 @@ const METER_DATA = [
     "deltaKwh": -257,
     "deltaPct": -2.5,
     "status": "normal",
-    "statusNote": "Panel LVMDB 380V Utility & Common",
+    "statusNote": "Panel LV-MDB 380V Utility & Common",
     "ratedKva": 1000
   },
   {
     "id": "F1-5",
-    "name": "Feeder F1-5 - MV 6.6 kV",
+    "name": "Feeder F1-5 - MV 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -233,7 +229,7 @@ const METER_DATA = [
   },
   {
     "id": "F1-8",
-    "name": "Feeder F1-8 - (P-6.6 kV) BH Press Auto",
+    "name": "Feeder F1-8 - BH Press Auto (P-6.6kV)",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -271,7 +267,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-01",
-    "name": "Transformer 01 - BH FO 6.6 kV",
+    "name": "Transformer 01 - BH FO 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -309,7 +305,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-02",
-    "name": "Transformer 02 - UTY 380 V",
+    "name": "Transformer 02 - UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -347,7 +343,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-03",
-    "name": "Transformer 03 - FO & HT 200 V",
+    "name": "Transformer 03 - FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -385,7 +381,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-04",
-    "name": "Transformer 04 - Mach 200 V",
+    "name": "Transformer 04 - Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -423,7 +419,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-05",
-    "name": "Transformer 05 - FO & HT 200 V",
+    "name": "Transformer 05 - FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -461,7 +457,7 @@ const METER_DATA = [
   },
   {
     "id": "F4-0",
-    "name": "Incoming 20 kV Factory 2.1",
+    "name": "Incoming 20kV Factory 2.1",
     "brand": "Schneider Electric SM6 Incomer",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -651,7 +647,7 @@ const METER_DATA = [
   },
   {
     "id": "F4-5",
-    "name": "Feeder F4-5 - (6.6 kV-MV) 1100 kVA Billet Heater",
+    "name": "Feeder F4-5 - Billet Heater 1100 kVA (6.6kV-MV)",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -689,7 +685,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-06",
-    "name": "Transformer 06 - UTY & FO 380 V",
+    "name": "Transformer 06 - UTY & FO 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -727,7 +723,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-07",
-    "name": "Transformer 07 - FO 200 V",
+    "name": "Transformer 07 - FO 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -765,7 +761,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-08",
-    "name": "Transformer 08 - FO & HT 200 V",
+    "name": "Transformer 08 - FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -803,7 +799,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-09",
-    "name": "Transformer 09 - UTY 380 V",
+    "name": "Transformer 09 - UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -841,7 +837,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-10",
-    "name": "Transformer 10 - BH Komatsu 1600 6.6 kV",
+    "name": "Transformer 10 - BH Komatsu 1600 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -879,7 +875,7 @@ const METER_DATA = [
   },
   {
     "id": "F2-1",
-    "name": "Feeder F2-1 - (PF - Y/c)",
+    "name": "Feeder F2-1 - PF L/C",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -917,7 +913,7 @@ const METER_DATA = [
   },
   {
     "id": "F2-2",
-    "name": "Feeder F2-2 - MF - L/c",
+    "name": "Feeder F2-2 - MF L/C",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -925,7 +921,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 2",
     "system": "forging",
     "systemLabel": "Forging Lines",
-    "subArea": "Electrical Room 2 · Medium Frequency Feeder L/c",
+    "subArea": "Electrical Room 2 · Medium Frequency Feeder L/C",
     "ip": "10.41.49.102",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC2-VLAN20 (Gi1/0/2)",
@@ -955,7 +951,7 @@ const METER_DATA = [
   },
   {
     "id": "F2-3",
-    "name": "Feeder F2-3 - UF - L/c",
+    "name": "Feeder F2-3 - UT L/C",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -963,7 +959,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 2",
     "system": "utility",
     "systemLabel": "Utility & Panel",
-    "subArea": "Electrical Room 2 · Utility Feeder L/c",
+    "subArea": "Electrical Room 2 · Utility Feeder L/C",
     "ip": "10.41.49.103",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC2-VLAN20 (Gi1/0/3)",
@@ -993,7 +989,7 @@ const METER_DATA = [
   },
   {
     "id": "F2-4",
-    "name": "Feeder F2-4 - MV 6.6 kV",
+    "name": "Feeder F2-4 - MV 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1031,7 +1027,7 @@ const METER_DATA = [
   },
   {
     "id": "F2-5",
-    "name": "Feeder F2-5 - MV 6.6 kV Kurimoto",
+    "name": "Feeder F2-5 - MV 6.6kV Kurimoto",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1069,7 +1065,7 @@ const METER_DATA = [
   },
   {
     "id": "F2-6",
-    "name": "Feeder F2-6 - 6.6 kV-MV Titan 1200 T",
+    "name": "Feeder F2-6 - MV 6.6kV Titan 1200T",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1107,7 +1103,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-11",
-    "name": "Transformer 11 - BH N1300 6.6 kV",
+    "name": "Transformer 11 - BH N1300 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1145,7 +1141,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-12",
-    "name": "Transformer 12 - FO & HT 200 V",
+    "name": "Transformer 12 - FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1183,7 +1179,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-13",
-    "name": "Transformer 13 - Mach 200 V",
+    "name": "Transformer 13 - Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1221,7 +1217,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-14",
-    "name": "Transformer 14 - UTY 380 V",
+    "name": "Transformer 14 - UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1259,7 +1255,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-15",
-    "name": "Transformer 15 - BH Kurimoto 6.6 kV",
+    "name": "Transformer 15 - BH Kurimoto 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1297,7 +1293,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-16",
-    "name": "Transformer 16 - BH N1600 6.6 kV",
+    "name": "Transformer 16 - BH N1600 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1335,7 +1331,7 @@ const METER_DATA = [
   },
   {
     "id": "F3-0",
-    "name": "MV-MDB 20 kV (Incoming Substation 3)",
+    "name": "MV-MDB 20kV (Incoming Substation 3)",
     "brand": "Schneider Electric SM6 Incomer",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1373,7 +1369,7 @@ const METER_DATA = [
   },
   {
     "id": "F3-1",
-    "name": "Feeder F3-1 - LV-MDB 380 V (1600 kVA)",
+    "name": "Feeder F3-1 - LV-MDB 380V (1600 kVA)",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1411,7 +1407,7 @@ const METER_DATA = [
   },
   {
     "id": "F3-2",
-    "name": "Feeder F3-2 - LV-MDB 200 V (1000 kVA)",
+    "name": "Feeder F3-2 - LV-MDB 200V (1000 kVA)",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1449,7 +1445,7 @@ const METER_DATA = [
   },
   {
     "id": "F3-3",
-    "name": "Feeder F3-3 - LV-MDB 200 V (1500 kVA)",
+    "name": "Feeder F3-3 - LV-MDB 200V (1500 kVA)",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1487,7 +1483,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-17",
-    "name": "Transformer 17 - UTY & Forg 380 V",
+    "name": "Transformer 17 - UTY & Forg 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1525,7 +1521,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-18",
-    "name": "Transformer 18 - Mach 200 V",
+    "name": "Transformer 18 - Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1563,7 +1559,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-19",
-    "name": "Transformer 19 - HT 200 V",
+    "name": "Transformer 19 - HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1601,7 +1597,7 @@ const METER_DATA = [
   },
   {
     "id": "61024-1",
-    "name": "Press Komatsu Line 1 (61024-1)",
+    "name": "Press Komatsu",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1639,7 +1635,7 @@ const METER_DATA = [
   },
   {
     "id": "61024",
-    "name": "Press Komatsu 36398 (61024)",
+    "name": "Press Komatsu",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1647,7 +1643,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 1",
     "system": "forging",
     "systemLabel": "Forging Lines",
-    "subArea": "Lini Mesin Forging 1 · Press Komatsu 36398",
+    "subArea": "Forging Line 1 · Press Komatsu",
     "ip": "10.41.47.202",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC1-VLAN20 (Gi1/0/21)",
@@ -1677,7 +1673,7 @@ const METER_DATA = [
   },
   {
     "id": "74049",
-    "name": "BH Komatsu (74049)",
+    "name": "BH Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1715,7 +1711,7 @@ const METER_DATA = [
   },
   {
     "id": "74047",
-    "name": "650276 Normalizing (74047)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1723,7 +1719,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 1",
     "system": "forging",
     "systemLabel": "Forging Lines",
-    "subArea": "Lini Mesin Forging 1 · Tungku Normalizing 650276",
+    "subArea": "Forging Line 1 · Normalizing Furnace",
     "ip": "10.41.47.204",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC1-VLAN20 (Gi1/0/23)",
@@ -1753,7 +1749,7 @@ const METER_DATA = [
   },
   {
     "id": "61018",
-    "name": "Press Komatsu 630 T (61018)",
+    "name": "Press Komatsu 630T",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1786,12 +1782,12 @@ const METER_DATA = [
     "deltaKwh": -111,
     "deltaPct": -3.4,
     "status": "normal",
-    "statusNote": "Crank Press Komatsu 630T Line 1",
+    "statusNote": "Crank Press Komatsu 630T",
     "ratedKva": 350
   },
   {
     "id": "61018-1",
-    "name": "Press Komatsu 630 T (61018-1)",
+    "name": "Press Komatsu 630T",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1824,12 +1820,12 @@ const METER_DATA = [
     "deltaKwh": -173,
     "deltaPct": -4.4,
     "status": "normal",
-    "statusNote": "Crank Press Komatsu 630T Line 2",
+    "statusNote": "Crank Press Komatsu 630T",
     "ratedKva": 350
   },
   {
     "id": "74064",
-    "name": "BH Komatsu (74064)",
+    "name": "BH Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1867,7 +1863,7 @@ const METER_DATA = [
   },
   {
     "id": "61026",
-    "name": "Press Komatsu 1600 T (5460 / 61026)",
+    "name": "Press Komatsu 1600T",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1905,7 +1901,7 @@ const METER_DATA = [
   },
   {
     "id": "74041",
-    "name": "BH Komatsu 630 T (74041)",
+    "name": "BH Komatsu 630T",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1943,7 +1939,7 @@ const METER_DATA = [
   },
   {
     "id": "74036",
-    "name": "Normalizing Line (74036)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1981,7 +1977,7 @@ const METER_DATA = [
   },
   {
     "id": "74008",
-    "name": "Normalizing Line (74008)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2019,7 +2015,7 @@ const METER_DATA = [
   },
   {
     "id": "74058",
-    "name": "BH Komatsu (74058)",
+    "name": "BH Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2057,7 +2053,7 @@ const METER_DATA = [
   },
   {
     "id": "74007",
-    "name": "BH Komatsu 2 (74007)",
+    "name": "BH Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2065,7 +2061,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 1",
     "system": "forging",
     "systemLabel": "Forging Lines",
-    "subArea": "Lini Mesin Forging 1 · Billet Heater Komatsu Line 2",
+    "subArea": "Forging Line 1 · Billet Heater Komatsu",
     "ip": "10.41.47.213",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC1-VLAN20 (Gi1/0/8)",
@@ -2095,7 +2091,7 @@ const METER_DATA = [
   },
   {
     "id": "74002-F",
-    "name": "Normalizing Line (74002)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2133,7 +2129,7 @@ const METER_DATA = [
   },
   {
     "id": "74018",
-    "name": "Normalizing Line (74018)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2171,7 +2167,7 @@ const METER_DATA = [
   },
   {
     "id": "61007",
-    "name": "Press Komatsu (61007)",
+    "name": "Press Komatsu",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2209,7 +2205,7 @@ const METER_DATA = [
   },
   {
     "id": "74051",
-    "name": "BH Komatsu (74051)",
+    "name": "BH Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2247,7 +2243,7 @@ const METER_DATA = [
   },
   {
     "id": "74024",
-    "name": "BH Komatsu (74024)",
+    "name": "BH Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2285,7 +2281,7 @@ const METER_DATA = [
   },
   {
     "id": "94476",
-    "name": "Mesin Press Forging (94476)",
+    "name": "Forging Press",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2323,7 +2319,7 @@ const METER_DATA = [
   },
   {
     "id": "61013",
-    "name": "Mesin Press Forging (61013)",
+    "name": "Forging Press",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2361,7 +2357,7 @@ const METER_DATA = [
   },
   {
     "id": "5421",
-    "name": "Mesin Press Forging (5421)",
+    "name": "Forging Press",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2399,7 +2395,7 @@ const METER_DATA = [
   },
   {
     "id": "61025-1",
-    "name": "Mesin Press Forging (61025-1)",
+    "name": "Forging Press",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2437,7 +2433,7 @@ const METER_DATA = [
   },
   {
     "id": "74060",
-    "name": "Mesin Press Forging (74060)",
+    "name": "Forging Press",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2475,7 +2471,7 @@ const METER_DATA = [
   },
   {
     "id": "74034",
-    "name": "Normalizing Line (74034)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2513,7 +2509,7 @@ const METER_DATA = [
   },
   {
     "id": "74033",
-    "name": "Billet Heater (74033)",
+    "name": "Billet Heater",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2551,7 +2547,7 @@ const METER_DATA = [
   },
   {
     "id": "74021",
-    "name": "Normalizing Line (74021)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2589,7 +2585,7 @@ const METER_DATA = [
   },
   {
     "id": "74061",
-    "name": "Normalizing Line (74061)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2627,7 +2623,7 @@ const METER_DATA = [
   },
   {
     "id": "74020",
-    "name": "Billet Heater 1600 T (74020)",
+    "name": "Billet Heater 1600T",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2665,7 +2661,7 @@ const METER_DATA = [
   },
   {
     "id": "74053",
-    "name": "Billet Heater Komatsu 630 T (74053)",
+    "name": "Billet Heater Komatsu 630T",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2703,7 +2699,7 @@ const METER_DATA = [
   },
   {
     "id": "61010-1",
-    "name": "Mesin Press 1600 T Line 1 (61010-1)",
+    "name": "Press 1600T",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2711,7 +2707,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 2",
     "system": "forging",
     "systemLabel": "Forging Lines",
-    "subArea": "Lini Mesin Forging 2 · Press 1600 Ton Line 1",
+    "subArea": "Forging Line 2 · Press 1600T",
     "ip": "10.41.49.212",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC2-VLAN20 (Gi1/0/1)",
@@ -2741,7 +2737,7 @@ const METER_DATA = [
   },
   {
     "id": "61010",
-    "name": "Mesin Press 1600 T Line 2 (61010)",
+    "name": "Press 1600T",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2749,7 +2745,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 2",
     "system": "forging",
     "systemLabel": "Forging Lines",
-    "subArea": "Lini Mesin Forging 2 · Press 1600 Ton Line 2",
+    "subArea": "Forging Line 2 · Press 1600T",
     "ip": "10.41.49.213",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC2-VLAN20 (Gi1/0/2)",
@@ -2779,7 +2775,7 @@ const METER_DATA = [
   },
   {
     "id": "74052",
-    "name": "Normalizing Line (74052)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2817,7 +2813,7 @@ const METER_DATA = [
   },
   {
     "id": "59012",
-    "name": "Shot Blast Machine (59012)",
+    "name": "Shot Blast Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2855,7 +2851,7 @@ const METER_DATA = [
   },
   {
     "id": "74048",
-    "name": "Normalizing Line (74048)",
+    "name": "Normalizing",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2893,7 +2889,7 @@ const METER_DATA = [
   },
   {
     "id": "74050",
-    "name": "BH Komatsu (74050)",
+    "name": "BH Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2931,7 +2927,7 @@ const METER_DATA = [
   },
   {
     "id": "81023",
-    "name": "Press Komatsu (81023)",
+    "name": "Press Komatsu",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2969,7 +2965,7 @@ const METER_DATA = [
   },
   {
     "id": "61023-1",
-    "name": "Press Komatsu (61023-1)",
+    "name": "Press Komatsu",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -3007,7 +3003,7 @@ const METER_DATA = [
   },
   {
     "id": "61019-1",
-    "name": "Press Komatsu Line 1 (61019-1)",
+    "name": "Press Komatsu",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -3045,7 +3041,7 @@ const METER_DATA = [
   },
   {
     "id": "61019",
-    "name": "Press Komatsu Line 2 (61019)",
+    "name": "Press Komatsu",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -3083,7 +3079,7 @@ const METER_DATA = [
   },
   {
     "id": "74011",
-    "name": "Tempering Furnace (74011)",
+    "name": "Tempering Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3121,7 +3117,7 @@ const METER_DATA = [
   },
   {
     "id": "74006",
-    "name": "Tempering Furnace (74006)",
+    "name": "Tempering Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3159,7 +3155,7 @@ const METER_DATA = [
   },
   {
     "id": "79001",
-    "name": "Washing & Degreasing Machine (79001)",
+    "name": "Washing & Degreasing Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3197,7 +3193,7 @@ const METER_DATA = [
   },
   {
     "id": "74003",
-    "name": "Carburizing Furnace (74003)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3235,7 +3231,7 @@ const METER_DATA = [
   },
   {
     "id": "74004",
-    "name": "Carburizing Furnace (74004)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3273,7 +3269,7 @@ const METER_DATA = [
   },
   {
     "id": "74009",
-    "name": "Carburizing Furnace (74009)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3311,7 +3307,7 @@ const METER_DATA = [
   },
   {
     "id": "74010",
-    "name": "Carburizing Furnace (74010)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3349,7 +3345,7 @@ const METER_DATA = [
   },
   {
     "id": "74019",
-    "name": "Carburizing Furnace (74019)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3387,7 +3383,7 @@ const METER_DATA = [
   },
   {
     "id": "74043",
-    "name": "Carburizing Furnace (74043)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3425,7 +3421,7 @@ const METER_DATA = [
   },
   {
     "id": "74037",
-    "name": "Carburizing Furnace (74037)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3463,7 +3459,7 @@ const METER_DATA = [
   },
   {
     "id": "79013",
-    "name": "Washing Machine (79013)",
+    "name": "Washing Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3501,7 +3497,7 @@ const METER_DATA = [
   },
   {
     "id": "59025",
-    "name": "Shot Blast Machine (59025)",
+    "name": "Shot Blast Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3539,7 +3535,7 @@ const METER_DATA = [
   },
   {
     "id": "CLD-001",
-    "name": "Penyulang Incoming CLD 001 (Cikarang Listrindo)",
+    "name": "Incoming Feeder CLD 001 (Cikarang Listrindo)",
     "brand": "Cikarang Listrindo Tariff Metering 20kV",
     "category": "electrical",
     "categoryLabel": "Cikarang Listrindo (CLD)",
@@ -3577,7 +3573,7 @@ const METER_DATA = [
   },
   {
     "id": "CLD-003",
-    "name": "Penyulang Incoming CLD 003 (Cikarang Listrindo)",
+    "name": "Incoming Feeder CLD 003 (Cikarang Listrindo)",
     "brand": "Cikarang Listrindo Tariff Metering 20kV",
     "category": "electrical",
     "categoryLabel": "Cikarang Listrindo (CLD)",
@@ -3615,7 +3611,7 @@ const METER_DATA = [
   },
   {
     "id": "CLD-005",
-    "name": "Penyulang Incoming CLD 005 (Cikarang Listrindo)",
+    "name": "Incoming Feeder CLD 005 (Cikarang Listrindo)",
     "brand": "Cikarang Listrindo Tariff Metering 20kV",
     "category": "electrical",
     "categoryLabel": "Cikarang Listrindo (CLD)",
@@ -3653,7 +3649,7 @@ const METER_DATA = [
   },
   {
     "id": "74066",
-    "name": "HT Carburizing Furnace (74066)",
+    "name": "HT Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3691,7 +3687,7 @@ const METER_DATA = [
   },
   {
     "id": "74054",
-    "name": "HT Carburizing Atmosphere (74054)",
+    "name": "HT Carburizing Atmosphere",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3729,7 +3725,7 @@ const METER_DATA = [
   },
   {
     "id": "79015",
-    "name": "Washing Machine (79015)",
+    "name": "Washing Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3767,7 +3763,7 @@ const METER_DATA = [
   },
   {
     "id": "74002-HT",
-    "name": "Vacuum Furnace (74002)",
+    "name": "Vacuum Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3805,7 +3801,7 @@ const METER_DATA = [
   },
   {
     "id": "74023",
-    "name": "Tempering Furnace (74023)",
+    "name": "Tempering Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3843,7 +3839,7 @@ const METER_DATA = [
   },
   {
     "id": "79007",
-    "name": "Washing Machine (79007)",
+    "name": "Washing Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3881,7 +3877,7 @@ const METER_DATA = [
   },
   {
     "id": "74026",
-    "name": "Carburizing Furnace (74026)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3919,7 +3915,7 @@ const METER_DATA = [
   },
   {
     "id": "74032",
-    "name": "Carburizing Furnace (74032)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3957,7 +3953,7 @@ const METER_DATA = [
   },
   {
     "id": "74031",
-    "name": "Carburizing Furnace (74031)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -3995,7 +3991,7 @@ const METER_DATA = [
   },
   {
     "id": "74030",
-    "name": "Carburizing Furnace (74030)",
+    "name": "Carburizing Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -4033,7 +4029,7 @@ const METER_DATA = [
   },
   {
     "id": "74029",
-    "name": "Tempering Furnace (74029)",
+    "name": "Tempering Furnace",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -4071,7 +4067,7 @@ const METER_DATA = [
   },
   {
     "id": "59027",
-    "name": "Shot Blast Machine (59027)",
+    "name": "Shot Blast Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -4109,7 +4105,7 @@ const METER_DATA = [
   },
   {
     "id": "61027",
-    "name": "146 Part Former (61027)",
+    "name": "146 Part Former",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -4147,7 +4143,7 @@ const METER_DATA = [
   },
   {
     "id": "61029",
-    "name": "146 Part Former (61029)",
+    "name": "146 Part Former",
     "brand": "Mitsubishi Electric ME96SS",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -4185,7 +4181,7 @@ const METER_DATA = [
   },
   {
     "id": "59028",
-    "name": "Shot Blast Machine (59028 -> Fac 2)",
+    "name": "Shot Blast Machine",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "heattreatment",
     "categoryLabel": "Heat Treatment",
@@ -4193,7 +4189,7 @@ const METER_DATA = [
     "factoryLabel": "Factory 2",
     "system": "heattreatment",
     "systemLabel": "Heat Treatment",
-    "subArea": "Lini Heat Treatment · Shot Blast 59028",
+    "subArea": "Heat Treatment Line · Shot Blast",
     "ip": "10.41.49.256",
     "subnet": "255.255.254.0",
     "ciscoSwitch": "SW-FAC2-VLAN20 (Gi1/0/16)",
@@ -4218,7 +4214,8 @@ const METER_DATA = [
     "deltaKwh": -119,
     "deltaPct": -4.7,
     "status": "normal",
-    "statusNote": "Shot Blast Machine 59028",
+    "statusNote": "Shot Blast Machine - Factory 2",
     "ratedKva": 230
   }
-];
+]
+;

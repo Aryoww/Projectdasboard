@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Trafo 02 UTY 380V (Tr 02)', val: 8900 },
       { name: 'Trafo 04 Mach 200V (Tr 04)', val: 7600 },
       { name: 'Feeder F1-3 MDB Press 200V', val: 6800 },
-      { name: 'Feeder F1-4 LVMDB Y/C 380V', val: 5900 },
+      { name: 'Feeder F1-4 LV-MDB L/C 380V', val: 5900 },
       { name: 'Feeder F1-8 BH Press Auto', val: 5200 }
     ],
     fac2_1: [
@@ -393,8 +393,8 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Trafo 07 FO 200V (Tr 07)', val: 6800 },
       { name: 'Trafo 09 UTY 380V (Tr 09)', val: 5400 },
       { name: 'Feeder F4-5 BH 1100 kVA', val: 4900 },
-      { name: 'Feeder F4-1 LVMDB 3P 380V', val: 3800 },
-      { name: 'Feeder F4-2 LVMDB 3P 200V', val: 3200 }
+      { name: 'Feeder F4-1 LV-MDB 3P 380V', val: 3800 },
+      { name: 'Feeder F4-2 LV-MDB 3P 200V', val: 3200 }
     ],
     fac2: [
       { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
@@ -410,9 +410,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Trafo 17 UTY & Forg 380V (Tr 17)', val: 9800 },
       { name: 'Trafo 19 HT 200V (Tr 19)', val: 7850 },
       { name: 'Trafo 18 Mach 200V (Tr 18)', val: 6100 },
-      { name: 'Feeder F3-1 LVMDB 380V (1600 kVA)', val: 5400 },
-      { name: 'Feeder F3-3 LVMDB 200V (1500 kVA)', val: 4600 },
-      { name: 'Feeder F3-2 LVMDB 200V (1000 kVA)', val: 3900 },
+      { name: 'Feeder F3-1 LV-MDB 380V (1600 kVA)', val: 5400 },
+      { name: 'Feeder F3-3 LV-MDB 200V (1500 kVA)', val: 4600 },
+      { name: 'Feeder F3-2 LV-MDB 200V (1000 kVA)', val: 3900 },
       { name: 'Feeder F3-0 MV-MDB 20kV', val: 3100 },
       { name: 'Carburizing HT 74026', val: 2600 }
     ],
@@ -2764,7 +2764,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
     <thead>
       <tr>
         <th class="chart-th" width="5%">Rank</th>
-        <th class="chart-th" width="10%">Meter ID</th>
+        <th class="chart-th" width="10%">Machine Code</th>
         <th class="chart-th" width="25%">Feeder / Machine Name</th>
         <th class="chart-th" width="18%">Sub Area Location</th>
         <th class="chart-th" width="12%">Active Power (kW)</th>
@@ -2803,7 +2803,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
     <thead>
       <tr>
         <th width="3%">No</th>
-        <th width="6%">Meter ID</th>
+        <th width="6%">Machine Code</th>
         <th width="17%">Feeder / Distribution Panel Name</th>
         <th width="8%">Category</th>
         <th width="12%">Area &amp; Substation</th>
@@ -2890,7 +2890,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
   };
 
   window.exportToCsv = function() {
-    const headers = ['Meter ID', 'Feeder / Panel Name', 'Category', 'Sub Area', 'Meter Brand', 'IP Address', 'Active Power (kW)', 'Voltage (V)', 'Current (A)', 'Power Factor (Cos φ)', 'Energy Today (kWh)', 'Estimated Cost (Rp)', 'CO2 Emission (kg)', 'Status'];
+    const headers = ['Machine Code', 'Meter / Feeder Name', 'Area', 'Sub Area', 'Meter Brand', 'IP Address', 'Active Power (kW)', 'Voltage (V)', 'Current (A)', 'Power Factor (Cos φ)', 'Energy Today (kWh)', 'Estimated Cost (Rp)', 'CO2 Emission (kg)', 'Status'];
     const rows = state.meters.map(m => [
       m.id,
       `"${(m.name || '').replace(/"/g, '""')}"`,
