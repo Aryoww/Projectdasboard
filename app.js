@@ -357,59 +357,59 @@ document.addEventListener('DOMContentLoaded', () => {
   // Top 8 Consumers Data by Category & Factory Substation
   const TOP_8_DATA = {
     all: [
-      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
-      { name: 'Trafo 03 Fo & HT 200V (Tr 03)', val: 14200 },
-      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
-      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
-      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
-      { name: 'Trafo 19 HT 200V Fac 3 (Tr 19)', val: 7850 },
-      { name: 'Trafo 05 Fo & HT 200V (Tr 05)', val: 6920 },
-      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 }
+      { name: 'Outgoing Trafo 12 FO & HT 200V', val: 18450 },
+      { name: 'Outgoing Trafo 03 FO & HT 200V', val: 14200 },
+      { name: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', val: 11800 },
+      { name: 'Outgoing Trafo 16 Billet Heater N1600 6.6kV', val: 9950 },
+      { name: 'Outgoing Trafo 08 FO & HT 200V', val: 8650 },
+      { name: 'Outgoing Trafo 19 HT 200V Fac 3', val: 7850 },
+      { name: 'Outgoing Trafo 05 FO & HT 200V', val: 6920 },
+      { name: 'Outgoing Trafo 15 Billet Heater Kurimoto 6.6kV', val: 6150 }
     ],
     electrical: [
-      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
-      { name: 'Trafo 03 Fo & HT 200V (Tr 03)', val: 14200 },
-      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
-      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
-      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
-      { name: 'Trafo 19 HT 200V Fac 3 (Tr 19)', val: 7850 },
-      { name: 'Trafo 05 Fo & HT 200V (Tr 05)', val: 6920 },
-      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 }
+      { name: 'Outgoing Trafo 12 FO & HT 200V', val: 18450 },
+      { name: 'Outgoing Trafo 03 FO & HT 200V', val: 14200 },
+      { name: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', val: 11800 },
+      { name: 'Outgoing Trafo 16 Billet Heater N1600 6.6kV', val: 9950 },
+      { name: 'Outgoing Trafo 08 FO & HT 200V', val: 8650 },
+      { name: 'Outgoing Trafo 19 HT 200V Fac 3', val: 7850 },
+      { name: 'Outgoing Trafo 05 FO & HT 200V', val: 6920 },
+      { name: 'Outgoing Trafo 15 Billet Heater Kurimoto 6.6kV', val: 6150 }
     ],
     fac1: [
-      { name: 'Trafo 01 BH FO 6.6kV (Tr 01)', val: 15400 },
-      { name: 'Trafo 03 Fo & HT 200V (Tr 03)', val: 14200 },
-      { name: 'Trafo 05 Fo & HT 200V (Tr 05)', val: 10800 },
-      { name: 'Trafo 02 UTY 380V (Tr 02)', val: 8900 },
-      { name: 'Trafo 04 Mach 200V (Tr 04)', val: 7600 },
+      { name: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', val: 15400 },
+      { name: 'Outgoing Trafo 03 FO & HT 200V', val: 14200 },
+      { name: 'Outgoing Trafo 05 FO & HT 200V', val: 10800 },
+      { name: 'Outgoing Trafo 02 UTY 380V', val: 8900 },
+      { name: 'Outgoing Trafo 04 Mach 200V', val: 7600 },
       { name: 'Feeder F1-3 MDB Press 200V', val: 6800 },
       { name: 'Feeder F1-4 LV-MDB L/C 380V', val: 5900 },
-      { name: 'Feeder F1-8 BH Press Auto', val: 5200 }
+      { name: 'Feeder F1-8 Billet Heater Press Auto', val: 5200 }
     ],
     fac2_1: [
-      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
-      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
-      { name: 'Trafo 06 UTY & FO 380V (Tr 06)', val: 7200 },
-      { name: 'Trafo 07 FO 200V (Tr 07)', val: 6800 },
-      { name: 'Trafo 09 UTY 380V (Tr 09)', val: 5400 },
-      { name: 'Feeder F4-5 BH 1100 kVA', val: 4900 },
+      { name: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', val: 11800 },
+      { name: 'Outgoing Trafo 08 FO & HT 200V', val: 8650 },
+      { name: 'Outgoing Trafo 06 UTY & FO 380V', val: 7200 },
+      { name: 'Outgoing Trafo 07 FO 200V', val: 6800 },
+      { name: 'Outgoing Trafo 09 UTY 380V', val: 5400 },
+      { name: 'Feeder F4-5 Billet Heater 1100 kVA', val: 4900 },
       { name: 'Feeder F4-1 LV-MDB 3P 380V', val: 3800 },
       { name: 'Feeder F4-2 LV-MDB 3P 200V', val: 3200 }
     ],
     fac2: [
-      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
-      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
-      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 },
-      { name: 'Trafo 11 BH N1300 6.6kV (Tr 11)', val: 5800 },
-      { name: 'Trafo 13 Mach 200V (Tr 13)', val: 4900 },
-      { name: 'Trafo 14 UTY 380V (Tr 14)', val: 4200 },
+      { name: 'Outgoing Trafo 12 FO & HT 200V', val: 18450 },
+      { name: 'Outgoing Trafo 16 Billet Heater N1600 6.6kV', val: 9950 },
+      { name: 'Outgoing Trafo 15 Billet Heater Kurimoto 6.6kV', val: 6150 },
+      { name: 'Outgoing Trafo 11 Billet Heater N1300 6.6kV', val: 5800 },
+      { name: 'Outgoing Trafo 13 Mach 200V', val: 4900 },
+      { name: 'Outgoing Trafo 14 UTY 380V', val: 4200 },
       { name: 'Feeder F2-6 MV Titan 1200T', val: 3800 },
       { name: 'Feeder F2-5 MV Kurimoto', val: 3200 }
     ],
     fac3: [
-      { name: 'Trafo 17 UTY & Forg 380V (Tr 17)', val: 9800 },
-      { name: 'Trafo 19 HT 200V (Tr 19)', val: 7850 },
-      { name: 'Trafo 18 Mach 200V (Tr 18)', val: 6100 },
+      { name: 'Outgoing Trafo 17 UTY & Forg 380V', val: 9800 },
+      { name: 'Outgoing Trafo 19 HT 200V', val: 7850 },
+      { name: 'Outgoing Trafo 18 Mach 200V', val: 6100 },
       { name: 'Feeder F3-1 LV-MDB 380V (1600 kVA)', val: 5400 },
       { name: 'Feeder F3-3 LV-MDB 200V (1500 kVA)', val: 4600 },
       { name: 'Feeder F3-2 LV-MDB 200V (1000 kVA)', val: 3900 },
@@ -417,21 +417,21 @@ document.addEventListener('DOMContentLoaded', () => {
       { name: 'Carburizing HT 74026', val: 2600 }
     ],
     forging: [
-      { name: 'Trafo 12 Fo & HT 200V (Tr 12)', val: 18450 },
-      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
-      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
-      { name: 'Trafo 08 Fo & HT 200V (Tr 08)', val: 8650 },
+      { name: 'Outgoing Trafo 12 FO & HT 200V', val: 18450 },
+      { name: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', val: 11800 },
+      { name: 'Outgoing Trafo 16 Billet Heater N1600 6.6kV', val: 9950 },
+      { name: 'Outgoing Trafo 08 FO & HT 200V', val: 8650 },
       { name: 'Press Komatsu 1600T (61026)', val: 6400 },
       { name: 'Press Komatsu (81023)', val: 5900 },
-      { name: 'Press 94476 Forging F2', val: 5100 },
+      { name: 'Forging Press (94476)', val: 5100 },
       { name: 'Press Komatsu 630T (61018)', val: 4800 }
     ],
     heattreatment: [
-      { name: 'Trafo 01 BH FO 6.6kV (Tr 01)', val: 15400 },
-      { name: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', val: 11800 },
-      { name: 'Trafo 16 BH N1600 6.6kV (Tr 16)', val: 9950 },
-      { name: 'Trafo 19 HT 200V Fac 3 (Tr 19)', val: 7850 },
-      { name: 'Trafo 15 BH Kurimoto 6.6kV (Tr 15)', val: 6150 },
+      { name: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', val: 15400 },
+      { name: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', val: 11800 },
+      { name: 'Outgoing Trafo 16 Billet Heater N1600 6.6kV', val: 9950 },
+      { name: 'Outgoing Trafo 19 HT 200V Fac 3', val: 7850 },
+      { name: 'Outgoing Trafo 15 Billet Heater Kurimoto 6.6kV', val: 6150 },
       { name: 'Vacuum Furnace (74002)', val: 5200 },
       { name: 'Carburizing Furnace (74003)', val: 4600 },
       { name: 'Billet Heater 1600T (74020)', val: 4100 }
@@ -441,31 +441,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Attention Required Alert Items by Category & Factory (SCADA-Grade)
   const ATTENTION_ALERTS = {
     all: [
-      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
       { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
+      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
     ],
     electrical: [
-      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below PLN standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
       { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
+      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
     ],
     fac1: [
-      { id: 'TR-01', title: 'Transformer 01 BH FO 6.6kV (Tr 01)', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 below PLN threshold. Capacitor bank step activation required.', action: 'Check APFC Capacitor Bank Panel F1.' },
-      { id: 'F1-8', title: 'Feeder F1-8 BH Press Auto', area: 'Factory 1 · Feeder TM 6.6kV', severity: 'warning', badge: 'THD-I 4.8%', note: 'Non-linear induction heater harmonic distortion approaching 5.0% threshold.', action: 'Monitor Active Harmonic Filter (AHF) on 20kV cubicle.' }
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 below PLN threshold. Capacitor bank step activation required.', action: 'Check APFC Capacitor Bank Panel F1.' },
+      { id: 'F1-8', title: 'Feeder F1-8 Billet Heater Press Auto', area: 'Factory 1 · Feeder TM 6.6kV', severity: 'warning', badge: 'THD-I 4.8%', note: 'Non-linear induction heater harmonic distortion approaching 5.0% threshold.', action: 'Monitor Active Harmonic Filter (AHF) on 20kV cubicle.' }
     ],
     fac2_1: [
-      { id: 'TR-10', title: 'Trafo 10 BH Komatsu 6.6kV (Tr 10)', area: 'Electrical Room 2.1 · Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Billet Heater Komatsu 1600T & LVMDB 3P operating normally at Cos φ 0.93.', action: 'Live telemetry active, no anomalies detected.' }
+      { id: 'TR-10', title: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', area: 'Electrical Room 2.1 · Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Billet Heater Komatsu 1600T & LV-MDB 3P operating normally at Cos φ 0.93.', action: 'Live telemetry active, no anomalies detected.' }
     ],
     fac2: [
       { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Substation Forging APFC', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load approaching feeder capacity.', action: 'Reset APFC controller & check cubicle temperature.' },
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · LMVDP 200V', severity: 'warning', badge: 'Cos φ 0.83', note: 'Day shift inductive motor load on forging press increased.', action: 'Enable local compensation on LMVDP panel.' }
+      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · LMVDP 200V', severity: 'warning', badge: 'Cos φ 0.83', note: 'Day shift inductive motor load on forging press increased.', action: 'Enable local compensation on LMVDP panel.' }
     ],
     fac3: [
-      { id: 'TR-17', title: 'All Transformers & Panels Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Average Cos φ 0.92 – Penalty-free PLN compliance, transformer oil temperature stable 65°C.', action: 'Normal operation, maintain weekly preventive inspection schedule.' }
+      { id: 'TR-17', title: 'All Outgoing Trafos & Panels Normal', area: 'Factory 3 · Substation Gardu 20kV', severity: 'normal', badge: 'System Optimal', note: 'Average Cos φ 0.92 – Penalty-free PLN compliance, transformer oil temperature stable 65°C.', action: 'Normal operation, maintain weekly preventive inspection schedule.' }
     ],
     forging: [
-      { id: 'TR-12', title: 'Transformer 12 Fo & HT 200V (Tr 12)', area: 'Factory 2 · Forging Substation 200V', severity: 'warning', badge: 'Cos φ 0.84', note: 'Impulsive forging press load requires dynamic APFC switching.', action: 'Schedule APFC step switching to dampen impulsive reactive power.' },
+      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Forging Substation 200V', severity: 'warning', badge: 'Cos φ 0.84', note: 'Impulsive forging press load requires dynamic APFC switching.', action: 'Schedule APFC step switching to dampen impulsive reactive power.' },
       { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Forging APFC Feeder', severity: 'critical', badge: 'Peak Demand', note: '1200T press motor increasing kVAR reactive demand.', action: 'Verify overcurrent protection relay settings on MV cubicle.' }
     ],
     heattreatment: [
@@ -1656,16 +1656,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else if (filterKey === 'fac2_1') {
       if (donutTitleEl) donutTitleEl.textContent = 'Proporsi Beban Substation Factory 2.1';
-      if (donutSubEl) donutSubEl.textContent = 'Distribusi beban Billet Heater 1100 kVA, LVMDB 3P, dan Trafo Tr 06-10.';
-      chartDonutInstance.data.labels = ['Trafo 10 BH 6.6kV', 'Trafo 08 Fo & HT', 'Trafo 06/07 Forg', 'Feeder LVMDB 3P'];
+      if (donutSubEl) donutSubEl.textContent = 'Billet Heater 1100 kVA, LV-MDB 3P, and Outgoing Trafo 06-10 load distribution.';
+      chartDonutInstance.data.labels = ['Outgoing Trafo 10 Billet Heater 6.6kV', 'Outgoing Trafo 08 FO & HT', 'Outgoing Trafo 06/07 Forg', 'Feeder LV-MDB 3P'];
       chartDonutInstance.data.datasets[0].data = [11800, 8650, 14000, 15350];
       chartDonutInstance.data.datasets[0].backgroundColor = ['#2dd4bf', '#38bdf8', '#fb923c', '#a78bfa'];
       if (donutLegendRow) {
         donutLegendRow.innerHTML = `
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>BH 6.6kV</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Tr 08 Fo/HT</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Tr 06/07</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Feeder LVMDB</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Billet Heater 6.6kV</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#38bdf8;"></span><span>Trafo 08 FO/HT</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#fb923c;"></span><span>Trafo 06/07</span></div>
+          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#a78bfa;"></span><span>Feeder LV-MDB</span></div>
         `;
       }
     } else if (filterKey === 'fac2') {

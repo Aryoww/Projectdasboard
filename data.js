@@ -229,7 +229,7 @@ const METER_DATA = [
   },
   {
     "id": "F1-8",
-    "name": "Feeder F1-8 - BH Press Auto (P-6.6kV)",
+    "name": "Feeder F1-8 - Billet Heater Press Auto (P-6.6kV)",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -267,7 +267,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-01",
-    "name": "BH FO 6.6kV",
+    "name": "Outgoing Trafo 01 Billet Heater FO 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -305,7 +305,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-02",
-    "name": "UTY 380V",
+    "name": "Outgoing Trafo 02 UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -343,7 +343,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-03",
-    "name": "FO & HT 200V",
+    "name": "Outgoing Trafo 03 FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -381,7 +381,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-04",
-    "name": "Mach 200V",
+    "name": "Outgoing Trafo 04 Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -419,7 +419,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-05",
-    "name": "FO & HT 200V",
+    "name": "Outgoing Trafo 05 FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -685,7 +685,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-06",
-    "name": "UTY & FO 380V",
+    "name": "Outgoing Trafo 06 UTY & FO 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -723,7 +723,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-07",
-    "name": "FO 200V",
+    "name": "Outgoing Trafo 07 FO 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -761,7 +761,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-08",
-    "name": "FO & HT 200V",
+    "name": "Outgoing Trafo 08 FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -799,7 +799,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-09",
-    "name": "UTY 380V",
+    "name": "Outgoing Trafo 09 UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -837,7 +837,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-10",
-    "name": "BH Komatsu 1600 6.6kV",
+    "name": "Outgoing Trafo 10 Billet Heater Komatsu 1600 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1103,7 +1103,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-11",
-    "name": "BH N1300 6.6kV",
+    "name": "Outgoing Trafo 11 Billet Heater N1300 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1141,7 +1141,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-12",
-    "name": "FO & HT 200V",
+    "name": "Outgoing Trafo 12 FO & HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1179,7 +1179,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-13",
-    "name": "Mach 200V",
+    "name": "Outgoing Trafo 13 Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1217,7 +1217,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-14",
-    "name": "UTY 380V",
+    "name": "Outgoing Trafo 14 UTY 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1255,7 +1255,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-15",
-    "name": "BH Kurimoto 6.6kV",
+    "name": "Outgoing Trafo 15 Billet Heater Kurimoto 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1293,7 +1293,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-16",
-    "name": "BH N1600 6.6kV",
+    "name": "Outgoing Trafo 16 Billet Heater N1600 6.6kV",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1483,7 +1483,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-17",
-    "name": "UTY & Forg 380V",
+    "name": "Outgoing Trafo 17 UTY & Forg 380V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1521,7 +1521,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-18",
-    "name": "Mach 200V",
+    "name": "Outgoing Trafo 18 Mach 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1559,7 +1559,7 @@ const METER_DATA = [
   },
   {
     "id": "TR-19",
-    "name": "HT 200V",
+    "name": "Outgoing Trafo 19 HT 200V",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "electrical",
     "categoryLabel": "Electrical Room",
@@ -1673,7 +1673,7 @@ const METER_DATA = [
   },
   {
     "id": "74049",
-    "name": "BH Komatsu",
+    "name": "Billet Heater Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1825,7 +1825,7 @@ const METER_DATA = [
   },
   {
     "id": "74064",
-    "name": "BH Komatsu",
+    "name": "Billet Heater Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -1901,7 +1901,7 @@ const METER_DATA = [
   },
   {
     "id": "74041",
-    "name": "BH Komatsu 630T",
+    "name": "Billet Heater Komatsu 630T",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2015,7 +2015,7 @@ const METER_DATA = [
   },
   {
     "id": "74058",
-    "name": "BH Komatsu",
+    "name": "Billet Heater Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2053,7 +2053,7 @@ const METER_DATA = [
   },
   {
     "id": "74007",
-    "name": "BH Komatsu",
+    "name": "Billet Heater Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2205,7 +2205,7 @@ const METER_DATA = [
   },
   {
     "id": "74051",
-    "name": "BH Komatsu",
+    "name": "Billet Heater Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2243,7 +2243,7 @@ const METER_DATA = [
   },
   {
     "id": "74024",
-    "name": "BH Komatsu",
+    "name": "Billet Heater Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",
@@ -2889,7 +2889,7 @@ const METER_DATA = [
   },
   {
     "id": "74050",
-    "name": "BH Komatsu",
+    "name": "Billet Heater Komatsu",
     "brand": "Schneider Electric PowerLogic PM5500",
     "category": "forging",
     "categoryLabel": "Forging Lines",

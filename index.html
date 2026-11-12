@@ -572,20 +572,20 @@
           </div>
         </section>
 
-        <!-- ASET UTAMA: PENYULANG INCOMING CIKARANG LISTRINDO (CLD 001) -->
-        <section aria-label="Metering Incoming Cikarang Listrindo CLD 001">
+        <!-- ASET UTAMA: PENYULANG INCOMING CIKARANG LISTRINDO (CLD 001, CLD 003, CLD 005) -->
+        <section aria-label="Metering Incoming Cikarang Listrindo CLD">
           <div class="card-header-block" style="margin-bottom:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
             <div>
-              <h2 class="card-title">CLD 001 (Cikarang Listrindo) Incoming Feeder — Daily Energy Source</h2>
-              <p class="card-subtitle">Main incoming 20kV power &amp; energy metering from PT Cikarang Listrindo Tbk (CLD 001) that determines total daily plant consumption (kWh)</p>
+              <h2 class="card-title">CLD (Cikarang Listrindo) Incoming Feeders — Daily Energy Source</h2>
+              <p class="card-subtitle">Main incoming 20kV power &amp; energy metering from PT Cikarang Listrindo Tbk (CLD 001, CLD 003, CLD 005) that determines total daily plant consumption (kWh)</p>
             </div>
           </div>
 
-          <div class="activity-cards-grid single-card">
-            <!-- Activity Card: Incoming CLD 001 -->
+          <div class="activity-cards-grid">
+            <!-- Activity Card 1: Incoming CLD 001 -->
             <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-001')" style="cursor:pointer;" title="Click to view 3-Phase R-S-T telemetry & Modbus registers for CLD 001">
               <div class="activity-card-top">
-                <div class="activity-icon-box blue">
+                <div class="activity-icon-box teal">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
@@ -601,6 +601,50 @@
                 <div class="act-metric-row"><span>Energy Yesterday</span><strong>51,600 kWh (▼ -1,896)</strong></div>
                 <div class="act-metric-row"><span>Medium Voltage</span><strong>20,000 V (TM 20kV)</strong></div>
                 <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0.92 (Optimal)</strong></div>
+              </div>
+            </div>
+
+            <!-- Activity Card 2: Incoming CLD 003 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-003')" style="cursor:pointer;" title="Click to view 3-Phase R-S-T telemetry & Modbus registers for CLD 003">
+              <div class="activity-card-top">
+                <div class="activity-icon-box blue">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="activity-card-title">Incoming Feeder CLD 003 (Cikarang Listrindo)</h3>
+                  <span class="activity-card-time">Incoming TM 20kV · IP 10.41.47.264</span>
+                </div>
+                <div class="activity-kw-pill">5.640 <span>kW</span></div>
+              </div>
+              <div class="activity-metric-rows">
+                <div class="act-metric-row"><span>Energy Today</span><strong style="color:var(--text-primary); font-size:0.83rem;">72,540 kWh</strong></div>
+                <div class="act-metric-row"><span>Energy Yesterday</span><strong>75,120 kWh (▼ -2,580)</strong></div>
+                <div class="act-metric-row"><span>Medium Voltage</span><strong>20,000 V (TM 20kV)</strong></div>
+                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0.93 (Optimal)</strong></div>
+              </div>
+            </div>
+
+            <!-- Activity Card 3: Incoming CLD 005 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-005')" style="cursor:pointer;" title="Click to view 3-Phase R-S-T telemetry & Modbus registers for CLD 005">
+              <div class="activity-card-top">
+                <div class="activity-icon-box orange">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="activity-card-title">Incoming Feeder CLD 005 (Cikarang Listrindo)</h3>
+                  <span class="activity-card-time">Incoming TM 20kV · IP 10.41.47.265</span>
+                </div>
+                <div class="activity-kw-pill">5.820 <span>kW</span></div>
+              </div>
+              <div class="activity-metric-rows">
+                <div class="act-metric-row"><span>Energy Today</span><strong style="color:var(--text-primary); font-size:0.83rem;">74,820 kWh</strong></div>
+                <div class="act-metric-row"><span>Energy Yesterday</span><strong>77,430 kWh (▼ -2,610)</strong></div>
+                <div class="act-metric-row"><span>Medium Voltage</span><strong>20,000 V (TM 20kV)</strong></div>
+                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0.94 (Optimal)</strong></div>
               </div>
             </div>
           </div>
