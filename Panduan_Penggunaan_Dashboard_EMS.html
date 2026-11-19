@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan Penggunaan Web Dashboard Utility EMS – PT Musashi</title>
+  <style>
+    :root {
+      --bg-dark: #0B132B;
+      --bg-card: #1C2541;
+      --bg-card-hover: #223055;
+      --navy-primary: #1E3A8A;
+      --navy-accent: #3B82F6;
+      --cyan-accent: #06B6D4;
+      --green-accent: #10B981;
+      --amber-accent: #F59E0B;
+      --red-accent: #EF4444;
+      --text-white: #F9FAFB;
+      --text-muted: #9CA3AF;
+      --text-dim: #6B7280;
+      --border-color: #374151;
+      --code-bg: #111827;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg-dark); color: var(--text-white); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    .top-bar { height: 54px; background: rgba(11, 19, 43, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 100; flex-shrink: 0; }
+    .brand-title { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; }
+    .brand-badge { background: linear-gradient(135deg, #1E3A8A, #3B82F6); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; color: #fff; }
+    .nav-controls { display: flex; align-items: center; gap: 10px; }
+    .slide-indicator { font-size: 0.85rem; font-weight: 600; color: var(--cyan-accent); background: rgba(6, 182, 212, 0.1); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .btn-nav { background: var(--bg-card); border: 1px solid var(--border-color); color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
+    .btn-nav:hover { background: var(--navy-accent); border-color: var(--navy-accent); }
+    .btn-pdf { background: #059669; border-color: #10B981; }
+    .btn-pdf:hover { background: #10B981; }
+    .slide-viewport { flex: 1; padding: 18px 24px; overflow-y: auto; display: flex; justify-content: center; align-items: center; }
+    .slide-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow); width: 100%; max-width: 1300px; height: calc(100vh - 110px); display: none; flex-direction: column; padding: 18px 24px; overflow-y: auto; }
+    .slide-card.active { display: flex; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
+    .slide-category { font-size: 0.75rem; font-weight: 700; color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .slide-title { font-size: 1.3rem; font-weight: 800; color: var(--text-white); }
+    .slide-module-badge { background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.4); color: #93C5FD; font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+    
+    /* Layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; flex: 1; min-height: 0; }
+    .layout-stacked { display: flex; flex-direction: column; gap: 14px; flex: 1; min-height: 0; }
+    .stacked-img-wrap { width: 100%; max-height: 220px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); background: #000; flex-shrink: 0; }
+    .stacked-img-wrap img { width: 100%; height: auto; max-height: 220px; object-fit: contain; }
+    .stacked-desc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; overflow-y: auto; }
+    
+    .box { background: rgba(11, 19, 43, 0.6); border: 1px solid rgba(55, 65, 81, 0.8); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; overflow-y: auto; }
+    .box-title { font-size: 0.95rem; font-weight: 700; color: #60A5FA; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .box-title-green { color: #34D399; }
+    .desc-text { font-size: 0.82rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 10px; }
+    .point-item { margin-bottom: 8px; font-size: 0.8rem; line-height: 1.45; }
+    .point-title { font-weight: 700; color: #F3F4F6; }
+    .point-desc { color: #9CA3AF; }
+    .info-callout { background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--amber-accent); padding: 8px 12px; border-radius: 4px; font-size: 0.78rem; color: #FCD34D; line-height: 1.4; margin-top: auto; }
+    .img-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+    .img-wrap { width: 100%; max-height: 380px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); background: #000; }
+    .img-wrap img { width: 100%; height: auto; max-height: 380px; object-fit: contain; }
+    .img-caption { font-size: 0.72rem; color: var(--text-dim); text-align: center; margin-top: 6px; font-style: italic; }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="brand-title">
+      <span class="brand-badge">MUSASHI EMS</span>
+      <span>Panduan Penggunaan Web Dashboard SCADA (Visual User Guide)</span>
+    </div>
+    <div class="nav-controls">
+      <span class="slide-indicator" id="slideIndicator">Slide 1 / 16</span>
+      <select id="slideSelect" class="btn-nav" style="padding: 4px 8px;" onchange="goToSlide(parseInt(this.value))">
+        <option value="1">Slide 1: Pengantar Web Dashboard</option>
+        <option value="2">Slide 2: Tata Letak 4 Zona Utama</option>
+        <option value="3">Slide 3: Sidebar Menu Navigasi Pabrik</option>
+        <option value="4">Slide 4: Kapsul Status SCADA 20kV</option>
+        <option value="5">Slide 5: Header Banner & Tombol Operasional</option>
+        <option value="6">Slide 6: Banner Peringatan Denda kVARh</option>
+        <option value="7">Slide 7: Toolbar Tanggal & Pilihan Waktu</option>
+        <option value="8">Slide 8: 6 Kartu Metrik Utama (KPI)</option>
+        <option value="9">Slide 9: Grafik Beban 24 Jam (Peak &amp; Terendah)</option>
+        <option value="10">Slide 10: Grafik Donut Substation (100% Share)</option>
+        <option value="11">Slide 11: Outgoing Transformers (Trafo 01 – 19)</option>
+        <option value="12">Slide 12: Daftar Perlu Perhatian (Attention)</option>
+        <option value="13">Slide 13: Sumber Daya CLD (CLD 1, 2, 3)</option>
+        <option value="14">Slide 14: Tabel Direktori 111 Power Meter</option>
+        <option value="15">Slide 15: Modal Detail Telemetri 3-Fasa</option>
+        <option value="16">Slide 16: Pusat Laporan Excel & SOP Respon</option>
+      </select>
+      <button class="btn-nav" id="btnPrev" onclick="prevSlide()">◀ Prev</button>
+      <button class="btn-nav" id="btnNext" onclick="nextSlide()">Next ▶</button>
+      <a href="Panduan_Penggunaan_Dashboard_EMS.pdf" target="_blank" class="btn-nav btn-pdf" title="Buka berkas PDF resmi">📄 Buka PDF Resmi</a>
+    </div>
+  </header>
+
+  <main class="slide-viewport">
+
+    <!-- SLIDE 1 -->
+    <div class="slide-card active" data-slide="1">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">DOKUMEN RESMI PANDUAN PENGGUNA</div>
+          <h1 class="slide-title">Panduan Penggunaan Web Dashboard Utility EMS & SCADA PT Musashi</h1>
+        </div>
+        <div class="slide-module-badge">SOP-PENGGUNA-EMS-2026 | Rev 2.0</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_overview_2x.png" alt="Beranda Web"></div>
+            <div class="img-caption">Tampilan Beranda Web Dashboard Utility EMS PT Musashi Auto Parts Indonesia</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Tujuan & Sasaran Panduan Pengguna</div>
+          <p class="desc-text">Dokumen ini dibuat khusus sebagai <b>panduan praktis visual</b> bagi seluruh pengguna web dashboard (operator gardu, teknisi listrik, supervisor pemeliharaan, hingga manajemen) agar dapat memahami tampilan layar, arti setiap angka, dan cara menggunakannya dengan mudah tanpa memerlukan keahlian rumus matematika.</p>
+          <div class="box-title box-title-green">Siapa Saja Pengguna Dashboard Ini?</div>
+          <div class="point-item"><span class="point-title">• Operator Gardu Listrik:</span> <span class="point-desc">Memantau beban trafo harian, kestabilan tegangan, dan merespon alarm darurat.</span></div>
+          <div class="point-item"><span class="point-title">• Teknisi Maintenance:</span> <span class="point-desc">Menjaga efisiensi faktor daya (Cos φ) agar tidak terkena denda kVARh dari Cikarang Listrindo / PLN.</span></div>
+          <div class="point-item"><span class="point-title">• Supervisor & Manajemen Pabrik:</span> <span class="point-desc">Mengontrol estimasi tagihan biaya listrik rupiah dan memantau program penghematan energi (Kaizen energi).</span></div>
+          <div class="point-item"><span class="point-title">• Tim Audit & ESG Lingkungan:</span> <span class="point-desc">Melacak jejak emisi karbon (CO₂e) sebagai bukti pemenuhan target audit keberlanjutan ISO 50001.</span></div>
+          <div class="info-callout"><b>Cara Akses:</b> Buka browser (Google Chrome atau Microsoft Edge) pada PC, laptop, atau tablet di jaringan perusahaan, lalu buka link dashboard. Tidak perlu instalasi aplikasi apapun!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide-card" data-slide="2">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">STRUKTUR ANTARMUKA WEB</div>
+          <h1 class="slide-title">Mengenal Tata Letak (Layout) Halaman Utama Dashboard</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Tampilan Keseluruhan Layar Web</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_overview_2x.png" alt="4 Zona Layar"></div>
+            <div class="img-caption">Tangkapan Layar Resolusi Penuh: 4 Zona Utama pada Web Dashboard</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Struktur 4 Zona Utama Layar Dashboard</div>
+          <p class="desc-text">Saat pertama kali membuka web, layar dibagi menjadi 4 zona kerja yang sangat teratur dan mudah dipahami:</p>
+          <div class="point-item"><span class="point-title">• Zona 1 - Menu Navigasi Samping (Sidebar Kiri):</span> <span class="point-desc">Panel hitam di sebelah kiri untuk berpindah halaman gardu pabrik (Electrical Room 1, 2, 2.1, 3), mesin forging, dan laporan.</span></div>
+          <div class="point-item"><span class="point-title">• Zona 2 - Header Banner & Aksi (Paling Atas):</span> <span class="point-desc">Menampilkan judul gardu yang aktif, jam real-time WIB, status jaringan VLAN 20, tombol Mode TV, dan tombol unduh laporan.</span></div>
+          <div class="point-item"><span class="point-title">• Zona 3 - 6 Kartu Metrik Utama (Baris Tengah):</span> <span class="point-desc">6 kotak ringkasan paling penting pabrik: Total Beban (kW), Pemakaian Energi (kWh), Estimasi Biaya (Rp), Beban Puncak, Selisih Hari Kemarin, dan Emisi Karbon.</span></div>
+          <div class="point-item"><span class="point-title">• Zona 4 - Grafik Beban & Tabel Detail Meter:</span> <span class="point-desc">Grafik profil beban 24 jam, grafik donat pembagian listrik, kartu penyulang Cikarang Listrindo, dan tabel direktori 111 unit meter digital.</span></div>
+          <div class="info-callout"><b>Tips Navigasi:</b> Tampilan ini sudah responsif. Anda dapat menggulir (scroll) ke bawah dengan mouse untuk melihat tabel dan grafik secara detail.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide-card" data-slide="3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">NAVIGASI HALAMAN</div>
+          <h1 class="slide-title">Menu Navigasi Samping (Sidebar): Memilih Pabrik & Lini Mesin</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Panel Hitam di Sisi Kiri Layar</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_sidebar_menu_2x.png" alt="Sidebar Menu"></div>
+            <div class="img-caption">Tangkapan Layar: Menu Navigasi Pabrik pada Sidebar</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Fungsi Tombol Menu pada Sidebar</div>
+          <p class="desc-text">Sidebar kiri memudahkan Anda menyaring data sesuai lokasi fisik di lapangan:</p>
+          <div class="point-item"><span class="point-title">• Main Dashboard:</span> <span class="point-desc">Ringkasan gabungan seluruh 38 feeder utama dan 111 meter dari semua pabrik.</span></div>
+          <div class="point-item"><span class="point-title">• Electrical Room 1 (Tr 01-05):</span> <span class="point-desc">Khusus gardu tegangan menengah 20 kV di Factory 1.</span></div>
+          <div class="point-item"><span class="point-title">• Electrical Room 2 & 2.1 (Tr 06-16):</span> <span class="point-desc">Khusus gardu trafo di Factory 2 & Factory 2.1.</span></div>
+          <div class="point-item"><span class="point-title">• Electrical Room 3 (Tr 17-19):</span> <span class="point-desc">Khusus gardu trafo di Factory 3.</span></div>
+          <div class="point-item"><span class="point-title">• Forging Lines (39 Feeder):</span> <span class="point-desc">Khusus mesin penempaan panas (Press 1600T s/d 4000T).</span></div>
+          <div class="point-item"><span class="point-title">• Heat Treatment (29 Unit):</span> <span class="point-desc">Khusus tungku pemanas induksi & washing line.</span></div>
+          <div class="point-item"><span class="point-title">• Energy Reports & Audit:</span> <span class="point-desc">Pusat unduh laporan berkala format Excel.</span></div>
+          <div class="info-callout"><b>Kemudahan Pengguna:</b> Klik tombol pabrik yang diinginkan, layar akan otomatis menampilkan mesin di pabrik tersebut tanpa perlu mencari manual.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide-card" data-slide="4">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">STATUS SISTEM GARDU</div>
+          <h1 class="slide-title">Kapsul Status SCADA 20kV: Kesehatan Jaringan & Meter Online</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Bagian Bawah Sidebar Kiri</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_sidebar_scada_2x.png" alt="SCADA Capsule"></div>
+            <div class="img-caption">Tangkapan Layar: Kapsul Telemetri SCADA 20kV & Profil Divisi</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Arti 4 Indikator Kesehatan Sistem Gardu</div>
+          <p class="desc-text">Kapsul hitam di bawah sidebar memberikan kepastian bahwa seluruh sistem telemetri kelistrikan pabrik sedang berjalan normal tanpa kendala:</p>
+          <div class="point-item"><span class="point-title">• TOTAL LOAD (14.129 kW):</span> <span class="point-desc">Menampilkan total tarikan daya aktif detik ini dari seluruh pabrik. Angka ini berubah setiap detik mengikuti ritme mesin produksi.</span></div>
+          <div class="point-item"><span class="point-title">• POWER FACTOR (0,90 Hijau):</span> <span class="point-desc">Nilai rata-rata efisiensi daya gabungan seluruh pabrik. Warna hijau menandakan kondisi sangat aman di atas batas denda PLN (0,85).</span></div>
+          <div class="point-item"><span class="point-title">• ACTIVE METERS (111 / 111):</span> <span class="point-desc">Menunjukkan seluruh 111 unit digital power meter Schneider di gardu sedang menyala dan mengirim data.</span></div>
+          <div class="point-item"><span class="point-title">• SCADA VLAN (NORMAL):</span> <span class="point-desc">Indikator hijau menandakan jalur kabel serat optik jaringan VLAN 20 gardu listrik terhubung stabil ke server.</span></div>
+          <div class="info-callout"><b>Deteksi Dini:</b> Jika angka Active Meters berkurang (misal: 110/111), artinya ada 1 meter yang mati atau kabel komunikasi putus di panel gardu.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: STACKED (Header) -->
+    <div class="slide-card" data-slide="5">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">KONTROL & FITUR SISTEM</div>
+          <h1 class="slide-title">Header Banner: Jam Real-time, Mode TV, & Ekspor Laporan</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Baris Paling Atas Layar Web</div>
+      </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap"><img src="ss_header_banner_2x.png" alt="Header Banner"></div>
+        <div class="stacked-desc-grid">
+          <div class="box">
+            <div class="box-title">Informasi Konteks & Waktu Real-Time</div>
+            <div class="point-item"><span class="point-title">• Judul & Area:</span> <span class="point-desc">Menampilkan nama gardu yang aktif (misal: <i>Main Dashboard · All Factory Substations</i>).</span></div>
+            <div class="point-item"><span class="point-title">• Jam Digital Real-time:</span> <span class="point-desc">Jam digital WIB yang berdetik setiap detik, memastikan data di layar adalah data terkini, bukan data macet.</span></div>
+            <div class="point-item"><span class="point-title">• Badge 'SCADA VLAN 20 Live':</span> <span class="point-desc">Indikator hijau menandakan server web terhubung tanpa putus ke switch Cisco gardu listrik.</span></div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-green">Fungsi Tombol Aksi Cepat</div>
+            <div class="point-item"><span class="point-title">• Tombol 'TV Mode':</span> <span class="point-desc">Mengaktifkan mode layar penuh tanpa sidebar dan memperbesar huruf untuk TV display dinding gardu.</span></div>
+            <div class="point-item"><span class="point-title">• Tombol 'Export Report':</span> <span class="point-desc">Langsung mengunduh seluruh data pemantauan ke dalam file Excel (.xlsx / CSV) dalam 1 klik.</span></div>
+            <div class="point-item"><span class="point-title">• Tombol 'Dark / Light':</span> <span class="point-desc">Mengubah tema warna tampilan antara mode gelap (elegan) dan mode terang (jelas siang hari).</span></div>
+            <div class="point-item"><span class="point-title">• Tombol Tiga Garis:</span> <span class="point-desc">Menutup/membuka sidebar agar area grafik menjadi lebih luas di layar laptop/tablet.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: STACKED (Alert Banner) -->
+    <div class="slide-card" data-slide="6">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">SISTEM PERINGATAN DINI</div>
+          <h1 class="slide-title">Banner Peringatan Tindakan: Mencegah Denda Listrik kVARh</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Kotak Kuning/Merah di Atas Kartu KPI</div>
+      </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap"><img src="ss_alert_banner_2x.png" alt="Alert Banner"></div>
+        <div class="stacked-desc-grid">
+          <div class="box">
+            <div class="box-title">Mengapa Banner Ini Muncul?</div>
+            <p class="desc-text">Banner ini bekerja sebagai <b>sistem peringatan dini otomatis</b>. Banner akan muncul dengan latar kuning/merah apabila sistem mendeteksi ada trafo atau mesin yang mengalami penurunan performa listrik berbahaya.</p>
+            <div class="point-item"><span class="point-title">• Penyebab Utama:</span> <span class="point-desc">Terdeteksi nilai Faktor Daya (Power Factor / Cos φ) di bawah ambang batas resmi Cikarang Listrindo (yaitu <b>kurang dari 0,85</b>) pada Outgoing Trafo 01 (terukur 0,84).</span></div>
+            <div class="point-item"><span class="point-title">• Risiko Finansial:</span> <span class="point-desc">Jika nilai Cos φ di bawah 0,85 dibiarkan selama 1 bulan, penyedia listrik akan mengenakan <b>tagihan denda kelebihan kVARh</b> bernilai puluhan juta rupiah!</span></div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-green">Langkah Cepat Tindakan Operator</div>
+            <div class="point-item"><span class="point-title">1. Klik tombol 'Review Alert Meters →':</span> <span class="point-desc">Layar akan otomatis melompat dan menyorot meter-meter yang nilainya rendah.</span></div>
+            <div class="point-item"><span class="point-title">2. Lapor ke Teknisi Listrik:</span> <span class="point-desc">Segera hubungi tim pemeliharaan gardu untuk mengecek panel <b>Capacitor Bank (APFC)</b> apakah ada sekring putus atau kontaktor kapasitor yang macet.</span></div>
+            <div class="point-item"><span class="point-title">3. Otomatis Hilang:</span> <span class="point-desc">Setelah kapasitor bank bekerja kembali dan Cos φ naik di atas 0,85, banner peringatan ini akan hilang secara otomatis.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: STACKED (Toolbar) -->
+    <div class="slide-card" data-slide="7">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">NAVIGASI WAKTU</div>
+          <h1 class="slide-title">Toolbar Tanggal: Memilih Hari & Rentang Waktu Pemantauan</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Bilah Kontrol di Bawah Banner Peringatan</div>
+      </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap"><img src="ss_toolbar_2x.png" alt="Toolbar Tanggal"></div>
+        <div class="stacked-desc-grid">
+          <div class="box">
+            <div class="box-title">Navigasi Hari & Kalender</div>
+            <div class="point-item"><span class="point-title">• Tombol Panah Mundur ◀:</span> <span class="point-desc">Berpindah cepat melihat data 1 hari sebelumnya (Kemarin / H-1) untuk membandingkan kinerja antar shift kerja.</span></div>
+            <div class="point-item"><span class="point-title">• Kapsul Tanggal Aktif:</span> <span class="point-desc">Menampilkan tanggal yang datanya sedang Anda lihat (misal: <i>Today · 10 Nov 2026</i>).</span></div>
+            <div class="point-item"><span class="point-title">• Kalender Interaktif:</span> <span class="point-desc">Klik kapsul tanggal untuk membuka pemilih tanggal dan melompat ke tanggal tertentu di masa lalu.</span></div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-green">Pilihan Rentang Waktu (Timeframe Switch)</div>
+            <div class="point-item"><span class="point-title">• Today:</span> <span class="point-desc">Menampilkan pemakaian energi yang dihitung sejak jam 00:00 WIB tadi malam hingga detik ini.</span></div>
+            <div class="point-item"><span class="point-title">• Yesterday:</span> <span class="point-desc">Menampilkan total energi 24 jam penuh hari kemarin.</span></div>
+            <div class="point-item"><span class="point-title">• 7 Days:</span> <span class="point-desc">Menampilkan akumulasi konsumsi selama 7 hari terakhir (evaluasi mingguan).</span></div>
+            <div class="point-item"><span class="point-title">• This Month:</span> <span class="point-desc">Menampilkan akumulasi energi dari tanggal 1 bulan berjalan hingga hari ini.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: STACKED (KPI Cards) -->
+    <div class="slide-card" data-slide="8">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">METRIK KUNCI PABRIK (KPI)</div>
+          <h1 class="slide-title">6 Kartu Metrik Utama: Daya, Energi, Biaya, & Emisi Karbon</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: 6 Kotak Berjejer di Tengah Dashboard</div>
+      </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap"><img src="ss_kpi_cards_all_2x.png" alt="KPI Cards"></div>
+        <div class="stacked-desc-grid">
+          <div class="box">
+            <div class="box-title">Kartu 1 s/d 3: Daya, Energi, & Biaya Listrik</div>
+            <div class="point-item"><span class="point-title">• 1. Total Active Power (14.129 kW):</span> <span class="point-desc">Beban daya listrik aktif yang sedang ditarik detik ini oleh seluruh mesin pabrik. Angka ini mencerminkan keaktifan lini produksi.</span></div>
+            <div class="point-item"><span class="point-title">• 2. Energy Today (197.064 kWh):</span> <span class="point-desc">Jumlah total energi listrik yang sudah dikonsumsi pabrik sejak jam 00:00 tadi malam. Terus bertambah seiring berjalannya jam kerja.</span></div>
+            <div class="point-item"><span class="point-title">• 3. Estimated Cost (Rp 285 Jt):</span> <span class="point-desc">Perkiraan tagihan listrik berjalan hari ini berdasarkan tarif resmi industri Cikarang Listrindo (termasuk jam beban puncak WBP).</span></div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-green">Kartu 4 s/d 6: Beban Puncak, Penghematan, & Karbon</div>
+            <div class="point-item"><span class="point-title">• 4. Peak Demand (16.820 kW):</span> <span class="point-desc">Beban listrik tertinggi yang sempat terjadi hari ini. Berguna memastikan beban tidak melampaui kapasitas daya kontrak gardu.</span></div>
+            <div class="point-item"><span class="point-title">• 5. Utility Delta (-7.086 kWh / ▼ -3.5%):</span> <span class="point-desc">Selisih konsumsi dibanding jam yang sama kemarin. Warna <b>Hijau panah turun</b> artinya pabrik lebih hemat energi!</span></div>
+            <div class="point-item"><span class="point-title">• 6. Carbon Emission (155,7 Ton CO2e):</span> <span class="point-desc">Perkiraan jejak emisi gas rumah kaca pabrik dalam satuan Ton CO2, sangat penting untuk laporan audit ESG keberlanjutan.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: SPLIT (24h Chart) -->
+    <div class="slide-card" data-slide="9">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">ANALISIS TREN ENERGI</div>
+          <h1 class="slide-title">Grafik Beban 24 Jam: Indikator Titik Puncak (Peak) & Terendah</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Grafik Garis Sisi Kiri di Baris Kedua</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_chart_24h_2x.png" alt="24h Load Chart"></div>
+            <div class="img-caption">Tangkapan Layar Resolusi Tinggi: Indikator Peak (15.720 kW) & Terendah (7.730 kW) pada Kurva 24 Jam</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Apa yang Ditampilkan Grafik Ini?</div>
+          <p class="desc-text">Grafik garis ini memperlihatkan naik-turunnya tarikan daya listrik (kW) pabrik sepanjang 24 jam dengan penanda titik kritis visual:</p>
+          <div class="box-title box-title-green">Indikator Visual Titik Beban Utama</div>
+          <div class="point-item"><span class="point-title">• Badge Merah (▲ PEAK: 15.720 kW):</span> <span class="point-desc">Menandai titik tarikan daya tertinggi hari ini (pukul 15:00) agar tim utilitas dapat mengantisipasi lonjakan beban terhadap batas kontrak Cikarang Listrindo.</span></div>
+          <div class="point-item"><span class="point-title">• Badge Hijau (▼ TERENDAH: 7.730 kW):</span> <span class="point-desc">Menandai titik pemakaian paling rendah (pukul 03:00 dini hari) untuk memantau baseline daya standby saat pergantian shift.</span></div>
+          <div class="box-title">Cara Membaca Dua Garis Kurva</div>
+          <div class="point-item"><span class="point-title">• Garis Biru Solid (Today - Live):</span> <span class="point-desc">Pola beban pemakaian listrik riil yang sedang berjalan hari ini.</span></div>
+          <div class="point-item"><span class="point-title">• Garis Abu-Abu Putus-Putus (Yesterday):</span> <span class="point-desc">Pola pemakaian listrik pada jam yang sama kemarin sebagai tolok ukur perbandingan.</span></div>
+          <div class="point-item"><span class="point-title">• Lembah Istirahat (12:00–13:00):</span> <span class="point-desc">Terlihat penurunan daya signifikan saat operator istirahat makan siang.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: SPLIT (Donut Chart) -->
+    <div class="slide-card" data-slide="10">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">DISTRIBUSI BEBAN PABRIK</div>
+          <h1 class="slide-title">Grafik Donut: Proporsi Pembagian Konsumsi Gardu (100% Total Share)</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Grafik Lingkaran di Samping Kanan Grafik 24 Jam</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_chart_donut_2x.png" alt="Donut Chart"></div>
+            <div class="img-caption">Tangkapan Layar Resolusi Tinggi: Donut Load Share Substation (Factory 1, 2.1, 2, 3)</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Proporsi Distribusi Energi Antar Substation Pabrik</div>
+          <p class="desc-text">Grafik lingkaran ini memperlihatkan persentase porsi penggunaan energi listrik pada masing-masing gardu pabrik:</p>
+          <div class="box-title box-title-green">Tampilan Visual & Pembagian Beban Pabrik</div>
+          <div class="point-item"><span class="point-title">• Persentase Langsung pada Irisan:</span> <span class="point-desc">Setiap segmen warna menampilkan angka persentase pemakaian secara langsung (33%, 22%, 30%, 15%).</span></div>
+          <div class="point-item"><span class="point-title">• Total di Tengah Bundaran (100% TOTAL SHARE):</span> <span class="point-desc">Pusat lingkaran menampilkan total 100% dari keseluruhan pembagian beban gardu.</span></div>
+          <div class="point-item"><span class="point-title">• Factory 1 (33% - Biru Muda):</span> <span class="point-desc">Substation penyuplai lini permesinan utama dan utilitas sentral.</span></div>
+          <div class="point-item"><span class="point-title">• Factory 2 (30% - Teal):</span> <span class="point-desc">Substation penyuplai lini penempaan daya tinggi.</span></div>
+          <div class="point-item"><span class="point-title">• Factory 2.1 (22% - Cyan):</span> <span class="point-desc">Substation penyuplai pemanas billet dan motor pendukung.</span></div>
+          <div class="point-item"><span class="point-title">• Factory 3 (15% - Hijau):</span> <span class="point-desc">Substation penyuplai sistem pompa, cooling tower, dan utilitas pendukung.</span></div>
+          <div class="info-callout"><b>Catatan Pembaruan:</b> Kategori proses Forging dan HT telah dipisahkan agar grafik berfokus murni pada proporsi 4 area gardu pabrik (100%).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: SPLIT (Top 8 Chart) -->
+    <div class="slide-card" data-slide="11">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">FOKUS EFISIENSI ENERGI</div>
+          <h1 class="slide-title">Outgoing Transformers: Seluruh 19 Trafo Berurutan (Trafo 01 – 19)</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Panel Kiri Baris Ketiga Dashboard</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_top8_chart_2x.png" alt="Outgoing Transformers 19"></div>
+            <div class="img-caption">Tangkapan Layar Resolusi Tinggi: Seluruh 19 Outgoing Trafo Gardu Tersusun Rapi Berurutan</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Memantau Seluruh 19 Transformator Gardu Distribusi</div>
+          <p class="desc-text">Grafik batang horisontal ini menampilkan seluruh 19 unit transformator distribusi keluar secara lengkap dan berurutan:</p>
+          <div class="box-title box-title-green">Keunggulan Tampilan 19 Trafo Lengkap</div>
+          <div class="point-item"><span class="point-title">• Seluruh 19 Trafo Masuk Sesuai Urutan:</span> <span class="point-desc">Tersusun rapi dari <b>Outgoing Trafo 01</b> hingga <b>Outgoing Trafo 19</b> sesuai nomor panel di gardu.</span></div>
+          <div class="point-item"><span class="point-title">• Format Nama Ringkas:</span> <span class="point-desc">Imbuhan belakang yang panjang dihapus sehingga label bersih dan mudah diidentifikasi seketika oleh operator lapangan.</span></div>
+          <div class="point-item"><span class="point-title">• Beban Tertinggi Terlihat Jelas:</span> <span class="point-desc">Trafo 12 (18.450 kWh), Trafo 01 (15.400 kWh), dan Trafo 03 (14.200 kWh) langsung tampak menonjol sebagai beban utama.</span></div>
+          <div class="info-callout"><b>Panduan Operasional:</b> Bandingkan beban antar trafo untuk memastikan keseimbangan distribusi daya antar seksi gardu.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: SPLIT (Attention Required) -->
+    <div class="slide-card" data-slide="12">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">PENGAWASAN KHUSUS</div>
+          <h1 class="slide-title">Daftar Perlu Perhatian: Mesin Anomali & Risiko Denda Listrik</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Panel Kanan Baris Ketiga Dashboard</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_attention_list_2x.png" alt="Attention Required"></div>
+            <div class="img-caption">Tangkapan Layar Resolusi Tinggi: Daftar Meter yang Membutuhkan Perhatian & Tindakan</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Daftar Pengawasan Khusus Tim Maintenance</div>
+          <p class="desc-text">Panel ini adalah daftar kerja langsung (watch-list) bagi teknisi listrik. Hanya mesin yang mengalami anomali yang akan muncul di sini:</p>
+          <div class="box-title box-title-green">Arti Tanda Peringatan pada Daftar</div>
+          <div class="point-item"><span class="point-title">• Badge Merah/Kuning 'Low PF' (Cos φ < 0,85):</span> <span class="point-desc">Menandakan efisiensi daya buruk. Segera periksa kapasitor bank untuk mencegah denda kVARh dari Cikarang Listrindo.</span></div>
+          <div class="point-item"><span class="point-title">• Badge Oranye 'High Loading' (> 80%):</span> <span class="point-desc">Menandakan trafo bekerja mendekati batas kemampuan maksimalnya. Nyalakan kipas pendingin gardu dan jangan menambah beban baru.</span></div>
+          <div class="point-item"><span class="point-title">• Badge Abu-Abu 'Offline':</span> <span class="point-desc">Menandakan meter kehilangan sinyal komunikasi. Periksa kabel LAN atau catu daya meter di panel gardu.</span></div>
+          <div class="info-callout"><b>Fitur Interaktif:</b> Klik pada nama meter mana saja di daftar ini untuk langsung membuka rincian lengkap mesin tersebut di layar.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: STACKED (Incoming CLD) -->
+    <div class="slide-card" data-slide="13">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">SUMBER DAYA UTAMA 20kV</div>
+          <h1 class="slide-title">Sumber Daya Harian: CLD 1, CLD 2, CLD 3 (Cikarang Listrindo)</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: 3 Kartu Berwarna di Bawah Panel Outgoing Trafo</div>
+      </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap"><img src="ss_incoming_cld_2x.png" alt="Incoming CLD"></div>
+        <div class="stacked-desc-grid">
+          <div class="box">
+            <div class="box-title">Gerbang Utama Pasokan Listrik 20.000 Volt Pabrik</div>
+            <div class="point-item"><span class="point-title">• CLD 1:</span> <span class="point-desc">Menyuplai Factory 1 & utilitas sentral (Tegangan 20.000 V, IP 10.41.47.263, Daya saat ini: 3.940 kW, Energi: 49.704 kWh).</span></div>
+            <div class="point-item"><span class="point-title">• CLD 2:</span> <span class="point-desc">Menyuplai lini penempaan Factory 2 (Tegangan 20.000 V, IP 10.41.47.264, Daya saat ini: 5.640 kW, Energi: 72.540 kWh).</span></div>
+            <div class="point-item"><span class="point-title">• CLD 3:</span> <span class="point-desc">Menyuplai lini penempaan & induksi Factory 3 (Tegangan 20.000 V, IP 10.41.47.265, Daya saat ini: 5.820 kW, Energi: 74.820 kWh).</span></div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-green">Pembaruan Label Nama Ringkas & Parameter Kunci</div>
+            <div class="point-item"><span class="point-title">• Nama Sederhana:</span> <span class="point-desc">Label 'Incoming Feeder' dan imbuhan panjang dihapus sehingga menjadi <b>CLD 1</b>, <b>CLD 2</b>, dan <b>CLD 3</b> yang ringkas dan profesional.</span></div>
+            <div class="point-item"><span class="point-title">• Energy Today (kWh):</span> <span class="point-desc">Total pemakaian energi hari ini dari masing-masing penyulang.</span></div>
+            <div class="point-item"><span class="point-title">• Energy Yesterday:</span> <span class="point-desc">Total energi kemarin lengkap dengan selisih penghematannya.</span></div>
+            <div class="point-item"><span class="point-title">• Power Factor / Status:</span> <span class="point-desc">Status efisiensi daya (Optimal 0,92 - 0,94). Klik kartu untuk membuka pop-up telemetri 3-fasa detail!</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14: STACKED (Table Rows) -->
+    <div class="slide-card" data-slide="14">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">DATABASE TELEMETRI LENGKAP</div>
+          <h1 class="slide-title">Tabel Direktori Digital Power Meter: Pembacaan Lengkap 111 Unit</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Tabel Besar di Bagian Bawah Dashboard</div>
+      </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap"><img src="ss_meter_table_rows_2x.png" alt="Meter Table"></div>
+        <div class="stacked-desc-grid">
+          <div class="box">
+            <div class="box-title">Arti Kolom Identitas & Pengukuran Beban</div>
+            <div class="point-item"><span class="point-title">• Machine Code:</span> <span class="point-desc">Kode mesin/trafo di lapangan (misal: <i>TRF-01, CLD-001, PRESS-1600T</i>).</span></div>
+            <div class="point-item"><span class="point-title">• Meter Name & Area:</span> <span class="point-desc">Nama fungsi meter dan lokasi fisiknya di pabrik.</span></div>
+            <div class="point-item"><span class="point-title">• IP Address:</span> <span class="point-desc">Alamat jaringan internal (LAN VLAN 20) gateway meter di gardu.</span></div>
+            <div class="point-item"><span class="point-title">• Power (kW):</span> <span class="point-desc">Tarikan daya listrik aktif yang sedang ditarik saat ini.</span></div>
+            <div class="point-item"><span class="point-title">• Voltage (V) & Current (A):</span> <span class="point-desc">Tegangan antarfasa (Volt) dan arus listrik (Ampere).</span></div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-green">Arti Kolom Efisiensi, Energi, & Status</div>
+            <div class="point-item"><span class="point-title">• Cos φ (Faktor Daya):</span> <span class="point-desc">Efisiensi daya (Hijau ≥ 0.85 = aman, Merah < 0.85 = waspada).</span></div>
+            <div class="point-item"><span class="point-title">• Today & Yesterday (kWh):</span> <span class="point-desc">Konsumsi energi hari ini dibandingkan hari kemarin.</span></div>
+            <div class="point-item"><span class="point-title">• Delta:</span> <span class="point-desc">Selisih konsumsi (hijau turun = hemat, merah naik = lebih boros).</span></div>
+            <div class="point-item"><span class="point-title">• CO₂ Emission (kg):</span> <span class="point-desc">Perkiraan emisi karbon mesin tersebut.</span></div>
+            <div class="point-item"><span class="point-title">• Status & Action:</span> <span class="point-desc">Status komunikasi (Online hijau) dan tombol <b>'Detail'</b> untuk pop-up 3-fasa.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15: SPLIT (Modal Detail) -->
+    <div class="slide-card" data-slide="15">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">PEMERIKSAAN MENDALAM (DEEP DIVE)</div>
+          <h1 class="slide-title">Modal Detail: Memeriksa Keseimbangan 3-Fasa R-S-T & Harmonisa</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Pop-up Muncul saat Tombol 'Detail' Diklik</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="ss_modal_clean_2x.png" alt="Modal Detail"></div>
+            <div class="img-caption">Tangkapan Layar Resolusi Tinggi: Jendela Pop-up Rincian Telemetri 3-Fasa & Kualitas Daya</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Informasi Mendalam Saat Tombol 'Detail' Diklik</div>
+          <p class="desc-text">Saat Anda mengklik tombol <b>'Detail'</b> pada tabel, jendela pop-up profesional ini akan muncul menampilkan data multimeter Schneider secara lengkap:</p>
+          <div class="box-title box-title-green">Arti Parameter di Jendela Detail</div>
+          <div class="point-item"><span class="point-title">• Tegangan Fasa-Fasa (V_RS, V_ST, V_TR):</span> <span class="point-desc">Memastikan tegangan 3-fasa seimbang (normal 400V atau 210V pada lini penempaan).</span></div>
+          <div class="point-item"><span class="point-title">• Tegangan Fasa-Netral (V_RN, V_SN, V_TN):</span> <span class="point-desc">Tegangan ke netral (normal 230V).</span></div>
+          <div class="point-item"><span class="point-title">• Arus Fasa R, S, T (Ampere):</span> <span class="point-desc">Arus listrik pada masing-masing kabel fasa. Selisih antar fasa tidak boleh > 10% agar motor tidak cepat panas.</span></div>
+          <div class="point-item"><span class="point-title">• Daya Semu (kVA) & % Loading Trafo:</span> <span class="point-desc">Menunjukkan seberapa berat trafo dibebani. Warning jika beban > 80%.</span></div>
+          <div class="point-item"><span class="point-title">• Harmonisa Listrik (THD_V & THD_I):</span> <span class="point-desc">Mengukur kebersihan gelombang listrik dari gangguan mesin las / inverter (standar: THD-V ≤ 5.0%).</span></div>
+          <div class="point-item"><span class="point-title">• Tombol 'Salin Telemetri':</span> <span class="point-desc">Menyalin data meter ke clipboard untuk laporan WhatsApp / email.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16: SPLIT (Reports & SOP) -->
+    <div class="slide-card" data-slide="16">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">PELAPORAN & PROSEDUR DARURAT</div>
+          <h1 class="slide-title">Pusat Ekspor Laporan & Panduan Respon Cepat Status Alarm</h1>
+        </div>
+        <div class="slide-module-badge">Lokasi: Menu Reports & Prosedur Tindakan Operator</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="img-container">
+            <div class="img-wrap"><img src="cropped_ss_view_reports.png" alt="Reports Center"></div>
+            <div class="img-caption">Tangkapan Layar: Pusat Ekspor Laporan Excel & Audit Energi ESG</div>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Cara Mengunduh Laporan Resmi Excel</div>
+          <div class="point-item"><span class="point-title">1. Buka Menu Laporan:</span> <span class="point-desc">Klik menu <b>Energy Reports & Audit</b> di sidebar, atau klik tombol <b>Export Report</b> di pojok kanan atas layar.</span></div>
+          <div class="point-item"><span class="point-title">2. Pilih Periode:</span> <span class="point-desc">Pilih rentang tanggal yang diinginkan (Laporan Harian, Mingguan, atau Rekap Bulanan).</span></div>
+          <div class="point-item"><span class="point-title">3. Klik 'Download Excel':</span> <span class="point-desc">File spreadsheet siap dilampirkan langsung untuk bahan rapat efisiensi energi atau audit ISO 50001!</span></div>
+          <div class="box-title box-title-green">Panduan Respon Cepat Warna Status Badge (SOP Operator)</div>
+          <div class="point-item"><span class="point-title">• Hijau (Optimal / Normal):</span> <span class="point-desc">Kondisi kelistrikan sangat baik (Cos φ ≥ 0.90, Pembebanan trafo < 75%). Tidak memerlukan tindakan teknis.</span></div>
+          <div class="point-item"><span class="point-title">• Kuning (Warning):</span> <span class="point-desc">Kondisi mendekati batas (Cos φ antara 0.80 - 0.85, atau Trafo 75 - 85%). Lakukan observasi pada panel gardu.</span></div>
+          <div class="point-item"><span class="point-title">• Merah (Critical Alert):</span> <span class="point-desc">Bahaya denda atau beban lebih (Cos φ < 0.80, atau Trafo > 85%). Segera lapor supervisor dan periksa panel kapasitor bank!</span></div>
+          <div class="info-callout"><b>Bantuan Teknis:</b> Hubungi Dept Electrical Maintenance & Utility PT Musashi Auto Parts Indonesia — Ext. Ruang Gardu: 214 / 215.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 16;
+    const slides = document.querySelectorAll('.slide-card');
+    const indicator = document.getElementById('slideIndicator');
+    const select = document.getElementById('slideSelect');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    function updateSlide() {
+      slides.forEach((s, idx) => {
+        s.classList.toggle('active', idx + 1 === currentSlide);
+      });
+      indicator.textContent = `Slide ${currentSlide} / ${totalSlides}`;
+      select.value = currentSlide;
+      btnPrev.disabled = (currentSlide === 1);
+      btnNext.disabled = (currentSlide === totalSlides);
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(n) {
+      if (n >= 1 && n <= totalSlides) {
+        currentSlide = n;
+        updateSlide();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      }
+    });
+
+    updateSlide();
+  </script>
+</body>
+</html>

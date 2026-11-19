@@ -357,24 +357,46 @@ document.addEventListener('DOMContentLoaded', () => {
   // Top 8 Consumers Data by Category & Factory Substation
   const TOP_8_DATA = {
     all: [
-      { name: 'Outgoing Trafo 12 FO & HT 200V', val: 18450 },
-      { name: 'Outgoing Trafo 03 FO & HT 200V', val: 14200 },
-      { name: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', val: 11800 },
-      { name: 'Outgoing Trafo 16 Billet Heater N1600 6.6kV', val: 9950 },
-      { name: 'Outgoing Trafo 08 FO & HT 200V', val: 8650 },
-      { name: 'Outgoing Trafo 19 HT 200V Fac 3', val: 7850 },
-      { name: 'Outgoing Trafo 05 FO & HT 200V', val: 6920 },
-      { name: 'Outgoing Trafo 15 Billet Heater Kurimoto 6.6kV', val: 6150 }
+      { name: 'Outgoing Trafo 01', val: 15400 },
+      { name: 'Outgoing Trafo 02', val: 8900 },
+      { name: 'Outgoing Trafo 03', val: 14200 },
+      { name: 'Outgoing Trafo 04', val: 7600 },
+      { name: 'Outgoing Trafo 05', val: 10800 },
+      { name: 'Outgoing Trafo 06', val: 7200 },
+      { name: 'Outgoing Trafo 07', val: 6800 },
+      { name: 'Outgoing Trafo 08', val: 8650 },
+      { name: 'Outgoing Trafo 09', val: 5400 },
+      { name: 'Outgoing Trafo 10', val: 11800 },
+      { name: 'Outgoing Trafo 11', val: 5800 },
+      { name: 'Outgoing Trafo 12', val: 18450 },
+      { name: 'Outgoing Trafo 13', val: 4900 },
+      { name: 'Outgoing Trafo 14', val: 4200 },
+      { name: 'Outgoing Trafo 15', val: 6150 },
+      { name: 'Outgoing Trafo 16', val: 9950 },
+      { name: 'Outgoing Trafo 17', val: 9800 },
+      { name: 'Outgoing Trafo 18', val: 6100 },
+      { name: 'Outgoing Trafo 19', val: 7850 }
     ],
     electrical: [
-      { name: 'Outgoing Trafo 12 FO & HT 200V', val: 18450 },
-      { name: 'Outgoing Trafo 03 FO & HT 200V', val: 14200 },
-      { name: 'Outgoing Trafo 10 Billet Heater Komatsu 6.6kV', val: 11800 },
-      { name: 'Outgoing Trafo 16 Billet Heater N1600 6.6kV', val: 9950 },
-      { name: 'Outgoing Trafo 08 FO & HT 200V', val: 8650 },
-      { name: 'Outgoing Trafo 19 HT 200V Fac 3', val: 7850 },
-      { name: 'Outgoing Trafo 05 FO & HT 200V', val: 6920 },
-      { name: 'Outgoing Trafo 15 Billet Heater Kurimoto 6.6kV', val: 6150 }
+      { name: 'Outgoing Trafo 01', val: 15400 },
+      { name: 'Outgoing Trafo 02', val: 8900 },
+      { name: 'Outgoing Trafo 03', val: 14200 },
+      { name: 'Outgoing Trafo 04', val: 7600 },
+      { name: 'Outgoing Trafo 05', val: 10800 },
+      { name: 'Outgoing Trafo 06', val: 7200 },
+      { name: 'Outgoing Trafo 07', val: 6800 },
+      { name: 'Outgoing Trafo 08', val: 8650 },
+      { name: 'Outgoing Trafo 09', val: 5400 },
+      { name: 'Outgoing Trafo 10', val: 11800 },
+      { name: 'Outgoing Trafo 11', val: 5800 },
+      { name: 'Outgoing Trafo 12', val: 18450 },
+      { name: 'Outgoing Trafo 13', val: 4900 },
+      { name: 'Outgoing Trafo 14', val: 4200 },
+      { name: 'Outgoing Trafo 15', val: 6150 },
+      { name: 'Outgoing Trafo 16', val: 9950 },
+      { name: 'Outgoing Trafo 17', val: 9800 },
+      { name: 'Outgoing Trafo 18', val: 6100 },
+      { name: 'Outgoing Trafo 19', val: 7850 }
     ],
     fac1: [
       { name: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', val: 15400 },
@@ -1385,6 +1407,159 @@ document.addEventListener('DOMContentLoaded', () => {
     Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
     Chart.defaults.color = defaultTextColor;
 
+    // Custom Plugin: Peak & Min Markers for 24h Load Curve
+    const peakAndMinPlugin = {
+      id: 'peakAndMinMarker',
+      afterDraw(chart) {
+        if (state.activePeriod && state.activePeriod !== 'today') return;
+        const meta = chart.getDatasetMeta(0);
+        if (!meta || !meta.data || !meta.data.length) return;
+        const data = chart.data.datasets[0].data;
+        if (!data || !data.length) return;
+
+        let maxIdx = 0;
+        let minIdx = 0;
+        let maxVal = -Infinity;
+        let minVal = Infinity;
+
+        data.forEach((val, i) => {
+          if (val > maxVal) { maxVal = val; maxIdx = i; }
+          if (val < minVal) { minVal = val; minIdx = i; }
+        });
+
+        const ctx = chart.ctx;
+        ctx.save();
+
+        function drawBadge(pt, text, bgColor, isAbove) {
+          if (!pt) return;
+          const x = pt.x;
+          const y = pt.y;
+
+          // Glowing point marker
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(x, y, 7, 0, Math.PI * 2);
+          ctx.fillStyle = bgColor;
+          ctx.globalAlpha = 0.25;
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = bgColor;
+          ctx.globalAlpha = 1.0;
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, y, 2, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+          ctx.restore();
+
+          // Badge geometry
+          ctx.font = 'bold 9.5px Inter, -apple-system, sans-serif';
+          const textWidth = ctx.measureText(text).width;
+          const pillW = textWidth + 14;
+          const pillH = 19;
+          const pillY = isAbove ? y - 26 : y + 10;
+          const pillX = Math.max(chart.chartArea.left + 4, Math.min(chart.chartArea.right - pillW - 4, x - pillW / 2));
+
+          // Leader dashed line
+          ctx.beginPath();
+          ctx.strokeStyle = bgColor;
+          ctx.lineWidth = 1.2;
+          ctx.setLineDash([2, 2]);
+          ctx.moveTo(x, y + (isAbove ? -4 : 4));
+          ctx.lineTo(x, isAbove ? pillY + pillH : pillY);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Badge pill rounded box
+          ctx.fillStyle = bgColor;
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+          ctx.shadowBlur = 4;
+          const r = 4;
+          ctx.beginPath();
+          ctx.moveTo(pillX + r, pillY);
+          ctx.lineTo(pillX + pillW - r, pillY);
+          ctx.quadraticCurveTo(pillX + pillW, pillY, pillX + pillW, pillY + r);
+          ctx.lineTo(pillX + pillW, pillY + pillH - r);
+          ctx.quadraticCurveTo(pillX + pillW, pillY + pillH, pillX + pillW - r, pillY + pillH);
+          ctx.lineTo(pillX + r, pillY + pillH);
+          ctx.quadraticCurveTo(pillX, pillY + pillH, pillX, pillY + pillH - r);
+          ctx.lineTo(pillX, pillY + r);
+          ctx.quadraticCurveTo(pillX, pillY, pillX + r, pillY);
+          ctx.closePath();
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          // Text label inside badge
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(text, pillX + pillW / 2, pillY + pillH / 2 + 0.5);
+        }
+
+        drawBadge(meta.data[maxIdx], `▲ PEAK: ${maxVal.toLocaleString('id-ID')} kW`, '#ef4444', true);
+        drawBadge(meta.data[minIdx], `▼ TERENDAH: ${minVal.toLocaleString('id-ID')} kW`, '#10b981', false);
+
+        ctx.restore();
+      }
+    };
+
+    // Custom Plugin: Slices Percentage & Center Total for Donut Chart
+    const donutSliceAndCenterPlugin = {
+      id: 'donutSliceAndCenter',
+      afterDraw(chart) {
+        const meta = chart.getDatasetMeta(0);
+        if (!meta || !meta.data || !meta.data.length) return;
+        const dataset = chart.data.datasets[0];
+        const total = dataset.data.reduce((a, b) => a + b, 0);
+        if (total === 0) return;
+
+        const ctx = chart.ctx;
+        ctx.save();
+
+        // 1. Percentage directly on colored arc slices
+        meta.data.forEach((element, i) => {
+          const val = dataset.data[i];
+          if (!val) return;
+          const pct = Math.round((val / total) * 100);
+          const angle = (element.startAngle + element.endAngle) / 2;
+          const r = (element.innerRadius + element.outerRadius) / 2;
+          const x = element.x + Math.cos(angle) * r;
+          const y = element.y + Math.sin(angle) * r;
+
+          ctx.font = 'bold 12px Inter, -apple-system, sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.45)';
+          ctx.shadowBlur = 4;
+          ctx.fillText(`${pct}%`, x, y);
+        });
+
+        // 2. Center cutout text: 100% and TOTAL SHARE
+        const firstArc = meta.data[0];
+        const centerX = firstArc.x;
+        const centerY = firstArc.y;
+        const isDark = document.body.classList.contains('dark-theme');
+
+        ctx.shadowBlur = 0;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        // 100%
+        ctx.font = 'bold 24px Inter, -apple-system, sans-serif';
+        ctx.fillStyle = isDark ? '#f8fafc' : '#0f172a';
+        ctx.fillText('100%', centerX, centerY - 7);
+
+        // Subtitle
+        ctx.font = '600 9px Inter, -apple-system, sans-serif';
+        ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+        ctx.fillText('TOTAL SHARE', centerX, centerY + 13);
+
+        ctx.restore();
+      }
+    };
+
     // --- 1. Line Chart: Beban 24 Jam Terakhir (Dual Curve Hari Ini vs Kemarin) ---
     const ctx24h = document.getElementById('chart24h');
     if (ctx24h) {
@@ -1486,7 +1661,8 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             }
           }
-        }
+        },
+        plugins: [peakAndMinPlugin]
       });
     }
 
@@ -1496,15 +1672,14 @@ document.addEventListener('DOMContentLoaded', () => {
       chartDonutInstance = new Chart(ctxDonut, {
         type: 'doughnut',
         data: {
-          labels: ['Forging', 'Electrical Room', 'Kompresor', 'Pompa Air', 'Lobby'],
+          labels: ['Factory 1', 'Factory 2.1', 'Factory 2', 'Factory 3'],
           datasets: [{
-            data: [90603, 50825, 14256, 3872, 1069],
+            data: [76200, 49800, 68100, 35596],
             backgroundColor: [
-              '#38bdf8', // Forging (Blue)
-              '#2dd4bf', // Electrical Room (Teal)
-              '#fb923c', // Kompresor (Orange)
-              '#34d399', // Pompa Air (Green)
-              '#f43f5e'  // Lobby (Rose)
+              '#38bdf8', // Factory 1 (33%)
+              '#06b6d4', // Factory 2.1 (22%)
+              '#2dd4bf', // Factory 2 (30%)
+              '#34d399'  // Factory 3 (15%)
             ],
             borderWidth: 2,
             borderColor: '#ffffff',
@@ -1526,18 +1701,19 @@ document.addEventListener('DOMContentLoaded', () => {
               callbacks: {
                 label: (ctx) => {
                   const val = ctx.parsed;
-                  const total = 160605;
+                  const total = 229696;
                   const pct = ((val / total) * 100).toFixed(1);
                   return ` ${ctx.label}: ${val.toLocaleString('id-ID')} kWh (${pct}%)`;
                 }
               }
             }
           }
-        }
+        },
+        plugins: [donutSliceAndCenterPlugin]
       });
     }
 
-    // --- 3. Horizontal Bar Chart: 8 Meter dengan Pemakaian Tertinggi ---
+    // --- 3. Horizontal Bar Chart: Outgoing Trafo (19 Transformers) ---
     const ctxTop8 = document.getElementById('chartTop8Meters');
     if (ctxTop8) {
       const topData = TOP_8_DATA.all;
@@ -1550,7 +1726,7 @@ document.addEventListener('DOMContentLoaded', () => {
             backgroundColor: '#0284c7',
             hoverBackgroundColor: '#8c2924',
             borderRadius: 4,
-            barThickness: 16
+            barThickness: 11
           }]
         },
         options: {
@@ -1575,7 +1751,7 @@ document.addEventListener('DOMContentLoaded', () => {
           scales: {
             x: {
               min: 0,
-              max: 20000,
+              max: 22000,
               grid: { color: defaultGridColor },
               ticks: {
                 color: defaultTextColor,
@@ -1588,7 +1764,7 @@ document.addEventListener('DOMContentLoaded', () => {
               grid: { display: false },
               ticks: {
                 color: defaultTextColor,
-                font: { size: 11 }
+                font: { size: 10 }
               }
             }
           }
@@ -1727,10 +1903,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       if (donutTitleEl) donutTitleEl.textContent = 'Musashi Substation Load Share';
       if (donutSubEl) donutSubEl.textContent = 'Substation energy consumption share across Factory 1, 2.1, 2, and 3.';
-      chartDonutInstance.data.labels = ['Factory 1', 'Factory 2.1', 'Factory 2', 'Factory 3', '⚡ Forging Total', '🔥 HT Total'];
-      chartDonutInstance.data.datasets[0].data = [76200, 49800, 68100, 35596, 104404, 69704];
+      chartDonutInstance.data.labels = ['Factory 1', 'Factory 2.1', 'Factory 2', 'Factory 3'];
+      chartDonutInstance.data.datasets[0].data = [76200, 49800, 68100, 35596];
       chartDonutInstance.data.datasets[0].backgroundColor = [
-        '#38bdf8', '#06b6d4', '#2dd4bf', '#34d399', '#f59e0b', '#f43f5e'
+        '#38bdf8', '#06b6d4', '#2dd4bf', '#34d399'
       ];
       if (donutLegendRow) {
         donutLegendRow.innerHTML = `
@@ -1738,8 +1914,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="donut-legend-item"><span class="donut-legend-color" style="background:#06b6d4;"></span><span>Factory 2.1 (22%)</span></div>
           <div class="donut-legend-item"><span class="donut-legend-color" style="background:#2dd4bf;"></span><span>Factory 2 (30%)</span></div>
           <div class="donut-legend-item"><span class="donut-legend-color" style="background:#34d399;"></span><span>Factory 3 (15%)</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f59e0b;"></span><span>⚡ Forging</span></div>
-          <div class="donut-legend-item"><span class="donut-legend-color" style="background:#f43f5e;"></span><span>🔥 HT</span></div>
         `;
       }
     }

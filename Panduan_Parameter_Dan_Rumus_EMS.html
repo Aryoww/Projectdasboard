@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan Parameter & Rumus Elektrikal – EMS SCADA PT Musashi</title>
+  <!-- KaTeX for crisp mathematical formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0B132B;
+      --bg-card: #1C2541;
+      --bg-card-hover: #223055;
+      --navy-primary: #1E3A8A;
+      --navy-accent: #3B82F6;
+      --cyan-accent: #06B6D4;
+      --green-accent: #10B981;
+      --amber-accent: #F59E0B;
+      --red-accent: #EF4444;
+      --text-white: #F9FAFB;
+      --text-muted: #9CA3AF;
+      --text-dim: #6B7280;
+      --border-color: #374151;
+      --code-bg: #111827;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOP HEADER BAR */
+    .top-bar {
+      height: 52px;
+      background: rgba(11, 19, 43, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .slide-indicator {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--cyan-accent);
+      background: rgba(6, 182, 212, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .btn-nav {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-nav:hover {
+      background: var(--navy-accent);
+      border-color: var(--navy-accent);
+    }
+
+    .btn-nav:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* SLIDE CONTAINER */
+    .slide-viewport {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .slide-card {
+      width: 100%;
+      max-width: 1280px;
+      height: calc(100vh - 120px);
+      background: var(--bg-card);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 36px 48px;
+      display: none;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    .slide-card.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SLIDE HEADER */
+    .slide-header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(156, 163, 175, 0.15);
+      padding-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .slide-category {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      color: var(--cyan-accent);
+      margin-bottom: 4px;
+    }
+
+    .slide-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+    }
+
+    .slide-module-badge {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* SLIDE CONTENT GRIDS */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .box {
+      background: rgba(11, 19, 43, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .box-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--cyan-accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .formula-box {
+      background: #0D1B2A;
+      border-left: 4px solid var(--navy-accent);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 12px 0;
+      font-size: 1.15rem;
+      text-align: center;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .desc-text {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #D1D5DB;
+      margin-bottom: 12px;
+    }
+
+    .bullet-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #E5E7EB;
+    }
+
+    .bullet-list li::before {
+      content: "•";
+      color: var(--cyan-accent);
+      font-size: 1.2rem;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+
+    /* PARAMETER TABLE */
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 0.85rem;
+    }
+
+    .param-table th {
+      background: rgba(30, 58, 138, 0.5);
+      color: #93C5FD;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-weight: 700;
+    }
+
+    .param-table td {
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #E5E7EB;
+    }
+
+    .param-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .highlight-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .pill-green { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .pill-amber { background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .pill-red { background: rgba(239, 68, 68, 0.2); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .pill-cyan { background: rgba(6, 182, 212, 0.2); color: #67E8F9; border: 1px solid rgba(6, 182, 212, 0.4); }
+
+    /* FOOTER & PROGRESS */
+    .bottom-bar {
+      height: 48px;
+      background: rgba(11, 19, 43, 0.95);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .progress-bar-container {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 24px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1E3A8A, #06B6D4);
+      width: 5%;
+      transition: width 0.3s ease;
+    }
+
+    .shortcut-hints {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    kbd {
+      background: #1F2937;
+      border: 1px solid #4B5563;
+      border-radius: 3px;
+      padding: 2px 5px;
+      font-size: 0.7rem;
+      color: #E5E7EB;
+    }
+
+    /* PRINT STYLING */
+    @media print {
+      body { height: auto; overflow: visible; background: #fff; color: #000; }
+      .top-bar, .bottom-bar { display: none; }
+      .slide-viewport { padding: 0; display: block; }
+      .slide-card {
+        display: flex !important;
+        height: auto;
+        min-height: 100vh;
+        max-width: 100%;
+        box-shadow: none;
+        border: none;
+        page-break-after: always;
+        background: #fff;
+        color: #111;
+        padding: 30px;
+      }
+      .box { background: #f9fafb; border-color: #e5e7eb; }
+      .formula-box { background: #f3f4f6; color: #111827; }
+      .slide-title { color: #1E3A8A; }
+      .desc-text, .bullet-list li, .param-table td { color: #374151; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="brand-title">
+      <span class="brand-badge">MUSASHI EMS</span>
+      <span>Panduan Parameter & Rumus Elektrikal</span>
+    </div>
+    <div class="nav-controls">
+      <span class="slide-indicator" id="slideIndicator">Slide 1 / 20</span>
+      <select id="slideSelect" class="btn-nav" style="padding: 5px 8px; font-weight: 500;">
+        <!-- Filled by JS -->
+      </select>
+      <button class="btn-nav" id="btnPrev" onclick="prevSlide()">◀ Prev</button>
+      <button class="btn-nav" id="btnNext" onclick="nextSlide()">Next ▶</button>
+      <button class="btn-nav" id="btnFullscreen" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+      <button class="btn-nav" onclick="window.print()">🖨 Cetak PDF</button>
+    </div>
+  </header>
+
+  <!-- SLIDES VIEWPORT -->
+  <main class="slide-viewport" id="viewport">
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide-card active" data-slide="1" data-title="Judul & Pendahuluan Eksekutif">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Dokumen Resmi Engineering & Utility</div>
+          <h1 class="slide-title">Panduan Komprehensif Parameter & Rumus Elektrikal<br>Dashboard Energy Management System (EMS)</h1>
+        </div>
+        <div class="slide-module-badge">Dokumen No: SOP-EMS-2026-01</div>
+      </div>
+      <div class="grid-2">
+        <div class="box" style="justify-content: center;">
+          <h3 style="color:var(--cyan-accent); font-size:1.3rem; margin-bottom:14px;">PT Musashi Auto Parts Indonesia</h3>
+          <p class="desc-text" style="font-size:1.02rem;">
+            Panduan resmi bagi seluruh engineer, teknisi pemeliharaan (maintenance), operator utilitas, dan pimpinan divisi 
+            untuk memahami seluruh dasar rumus fisika, formulasi matematika, standar industri, hingga logika komputasi digital 
+            yang digunakan pada web dashboard telemetri gardu listrik dan mesin produksi.
+          </p>
+          <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="highlight-pill pill-cyan">Substation 20 kV</span>
+            <span class="highlight-pill pill-green">Trafo TRF 01 s/d TRF 19</span>
+            <span class="highlight-pill pill-amber">LVMDP 380V & 210V</span>
+            <span class="highlight-pill pill-green">Forging & Heat Treatment</span>
+            <span class="highlight-pill pill-cyan">Schneider & Mitsubishi</span>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">🎯 Tujuan Utama Panduan Ini:</div>
+          <ul class="bullet-list">
+            <li><strong>Transparansi Perhitungan:</strong> Menjelaskan secara gamblang bagaimana setiap angka kW, kVAR, kVA, kWh, biaya, dan emisi karbon dihitung secara otomatis oleh sistem.</li>
+            <li><strong>Validasi Data Lapangan:</strong> Memberikan panduan verifikasi manual menggunakan rumus standar kelistrikan AC 3-fasa agar teknisi dapat mencocokkan nilai di display meter fisik dengan data web.</li>
+            <li><strong>Standard Operating Procedure (SOP):</strong> Pedoman langkah aksi teknis ketika parameter memasuki ambang batas kritis (Alert $\cos\varphi < 0,85$, Overload Trafo $>85\%$, THD $>5\%$).</li>
+            <li><strong>Efisiensi Finansial & ESG:</strong> Menghilangkan potensi denda kelebihan pemakaian kVARh dari PLN/Cikarang Listrindo serta mengaudit jejak emisi karbon pabrik secara akurat.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: ARSITEKTUR DATA PIPELINE -->
+    <div class="slide-card" data-slide="2" data-title="Arsitektur Aliran Data: Sensor Fisik ke Web">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Arsitektur Telemetri IoT</div>
+          <h1 class="slide-title">Aliran Data: Dari Sensor Fisik Gardu hingga Web Dashboard</h1>
+        </div>
+        <div class="slide-module-badge">Infrastruktur Jaringan VLAN 20</div>
+      </div>
+      <div class="grid-3">
+        <div class="box">
+          <div class="box-title">1. Akuisisi Fisik (Field Layer)</div>
+          <p class="desc-text">Sensor arus dan tegangan di gardu listrik membaca parameter analog daya:</p>
+          <ul class="bullet-list">
+            <li><strong>Potential Transformer (PT):</strong> Menurunkan tegangan tinggi 20kV ke 100V atau membaca langsung 380V/210V.</li>
+            <li><strong>Current Transformer (CT):</strong> Mentransformasikan arus ribuan Ampere menjadi sinyal aman 0–5A sekunder.</li>
+            <li><strong>Digital Meter:</strong> Schneider PowerLogic PM5500/PM5350 & Mitsubishi ME96SS mengukur secara simultan 3-fasa.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="box-title">2. Protokol Modbus & Daemon (Edge Layer)</div>
+          <p class="desc-text">Pengambilan data via jaringan kabel Ethernet industri:</p>
+          <ul class="bullet-list">
+            <li><strong>Protokol:</strong> Modbus TCP/IP melalui Port 502 standar IEEE.</li>
+            <li><strong>Switch Industri:</strong> Cisco Catalyst VLAN 20 khusus utilitas elektrikal.</li>
+            <li><strong>Python Daemon Collector:</strong> Menjalankan fungsi request <code>0x03 Read Holding Registers</code> setiap interval 3 detik.</li>
+            <li><strong>Decoding IEEE-754:</strong> Mengubah 2 word (32-bit register) menjadi nilai desimal floating point berpresisi tinggi.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="box-title">3. Penyajian & Analitik (Web Layer)</div>
+          <p class="desc-text">Data ditransformasikan menjadi visualisasi interaktif:</p>
+          <ul class="bullet-list">
+            <li><strong>Penyimpanan:</strong> Data live disimpan dalam format terstruktur JSON / SQLite.</li>
+            <li><strong>Web Engine:</strong> JavaScript / Streamlit memproses kalkulasi agregasi total, rata-rata, tren delta, biaya, dan karbon.</li>
+            <li><strong>UI Responsif:</strong> Ditampilkan dalam bentuk diagram interaktif, kartu KPI, tabel filter per pabrik, dan Single Line Diagram (SLD).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: FUNDAMENTAL 3-FASA & SEGITIGA DAYA -->
+    <div class="slide-card" data-slide="3" data-title="Fundamental Listrik 3-Fasa & Segitiga Daya">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Prinsip Dasar Elektrikal</div>
+          <h1 class="slide-title">Prinsip Sistem AC 3-Fasa & Konsep Segitiga Daya</h1>
+        </div>
+        <div class="slide-module-badge">Teori Vektor Fasor</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Sistem Tegangan AC 3-Fasa Seimbang</div>
+          <p class="desc-text">
+            Pabrik manufaktur PT Musashi menggunakan suplai AC 3-fasa dengan pergeseran sudut sebesar $120^\circ$ antar fasa ($R, S, T$).
+          </p>
+          <div class="formula-box">
+            $$V_R = V_m \sin(\omega t), \quad V_S = V_m \sin(\omega t - 120^\circ), \quad V_T = V_m \sin(\omega t + 120^\circ)$$
+          </div>
+          <ul class="bullet-list">
+            <li><strong>Sistem 3-Kawat (3P 3W):</strong> Digunakan pada distribusi 210V Lini Forging Press dan tegangan menengah 20kV (tanpa kabel netral).</li>
+            <li><strong>Sistem 4-Kawat (3P 4W):</strong> Digunakan pada panel utilitas 400V/230V untuk menyuplai beban motor 3-fasa sekaligus lampu/stop kontak 1-fasa.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="box-title">Konsep Segitiga Daya (The Power Triangle)</div>
+          <p class="desc-text">
+            Hubungan antara Daya Nyata ($P$), Daya Reaktif ($Q$), dan Daya Semu ($S$) membentuk segitiga siku-siku sesuai teorema Pythagoras:
+          </p>
+          <div class="formula-box">
+            $$S^2 = P^2 + Q^2 \implies S = \sqrt{P^2 + Q^2}$$
+          </div>
+          <ul class="bullet-list">
+            <li><strong>Daya Nyata / Aktif ($P$ - kW):</strong> Daya yang diubah menjadi kerja mekanis (putaran motor, tekanan press) dan panas (furnace).</li>
+            <li><strong>Daya Reaktif ($Q$ - kVAR):</strong> Daya yang dibutuhkan untuk membangkitkan medan magnet pada kumparan trafo & motor induksi.</li>
+            <li><strong>Daya Semu / Total ($S$ - kVA):</strong> Total kapasitas daya yang harus disediakan oleh sumber listrik (PLN / Cikarang Listrindo).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: PARAMETER 1 - TEGANGAN -->
+    <div class="slide-card" data-slide="4" data-title="Parameter 1: Tegangan Listrik (V_LL & V_LN)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Parameter Pengukuran Utama</div>
+          <h1 class="slide-title">Parameter 1: Tegangan Listrik ($V_{LL}$ dan $V_{LN}$)</h1>
+        </div>
+        <div class="slide-module-badge">Modbus Reg: 3020 & 3028</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Rumus Matematika & Hubungan Fasa</div>
+          <p class="desc-text">
+            Tegangan saluran (Line-to-Line / $V_{LL}$) adalah selisih potensial antara dua kawat fasa. Tegangan fasa-ke-netral ($V_{LN}$) dihitung dengan membagi tegangan saluran dengan $\sqrt{3} \approx 1,73205$:
+          </p>
+          <div class="formula-box">
+            $$V_{LN} = \frac{V_{LL}}{\sqrt{3}} \approx \frac{V_{LL}}{1,73205}$$
+          </div>
+          <div class="formula-box">
+            $$V_{LL\_avg} = \frac{V_{RS} + V_{ST} + V_{TR}}{3}$$
+          </div>
+          <p class="desc-text">
+            Jika sistem menggunakan Potential Transformer (PT/VT), tegangan primer aktual dihitung oleh meter:
+          </p>
+          <div class="formula-box">
+            $$V_{aktual} = V_{sekunder} \times \left(\frac{\text{Rasio PT Primer}}{\text{Rasio PT Sekunder}}\right)$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Aplikasi Nyata di Web Dashboard Musashi:</div>
+          <table class="param-table">
+            <thead>
+              <tr><th>Level Tegangan</th><th>Titik Instalasi</th><th>Nilai Normal ($V_{LL}$)</th><th>Ambang Waspada</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>20.000 V (20 kV)</strong></td>
+                <td>Incoming Gardu Listrindo (SM6)</td>
+                <td>$19.800 - 20.200 \text{ V}$</td>
+                <td>$\pm 5\%$ ($<19.000\text{V}$ / $>21.000\text{V}$)</td>
+              </tr>
+              <tr>
+                <td><strong>6.600 V (6,6 kV)</strong></td>
+                <td>Billet Induction Heater (Trafo 15-16)</td>
+                <td>$6.500 - 6.700 \text{ V}$</td>
+                <td>$\pm 5\%$</td>
+              </tr>
+              <tr>
+                <td><strong>400 V / 230 V</strong></td>
+                <td>Panel Utilitas 3P 4W (Trafo 14)</td>
+                <td>$380 - 405 \text{ V}$ ($LN: 220-234\text{V}$)</td>
+                <td>$V_{LN} < 205\text{V}$ (Drop Tegangan)</td>
+              </tr>
+              <tr>
+                <td><strong>210 V / 200 V</strong></td>
+                <td>Lini Mesin Press Forging (Trafo 11-13)</td>
+                <td>$205 - 215 \text{ V}$</td>
+                <td>$< 195 \text{ V}$ (Risiko Trip Motor)</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="desc-text" style="margin-top:14px; font-size:0.85rem; color:var(--text-muted);">
+            💡 <strong>Tampilan di Web:</strong> Dashboard menampilkan nilai rata-rata 3-fasa serta rincian per-fasa ($V_R, V_S, V_T$) pada modal pop-up telemetri detail setiap meter.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: PARAMETER 2 - ARUS & RASIO CT -->
+    <div class="slide-card" data-slide="5" data-title="Parameter 2: Arus Listrik (I_avg) & Rasio CT">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Parameter Pengukuran Utama</div>
+          <h1 class="slide-title">Parameter 2: Arus Listrik ($I_{line}$, $I_{avg}$) & Transformasi CT</h1>
+        </div>
+        <div class="slide-module-badge">Modbus Reg: 3000 s/d 3008</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Formulasi Arus Rata-Rata & Peran Rasio CT</div>
+          <p class="desc-text">
+            Arus total rata-rata 3-fasa dihitung dari penjumlahan skalar ketiga arus saluran dibagi tiga:
+          </p>
+          <div class="formula-box">
+            $$I_{avg} = \frac{I_R + I_S + I_T}{3}$$
+          </div>
+          <p class="desc-text">
+            Power meter tidak bisa dialiri arus ribuan Ampere secara langsung. Oleh karena itu, digunakan <strong>Current Transformer (CT)</strong>. Nilai arus primer yang muncul di dashboard adalah hasil perkalian arus sekunder dengan rasio CT:
+          </p>
+          <div class="formula-box">
+            $$I_{primer} = I_{sekunder\_meter} \times \left(\frac{I_{CT\_primer}}{I_{CT\_sekunder}}\right)$$
+          </div>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--amber-accent);">
+            ⚠️ <strong>Penting:</strong> Jika konfigurasi rasio CT pada meter salah (misal CT fisik 2000/5A diset 1000/5A), maka arus dan daya di dashboard akan terbaca tepat separuh ($50\%$) dari nilai sebenarnya!
+          </p>
+        </div>
+        <div class="box">
+          <div class="box-title">Contoh Perhitungan di Lini Produksi Musashi:</div>
+          <div style="background:rgba(0,0,0,0.3); padding:14px; border-radius:6px; margin-bottom:12px;">
+            <p style="font-weight:700; color:var(--cyan-accent); font-size:0.9rem;">Kasus: Feeder Trafo 12 (Main LMVDP Forging Line)</p>
+            <p style="font-size:0.85rem; line-height:1.5; color:#E5E7EB; margin-top:4px;">
+              Trafo berkapasitas 2.000 kVA (210V). Rasio CT terpasang adalah <strong>6000 / 5 A</strong> (Faktor Pengali $= 1.200$).<br>
+              Jika koil CT sekunder membaca arus sebesar $2,875\text{ A}$, maka arus primer yang ditampilkan di web:
+            </p>
+            <div class="formula-box" style="margin:8px 0; font-size:1rem;">
+              $$I_{primer} = 2,875 \text{ A} \times \left(\frac{6000}{5}\right) = 2,875 \times 1200 = 3.450 \text{ Ampere}$$
+            </div>
+          </div>
+          <div class="box-title" style="margin-top:6px;">Deteksi Ketidakseimbangan Arus (Unbalance %):</div>
+          <div class="formula-box" style="margin:4px 0 8px 0; font-size:0.95rem;">
+            $$\text{Unbalance } I (\%) = \frac{\max(|I_R - I_{avg}|, |I_S - I_{avg}|, |I_T - I_{avg}|)}{I_{avg}} \times 100\%$$
+          </div>
+          <p class="desc-text" style="font-size:0.82rem; color:var(--text-muted);">
+            Ketidakseimbangan arus $>10\%$ memicu pemanasan berlebih pada transformator dan motor listrik 3-fasa.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: PARAMETER 3 - DAYA AKTIF (kW) -->
+    <div class="slide-card" data-slide="6" data-title="Parameter 3: Daya Aktif / Nyata (kW & MW)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Parameter Beban Listrik</div>
+          <h1 class="slide-title">Parameter 3: Daya Aktif / Daya Nyata ($P$ dalam kW)</h1>
+        </div>
+        <div class="slide-module-badge">Modbus Reg: 3054 (Float32)</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Rumus Matematis Daya Aktif 3-Fasa</div>
+          <p class="desc-text">
+            Daya aktif adalah daya yang secara nyata dikonsumsi oleh beban untuk menghasilkan energi gerak (torsi) pada motor press forging, panas pada furnace carburizing, atau penerangan.
+          </p>
+          <div class="formula-box">
+            $$P = \sqrt{3} \times V_{LL} \times I_{avg} \times \cos \varphi \quad [\text{Watt}]$$
+          </div>
+          <p class="desc-text">Untuk menampilkan nilai dalam satuan <strong>kiloWatt (kW)</strong>:</p>
+          <div class="formula-box">
+            $$P_{kW} = \frac{\sqrt{3} \times V_{LL} \times I_{avg} \times \cos \varphi}{1.000}$$
+          </div>
+          <p class="desc-text">
+            Atau sebagai penjumlahan daya aktif dari masing-masing fasa ($R, S, T$):
+          </p>
+          <div class="formula-box">
+            $$P_{total} = P_R + P_S + P_T = (V_R I_R \cos\varphi_R) + (V_S I_S \cos\varphi_S) + (V_T I_T \cos\varphi_T)$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Bagaimana Web Menampilkan Daya Aktif?</div>
+          <ul class="bullet-list">
+            <li><strong>Kartu KPI Puncak (Active Load):</strong> Menampilkan akumulasi daya aktif dari seluruh 137 titik meter yang sedang aktif:
+              $$\text{Total Load } P_{plant} = \sum_{i=1}^{N} P_{meter\_i} \approx 14.129 \text{ kW (14,1 MW)}$$
+            </li>
+            <li><strong>Grafik Tren Beban 24 Jam:</strong> Memetakan dinamika fluktuasi kW setiap jam untuk membandingkan beban operasi hari ini vs kemarin (mendeteksi start-up serentak mesin press).</li>
+            <li><strong>Top 8 Mesin Konsumsi Tertinggi:</strong> Memeringkat feeder berdaya paling rakus (Press 4.000T, Billet Heater 6,6kV, Continuous Carburizing).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: PARAMETER 4 - DAYA REAKTIF (kVAR) -->
+    <div class="slide-card" data-slide="7" data-title="Parameter 4: Daya Reaktif (kVAR)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Parameter Beban Listrik</div>
+          <h1 class="slide-title">Parameter 4: Daya Reaktif ($Q$ dalam kVAR)</h1>
+        </div>
+        <div class="slide-module-badge">Modbus Reg: 3062 (Float32)</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Formulasi & Sifat Beban Induktif</div>
+          <p class="desc-text">
+            Daya reaktif adalah daya yang bolak-balik antara sumber dan beban tanpa menghasilkan kerja mekanik langsung. Dibutuhkan untuk magnetisasi inti besi trafo dan stator motor induksi.
+          </p>
+          <div class="formula-box">
+            $$Q = \sqrt{3} \times V_{LL} \times I_{avg} \times \sin \varphi \quad [\text{VAR}]$$
+          </div>
+          <p class="desc-text">Atau dihitung dari segitiga daya jika $S$ dan $P$ diketahui:</p>
+          <div class="formula-box">
+            $$Q = \sqrt{S^2 - P^2} \quad [\text{kVAR}]$$
+          </div>
+          <ul class="bullet-list">
+            <li><strong>Beban Induktif (Lagging):</strong> Motor, trafo, ballast lampu (membutuhkan kVAR positif $+Q$).</li>
+            <li><strong>Beban Kapasitif (Leading):</strong> Capacitor Bank (menghasilkan kVAR negatif $-Q$ untuk menetralkan beban induktif).</li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="box-title">Dampak Daya Reaktif Terhadap Kapasitas Sistem:</div>
+          <p class="desc-text">
+            Semakin tinggi daya reaktif $Q$ yang mengalir di kabel pabrik:
+          </p>
+          <ul class="bullet-list">
+            <li><strong>Arus Listrik Meningkat:</strong> Kabel dan trafo terbebani arus semu yang tidak menghasilkan produk kerja.</li>
+            <li><strong>Rugi-Rugi Panas ($I^2 R$):</strong> Kabel distribusi menjadi lebih panas, menyebabkan susut tegangan (voltage drop) di ujung lini mesin.</li>
+            <li><strong>Denda Listrik:</strong> Jika rasio $Q/P$ melebihi batas regulasi ($\cos\varphi < 0,85$), pabrik akan dikenakan denda jutaan rupiah per bulan oleh penyedia daya (PLN / Cikarang Listrindo).</li>
+          </ul>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--cyan-accent); margin-top:8px;">
+            💡 <strong>Di Dashboard Web:</strong> Nilai kVAR dipantau pada setiap feeder dan menjadi input langsung bagi controller Capacitor Bank APFC.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: PARAMETER 5 - DAYA SEMU (kVA) -->
+    <div class="slide-card" data-slide="8" data-title="Parameter 5: Daya Semu / Total (kVA)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Parameter Beban Listrik</div>
+          <h1 class="slide-title">Parameter 5: Daya Semu / Daya Total ($S$ dalam kVA)</h1>
+        </div>
+        <div class="slide-module-badge">Modbus Reg: 3070 (Float32)</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Rumus Matematis Daya Semu</div>
+          <p class="desc-text">
+            Daya semu merupakan resultan total vektor dari daya aktif $P$ dan daya reaktif $Q$. Nilai ini merepresentasikan kapasitas fisik peralatan listrik yang sedang terpakai.
+          </p>
+          <div class="formula-box">
+            $$S = \sqrt{3} \times V_{LL} \times I_{avg} \quad [\text{VA}]$$
+          </div>
+          <div class="formula-box">
+            $$S_{kVA} = \frac{\sqrt{3} \times V_{LL} \times I_{avg}}{1.000} = \sqrt{P_{kW}^2 + Q_{kVAR}^2}$$
+          </div>
+          <p class="desc-text">
+            Hubungan terhadap Arus Saluran ($I_{line}$):
+          </p>
+          <div class="formula-box">
+            $$I_{avg} = \frac{S \times 1.000}{\sqrt{3} \times V_{LL}}$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Peran Daya Semu (kVA) dalam Manajemen Pabrik:</div>
+          <ul class="bullet-list">
+            <li><strong>Kapasitas Nameplate Transformator:</strong> Semua trafo di gardu Musashi diberi rating dalam kVA (contoh: Trafo TRF 12 $= 2.000\text{ kVA}$, Trafo TRF 13 $= 1.500\text{ kVA}$).</li>
+            <li><strong>Kontrak Daya Penyedia Listrik:</strong> Biaya beban bulanan dan batas pasokan Cikarang Listrindo dihitung berdasarkan daya semu kVA maksimum.</li>
+            <li><strong>Kunci Efisiensi:</strong> Jika kita memperbaiki Power Factor mendekati 1,0, nilai kVA akan mengecil mendekati nilai kW, sehingga kapasitas trafo yang tersisa (spare capacity) menjadi lebih luas tanpa perlu beli trafo baru!</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9: PARAMETER 6 - POWER FACTOR -->
+    <div class="slide-card" data-slide="9" data-title="Parameter 6: Faktor Daya (Power Factor / Cos φ)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Efisiensi & Kualitas Daya</div>
+          <h1 class="slide-title">Parameter 6: Faktor Daya (Power Factor / $\cos \varphi$)</h1>
+        </div>
+        <div class="slide-module-badge">Modbus Reg: 3078 (Float32)</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Definisi Matematika & Vektor Fasor</div>
+          <p class="desc-text">
+            Power Factor ($\cos \varphi$) adalah rasio antara daya nyata yang melakukan kerja produktif ($P$) terhadap daya semu total yang diserap sistem ($S$):
+          </p>
+          <div class="formula-box">
+            $$\text{Power Factor (PF)} = \cos \varphi = \frac{P}{S} = \frac{P}{\sqrt{P^2 + Q^2}}$$
+          </div>
+          <p class="desc-text">Nilai ideal adalah $\mathbf{1,0}$ (faktor daya murni resistif). Nilai berkisar antara $0$ hingga $1,0$.</p>
+          <ul class="bullet-list">
+            <li>$\mathbf{PF \ge 0,95}$: Sangat Efisien (Kondisi Ideal).</li>
+            <li>$\mathbf{0,85 \le PF < 0,95}$: Normal (Aman dari Denda).</li>
+            <li>$\mathbf{PF < 0,85}$: <strong>KRITIS!</strong> Kena Denda Biaya Beban Reaktif PLN / Cikarang Listrindo.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="box-title">Logika Alert System Otomatis pada Dashboard:</div>
+          <p class="desc-text">
+            Kode JavaScript pada dashboard secara terus menerus memfilter seluruh 137 meter:
+          </p>
+          <div class="formula-box" style="text-align:left; font-size:0.85rem; font-family:monospace;">
+            if (meter.pf &lt; 0.85) {<br>
+            &nbsp;&nbsp;triggerStatus = "CRITICAL_ALERT";<br>
+            &nbsp;&nbsp;badgeColor = "RED";<br>
+            &nbsp;&nbsp;message = "⚠️ PF DROP! Periksa Step Capacitor Bank";<br>
+            }
+          </div>
+          <p class="desc-text">
+            Pada panel eksekutif web, rata-rata Power Factor seluruh pabrik dihitung dengan pembobotan daya (weighted average):
+          </p>
+          <div class="formula-box">
+            $$\text{PF}_{avg\_weighted} = \frac{\sum P_i}{\sum S_i} = \frac{\sum P_i}{\sqrt{(\sum P_i)^2 + (\sum Q_i)^2}} \approx 0,90 - 0,94$$
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10: PARAMETER 7 - ENERGI KUMULATIF (kWh) -->
+    <div class="slide-card" data-slide="10" data-title="Parameter 7: Energi Kumulatif (kWh)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Konsumsi & Akuntansi Energi</div>
+          <h1 class="slide-title">Parameter 7: Konsumsi Energi Listrik Kumulatif ($E$ dalam kWh)</h1>
+        </div>
+        <div class="slide-module-badge">Modbus Reg: 3204 (Int64)</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Formulasi Integrasi Daya Terhadap Waktu</div>
+          <p class="desc-text">
+            Energi listrik ($E$) adalah daya yang digunakan selama rentang waktu tertentu. Secara kalkulus merupakan integral daya terhadap waktu:
+          </p>
+          <div class="formula-box">
+            $$E = \int_{0}^{t} P(t) \, dt \quad [\text{kWh}]$$
+          </div>
+          <p class="desc-text">Dalam sistem digital dengan interval polling diskrit ($\Delta t$ detik):</p>
+          <div class="formula-box">
+            $$E_{\text{periode}} = \sum_{i=1}^{n} \left( P_i \times \frac{\Delta t_i}{3600} \right) \quad [\text{kWh}]$$
+          </div>
+          <p class="desc-text">
+            <strong>Contoh Kode Simulasi/Kolektor Web:</strong> Setiap siklus polling $3,5$ detik dengan daya $P$ kW, penambahan kWh dihitung:
+          </p>
+          <div class="formula-box" style="font-size:0.95rem;">
+            $$\Delta \text{kWh} = \left(\frac{P}{3600}\right) \times 3,5 \text{ detik}$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Struktur Pencatatan Energi pada Dashboard:</div>
+          <ul class="bullet-list">
+            <li><strong>Energy Today ($\text{kWh}_{\text{Today}}$):</strong> Konsumsi dihitung sejak pukul 00:00 WIB hari ini (mereset otomatis setiap tengah malam).</li>
+            <li><strong>Energy Yesterday ($\text{kWh}_{\text{Yesterday}}$):</strong> Total konsumsi 24 jam hari kemarin (digunakan sebagai baseline evaluasi).</li>
+            <li><strong>Energy 7 Days (Mingguan):</strong> Akumulasi konsumsi 7 hari terakhir untuk melihat ritme pola produksi (Shift 1, Shift 2, dan Shift 3).</li>
+            <li><strong>Energy Month-To-Date (Bulanan):</strong> Total kumulatif sejak tanggal 1 awal bulan berjalan untuk sinkronisasi tagihan invoice listrik.</li>
+          </ul>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--green-accent); margin-top:8px;">
+            📊 <strong>Konsumsi Harian Pabrik Musashi:</strong> Rata-rata berkisar di angka $\approx 197.064 \text{ kWh / hari}$.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11: PARAMETER 8 - HARMONISA THD -->
+    <div class="slide-card" data-slide="11" data-title="Parameter 8: Harmonisa (THD-V & THD-I)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Kualitas Daya Listrik</div>
+          <h1 class="slide-title">Parameter 8: Kualitas Daya & Harmonisa Listrik ($\text{THD}_V$ & $\text{THD}_I$)</h1>
+        </div>
+        <div class="slide-module-badge">Standar IEEE 519-2022</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Rumus Total Harmonic Distortion (THD)</div>
+          <p class="desc-text">
+            Harmonisa adalah gelombang tegangan atau arus listrik yang frekuensinya merupakan kelipatan bulat dari frekuensi fundamental ($50\text{ Hz}$).
+          </p>
+          <div class="formula-box">
+            $$\text{THD}_V = \frac{\sqrt{\sum_{h=2}^{\infty} V_h^2}}{V_1} \times 100\%$$
+          </div>
+          <div class="formula-box">
+            $$\text{THD}_I = \frac{\sqrt{\sum_{h=2}^{\infty} I_h^2}}{I_1} \times 100\%$$
+          </div>
+          <p class="desc-text">
+            Di mana $V_1$ dan $I_1$ adalah komponen gelombang fundamental $50\text{ Hz}$, sedangkan $V_h$ dan $I_h$ adalah orde harmonisa ke-3, 5, 7, 9, 11, dst.
+          </p>
+        </div>
+        <div class="box">
+          <div class="box-title">Sumber & Batasan Standar di Pabrik Musashi:</div>
+          <ul class="bullet-list">
+            <li><strong>Penyebab Harmonisa:</strong> Beban non-linear seperti Inverter (VFD) motor press forging, Rectifier Thyristor pada Billet Induction Heater 6.6kV, dan sistem las.</li>
+            <li><strong>Batas Standar IEEE 519:</strong>
+              <ul>
+                <li>$\text{THD}_V \le 5,0\%$ (Toleransi distorsi tegangan).</li>
+                <li>$\text{THD}_I \le 8,0\% - 12,0\%$ (Toleransi distorsi arus tergantung rasio hubung singkat $I_{sc}/I_L$).</li>
+              </ul>
+            </li>
+            <li><strong>Bahaya Harmonisa Tinggi:</strong> Menyebabkan Capacitor Bank terbakar (resonansi paralel), kabel netral panas berlebih, dan relai proteksi trip tanpa sebab (nuisance tripping).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12: PARAMETER 9 - UTILISASI TRAFO -->
+    <div class="slide-card" data-slide="12" data-title="Parameter 9: Persentase Pembebanan Trafo (% Util)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Keandalan Transformator</div>
+          <h1 class="slide-title">Parameter 9: Persentase Pembebanan Trafo ($\% \text{ Utilization}$)</h1>
+        </div>
+        <div class="slide-module-badge">Thermal Limit Management</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Formulasi Rasio Pembebanan Trafo</div>
+          <p class="desc-text">
+            Indikator seberapa besar beban daya semu aktual ($S_{aktual}$) yang dipikul oleh transformator dibandingkan kapasitas desain nameplate-nya ($S_{rated}$):
+          </p>
+          <div class="formula-box">
+            $$\text{Loading Ratio (\%) } = \frac{S_{aktual}}{S_{rated}} \times 100\% = \frac{\sqrt{P^2 + Q^2}}{S_{rated}} \times 100\%$$
+          </div>
+          <p class="desc-text">
+            Contoh: Trafo TRF 12 berkapasitas $2.000\text{ kVA}$. Pada saat lini forging beroperasi penuh, daya semu terbaca $1.420\text{ kVA}$:
+          </p>
+          <div class="formula-box">
+            $$\text{\% Loading} = \frac{1.420}{2.000} \times 100\% = 71,0\% \quad \text{[Status: Optimal]}$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Kategori Status Beban & Tindakan di Web:</div>
+          <table class="param-table">
+            <thead>
+              <tr><th>Kategori</th><th>Persentase</th><th>Status Web</th><th>Langkah Operasional</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Underloaded</strong></td>
+                <td>$< 40\%$</td>
+                <td><span class="highlight-pill pill-cyan">Rendah</span></td>
+                <td>Efisiensi rugi-rugi inti trafo kurang optimal.</td>
+              </tr>
+              <tr>
+                <td><strong>Optimal</strong></td>
+                <td>$40\% - 75\%$</td>
+                <td><span class="highlight-pill pill-green">Normal</span></td>
+                <td>Kondisi paling efisien, suhu oli trafo stabil.</td>
+              </tr>
+              <tr>
+                <td><strong>Warning (Siaga)</strong></td>
+                <td>$75\% - 85\%$</td>
+                <td><span class="highlight-pill pill-amber">Waspada</span></td>
+                <td>Nyalakan kipas pendingin tambahan (forced cooling).</td>
+              </tr>
+              <tr>
+                <td><strong>Critical (Overload)</strong></td>
+                <td>$> 85\%$</td>
+                <td><span class="highlight-pill pill-red">Bahaya</span></td>
+                <td>Load shedding / pengalihan beban ke feeder cadangan.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--text-muted); margin-top:10px;">
+            Rata-rata utilitas seluruh trafo Musashi (Tr 01 s/d Tr 19, total 20.350 kVA) adalah <strong>69,4%</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13: PARAMETER 10 - ESTIMASI BIAYA TARIF -->
+    <div class="slide-card" data-slide="13" data-title="Parameter 10: Estimasi Biaya Listrik Industri">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Akuntansi Biaya Energi</div>
+          <h1 class="slide-title">Parameter 10: Estimasi Biaya Listrik Industri (WBP vs LWBP)</h1>
+        </div>
+        <div class="slide-module-badge">Tarif Listrik Cikarang Listrindo / PLN I-3</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Struktur Rumus Biaya Pemakaian Energi</div>
+          <p class="desc-text">
+            Perhitungan estimasi biaya listrik pada dashboard menggunakan acuan tarif industri kawasan Cikarang (Cikarang Listrindo / PLN Golongan I-3/TM):
+          </p>
+          <div class="formula-box">
+            $$\text{Tarif Dasar Listrik} = \text{Rp } 1.444,70 \text{ / kWh}$$
+          </div>
+          <p class="desc-text">Estimasi biaya energi harian dihitung secara langsung dari konsumsi kWh:</p>
+          <div class="formula-box">
+            $$\text{Biaya Harian (Rp)} = E_{\text{kwh\_today}} \times \text{Rp } 1.444,70$$
+          </div>
+          <p class="desc-text">
+            Contoh: Konsumsi harian pabrik sebesar $197.064\text{ kWh}$:
+          </p>
+          <div class="formula-box" style="font-size:1rem;">
+            $$\text{Biaya} = 197.064 \times 1.444,70 = \text{Rp } 284.700.000 \approx \text{Rp 285 Juta / hari}$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Diferensiasi Jam Beban WBP vs LWBP:</div>
+          <table class="param-table">
+            <thead>
+              <tr><th>Zona Waktu</th><th>Rentang Jam</th><th>Koefisien Tarif</th><th>Strategi Operasi Musashi</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>WBP</strong> (Waktu Beban Puncak)</td>
+                <td>18:00 – 22:00 WIB (4 Jam)</td>
+                <td>$K \times \text{Tarif} \approx 1,4 \times$ s/d $1,5 \times$</td>
+                <td>Hindari menyalakan furnace induction billet heater secara berbarengan (Peak Shaving).</td>
+              </tr>
+              <tr>
+                <td><strong>LWBP</strong> (Luar Waktu Beban Puncak)</td>
+                <td>22:00 – 18:00 WIB (20 Jam)</td>
+                <td>$1,0 \times \text{Tarif Dasar}$</td>
+                <td>Jam operasi optimal untuk lini produksi forging berdaya tinggi.</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--cyan-accent); margin-top:12px;">
+            💡 <strong>Nilai Proyeksi Bulanan:</strong> Biaya listrik bulanan Musashi berkisar di angka $\mathbf{Rp\ 3,11\text{ Miliar / bulan}}$ (akumulasi $\approx 2.150.000\text{ kWh}$).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14: PARAMETER 11 - DENDA KVARH -->
+    <div class="slide-card" data-slide="14" data-title="Parameter 11: Logika Perhitungan Denda kVARh">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Proteksi Finansial Pabrik</div>
+          <h1 class="slide-title">Parameter 11: Logika Perhitungan Denda Kelebihan kVARh</h1>
+        </div>
+        <div class="slide-module-badge">Regulasi Permen ESDM & Cikarang Listrindo</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Ambang Batas Regulasi Faktor Daya 0,85</div>
+          <p class="desc-text">
+            Berdasarkan regulasi ketenagalistrikan, pelanggan industri wajib menjaga rata-rata faktor daya bulanan minimal $\mathbf{\cos \varphi \ge 0,85}$.
+          </p>
+          <div class="formula-box">
+            $$\cos \varphi = 0,85 \implies \varphi = 31,79^\circ \implies \tan \varphi = 0,62$$
+          </div>
+          <p class="desc-text">
+            Artinya, pemakaian kVARh yang ditolerir maksimal adalah $\mathbf{0,62}$ kali dari total pemakaian kWh aktif. Setiap kelebihan kVARh di atas batas tersebut dikenakan denda penalti!
+          </p>
+          <div class="formula-box">
+            $$\text{kVARh Terkena Denda} = Q_{\text{total}} - (P_{\text{total}} \times 0,62)$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Simulasi Kasus Denda Tanpa Capacitor Bank:</div>
+          <div style="background:rgba(239, 68, 68, 0.1); border:1px solid rgba(239, 68, 68, 0.3); padding:14px; border-radius:6px; margin-bottom:12px;">
+            <p style="font-size:0.85rem; line-height:1.6; color:#FCA5A5;">
+              Jika sebuah pabrik mengonsumsi $100.000\text{ kWh}$ dengan $\cos\varphi = 0,75$ ($\tan\varphi = 0,88$):<br>
+              • $Q_{\text{aktual}} = 100.000 \times 0,88 = 88.000\text{ kVARh}$<br>
+              • $Q_{\text{batas}} = 100.000 \times 0,62 = 62.000\text{ kVARh}$<br>
+              • Kelebihan Denda $= 88.000 - 62.000 = \mathbf{26.000\text{ kVARh}}$<br>
+              • Jika tarif penalti kVARh $=\text{Rp } 1.650 / \text{kVARh}$, maka denda $= 26.000 \times 1.650 = \mathbf{Rp\ 42.900.000!}$
+            </p>
+          </div>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--green-accent);">
+            ✅ <strong>Status Dashboard Musashi:</strong> Berkat otomatisasi kompensasi APFC 600 kVAR, nilai PF selalu terjaga di atas 0,90, sehingga tagihan denda kVARh pada laporan bulanan adalah <strong>Rp 0 (Zero Penalty)</strong>!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15: PARAMETER 12 - SIZING CAPACITOR BANK -->
+    <div class="slide-card" data-slide="15" data-title="Parameter 12: Dimensi & Sizing Capacitor Bank (APFC)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Otomasi Kompensasi Reaktif</div>
+          <h1 class="slide-title">Parameter 12: Perhitungan Kebutuhan Kapasitor Bank ($Q_c$)</h1>
+        </div>
+        <div class="slide-module-badge">Schneider VarPlus Logic APFC</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Rumus Dimensi Kapasitor Bank ($Q_c$)</div>
+          <p class="desc-text">
+            Untuk menaikkan faktor daya dari kondisi awal ($\cos\varphi_1$) ke faktor daya target yang diinginkan ($\cos\varphi_2 = 0,95$), daya reaktif kapasitif yang harus diinjeksikan ($Q_c$) dihitung dengan rumus:
+          </p>
+          <div class="formula-box">
+            $$Q_c = P \times (\tan \varphi_1 - \tan \varphi_2) \quad [\text{kVAR}]$$
+          </div>
+          <p class="desc-text">Di mana:</p>
+          <div class="formula-box" style="font-size:0.95rem;">
+            $$\tan \varphi_1 = \tan(\arccos(\text{PF}_1)), \quad \tan \varphi_2 = \tan(\arccos(\text{PF}_2))$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Contoh Perhitungan Nyata di Electrical Room 1:</div>
+          <p class="desc-text">
+            Beban rata-rata panel LMVDP adalah $P = 1.200\text{ kW}$ dengan $\text{PF}_1 = 0,80$. Target dinaikkan menjadi $\text{PF}_2 = 0,95$:
+          </p>
+          <ul class="bullet-list">
+            <li>$\tan\varphi_1 = \tan(\arccos(0,80)) = \tan(36,87^\circ) = 0,75$</li>
+            <li>$\tan\varphi_2 = \tan(\arccos(0,95)) = \tan(18,19^\circ) = 0,329$</li>
+          </ul>
+          <div class="formula-box" style="font-size:1rem;">
+            $$Q_c = 1.200 \times (0,75 - 0,329) = 1.200 \times 0,421 = \mathbf{505,2 \text{ kVAR}}$$
+          </div>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--cyan-accent); margin-top:8px;">
+            💡 <strong>Eksekusi Kontroler APFC:</strong> Sistem menyalakan step capacitor bank kapasitas total 600 kVAR (12 step $\times 50\text{ kVAR}$) secara bertahap untuk mencapai target 505 kVAR tanpa memicu overkompensasi (leading).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16: PARAMETER 13 - ESG CARBON -->
+    <div class="slide-card" data-slide="16" data-title="Parameter 13: Jejak Emisi Karbon (ESG CO2e)">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Keberlanjutan & Audit ESG</div>
+          <h1 class="slide-title">Parameter 13: Audit Jejak Emisi Karbon Listrik ($\text{CO}_2\text{e}$)</h1>
+        </div>
+        <div class="slide-module-badge">Faktor Emisi Grid Jamali: 0,79 kg/kWh</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Formulasi Emisi Gas Rumah Kaca (GRK)</div>
+          <p class="desc-text">
+            Sesuai standar pelaporan keberlanjutan <strong>Astra Green Manufacturing</strong> dan protokol GHG (Scope 2 - Indirect Emissions from Electricity), emisi karbon dihitung dari konsumsi energi listrik dikalikan faktor emisi grid regional Jawa-Madura-Bali (Jamali):
+          </p>
+          <div class="formula-box">
+            $$\text{Faktor Emisi Grid Jamali} = 0,79 \text{ kg CO}_2\text{e / kWh} = 0,00079 \text{ ton CO}_2\text{e / kWh}$$
+          </div>
+          <div class="formula-box">
+            $$\text{Emisi Harian (ton CO}_2\text{e)} = \frac{E_{\text{kwh\_today}} \times 0,79}{1.000}$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Implementasi pada Dashboard Web:</div>
+          <p class="desc-text">
+            Dengan konsumsi energi harian sebesar $197.064\text{ kWh}$:
+          </p>
+          <div class="formula-box" style="font-size:1rem;">
+            $$\text{Emisi } \text{CO}_2\text{e} = \frac{197.064 \times 0,79}{1.000} = \mathbf{155,7 \text{ ton CO}_2\text{e / hari}}$$
+          </div>
+          <ul class="bullet-list">
+            <li><strong>Emisi Kemarin:</strong> $204.150 \times 0,79 / 1.000 = 161,3\text{ ton CO}_2\text{e}$.</li>
+            <li><strong>Pengurangan Emisi ($\Delta \text{CO}_2\text{e}$):</strong> $155,7 - 161,3 = \mathbf{-5,6\text{ ton CO}_2\text{e}}$ (Penurunan emisi hijau karena penghematan energi).</li>
+            <li><strong>Laporan Bulanan:</strong> Akumulasi bulan ini mencapai $\approx 1.698,8\text{ ton CO}_2\text{e}$ yang siap diekspor langsung dalam format Excel untuk audit ISO 50001 & ESG Astra.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 17: PARAMETER 14 - DELTA SAVING TREND -->
+    <div class="slide-card" data-slide="17" data-title="Parameter 14: Analisis Delta & Evaluasi Tren Efisiensi">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Analitik Efisiensi Energi</div>
+          <h1 class="slide-title">Parameter 14: Analisis Delta & Tren Penghematan Energi ($\Delta \text{kWh}$)</h1>
+        </div>
+        <div class="slide-module-badge">Komparasi Harian (Day-over-Day)</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Rumus Delta & Persentase Variansi</div>
+          <p class="desc-text">
+            Untuk mengevaluasi apakah program konservasi energi berhasil atau terjadi pemborosan beban stand-by, dashboard menghitung selisih konsumsi terhadap periode sebelumnya:
+          </p>
+          <div class="formula-box">
+            $$\Delta \text{kWh} = \text{kWh}_{\text{Hari Ini}} - \text{kWh}_{\text{Kemarin}}$$
+          </div>
+          <div class="formula-box">
+            $$\text{Variansi (\%) } = \left(\frac{\Delta \text{kWh}}{\text{kWh}_{\text{Kemarin}}}\right) \times 100\%$$
+          </div>
+          <p class="desc-text">
+            Contoh data di dashboard Musashi:
+          </p>
+          <div class="formula-box" style="font-size:0.95rem;">
+            $$\Delta \text{kWh} = 197.064 - 204.150 = -7.086 \text{ kWh}$$
+          </div>
+          <div class="formula-box" style="font-size:0.95rem;">
+            $$\text{\% Variansi} = \left(\frac{-7.086}{204.150}\right) \times 100\% = \mathbf{-3,5\% \quad [Saving!]}$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Interpretasi Indikator Visual Dashboard:</div>
+          <table class="param-table">
+            <thead>
+              <tr><th>Kondisi Nilai $\Delta$</th><th>Warna Tag</th><th>Simbol</th><th>Arti Operasional</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>$\Delta \le 0$ (Negatif)</strong></td>
+                <td><span class="highlight-pill pill-green">Hijau (Saving)</span></td>
+                <td>▼ Turun</td>
+                <td>Pabrik lebih hemat energi dibanding kemarin. Efisiensi lini produksi tercapai.</td>
+              </tr>
+              <tr>
+                <td><strong>$\Delta > 0$ (Positif)</strong></td>
+                <td><span class="highlight-pill pill-red">Merah (Surge)</span></td>
+                <td>▲ Naik</td>
+                <td>Terjadi lonjakan pemakaian energi. Periksa apakah ada mesin running tanpa produksi (idle).</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--text-muted); margin-top:12px;">
+            💡 Penghematan $7.086\text{ kWh}$ setara dengan penghematan biaya listrik harian sebesar <strong>-Rp 10.237.000 / hari</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 18: MODBUS REGISTER MAP -->
+    <div class="slide-card" data-slide="18" data-title="Peta Register Modbus & Decoding IEEE-754">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Integrasi Perangkat Keras</div>
+          <h1 class="slide-title">Protokol Modbus TCP & Peta Register Schneider PowerLogic</h1>
+        </div>
+        <div class="slide-module-badge">Port 502 / Function Code 03</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Pemetaan Register Standar (Holding Registers)</div>
+          <table class="param-table">
+            <thead>
+              <tr><th>Register (Hex / Dec)</th><th>Tipe Data</th><th>Satuan</th><th>Deskripsi Parameter</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>3000 (0x0BB8)</code></td><td>Float32 (2 Words)</td><td>Ampere (A)</td><td>Arus Rata-rata 3-Fasa ($I_{avg}$)</td></tr>
+              <tr><td><code>3020 (0x0BCC)</code></td><td>Float32 (2 Words)</td><td>Volt (V)</td><td>Tegangan Fasa-Fasa ($V_{LL\_avg}$)</td></tr>
+              <tr><td><code>3028 (0x0BD4)</code></td><td>Float32 (2 Words)</td><td>Volt (V)</td><td>Tegangan Fasa-Netral ($V_{LN\_avg}$)</td></tr>
+              <tr><td><code>3054 (0x0BEE)</code></td><td>Float32 (2 Words)</td><td>kiloWatt (kW)</td><td>Daya Aktif Total ($P_{total}$)</td></tr>
+              <tr><td><code>3062 (0x0BF6)</code></td><td>Float32 (2 Words)</td><td>kVAR</td><td>Daya Reaktif Total ($Q_{total}$)</td></tr>
+              <tr><td><code>3070 (0x0BFE)</code></td><td>Float32 (2 Words)</td><td>kVA</td><td>Daya Semu Total ($S_{total}$)</td></tr>
+              <tr><td><code>3078 (0x0C06)</code></td><td>Float32 (2 Words)</td><td>-</td><td>Faktor Daya Total ($\cos \varphi$)</td></tr>
+              <tr><td><code>3110 (0x0C26)</code></td><td>Float32 (2 Words)</td><td>Hertz (Hz)</td><td>Frekuensi Jaringan ($f$)</td></tr>
+              <tr><td><code>3204 (0x0C84)</code></td><td>Int64 (4 Words)</td><td>Watt-Hour</td><td>Energi Aktif Kumulatif (Total kWh)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="box">
+          <div class="box-title">Logika Decoding Biner IEEE-754 (Big-Endian)</div>
+          <p class="desc-text">
+            PowerLogic mengirim data 32-bit floating point dalam format Big-Endian (Word Tertinggi di register awal). Kode Python mendekode nilai mentah biner menggunakan modul <code>struct</code>:
+          </p>
+          <div class="formula-box" style="text-align:left; font-size:0.85rem; font-family:monospace;">
+            # Membaca 4 bytes dari respons Modbus<br>
+            import struct<br>
+            kw_float = struct.unpack("&gt;f", raw_bytes[0:4])[0]<br>
+            print(f"Daya Terbaca: {round(kw_float, 2)} kW")
+          </div>
+          <ul class="bullet-list" style="margin-top:10px;">
+            <li><strong>Bit 31:</strong> Tanda (Sign: 0 = Positif, 1 = Negatif).</li>
+            <li><strong>Bit 30–23:</strong> Eksponen (8 bit bias 127).</li>
+            <li><strong>Bit 22–0:</strong> Mantisa / Fraksi (23 bit presisi).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 19: STUDI KASUS NUMERIK LENGKAP -->
+    <div class="slide-card" data-slide="19" data-title="Studi Kasus Numerik: Feeder TRF-12">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Validasi & Verifikasi Manual</div>
+          <h1 class="slide-title">Studi Kasus Numerik Lengkap: Feeder Trafo 12 (Forging Line 210V)</h1>
+        </div>
+        <div class="slide-module-badge">Perhitungan Langkah-demi-Langkah</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">Data Masukan Meter (Input Data Mentah):</div>
+          <ul class="bullet-list">
+            <li>Tegangan Saluran ($V_{LL}$): $\mathbf{210,0\text{ Volt}}$</li>
+            <li>Arus Rata-Rata ($I_{avg}$): $\mathbf{3.450\text{ Ampere}}$ (Rasio CT: 6000/5A)</li>
+            <li>Faktor Daya ($\cos \varphi$): $\mathbf{0,88}$</li>
+            <li>Kapasitas Trafo ($S_{rated}$): $\mathbf{2.000\text{ kVA}}$</li>
+          </ul>
+          <div class="box-title" style="margin-top:14px;">Langkah 1: Hitung Daya Semu ($S$)</div>
+          <div class="formula-box">
+            $$S = \frac{\sqrt{3} \times 210 \times 3.450}{1.000} = \frac{1,73205 \times 724.500}{1.000} = \mathbf{1.254,8\text{ kVA}}$$
+          </div>
+          <div class="box-title">Langkah 2: Hitung Daya Aktif ($P$)</div>
+          <div class="formula-box">
+            $$P = S \times \cos \varphi = 1.254,8 \times 0,88 = \mathbf{1.104,2\text{ kW}}$$
+          </div>
+          <div class="box-title">Langkah 3: Hitung Daya Reaktif ($Q$)</div>
+          <div class="formula-box">
+            $$Q = \sqrt{S^2 - P^2} = \sqrt{1.254,8^2 - 1.104,2^2} = \mathbf{596,0\text{ kVAR}}$$
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-title">Langkah 4: Hitung Utilisasi Trafo (% Util)</div>
+          <div class="formula-box">
+            $$\text{\% Loading} = \frac{1.254,8\text{ kVA}}{2.000\text{ kVA}} \times 100\% = \mathbf{62,7\% \quad [Optimal]}$$
+          </div>
+          <div class="box-title">Langkah 5: Konsumsi Energi & Biaya 24 Jam</div>
+          <div class="formula-box" style="font-size:0.95rem;">
+            $$E_{\text{24h}} = 1.104,2\text{ kW} \times 24\text{ jam} = \mathbf{26.500,8\text{ kWh}}$$
+          </div>
+          <div class="formula-box" style="font-size:0.95rem;">
+            $$\text{Biaya} = 26.500,8 \times \text{Rp } 1.444,70 = \mathbf{\text{Rp } 38.285.705}$$
+          </div>
+          <div class="box-title">Langkah 6: Emisi Karbon Harian</div>
+          <div class="formula-box" style="font-size:0.95rem;">
+            $$\text{Emisi CO}_2\text{e} = \frac{26.500,8 \times 0,79}{1.000} = \mathbf{20,93\text{ ton CO}_2\text{e}}$$
+          </div>
+          <p class="desc-text" style="font-size:0.85rem; color:var(--green-accent);">
+            ✅ <strong>Hasil Validasi:</strong> Seluruh angka perhitungan manual di atas identik 100% dengan nilai yang ditampilkan pada kartu meter dan tabel dashboard web!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 20: SOP & USER ACTION GUIDE -->
+    <div class="slide-card" data-slide="20" data-title="Panduan Aksi Operasional (SOP) & Troubleshooting">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Prosedur Operasi Standar</div>
+          <h1 class="slide-title">Panduan Aksi Operasional Pengguna (SOP) & Troubleshooting</h1>
+        </div>
+        <div class="slide-module-badge">Respons Insiden & Manajemen Alarm</div>
+      </div>
+      <div class="grid-2">
+        <div class="box">
+          <div class="box-title">🚨 Matriks Alarm & Langkah Cepat Penanganan:</div>
+          <table class="param-table">
+            <thead>
+              <tr><th>Indikasi Alarm Web</th><th>Akar Masalah</th><th>Tindakan Teknisi / Operator</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="highlight-pill pill-red">PF DROP &lt; 0,85</span></td>
+                <td>Step Capacitor Bank trip / fuse putus / kontaktor macet.</td>
+                <td>Periksa panel APFC di Electrical Room 1. Cek kontaktor step 1–12 dan ganti fuse yang putus.</td>
+              </tr>
+              <tr>
+                <td><span class="highlight-pill pill-amber">UTIL OVERLOAD &gt; 85%</span></td>
+                <td>Start-up serentak mesin press forging atau heater.</td>
+                <td>Koordinasi dengan supervisor produksi untuk menjadwalkan start bertahap (staggered start).</td>
+              </tr>
+              <tr>
+                <td><span class="highlight-pill pill-red">METER OFFLINE (MERAH)</span></td>
+                <td>Kabel LAN lepas / port switch Cisco disable / IP bentrok.</td>
+                <td>Cek lampu link port Ethernet meter. Ping IP dari ruang kontrol: <code>ping 10.41.47.xxx</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="box">
+          <div class="box-title">📥 Tata Cara Ekspor Laporan Resmi:</div>
+          <ul class="bullet-list">
+            <li><strong>Ekspor Excel Resmi (.xls):</strong> Klik tombol <em>"Unduh Excel"</em> di pojok kanan atas dashboard. Sistem secara otomatis menyusun file Excel berlogo resmi Musashi, tabel 137 meter, grafik batang visual, serta rumus otomatis.</li>
+            <li><strong>Ekspor CSV:</strong> Untuk kebutuhan analisis mendalam di Python, R, atau impor data ke SAP/ERP pabrik.</li>
+            <li><strong>Audit Energi Berkala:</strong> Setiap akhir bulan, download rekap tagihan pada tab <em>"Pusat Laporan & Rekap"</em> untuk diverifikasi silang dengan invoice resmi dari Cikarang Listrindo.</li>
+          </ul>
+          <div style="margin-top:14px; padding:12px; background:rgba(59, 130, 246, 0.15); border-left:4px solid var(--navy-accent); border-radius:4px;">
+            <p style="font-size:0.85rem; font-weight:700; color:#93C5FD;">Departemen Maintenance Utility – PT Musashi Auto Parts Indonesia</p>
+            <p style="font-size:0.8rem; color:#D1D5DB; margin-top:2px;">Gunakan dashboard ini setiap hari saat shift hand-over untuk menjamin keandalan sistem kelistrikan 24/7 dan zero-downtime.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM BAR & PROGRESS -->
+  <footer class="bottom-bar">
+    <div class="shortcut-hints">
+      Navigasi: <kbd>◀</kbd> <kbd>▶</kbd> atau <kbd>Space</kbd> | Fullscreen: <kbd>F</kbd> | Cetak: <kbd>Ctrl+P</kbd>
+    </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
+      Energy Management System · PT Musashi Auto Parts Indonesia
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 20;
+
+    const cards = document.querySelectorAll('.slide-card');
+    const indicator = document.getElementById('slideIndicator');
+    const progressFill = document.getElementById('progressFill');
+    const select = document.getElementById('slideSelect');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    // Populate select
+    cards.forEach((c, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx + 1;
+      opt.textContent = `Slide ${idx + 1}: ${c.getAttribute('data-title') || ''}`;
+      select.appendChild(opt);
+    });
+
+    select.addEventListener('change', (e) => {
+      goToSlide(parseInt(e.target.value));
+    });
+
+    function updateSlide() {
+      cards.forEach(c => c.classList.remove('active'));
+      const activeCard = document.querySelector(`.slide-card[data-slide="${currentSlide}"]`);
+      if (activeCard) {
+        activeCard.classList.add('active');
+      }
+
+      indicator.textContent = `Slide ${currentSlide} / ${totalSlides}`;
+      progressFill.style.width = `${(currentSlide / totalSlides) * 100}%`;
+      select.value = currentSlide;
+
+      btnPrev.disabled = currentSlide === 1;
+      btnNext.disabled = currentSlide === totalSlides;
+
+      // Render KaTeX math in active slide
+      if (window.renderMathInElement) {
+        renderMathInElement(activeCard, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ]
+        });
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlide();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlide();
+      }
+    }
+
+    function goToSlide(num) {
+      if (num >= 1 && num <= totalSlides) {
+        currentSlide = num;
+        updateSlide();
+      }
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullscreen();
+      } else if (e.key === 'Home') {
+        goToSlide(1);
+      } else if (e.key === 'End') {
+        goToSlide(totalSlides);
+      }
+    });
+
+    // Initial render
+    window.addEventListener('DOMContentLoaded', () => {
+      updateSlide();
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ]
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
