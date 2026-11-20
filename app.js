@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
       online: '111 / 111',
       alertCount: '3 meter perlu dicek',
       carbonTon: '155,7',
-      curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
+      curve24h: [8480, 7730, 10630, 15490, 13350, 15720, null, null, null],
       curveMax: 18000,
       curveStep: 3000,
       kwYesterday: 14409,
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       peakYesterday: '17.150',
       utilYesterday: '71,8%',
       carbonYesterday: '161,3',
-      curve24hYesterday: [8820, 8040, 11050, 15920, 13780, 16180, 11840, 9210],
+      curve24hYesterday: [8820, 8040, 11050, 15920, 13780, 16180, 11840, 9210, 8600],
       deltaKwh: -7086,
       deltaKwhPct: '-3,5%',
       deltaCost: '-Rp 10 jt',
@@ -38,13 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
       days7: {
         labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
         kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800],
-        kwPeak: [16450, 16980, 17350, 17120, 17150, 16820, 12400],
+        kwPeak: [16450, 16980, 17350, 17420, 17150, 16820, 12400],
+        kwAvg: [12800, 13100, 13450, 13200, 13050, 12600, 9500],
         totalKwh: 1353514,
         avgKwh: 193359,
         totalCost: 'Rp 1,95 M',
-        peakMax: 17350
+        peakMax: 17420
       },
       monthMtd: {
+        labels: ['01 Nov', '05 Nov', '10 Nov', '15 Nov', '20 Nov', '25 Nov', '30 Nov'],
+        kwPeak: [16200, 16850, 17120, 17480, 16820, 16950, 17200],
+        kwAvg: [12400, 12900, 13150, 13400, 13000, 13100, 13250],
         kwh: 2150400,
         cost: 'Rp 3,11 M',
         peak: '17.480',
@@ -63,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
       online: '42 / 42',
       alertCount: '3 meter perlu dicek',
       carbonTon: '155,7',
-      curve24h: [8480, 7730, 10630, 15490, 13350, 15720, 11490, 8950],
+      curve24h: [8480, 7730, 10630, 15490, 13350, 15720, null, null, null],
       curveMax: 18000,
       curveStep: 3000,
       kwYesterday: 14409,
@@ -72,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
       peakYesterday: '17.150',
       utilYesterday: '71,8%',
       carbonYesterday: '161,3',
-      curve24hYesterday: [8820, 8040, 11050, 15920, 13780, 16180, 11840, 9210],
+      curve24hYesterday: [8820, 8040, 11050, 15920, 13780, 16180, 11840, 9210, 8600],
       deltaKwh: -7086,
       deltaKwhPct: '-3,5%',
       deltaCost: '-Rp 10 jt',
@@ -82,12 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
       days7: {
         labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
         kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800],
+        kwPeak: [16450, 16980, 17350, 17420, 17150, 16820, 12400],
+        kwAvg: [12800, 13100, 13450, 13200, 13050, 12600, 9500],
         totalKwh: 1353514,
         avgKwh: 193359,
         totalCost: 'Rp 1,95 M',
-        peakMax: 17350
+        peakMax: 17420
       },
       monthMtd: {
+        labels: ['01 Nov', '05 Nov', '10 Nov', '15 Nov', '20 Nov', '25 Nov', '30 Nov'],
+        kwPeak: [16200, 16850, 17120, 17480, 16820, 16950, 17200],
+        kwAvg: [12400, 12900, 13150, 13400, 13000, 13100, 13250],
         kwh: 2150400,
         cost: 'Rp 3,11 M',
         peak: '17.480',
@@ -463,14 +472,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Attention Required Alert Items by Category & Factory (SCADA-Grade)
   const ATTENTION_ALERTS = {
     all: [
-      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below Cikarang Listrindo standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
-      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
-      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Beban puncak', note: 'Beban motor press Titan 1200T naik selama Shift 1. Tindakan: pantau arus kubikel MV 6,6kV dan koordinasi APFC.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6,6kV', area: 'Factory 1 · Substation TM 20kV / 6,6kV', severity: 'warning', badge: 'PF rendah 0,84', note: 'Power factor 0,84 di bawah standar Cikarang Listrindo (< 0,85). Risiko denda kVARh bulanan. Tindakan: periksa step regulator APFC capacitor bank.' },
+      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'Beban induktif tinggi', note: 'Beban induktif press forging tinggi saat shift siang (cos φ 0,83). Tindakan: aktifkan kompensasi power factor lokal di panel distribusi.' }
     ],
     electrical: [
-      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 is below Cikarang Listrindo standard (≥ 0.85). Risk of monthly kVARh reactive penalty.', action: 'Inspect & check APFC capacitor bank step regulator.' },
-      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Peak Demand', note: 'Titan 1200T press motor load increased during Shift 1.', action: 'Monitor 6.6kV MV cubicle current and APFC coordination.' },
-      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'High Inductive Load', note: 'High inductive forging press load during day shift (Cos φ 0.83).', action: 'Activate local power factor compensation on distribution panel.' }
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Beban puncak', note: 'Beban motor press Titan 1200T naik selama Shift 1. Tindakan: pantau arus kubikel MV 6,6kV dan koordinasi APFC.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6,6kV', area: 'Factory 1 · Substation TM 20kV / 6,6kV', severity: 'warning', badge: 'PF rendah 0,84', note: 'Power factor 0,84 di bawah standar Cikarang Listrindo (< 0,85). Risiko denda kVARh bulanan. Tindakan: periksa step regulator APFC capacitor bank.' },
+      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'Beban induktif tinggi', note: 'Beban induktif press forging tinggi saat shift siang (cos φ 0,83). Tindakan: aktifkan kompensasi power factor lokal di panel distribusi.' }
     ],
     fac1: [
       { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6.6kV', area: 'Factory 1 · Substation TM 20kV / 6.6kV', severity: 'warning', badge: 'Low Cos φ (0.84)', note: 'Power factor 0.84 below Cikarang Listrindo threshold. Capacitor bank step activation required.', action: 'Check APFC Capacitor Bank Panel F1.' },
@@ -563,6 +572,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const timeframeSummaryText = document.getElementById('timeframeSummaryText');
   const chart24hTitle = document.getElementById('chart24hTitle');
   const chart24hSub = document.getElementById('chart24hSub');
+  const chartLegendToday = document.getElementById('chartLegendToday');
+  const chartLegendPrev = document.getElementById('chartLegendPrev');
+  const chartPeakBadge = document.getElementById('chartPeakBadge');
+  const chartMinBadge = document.getElementById('chartMinBadge');
 
   const attentionList = document.getElementById('attentionList');
   const meterTableBody = document.getElementById('meterTableBody');
@@ -939,6 +952,16 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // Chart dedicated timeframe pills (Hari Ini, Kemarin, 1 Minggu, 1 Bulan)
+    const chartPills = document.querySelectorAll('.chart-time-pill');
+    chartPills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        const period = pill.dataset.chartPeriod || 'today';
+        setTimeframePeriod(period);
+      });
+    });
+
     // Day navigation buttons (Prev Day / Next Day)
     const btnPrevDay = document.getElementById('btnPrevDay');
     const btnNextDay = document.getElementById('btnNextDay');
@@ -995,13 +1018,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function setTimeframePeriod(period) {
     state.activePeriod = period;
 
-    // Update active pill styling
+    // Update active pill styling for both executive toolbar and chart pills
     document.querySelectorAll('.timeframe-pill').forEach(pill => {
-      if (pill.dataset.period === period) {
-        pill.classList.add('active');
-      } else {
-        pill.classList.remove('active');
-      }
+      pill.classList.toggle('active', pill.dataset.period === period);
+    });
+    document.querySelectorAll('.chart-time-pill').forEach(pill => {
+      pill.classList.toggle('active', pill.dataset.chartPeriod === period);
     });
 
     // Update Active Date Display & Nav Stepper state
@@ -1174,10 +1196,14 @@ document.addEventListener('DOMContentLoaded', () => {
         timeframeSummaryText.innerHTML = `Today: <strong>${data.kwh.toLocaleString('id-ID')} kWh</strong> (saving <strong>${dKwh.toLocaleString('id-ID')} kWh / ${data.deltaKwhPct || '0%'}</strong> vs yesterday)`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = '24-Hour Load Profile: Today vs Yesterday';
-      if (chart24hSub) chart24hSub.textContent = '3-Hour interval electrical load comparison: Today (Solid Blue) vs Yesterday (Dashed Gray)';
+      if (chart24hTitle) chart24hTitle.textContent = 'Profil & Tren Beban Daya Listrik';
+      if (chart24hSub) chart24hSub.textContent = 'Interval 3 jam · Satuan kW · Garis tebal biru = Hari Ini, garis putus-putus abu-abu = Kemarin';
+      if (chartLegendToday) { chartLegendToday.style.display = 'inline-flex'; chartLegendToday.innerHTML = '<span class="chart-dot blue"></span> Hari Ini'; }
+      if (chartLegendPrev) { chartLegendPrev.style.display = 'inline-flex'; chartLegendPrev.innerHTML = '<span class="chart-dot gray"></span> Kemarin'; }
+      if (chartPeakBadge) chartPeakBadge.textContent = '▲ Puncak 15.720 kW · 15:00';
+      if (chartMinBadge) chartMinBadge.textContent = '▼ Terendah 7.730 kW · 03:00';
 
-      update24hChart(data.curve24h, data.curveMax, data.curveStep, data.curve24hYesterday, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']);
+      update24hChart(data.curve24h, 18000, 3000, data.curve24hYesterday, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00', '24:00']);
 
     } else if (period === 'yesterday') {
       if (kpiDayaTitle) kpiDayaTitle.textContent = 'Yesterday Peak Demand';
@@ -1243,13 +1269,17 @@ document.addEventListener('DOMContentLoaded', () => {
         timeframeSummaryText.innerHTML = `Yesterday: <strong>${(data.kwhYesterday || data.kwh).toLocaleString('id-ID')} kWh</strong> (Peak load ${data.peakYesterday || data.peak} kW · Cost ${data.costYesterday || data.cost})`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = 'Yesterday Load Profile (Full 24 Hours)';
-      if (chart24hSub) chart24hSub.textContent = 'Historical 24-hour load curve per 3-hour interval';
+      if (chart24hTitle) chart24hTitle.textContent = 'Profil & Tren Beban Daya Listrik';
+      if (chart24hSub) chart24hSub.textContent = 'Interval 3 jam · Satuan kW · Profil beban lengkap 24 jam kemarin';
+      if (chartLegendToday) { chartLegendToday.style.display = 'none'; }
+      if (chartLegendPrev) { chartLegendPrev.style.display = 'inline-flex'; chartLegendPrev.innerHTML = '<span class="chart-dot gray"></span> Profil Kemarin (24 Jam)'; }
+      if (chartPeakBadge) chartPeakBadge.textContent = '▲ Puncak 16.180 kW · 15:00';
+      if (chartMinBadge) chartMinBadge.textContent = '▼ Terendah 8.040 kW · 03:00';
 
-      update24hChart(data.curve24hYesterday || data.curve24h, data.curveMax, data.curveStep, null, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00']);
+      update24hChart(data.curve24hYesterday || data.curve24h, 18000, 3000, null, ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00', '24:00']);
 
     } else if (period === '7days') {
-      const d7 = data.days7 || { totalKwh: 1353514, avgKwh: 193359, totalCost: 'Rp 1,95 M', peakMax: 17350, labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800] };
+      const d7 = data.days7 || { totalKwh: 1353514, avgKwh: 193359, totalCost: 'Rp 1,95 M', peakMax: 17420, labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], kwh: [194200, 201300, 208400, 205600, 204150, 197064, 142800], kwPeak: [16450, 16980, 17350, 17420, 17150, 16820, 12400], kwAvg: [12800, 13100, 13450, 13200, 13050, 12600, 9500] };
 
       if (kpiDayaTitle) kpiDayaTitle.textContent = '7-Day Peak Demand';
       if (kpiDayaVal) kpiDayaVal.textContent = d7.peakMax.toLocaleString('id-ID');
@@ -1257,7 +1287,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (kpiDayaPrev) kpiDayaPrev.textContent = 'Target Limit: 18,000 kW';
       if (kpiDayaDelta) {
         kpiDayaDelta.className = 'kpi-delta-tag down';
-        kpiDayaDelta.textContent = '▼ Margin 650 kW';
+        kpiDayaDelta.textContent = '▼ Margin 580 kW';
       }
 
       if (kpiEnergiTitle) kpiEnergiTitle.textContent = '7-Day Total Energy';
@@ -1314,15 +1344,17 @@ document.addEventListener('DOMContentLoaded', () => {
         timeframeSummaryText.innerHTML = `Last 7 Days: Total <strong>${d7.totalKwh.toLocaleString('id-ID')} kWh</strong> (Average ${d7.avgKwh.toLocaleString('id-ID')} kWh/day · Cost ${d7.totalCost})`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = '7-Day Energy Consumption Trend (Monday - Sunday)';
-      if (chart24hSub) chart24hSub.textContent = 'Daily energy consumption across all substations and production lines';
+      if (chart24hTitle) chart24hTitle.textContent = 'Profil & Tren Beban Daya Listrik';
+      if (chart24hSub) chart24hSub.textContent = 'Tren beban daya 7 hari terakhir (Senin s/d Minggu) · Puncak harian & rata-rata';
+      if (chartLegendToday) { chartLegendToday.style.display = 'inline-flex'; chartLegendToday.innerHTML = '<span class="chart-dot blue"></span> Beban Puncak (kW)'; }
+      if (chartLegendPrev) { chartLegendPrev.style.display = 'inline-flex'; chartLegendPrev.innerHTML = '<span class="chart-dot gray"></span> Beban Rata-rata (kW)'; }
+      if (chartPeakBadge) chartPeakBadge.textContent = '▲ Puncak 17.420 kW · Kamis';
+      if (chartMinBadge) chartMinBadge.textContent = '▼ Terendah 12.400 kW · Minggu';
 
-      const maxKwh = Math.max(...d7.kwh);
-      const chartMax = Math.ceil((maxKwh * 1.2) / 20000) * 20000;
-      update24hChart(d7.kwh, chartMax, Math.round(chartMax / 4), null, d7.labels);
+      update24hChart(d7.kwPeak, 20000, 4000, d7.kwAvg, d7.labels);
 
     } else if (period === 'month') {
-      const mMtd = data.monthMtd || { kwh: 2150400, cost: 'Rp 3,11 M', peak: '17.480', util: '70,2%' };
+      const mMtd = data.monthMtd || { kwh: 2150400, cost: 'Rp 3,11 M', peak: '17.480', util: '70,2%', labels: ['01 Nov', '05 Nov', '10 Nov', '15 Nov', '20 Nov', '25 Nov', '30 Nov'], kwPeak: [16200, 16850, 17120, 17480, 16820, 16950, 17200], kwAvg: [12400, 12900, 13150, 13400, 13000, 13100, 13250] };
 
       if (kpiDayaTitle) kpiDayaTitle.textContent = 'Month Peak Demand';
       if (kpiDayaVal) kpiDayaVal.textContent = mMtd.peak;
@@ -1387,10 +1419,14 @@ document.addEventListener('DOMContentLoaded', () => {
         timeframeSummaryText.innerHTML = `This Month (MTD): Total <strong>${mMtd.kwh.toLocaleString('id-ID')} kWh</strong> (Current Cost ${mMtd.cost} · Average Utilization ${mMtd.util})`;
       }
 
-      if (chart24hTitle) chart24hTitle.textContent = 'Weekly Energy Consumption (MTD)';
-      if (chart24hSub) chart24hSub.textContent = 'Energy consumption progression from Week 1 to current week';
+      if (chart24hTitle) chart24hTitle.textContent = 'Profil & Tren Beban Daya Listrik';
+      if (chart24hSub) chart24hSub.textContent = 'Tren konsumsi daya harian & progres akumulasi energi selama 1 bulan berjalan';
+      if (chartLegendToday) { chartLegendToday.style.display = 'inline-flex'; chartLegendToday.innerHTML = '<span class="chart-dot blue"></span> Tren Puncak Harian (kW)'; }
+      if (chartLegendPrev) { chartLegendPrev.style.display = 'inline-flex'; chartLegendPrev.innerHTML = '<span class="chart-dot gray"></span> Beban Rata-rata (kW)'; }
+      if (chartPeakBadge) chartPeakBadge.textContent = '▲ Puncak 17.480 kW · 15 Nov';
+      if (chartMinBadge) chartMinBadge.textContent = '▼ Terendah 16.200 kW · 01 Nov';
 
-      update24hChart([510000, 524000, 538000, 482000, 96400], 650000, 150000, null, ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Current']);
+      update24hChart(mMtd.kwPeak || [16200, 16850, 17120, 17480, 16820, 16950, 17200], 20000, 4000, mMtd.kwAvg || [12400, 12900, 13150, 13400, 13000, 13100, 13250], mMtd.labels || ['01 Nov', '05 Nov', '10 Nov', '15 Nov', '20 Nov', '25 Nov', '30 Nov']);
     }
 
     // Common KPI updates
@@ -1454,98 +1490,134 @@ document.addEventListener('DOMContentLoaded', () => {
     Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
     Chart.defaults.color = defaultTextColor;
 
-    // Custom Plugin: Peak & Min Markers for 24h Load Curve
+    // Custom Plugin: Peak, Min, Live Time Marker & Incomplete Data Indicator (Matching SCADA Reference)
     const peakAndMinPlugin = {
       id: 'peakAndMinMarker',
       afterDraw(chart) {
-        if (state.activePeriod && state.activePeriod !== 'today') return;
-        const meta = chart.getDatasetMeta(0);
-        if (!meta || !meta.data || !meta.data.length) return;
-        const data = chart.data.datasets[0].data;
-        if (!data || !data.length) return;
-
-        let maxIdx = 0;
-        let minIdx = 0;
-        let maxVal = -Infinity;
-        let minVal = Infinity;
-
-        data.forEach((val, i) => {
-          if (val > maxVal) { maxVal = val; maxIdx = i; }
-          if (val < minVal) { minVal = val; minIdx = i; }
-        });
+        const meta0 = chart.getDatasetMeta(0);
+        if (!meta0 || !meta0.data || !meta0.data.length) return;
+        const data0 = chart.data.datasets[0].data;
+        if (!data0 || !data0.length) return;
 
         const ctx = chart.ctx;
         ctx.save();
 
-        function drawBadge(pt, text, bgColor, isAbove) {
+        const chartArea = chart.chartArea;
+
+        // 1. Draw "kW" unit at top-left of Y-axis
+        ctx.font = 'bold 11px Inter, -apple-system, sans-serif';
+        ctx.fillStyle = defaultTextColor;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('kW', chartArea.left, chartArea.top - 6);
+
+        // Find valid numeric min and max in dataset 0
+        let maxIdx = -1;
+        let minIdx = -1;
+        let maxVal = -Infinity;
+        let minVal = Infinity;
+
+        data0.forEach((val, i) => {
+          if (val !== null && val !== undefined && typeof val === 'number') {
+            if (val > maxVal) { maxVal = val; maxIdx = i; }
+            if (val < minVal) { minVal = val; minIdx = i; }
+          }
+        });
+
+        // Function to draw simple circular point with clean direct text label (matching Image 3)
+        function drawPointCallout(pt, text, textColor, isAbove) {
           if (!pt) return;
           const x = pt.x;
           const y = pt.y;
 
-          // Glowing point marker
-          ctx.save();
+          // Outer circle
           ctx.beginPath();
-          ctx.arc(x, y, 7, 0, Math.PI * 2);
-          ctx.fillStyle = bgColor;
-          ctx.globalAlpha = 0.25;
+          ctx.arc(x, y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = textColor;
           ctx.fill();
+
+          // Inner white dot
           ctx.beginPath();
-          ctx.arc(x, y, 4, 0, Math.PI * 2);
-          ctx.fillStyle = bgColor;
-          ctx.globalAlpha = 1.0;
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(x, y, 2, 0, Math.PI * 2);
+          ctx.arc(x, y, 2.5, 0, Math.PI * 2);
           ctx.fillStyle = '#ffffff';
           ctx.fill();
-          ctx.restore();
 
-          // Badge geometry
-          ctx.font = 'bold 9.5px Inter, -apple-system, sans-serif';
-          const textWidth = ctx.measureText(text).width;
-          const pillW = textWidth + 14;
-          const pillH = 19;
-          const pillY = isAbove ? y - 26 : y + 10;
-          const pillX = Math.max(chart.chartArea.left + 4, Math.min(chart.chartArea.right - pillW - 4, x - pillW / 2));
-
-          // Leader dashed line
-          ctx.beginPath();
-          ctx.strokeStyle = bgColor;
-          ctx.lineWidth = 1.2;
-          ctx.setLineDash([2, 2]);
-          ctx.moveTo(x, y + (isAbove ? -4 : 4));
-          ctx.lineTo(x, isAbove ? pillY + pillH : pillY);
-          ctx.stroke();
-          ctx.setLineDash([]);
-
-          // Badge pill rounded box
-          ctx.fillStyle = bgColor;
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
-          ctx.shadowBlur = 4;
-          const r = 4;
-          ctx.beginPath();
-          ctx.moveTo(pillX + r, pillY);
-          ctx.lineTo(pillX + pillW - r, pillY);
-          ctx.quadraticCurveTo(pillX + pillW, pillY, pillX + pillW, pillY + r);
-          ctx.lineTo(pillX + pillW, pillY + pillH - r);
-          ctx.quadraticCurveTo(pillX + pillW, pillY + pillH, pillX + pillW - r, pillY + pillH);
-          ctx.lineTo(pillX + r, pillY + pillH);
-          ctx.quadraticCurveTo(pillX, pillY + pillH, pillX, pillY + pillH - r);
-          ctx.lineTo(pillX, pillY + r);
-          ctx.quadraticCurveTo(pillX, pillY, pillX + r, pillY);
-          ctx.closePath();
-          ctx.fill();
-          ctx.shadowBlur = 0;
-
-          // Text label inside badge
-          ctx.fillStyle = '#ffffff';
+          // Direct text label (no box) matching Image 3 (e.g. 7.730 below point, 15.720 above point)
+          ctx.font = 'bold 11px Inter, -apple-system, sans-serif';
+          ctx.fillStyle = textColor;
           ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(text, pillX + pillW / 2, pillY + pillH / 2 + 0.5);
+          ctx.textBaseline = isAbove ? 'bottom' : 'top';
+          const textY = isAbove ? y - 7 : y + 7;
+          ctx.fillText(text, x, textY);
         }
 
-        drawBadge(meta.data[maxIdx], `▲ PEAK: ${maxVal.toLocaleString('id-ID')} kW`, '#ef4444', true);
-        drawBadge(meta.data[minIdx], `▼ TERENDAH: ${minVal.toLocaleString('id-ID')} kW`, '#10b981', false);
+        // Draw min and max callouts
+        if (minIdx !== -1 && meta0.data[minIdx]) {
+          drawPointCallout(meta0.data[minIdx], minVal.toLocaleString('id-ID'), '#10b981', false);
+        }
+        if (maxIdx !== -1 && meta0.data[maxIdx]) {
+          drawPointCallout(meta0.data[maxIdx], maxVal.toLocaleString('id-ID'), '#ef4444', true);
+        }
+
+        // 2. If 'today' mode: Draw Live Time Marker and "Data belum tersedia" section (matching Image 3)
+        if (state.activePeriod === 'today') {
+          const pt5 = meta0.data[5]; // 15:00 point
+          const pt6 = meta0.data[6]; // 18:00 point
+
+          if (pt5 && pt6) {
+            // Simulated live time is ~16:48 (approx 60% of interval between 15:00 and 18:00)
+            const ratio = 0.60;
+            const liveX = pt5.x + (pt6.x - pt5.x) * ratio;
+            const liveY = pt5.y + (pt6.y - pt5.y) * ratio - 4;
+
+            // Vertical dashed line down to bottom
+            ctx.beginPath();
+            ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.45)' : 'rgba(0, 0, 0, 0.35)';
+            ctx.lineWidth = 1.4;
+            ctx.setLineDash([4, 4]);
+            ctx.moveTo(liveX, liveY);
+            ctx.lineTo(liveX, chartArea.bottom);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Blue circular point with white center at live time
+            ctx.beginPath();
+            ctx.arc(liveX, liveY, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#0284c7';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(liveX, liveY, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+
+            // Capsule badge above point: "16:48 · Kini"
+            const badgeText = '16:48 · Kini';
+            ctx.font = 'bold 9.5px Inter, -apple-system, sans-serif';
+            const badgeW = ctx.measureText(badgeText).width + 14;
+            const badgeH = 18;
+            const badgeX = liveX - badgeW / 2;
+            const badgeY = liveY - 26;
+
+            ctx.fillStyle = '#0284c7';
+            ctx.beginPath();
+            ctx.roundRect ? ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 9999) : ctx.rect(badgeX, badgeY, badgeW, badgeH);
+            ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(badgeText, liveX, badgeY + badgeH / 2 + 0.5);
+
+            // Future text "Data belum tersedia"
+            const futureCenterX = (liveX + chartArea.right) / 2;
+            const futureCenterY = (chartArea.top + chartArea.bottom) / 2 + 10;
+            ctx.font = '500 11px Inter, -apple-system, sans-serif';
+            ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Data belum tersedia', futureCenterX, futureCenterY);
+          }
+        }
 
         ctx.restore();
       }
@@ -1617,7 +1689,7 @@ document.addEventListener('DOMContentLoaded', () => {
       chart24hInstance = new Chart(ctx24h, {
         type: 'line',
         data: {
-          labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+          labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00', '24:00'],
           datasets: [
             {
               label: 'Today (Live)',
@@ -1820,23 +1892,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function update24hChart(newData, newMax, newStep, newYesterdayData = null, labels = null) {
+  function update24hChart(newData, newMax, newStep, newComparisonData = null, labels = null) {
     if (!chart24hInstance) return;
     if (labels) {
       chart24hInstance.data.labels = labels;
     } else {
-      chart24hInstance.data.labels = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+      chart24hInstance.data.labels = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00', '24:00'];
     }
 
     // Dataset 0: Primary series
     chart24hInstance.data.datasets[0].data = newData;
-    chart24hInstance.data.datasets[0].label = (state.activePeriod === 'yesterday') ? 'Yesterday' : (state.activePeriod === '7days' ? 'Daily Consumption (kWh)' : (state.activePeriod === 'month' ? 'Weekly Consumption (kWh)' : 'Today (Live)'));
+    if (state.activePeriod === 'yesterday') {
+      chart24hInstance.data.datasets[0].label = 'Kemarin (Audited)';
+    } else if (state.activePeriod === '7days') {
+      chart24hInstance.data.datasets[0].label = 'Beban Puncak (kW)';
+    } else if (state.activePeriod === 'month') {
+      chart24hInstance.data.datasets[0].label = 'Tren Puncak (kW)';
+    } else {
+      chart24hInstance.data.datasets[0].label = 'Hari Ini (Live)';
+    }
 
-    // Dataset 1: Comparison series (Kemarin H-1)
+    // Dataset 1: Comparison series
     if (chart24hInstance.data.datasets[1]) {
-      if (newYesterdayData && state.activePeriod === 'today') {
-        chart24hInstance.data.datasets[1].data = newYesterdayData;
+      if (newComparisonData) {
+        chart24hInstance.data.datasets[1].data = newComparisonData;
         chart24hInstance.data.datasets[1].hidden = false;
+        if (state.activePeriod === '7days' || state.activePeriod === 'month') {
+          chart24hInstance.data.datasets[1].label = 'Beban Rata-rata (kW)';
+        } else {
+          chart24hInstance.data.datasets[1].label = 'Kemarin';
+        }
       } else {
         chart24hInstance.data.datasets[1].data = [];
         chart24hInstance.data.datasets[1].hidden = true;
@@ -1984,11 +2069,11 @@ document.addEventListener('DOMContentLoaded', () => {
     attentionList.innerHTML = alerts.map(item => {
       const sev = item.severity || 'warning';
       const pillClass = sev === 'critical' ? 'critical' : (sev === 'normal' ? 'normal' : 'warning');
-      const badgeText = item.badge || (sev === 'critical' ? 'Critical' : (sev === 'normal' ? 'Normal' : 'Warning'));
+      const badgeText = item.badge || (sev === 'critical' ? 'Beban puncak' : (sev === 'normal' ? 'Optimal' : 'PF rendah'));
       const meterId = item.id || '';
 
       return `
-        <div class="attention-card ${sev}" onclick="${meterId ? `window.openMeterDetailById('${meterId}')` : ''}" title="Click to view live telemetry ${meterId}">
+        <div class="attention-card ${sev}" onclick="${meterId ? `window.openMeterDetailById('${meterId}')` : ''}" title="Lihat telemetri ${meterId}">
           <div class="attention-card-header">
             <div class="attention-badge-group">
               <span class="attention-pill ${pillClass}">
@@ -1998,24 +2083,20 @@ document.addEventListener('DOMContentLoaded', () => {
               ${meterId ? `<span class="attention-id-badge">${meterId}</span>` : ''}
             </div>
             ${meterId ? `
-              <button class="btn-attention-action" onclick="window.openMeterDetailById('${meterId}'); event.stopPropagation();" title="View Detail ${meterId}">
-                Detail ➔
+              <button class="btn-attention-action" onclick="window.openMeterDetailById('${meterId}'); event.stopPropagation();" title="Lihat Detail ${meterId}">
+                Detail →
               </button>
             ` : ''}
           </div>
           <div class="attention-card-body">
             <div class="attention-title-text">${item.title}</div>
             <div class="attention-location-text">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
               ${item.area}
             </div>
           </div>
           <div class="attention-card-footer">
             <div class="attention-alert-desc">${item.note}</div>
-            ${item.action ? `<div class="attention-action-recommendation"><strong>Action:</strong> ${item.action}</div>` : ''}
+            ${item.action ? `<div class="attention-action-recommendation"><strong>Tindakan:</strong> ${item.action}</div>` : ''}
           </div>
         </div>
       `;

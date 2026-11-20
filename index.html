@@ -493,26 +493,29 @@
         <!-- CHARTS GRID (24H & DONUT) -->
         <section class="charts-grid-row" aria-label="24-Hour Load Profile and Substation Distribution Charts">
           <div class="clean-card">
-            <div class="card-header-block" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:0.5rem;">
-              <div>
-                <h2 class="card-title" id="chart24hTitle">24-Hour Load Profile: Today vs Yesterday</h2>
-                <p class="card-subtitle" id="chart24hSub">Total active power (kW). Solid blue: Today (Live) · Dashed gray: Yesterday.</p>
+            <div class="chart-card-header-bar">
+              <div class="chart-header-row-top">
+                <div class="chart-header-titles">
+                  <h2 class="card-title" id="chart24hTitle">Profil &amp; Tren Beban Daya Listrik</h2>
+                  <p class="card-subtitle" id="chart24hSub">Interval 3 jam · Satuan kW · Garis tebal biru = Hari Ini, garis putus-putus abu-abu = Kemarin</p>
+                </div>
+                <!-- Timeframe Selector Tabs right on the Chart -->
+                <div class="chart-timeframe-switch" role="tablist" aria-label="Rentang Waktu Profil Beban">
+                  <button class="chart-time-pill active" data-chart-period="today">Hari Ini</button>
+                  <button class="chart-time-pill" data-chart-period="yesterday">Kemarin</button>
+                  <button class="chart-time-pill" data-chart-period="7days">1 Minggu</button>
+                  <button class="chart-time-pill" data-chart-period="month">1 Bulan</button>
+                </div>
               </div>
-              <div style="display:inline-flex; align-items:center; gap:0.5rem; font-size:0.72rem; font-weight:600; flex-wrap:wrap;">
-                <span style="display:inline-flex; align-items:center; gap:4px; color:#0284c7;">
-                  <span style="display:inline-block; width:12px; height:3px; background:#0284c7; border-radius:2px;"></span>
-                  Today
-                </span>
-                <span style="display:inline-flex; align-items:center; gap:4px; color:#94a3b8;">
-                  <span style="display:inline-block; width:12px; height:2px; border-top:2px dashed #94a3b8;"></span>
-                  Yesterday
-                </span>
-                <span style="display:inline-flex; align-items:center; gap:4px; background:rgba(239,68,68,0.12); color:#ef4444; border:1px solid rgba(239,68,68,0.25); border-radius:4px; padding:2px 7px; font-size:0.7rem; font-weight:700;">
-                  ▲ Peak: 15.720 kW
-                </span>
-                <span style="display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.25); border-radius:4px; padding:2px 7px; font-size:0.7rem; font-weight:700;">
-                  ▼ Terendah: 7.730 kW
-                </span>
+
+              <div class="chart-header-row-bottom">
+                <!-- Legend Pills & Peak/Min Badges (Matching Image 3) -->
+                <div class="chart-meta-badges">
+                  <span class="chart-legend-badge blue" id="chartLegendToday"><span class="chart-dot blue"></span> Hari Ini</span>
+                  <span class="chart-legend-badge gray" id="chartLegendPrev"><span class="chart-dot gray"></span> Kemarin</span>
+                  <span class="chart-stat-badge red" id="chartPeakBadge">▲ Puncak 15.720 kW · 15:00</span>
+                  <span class="chart-stat-badge green" id="chartMinBadge">▼ Terendah 7.730 kW · 03:00</span>
+                </div>
               </div>
             </div>
             <div class="line-chart-container">
@@ -565,30 +568,36 @@
 
           <div class="clean-card" id="attentionListCard">
             <div class="card-header-block">
-              <h2 class="card-title">Attention Required</h2>
-              <p class="card-subtitle">Offline meters or low power factor (&lt; 0.85 risks Cikarang Listrindo kVARh penalty).</p>
+              <h2 class="card-title">Perlu Perhatian</h2>
+              <p class="card-subtitle">Meter offline atau power factor rendah (&lt; 0,85 berisiko denda kVARh Cikarang Listrindo)</p>
             </div>
             <div class="attention-list-wrapper" id="attentionList">
               <!-- Dynamically populated by app.js -->
             </div>
+            <button class="btn-all-warnings" id="btnLihatSemuaPeringatan" onclick="window.filterAlertMeters ? window.filterAlertMeters() : null;">
+              Lihat semua peringatan (3)
+            </button>
           </div>
         </section>
 
-        <!-- ASET UTAMA: PENYULANG INCOMING CIKARANG LISTRINDO (CLD 001, CLD 003, CLD 005) -->
+        <!-- ASET UTAMA: PENYULANG INCOMING CIKARANG LISTRINDO (CLD 1, CLD 2, CLD 3) -->
         <section aria-label="Metering Incoming Cikarang Listrindo CLD">
-          <div class="card-header-block" style="margin-bottom:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <div class="card-header-block" style="margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
             <div>
-              <h2 class="card-title">CLD (Cikarang Listrindo) — Daily Energy Source</h2>
-              <p class="card-subtitle">Main 20kV power &amp; energy metering from PT Cikarang Listrindo Tbk (CLD 1, CLD 2, CLD 3) that determines total daily plant consumption (kWh)</p>
+              <h2 class="card-title">CLD (Cikarang Listrindo) — Sumber Energi Harian</h2>
+              <p class="card-subtitle">Metering utama 20kV dari PT Cikarang Listrindo Tbk (CLD 1–3) yang menentukan total konsumsi harian pabrik (kWh)</p>
+            </div>
+            <div class="cld-summary-badge" id="cldSummaryBadge">
+              Σ CLD 1–3 = 15.400 kW · 197.064 kWh
             </div>
           </div>
 
           <div class="activity-cards-grid">
-            <!-- Activity Card 1: Incoming CLD 001 -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-001')" style="cursor:pointer;" title="Click to view 3-Phase R-S-T telemetry & Modbus registers for CLD 001">
+            <!-- Activity Card 1: Incoming CLD 1 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-001')" style="cursor:pointer;" title="Lihat telemetri 3-Fasa R-S-T &amp; register Modbus CLD 1">
               <div class="activity-card-top">
-                <div class="activity-icon-box teal">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <div class="activity-icon-box blue">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
                 </div>
@@ -599,18 +608,18 @@
                 <div class="activity-kw-pill">3.940 <span>kW</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Energy Today</span><strong style="color:var(--text-primary); font-size:0.83rem;">49,704 kWh</strong></div>
-                <div class="act-metric-row"><span>Energy Yesterday</span><strong>51,600 kWh (▼ -1,896)</strong></div>
-                <div class="act-metric-row"><span>Medium Voltage</span><strong>20,000 V (TM 20kV)</strong></div>
-                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0.92 (Optimal)</strong></div>
+                <div class="act-metric-row"><span>Energi hari ini</span><strong>49.704 kWh</strong></div>
+                <div class="act-metric-row"><span>Kemarin</span><strong>51.600 kWh <span class="cld-saving-delta">▼ 1.896</span></strong></div>
+                <div class="act-metric-row"><span>Tegangan menengah</span><strong>20.000 V</strong></div>
+                <div class="act-metric-row"><span>Power factor</span><strong style="color:var(--color-green);">0,92 <span class="cld-pf-optimal">● Optimal</span></strong></div>
               </div>
             </div>
 
-            <!-- Activity Card 2: Incoming CLD 003 -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-003')" style="cursor:pointer;" title="Click to view 3-Phase R-S-T telemetry & Modbus registers for CLD 003">
+            <!-- Activity Card 2: Incoming CLD 2 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-003')" style="cursor:pointer;" title="Lihat telemetri 3-Fasa R-S-T &amp; register Modbus CLD 2">
               <div class="activity-card-top">
                 <div class="activity-icon-box blue">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
                 </div>
@@ -621,18 +630,18 @@
                 <div class="activity-kw-pill">5.640 <span>kW</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Energy Today</span><strong style="color:var(--text-primary); font-size:0.83rem;">72,540 kWh</strong></div>
-                <div class="act-metric-row"><span>Energy Yesterday</span><strong>75,120 kWh (▼ -2,580)</strong></div>
-                <div class="act-metric-row"><span>Medium Voltage</span><strong>20,000 V (TM 20kV)</strong></div>
-                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0.93 (Optimal)</strong></div>
+                <div class="act-metric-row"><span>Energi hari ini</span><strong>72.540 kWh</strong></div>
+                <div class="act-metric-row"><span>Kemarin</span><strong>75.120 kWh <span class="cld-saving-delta">▼ 2.580</span></strong></div>
+                <div class="act-metric-row"><span>Tegangan menengah</span><strong>20.000 V</strong></div>
+                <div class="act-metric-row"><span>Power factor</span><strong style="color:var(--color-green);">0,93 <span class="cld-pf-optimal">● Optimal</span></strong></div>
               </div>
             </div>
 
-            <!-- Activity Card 3: Incoming CLD 005 -->
-            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-005')" style="cursor:pointer;" title="Click to view 3-Phase R-S-T telemetry & Modbus registers for CLD 005">
+            <!-- Activity Card 3: Incoming CLD 3 -->
+            <div class="activity-card-item" onclick="window.openMeterDetailById('CLD-005')" style="cursor:pointer;" title="Lihat telemetri 3-Fasa R-S-T &amp; register Modbus CLD 3">
               <div class="activity-card-top">
-                <div class="activity-icon-box orange">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <div class="activity-icon-box blue">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                   </svg>
                 </div>
@@ -643,10 +652,10 @@
                 <div class="activity-kw-pill">5.820 <span>kW</span></div>
               </div>
               <div class="activity-metric-rows">
-                <div class="act-metric-row"><span>Energy Today</span><strong style="color:var(--text-primary); font-size:0.83rem;">74,820 kWh</strong></div>
-                <div class="act-metric-row"><span>Energy Yesterday</span><strong>77,430 kWh (▼ -2,610)</strong></div>
-                <div class="act-metric-row"><span>Medium Voltage</span><strong>20,000 V (TM 20kV)</strong></div>
-                <div class="act-metric-row"><span>Power Factor / Status</span><strong style="color:var(--color-green);">0.94 (Optimal)</strong></div>
+                <div class="act-metric-row"><span>Energi hari ini</span><strong>74.820 kWh</strong></div>
+                <div class="act-metric-row"><span>Kemarin</span><strong>77.430 kWh <span class="cld-saving-delta">▼ 2.610</span></strong></div>
+                <div class="act-metric-row"><span>Tegangan menengah</span><strong>20.000 V</strong></div>
+                <div class="act-metric-row"><span>Power factor</span><strong style="color:var(--color-green);">0,94 <span class="cld-pf-optimal">● Optimal</span></strong></div>
               </div>
             </div>
           </div>

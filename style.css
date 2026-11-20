@@ -1724,6 +1724,125 @@ body.dark-theme .delta-badge.up {
   font-weight: 400;
 }
 
+/* ================= 8.1 DYNAMIC CHART CARD HEADER BAR ================= */
+.chart-card-header-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.chart-header-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.chart-header-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.chart-header-row-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chart-timeframe-switch {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  gap: 2px;
+}
+
+.chart-time-pill {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.28rem 0.65rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chart-time-pill:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chart-time-pill.active {
+  background: var(--musashi-red);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.chart-meta-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+
+.chart-legend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chart-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.chart-dot.blue {
+  background: #0284c7;
+}
+
+.chart-dot.gray {
+  background: #94a3b8;
+}
+
+.chart-stat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.chart-stat-badge.red {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.chart-stat-badge.green {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
 .line-chart-container {
   height: 240px;
   position: relative;
@@ -1892,32 +2011,54 @@ body.dark-theme .attention-pill.critical {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--color-blue);
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  padding: 0.12rem 0.45rem;
-  border-radius: 4px;
+  color: var(--text-secondary);
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-card);
+  padding: 0.14rem 0.5rem;
+  border-radius: 9999px;
 }
 
 .btn-attention-action {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background: transparent;
+  background: var(--bg-card-hover);
   border: 1px solid var(--border-card);
-  color: var(--text-secondary);
+  color: var(--color-blue);
   font-size: 0.72rem;
   font-weight: 600;
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
+  padding: 0.22rem 0.65rem;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .btn-attention-action:hover {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: #38bdf8;
+}
+
+.btn-all-warnings {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.6rem 1rem;
   background: var(--bg-card-hover);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
   color: var(--color-blue);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.btn-all-warnings:hover {
+  background: rgba(56, 189, 248, 0.12);
   border-color: var(--color-blue);
+  color: #ffffff;
 }
 
 .attention-card-body {
@@ -1927,7 +2068,7 @@ body.dark-theme .attention-pill.critical {
 }
 
 .attention-title-text {
-  font-size: 0.84rem;
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.25;
@@ -1937,18 +2078,21 @@ body.dark-theme .attention-pill.critical {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  font-size: 0.74rem;
+  color: var(--text-secondary);
 }
 
 .attention-card-footer {
   background: var(--bg-card-hover);
-  border-radius: 4px;
-  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  padding: 0.55rem 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  border: 1px solid var(--border-card);
+}
   line-height: 1.35;
   border: 1px solid var(--border-card);
 }
@@ -2061,7 +2205,7 @@ body.dark-theme .attention-pill.critical {
 }
 
 .activity-card-title {
-  font-size: 0.84rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.2;
@@ -2074,20 +2218,46 @@ body.dark-theme .attention-pill.critical {
 
 .activity-kw-pill {
   margin-left: auto;
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 1.28rem;
+  font-weight: 800;
   color: var(--text-primary);
-  background: var(--bg-card-hover);
-  border: 1px solid var(--border-card);
-  padding: 2px 7px;
-  border-radius: 4px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.2rem;
   white-space: nowrap;
 }
 
 .activity-kw-pill span {
-  font-size: 0.68rem;
-  font-weight: 500;
+  font-size: 0.72rem;
+  font-weight: 600;
   color: var(--text-muted);
+}
+
+.cld-summary-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-card);
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+
+.cld-saving-delta {
+  color: var(--color-green);
+  font-weight: 700;
+  margin-left: 0.35rem;
+}
+
+.cld-pf-optimal {
+  color: var(--color-green);
+  font-weight: 700;
+  margin-left: 0.35rem;
 }
 
 .activity-metric-rows {
