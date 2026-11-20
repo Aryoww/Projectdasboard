@@ -574,7 +574,7 @@
             <div class="attention-list-wrapper" id="attentionList">
               <!-- Dynamically populated by app.js -->
             </div>
-            <button class="btn-all-warnings" id="btnLihatSemuaPeringatan" onclick="window.filterAlertMeters ? window.filterAlertMeters() : null;">
+            <button class="btn-all-warnings" id="btnLihatSemuaPeringatan" onclick="window.openAllAlertsModal ? window.openAllAlertsModal() : null;" title="Buka dialog lengkap 3 peringatan aktif (F2-6, TR-01, TR-12)">
               Lihat semua peringatan (3)
             </button>
           </div>
@@ -1563,6 +1563,42 @@
       <div class="modal-actions-bar" style="margin-top:0;">
         <span style="font-size:0.75rem; color:var(--text-secondary);">38 Digital Meter Schneider & Mitsubishi terdata realtime.</span>
         <button class="btn-action-close-red" onclick="window.closeAllModals()">✕ Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: ALL ATTENTION ALERTS & ANOMALIES (INTERACTIVE & RESPONSIVE) ================= -->
+  <div class="modal-overlay" id="allAlertsModal">
+    <div class="modal-card" style="max-width: 760px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 style="font-size:1.05rem; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+            <span style="color:var(--color-amber); font-size:1.2rem;">⚠️</span>
+            <span>Semua Peringatan &amp; Anomali Beban (3 Unit)</span>
+          </h3>
+          <p style="font-size:0.75rem; color:var(--text-secondary); margin:0.15rem 0 0 0;">
+            Daftar peralatan dengan deviasi power factor (&lt; 0,85 Cikarang Listrindo) atau beban puncak
+          </p>
+        </div>
+        <button class="modal-close-btn" onclick="window.closeAllModals()" title="Tutup (Esc)">✕</button>
+      </div>
+      <div class="modal-body" id="allAlertsModalBody" style="display:flex; flex-direction:column; gap:0.85rem; padding:1.25rem;">
+        <!-- Populated dynamically by app.js with live telemetry & buttons -->
+      </div>
+      <div class="modal-actions-bar" style="margin-top:0;">
+        <div class="modal-actions-left" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button class="btn-action-telemetry" id="btnModalFilterTableAlerts" onclick="window.filterTableToAlerts()" title="Filter tabel direktori ke 3 unit ini">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            Tampilkan 3 Meter di Tabel
+          </button>
+          <button class="btn-action-ping" onclick="window.exportToExcelWithCharts()" title="Unduh laporan excel">
+            📥 Unduh Log Peringatan
+          </button>
+        </div>
+        <button class="btn-action-close-red" onclick="window.closeAllModals()">✕ Tutup</button>
       </div>
     </div>
   </div>

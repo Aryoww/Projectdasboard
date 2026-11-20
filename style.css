@@ -1275,22 +1275,29 @@ body.dark-theme .alert-desc {
 /* ================= 7. KPI CARDS GRID ================= */
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.75rem;
   margin-bottom: 0.85rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .kpi-card {
   background: var(--bg-card);
   border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
-  padding: 0.85rem 0.95rem;
+  padding: 0.8rem 0.85rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 88px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   box-shadow: var(--shadow-card);
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  overflow: hidden;
 }
 
 .kpi-card:hover {
@@ -1606,19 +1613,20 @@ body.dark-theme .comparison-summary-badge {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.35rem;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.35rem;
   margin-top: 0.35rem;
   padding-top: 0.35rem;
   border-top: 1px dashed var(--border-card);
   font-size: 0.68rem;
+  min-width: 0;
 }
 
 .kpi-prev-val {
   color: var(--text-muted);
   font-size: 0.66rem;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .kpi-delta-tag {
@@ -1904,9 +1912,9 @@ body.dark-theme .delta-badge.up {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  max-height: 380px;
-  overflow-y: auto;
-  padding-right: 0.25rem;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
 }
 
 .attention-card {
@@ -2091,9 +2099,6 @@ body.dark-theme .attention-pill.critical {
   gap: 0.25rem;
   font-size: 0.74rem;
   line-height: 1.4;
-  border: 1px solid var(--border-card);
-}
-  line-height: 1.35;
   border: 1px solid var(--border-card);
 }
 
@@ -2667,6 +2672,82 @@ body.dark-theme .param-row {
   transition: transform 0.2s ease;
 }
 
+/* ================= MODAL: ALL ATTENTION ALERTS & ANOMALIES ================= */
+.modal-alert-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-left: 4px solid var(--color-amber);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.modal-alert-item:hover {
+  border-color: rgba(245, 158, 11, 0.4);
+  border-left-color: var(--color-amber);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.modal-alert-item.critical {
+  border-left-color: var(--color-rose);
+}
+
+.modal-alert-item.critical:hover {
+  border-color: rgba(244, 63, 94, 0.4);
+  border-left-color: var(--color-rose);
+}
+
+.modal-alert-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.modal-alert-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.modal-alert-quick-specs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.alert-spec-chip {
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-card);
+  border-radius: 4px;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.alert-spec-chip strong {
+  color: var(--text-primary);
+}
+
+.modal-alert-action-box {
+  background: var(--bg-card-hover);
+  border-radius: 6px;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.73rem;
+  line-height: 1.4;
+  border: 1px solid var(--border-card);
+}
+
 /* ================= 13. MODE TV PABRIK ================= */
 body.tv-mode {
   background-color: #050811;
@@ -2697,10 +2778,10 @@ body.drawer-open {
   overflow: hidden !important;
 }
 
-/* --- TABLET LANDSCAPE & DESKTOP COMPACT (<= 1200px) --- */
-@media (max-width: 1200px) {
+/* --- TABLET LANDSCAPE & DESKTOP COMPACT (<= 1440px) --- */
+@media (max-width: 1440px) {
   .kpi-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 0.65rem;
   }
 
@@ -2773,7 +2854,7 @@ body.drawer-open {
   }
 
   .kpi-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 0.65rem;
   }
 
@@ -2846,6 +2927,14 @@ body.dark-theme .mobile-table-hint {
   height: 460px;
   position: relative;
   width: 100%;
+}
+
+/* --- TABLET PORTRAIT / MID PHABLET (<= 860px) --- */
+@media (max-width: 860px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.55rem !important;
+  }
 }
 
 /* --- MOBILE & PHABLET PORTRAIT (<= 768px) --- */
@@ -3087,8 +3176,8 @@ body.dark-theme .mobile-table-hint {
   }
 
   .kpi-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.45rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.45rem !important;
   }
 
   .kpi-card {

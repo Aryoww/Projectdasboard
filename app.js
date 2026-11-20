@@ -510,6 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
     activeView: 'view-dashboard',
     activeFilter: 'all',
     activePeriod: 'today',
+    filterOnlyAlerts: false,
     searchQuery: '',
     sortColumn: 'id',
     sortAsc: true,
@@ -631,6 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
       toast.classList.remove('show');
     }, 3200);
   }
+  window.showToast = showToast;
 
   // ================= 3. SIDEBAR SLIDE & COLLAPSE CONTROLLER =================
   function initSidebarController() {
@@ -1063,6 +1065,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Central function to set filter and synchronize all navigation controls
   function setActiveFilter(filterKey) {
+    state.filterOnlyAlerts = false;
     state.activeFilter = filterKey;
     state.currentPage = 1;
 
@@ -2107,6 +2110,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function getFilteredMeters() {
     let list = state.meters;
 
+    // Filter by Attention/Alerts Only
+    if (state.filterOnlyAlerts) {
+      list = list.filter(m => ['F2-6', 'TR-01', 'TR-12'].includes(m.id) || m.status === 'warning' || (m.pf && m.pf < 0.85));
+      return list;
+    }
+
     // Filter by Tab / Substation
     if (state.activeFilter !== 'all') {
       const f = state.activeFilter;
@@ -2146,7 +2155,10 @@ document.addEventListener('DOMContentLoaded', () => {
         (m.factoryLabel && m.factoryLabel.toLowerCase().includes(q)) ||
         (m.systemLabel && m.systemLabel.toLowerCase().includes(q)) ||
         (m.subArea && m.subArea.toLowerCase().includes(q)) ||
-        (m.ip && m.ip.toLowerCase().includes(q))
+        (m.ip && m.ip.toLowerCase().includes(q)) ||
+        (m.status && m.status.toLowerCase().includes(q)) ||
+        (q === 'warning' && (m.status === 'warning' || (m.pf && m.pf < 0.85))) ||
+        (q === 'perhatian' && (m.status === 'warning' || (m.pf && m.pf < 0.85)))
       );
     }
 
@@ -2434,6 +2446,91 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.style.overflow = '';
   };
 
+  // ================= 10.1 ALL ATTENTION ALERTS MODAL CONTROLLER =================
+  window.openAllAlertsModal = function() {
+    const modalEl = document.getElementById('allAlertsModal');
+    const modalBody = document.getElementById('allAlertsModalBody');
+    if (!modalEl || !modalBody) return;
+
+    const alerts = ATTENTION_ALERTS.all || [
+      { id: 'F2-6', title: 'Feeder F2-6 MV Titan 1200T', area: 'Factory 2 · Electrical Room F2', severity: 'critical', badge: 'Beban puncak', note: 'Beban motor press Titan 1200T naik selama Shift 1. Tindakan: pantau arus kubikel MV 6,6kV dan koordinasi APFC.' },
+      { id: 'TR-01', title: 'Outgoing Trafo 01 Billet Heater FO 6,6kV', area: 'Factory 1 · Substation TM 20kV / 6,6kV', severity: 'warning', badge: 'PF rendah 0,84', note: 'Power factor 0,84 di bawah standar Cikarang Listrindo (< 0,85). Risiko denda kVARh bulanan. Tindakan: periksa step regulator APFC capacitor bank.' },
+      { id: 'TR-12', title: 'Outgoing Trafo 12 FO & HT 200V', area: 'Factory 2 · Substation LMVDP 200V', severity: 'warning', badge: 'Beban induktif tinggi', note: 'Beban induktif press forging tinggi saat shift siang (cos φ 0,83). Tindakan: aktifkan kompensasi power factor lokal di panel distribusi.' }
+    ];
+
+    modalBody.innerHTML = alerts.map(item => {
+      const sev = item.severity || 'warning';
+      const pillClass = sev === 'critical' ? 'critical' : (sev === 'normal' ? 'normal' : 'warning');
+      const badgeText = item.badge || (sev === 'critical' ? 'Beban puncak' : 'PF rendah');
+      const meter = state.meters.find(m => m.id === item.id) || {};
+
+      return `
+        <div class="modal-alert-item ${sev}">
+          <div class="modal-alert-header">
+            <div class="modal-alert-badges">
+              <span class="attention-pill ${pillClass}">
+                <span class="pulse-indicator"></span>
+                ${badgeText}
+              </span>
+              <span class="attention-id-badge">${item.id}</span>
+              <span class="modal-sub-badge" style="background:rgba(255,255,255,0.06); font-size:0.7rem;">${item.area}</span>
+            </div>
+            <button class="btn-attention-action" onclick="window.openMeterDetailById('${item.id}')" title="Buka telemetri lengkap ${item.id}">
+              Buka Detail Telemetri →
+            </button>
+          </div>
+          <div class="modal-alert-content" style="margin-top:0.35rem;">
+            <div style="font-weight:700; font-size:0.92rem; color:var(--text-primary); margin-bottom:0.25rem;">
+              ${item.title}
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-secondary); margin-bottom:0.45rem;">
+              ${item.note}
+            </div>
+            <div class="modal-alert-quick-specs">
+              <div class="alert-spec-chip">Daya: <strong>${(meter.kw || 0).toLocaleString('id-ID')} kW</strong></div>
+              <div class="alert-spec-chip">Tegangan: <strong>${(meter.voltage || 0).toLocaleString('id-ID')} V</strong></div>
+              <div class="alert-spec-chip">Arus: <strong>${(meter.current || 0).toFixed(1)} A</strong></div>
+              <div class="alert-spec-chip" style="${(meter.pf || 0) < 0.85 ? 'color:#f59e0b; font-weight:700;' : ''}">Power Factor: <strong>${(meter.pf || 0.84).toFixed(2)}</strong></div>
+            </div>
+            ${item.action ? `
+              <div class="modal-alert-action-box">
+                <span style="color:var(--color-blue); font-weight:700;">Rekomendasi Tindakan:</span> ${item.action}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    window.openModal(modalEl);
+  };
+
+  window.filterAlertMeters = function() {
+    window.openAllAlertsModal();
+  };
+
+  window.filterTableToAlerts = function() {
+    window.closeAllModals();
+    state.filterOnlyAlerts = true;
+    state.activeFilter = 'all';
+    state.searchQuery = '';
+    state.currentPage = 1;
+    if (searchInput) searchInput.value = '';
+    
+    // Update active tab styling
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.filter === 'all');
+    });
+
+    renderTable();
+
+    const tableSec = document.getElementById('meterDirectorySection') || document.querySelector('.table-card');
+    if (tableSec) {
+      tableSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    showToast('Menampilkan 3 meter berstatus perhatian di tabel direktori');
+  };
+
   // Detail Modal High-Precision Telemetry (Freeze-Free)
   window.openMeterDetailById = function(meterId) {
     const meter = state.meters.find(m => m.id === meterId);
@@ -2673,6 +2770,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
     // Search input
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
+        state.filterOnlyAlerts = false;
         state.searchQuery = e.target.value;
         state.currentPage = 1;
         renderTable();
@@ -2757,6 +2855,15 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
             attCard.style.borderColor = '';
           }, 2200);
         }
+      });
+    }
+
+    // Lihat Semua Peringatan Button (SCADA Alert Dialog)
+    const btnLihatSemuaPeringatan = document.getElementById('btnLihatSemuaPeringatan');
+    if (btnLihatSemuaPeringatan) {
+      btnLihatSemuaPeringatan.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.openAllAlertsModal();
       });
     }
 
