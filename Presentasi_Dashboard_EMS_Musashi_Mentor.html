@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Presentasi Mentor: Web Dashboard Utility EMS & SCADA 20kV – PT Musashi</title>
+  <title>Web Dashboard Utility EMS & SCADA 20kV – PT Musashi Auto Parts Indonesia</title>
   <style>
     :root {
       --bg-dark: #0B132B;
@@ -27,7 +27,7 @@
     
     /* Top Control Bar */
     .top-bar { height: 56px; background: rgba(11, 19, 43, 0.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 100; flex-shrink: 0; }
-    .brand-title { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px; }
+    .brand-title { display: flex; align-items: center; gap: 12px; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.5px; }
     .brand-badge { background: linear-gradient(135deg, #1E3A8A, #0284C7); padding: 5px 11px; border-radius: 5px; font-size: 0.75rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
     .nav-controls { display: flex; align-items: center; gap: 10px; }
     .slide-indicator { font-size: 0.85rem; font-weight: 700; color: var(--cyan-accent); background: rgba(56, 189, 248, 0.12); padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.35); }
@@ -48,17 +48,30 @@
     .slide-title { font-size: 1.35rem; font-weight: 800; color: var(--text-white); letter-spacing: -0.3px; }
     .slide-module-badge { background: rgba(2, 132, 199, 0.18); border: 1px solid rgba(56, 189, 248, 0.4); color: #BAE6FD; font-size: 0.76rem; font-weight: 700; padding: 5px 12px; border-radius: 6px; }
 
-    /* 2-Column Split Layout */
+    /* Layout Variations */
+    /* 1. Standard 2-Column Split Layout */
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; min-height: 0; }
+    
+    /* 2. Stacked Layout: Full-Width Image Top + 2 Cards Below */
+    .layout-stacked { display: flex; flex-direction: column; gap: 14px; flex: 1; min-height: 0; }
+    .stacked-img-wrap { width: 100%; max-height: 220px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+    .stacked-img-wrap img { width: 100%; height: auto; max-height: 220px; object-fit: contain; display: block; }
+    .stacked-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; }
+
+    /* 3. Sidebar Showcase Layout */
+    .layout-sidebar { display: grid; grid-template-columns: 160px 1fr 1fr; gap: 20px; flex: 1; min-height: 0; }
+    .sidebar-img-wrap { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--border-color); background: #000; padding: 6px; }
+    .sidebar-img-wrap img { max-height: 480px; width: auto; object-fit: contain; border-radius: 4px; }
+
     .box { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
     .box-title { font-size: 0.85rem; font-weight: 800; color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
     .box-title-blue { color: var(--cyan-accent); border-color: rgba(56, 189, 248, 0.3); }
     .box-title-green { color: #34D399; border-color: rgba(16, 185, 129, 0.3); }
 
-    /* Image Container */
+    /* Image Container in Split Grid */
     .img-container { display: flex; flex-direction: column; gap: 8px; height: 100%; justify-content: center; }
-    .img-wrap { width: 100%; max-height: 380px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-    .img-wrap img { width: 100%; height: auto; max-height: 380px; object-fit: contain; display: block; }
+    .img-wrap { width: 100%; max-height: 440px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
+    .img-wrap img { width: 100%; height: auto; max-height: 440px; object-fit: contain; display: block; }
     .img-caption { font-size: 0.75rem; color: var(--text-muted); text-align: center; font-style: italic; }
 
     /* Typography & Points */
@@ -73,7 +86,8 @@
     .cover-left { flex: 1.2; display: flex; flex-direction: column; gap: 14px; }
     .cover-tag { font-size: 0.8rem; font-weight: 800; color: var(--cyan-accent); letter-spacing: 1.5px; text-transform: uppercase; }
     .cover-title { font-size: 2.1rem; font-weight: 900; line-height: 1.2; color: #fff; letter-spacing: -0.5px; }
-    .cover-sub { font-size: 1.05rem; line-height: 1.45; color: #BAE6FD; }
+    .cover-sub { font-size: 1.02rem; line-height: 1.45; color: #BAE6FD; }
+    .cover-company { font-size: 0.88rem; font-weight: 700; color: #38BDF8; letter-spacing: 0.5px; }
     .cover-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
     .meta-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 12px; }
     .meta-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
@@ -92,28 +106,28 @@
   <div class="top-bar">
     <div class="brand-title">
       <span class="brand-badge">PT MUSASHI</span>
-      <span>Presentasi Mentor: Web Dashboard Utility EMS & SCADA 20kV</span>
+      <span>Web Dashboard Energy Management System & SCADA 20kV</span>
     </div>
     <div class="nav-controls">
       <div class="kbd-hint">Gunakan tombol <kbd>◀</kbd> <kbd>▶</kbd> atau klik:</div>
       <span class="slide-indicator" id="slideIndicator">Slide 1 / 16</span>
       <select id="slideSelect" class="btn-nav" style="padding: 5px 10px;" onchange="goToSlide(parseInt(this.value))">
-        <option value="1">Slide 1: Cover Laporan Proyek & Presentasi Mentor</option>
-        <option value="2">Slide 2: Latar Belakang Masalah & Arsitektur Sistem</option>
+        <option value="1">Slide 1: Cover Web Dashboard EMS & SCADA 20kV</option>
+        <option value="2">Slide 2: Sistem Arsitektur & Integrasi Lapangan 3-Tier</option>
         <option value="3">Slide 3: Master Dashboard 'Single Pane of Glass'</option>
-        <option value="4">Slide 4: Sidebar Navigasi & Kapsul SCADA 20kV</option>
-        <option value="5">Slide 5: Header Bar & Toolbar Pemilihan Waktu</option>
-        <option value="6">Slide 6: Sistem Peringatan Dini & Denda kVARh</option>
-        <option value="7">Slide 7: 6 Kartu KPI Eksekutif</option>
-        <option value="8">Slide 8: Grafik Beban 24 Jam (Peak & Terendah)</option>
-        <option value="9">Slide 9: Grafik Donut Substation (100% Share)</option>
-        <option value="10">Slide 10: Outgoing Transformers (Trafo 01 – 19)</option>
-        <option value="11">Slide 11: Daftar Perlu Perhatian (Attention Required)</option>
+        <option value="4">Slide 4: Sidebar Navigasi & Kapsul Telemetri SCADA 20kV</option>
+        <option value="5">Slide 5: Header Bar Terpusat & Segmented Toolbar</option>
+        <option value="6">Slide 6: Sistem Peringatan Dini Power Factor & Denda kVARh</option>
+        <option value="7">Slide 7: 6 Kartu Metrik Kinerja Utama (KPI)</option>
+        <option value="8">Slide 8: Profil Beban 24 Jam (Peak & Terendah)</option>
+        <option value="9">Slide 9: Musashi Substation Load Share (100% Total)</option>
+        <option value="10">Slide 10: Outgoing Transformers (19 Unit Trafo Lengkap)</option>
+        <option value="11">Slide 11: Attention Required (Daftar Tindakan Proaktif)</option>
         <option value="12">Slide 12: Pasokan Utama Listrik 20kV (CLD 1, 2, 3)</option>
-        <option value="13">Slide 13: Master Directory 111 Power Meter Schneider</option>
-        <option value="14">Slide 14: Modal Detail Telemetri 3-Fasa & Modbus</option>
-        <option value="15">Slide 15: Tampilan Khusus Sub-Sistem Pabrik</option>
-        <option value="16">Slide 16: Pusat Laporan, Dampak Finansial & Kesimpulan</option>
+        <option value="13">Slide 13: Direktori Digital Power Meter (111 Titik Mesin)</option>
+        <option value="14">Slide 14: Modal Pop-Up: Analisis Telemetri 3-Fasa R-S-T</option>
+        <option value="15">Slide 15: Tampilan Khusus Area Substation, Forging, & HT</option>
+        <option value="16">Slide 16: Pusat Audit ISO 50001 & Dampak Operasional</option>
       </select>
       <button class="btn-nav" id="btnPrev" onclick="prevSlide()">◀ Prev</button>
       <button class="btn-nav" id="btnNext" onclick="nextSlide()">Next ▶</button>
@@ -129,30 +143,31 @@
     <div class="slide-card active" data-slide="1">
       <div class="cover-layout">
         <div class="cover-left">
-          <div class="cover-tag">LAPORAN PROYEK REKAYASA SISTEM KELISTRIKAN PABRIK</div>
+          <div class="cover-tag">SISTEM REKAYASA KELISTRIKAN & ENERGI PABRIK</div>
           <h1 class="cover-title">WEB DASHBOARD ENERGY MANAGEMENT SYSTEM & SCADA 20kV</h1>
-          <p class="cover-sub">Monitoring Real-Time 137 Titik Power Meter, 19 Transformator Distribusi, & Integrasi 3 Feeder 20kV Cikarang Listrindo</p>
+          <p class="cover-sub">Monitoring Real-Time 137 Digital Power Meter, 19 Outgoing Trafo, & Integrasi 20kV Cikarang Listrindo</p>
+          <div class="cover-company">PT MUSASHI AUTO PARTS INDONESIA — ELECTRICAL & UTILITY ENGINEERING DEPT</div>
           <div class="cover-meta-grid">
             <div class="meta-box">
               <div class="meta-label">Penyusun</div>
               <div class="meta-val">Electrical Maintenance Engineer</div>
             </div>
             <div class="meta-box">
-              <div class="meta-label">Ditujukan Kepada</div>
-              <div class="meta-val">Engineering Mentor / Dept Head</div>
+              <div class="meta-label">Departemen</div>
+              <div class="meta-val">Electrical & Utility Engineering</div>
             </div>
             <div class="meta-box">
-              <div class="meta-label">Perusahaan</div>
-              <div class="meta-val">PT Musashi Auto Parts Indonesia</div>
+              <div class="meta-label">Hardware & Jaringan</div>
+              <div class="meta-val">137 PM Schneider · VLAN 20</div>
             </div>
             <div class="meta-box">
-              <div class="meta-label">Status Proyek</div>
-              <div class="meta-val" style="color: #34D399;">Production-Ready & GitHub Live</div>
+              <div class="meta-label">Status Sistem</div>
+              <div class="meta-val" style="color: #34D399;">Production Ready & GitHub Live</div>
             </div>
           </div>
         </div>
         <div class="cover-right">
-          <img src="ss_overview_2x.png" alt="Dashboard Hero Preview">
+          <img src="ss_overview_clean.png" alt="Dashboard Hero Preview">
         </div>
       </div>
     </div>
@@ -161,28 +176,28 @@
     <div class="slide-card" data-slide="2">
       <div class="slide-header">
         <div>
-          <div class="slide-category">LATAR BELAKANG & ARSITEKTUR TEKNIS</div>
-          <h1 class="slide-title">Tantangan Kelistrikan Pabrik & Solusi Web SCADA IoT Terintegrasi</h1>
+          <div class="slide-category">SISTEM ARSITEKTUR & INTEGRASI LAPANGAN</div>
+          <h1 class="slide-title">Tantangan Operasional Kelistrikan & Solusi Arsitektur SCADA IoT 3-Tier</h1>
         </div>
-        <div class="slide-module-badge">Latar Belakang, Tujuan, & Stack Rekayasa</div>
+        <div class="slide-module-badge">Arsitektur Rekayasa Kelistrikan</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_overview_2x.png" alt="Dashboard Overview"></div>
-            <div class="img-caption">Tangkapan Layar: Master Web Dashboard EMS PT Musashi Auto Parts Indonesia</div>
+            <div class="img-wrap"><img src="ss_overview_clean.png" alt="Dashboard Overview"></div>
+            <div class="img-caption">Tampilan Antarmuka Master Web Dashboard EMS PT Musashi Auto Parts Indonesia</div>
           </div>
         </div>
         <div class="box">
-          <div class="box-title">Tantangan Lapangan Sebelum Pembuatan Web</div>
-          <div class="point-item"><span class="point-title">• Pencatatan Meter Manual Memakan Waktu:</span> Teknisi harus berkeliling ke 3 gardu pabrik setiap shift mencatat 137 meter secara manual (2–3 jam/hari) dengan risiko salah baca atau salah transkripsi.</div>
-          <div class="point-item"><span class="point-title">• Risiko Finansial Denda kVARh:</span> Jika faktor daya (Cos φ) turun di bawah standar 0,85 dan terlambat diantisipasi, pabrik terancam denda daya reaktif puluhan juta rupiah dari Cikarang Listrindo.</div>
-          <div class="point-item"><span class="point-title">• Ketiadaan Visibilitas Kurva Beban 24 Jam:</span> Sulit mendeteksi lonjakan beban atau kebocoran listrik saat pergantian shift dan malam hari.</div>
-          <div class="box-title box-title-blue">Arsitektur Rekayasa Sistem (Engineering Stack)</div>
-          <div class="point-item"><span class="point-title">• Field Layer:</span> Digital Power Meter Schneider (PM5350, PM8000), Relai Proteksi Sepam, CT/VT.</div>
-          <div class="point-item"><span class="point-title">• Network Layer:</span> Modbus RS-485 Daisy Chain ke Ethernet Gateway Modbus TCP/IP (SCADA VLAN 20).</div>
-          <div class="point-item"><span class="point-title">• Application Layer:</span> Web Dashboard (HTML5, SCADA CSS, Chart.js, Engine Kalkulasi, Ekspor Audit CSV).</div>
-          <div class="info-callout-blue"><b>Nilai bagi Mentor:</b> Sentralisasi data kelistrikan 3 pabrik dalam satu layar terintegrasi, siap audit ISO 50001 dan evaluasi efisiensi energi berkelanjutan.</div>
+          <div class="box-title">Tantangan Operasional di Lapangan</div>
+          <div class="point-item"><span class="point-title">• Pencatatan Meter Manual yang Memakan Waktu:</span> Sebelum implementasi sistem ini, teknisi memerlukan waktu 2–3 jam setiap shift untuk mencatat 137 Digital Power Meter secara manual antar gardu pabrik, dengan risiko salah pencatatan.</div>
+          <div class="point-item"><span class="point-title">• Risiko Finansial Penalti kVARh:</span> Regulasi utilitas PT Cikarang Listrindo mewajibkan batas minimum Power Factor (Cos φ) sebesar 0,85. Keterlambatan deteksi penurunan daya reaktif menimbulkan risiko denda tagihan kVARh bernilai puluhan juta rupiah per bulan.</div>
+          <div class="point-item"><span class="point-title">• Ketiadaan Visibilitas Kurva Beban:</span> Sulit mengidentifikasi pemborosan listrik standby malam hari tanpa visualisasi tren beban secara kontinu.</div>
+          <div class="box-title box-title-blue">Solusi Arsitektur SCADA IoT 3-Tier</div>
+          <div class="point-item"><span class="point-title">• Field Layer:</span> 137 Digital Power Meter Schneider (seri PM5350 & PM8000), Relai Proteksi Sepam, serta sekunder CT/VT pada Kubikel Schneider SM6 20kV.</div>
+          <div class="point-item"><span class="point-title">• Network Layer:</span> Daisy-chain RS-485 Modbus RTU ke Gateway Ethernet Modbus TCP/IP terisolasi (SCADA VLAN 20).</div>
+          <div class="point-item"><span class="point-title">• Application Layer:</span> Web Dashboard responsif dengan engine polling real-time, SCADA Dark/Light Theme, visualisasi Chart.js, dan modul ekspor audit.</div>
+          <div class="info-callout-blue"><b>Kegunaan Sistem:</b> Menyediakan sentralisasi data telemetri kelistrikan 3 pabrik dalam satu layar terpusat untuk keandalan distribusi daya dan audit ISO 50001.</div>
         </div>
       </div>
     </div>
@@ -191,30 +206,30 @@
     <div class="slide-card" data-slide="3">
       <div class="slide-header">
         <div>
-          <div class="slide-category">IKHTISAR LAYAR UTAMA</div>
-          <h1 class="slide-title">Master Dashboard: 'Single Pane of Glass' Monitoring Pabrik</h1>
+          <div class="slide-category">IKHTISAR ANTARMUKA PUSAT</div>
+          <h1 class="slide-title">Master Dashboard: 'Single Pane of Glass' Monitoring Seluruh Pabrik</h1>
         </div>
         <div class="slide-module-badge">Tampilan Keseluruhan Antarmuka Web</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_overview_2x.png" alt="Master Dashboard Full"></div>
-            <div class="img-caption">Tangkapan Layar Resolusi Tinggi: Antarmuka Web Dashboard EMS (3200x1950)</div>
+            <div class="img-wrap"><img src="ss_overview_clean.png" alt="Master Dashboard Full"></div>
+            <div class="img-caption">Tampilan Penuh Antarmuka Web Dashboard EMS (Resolusi Tinggi 3200x1950)</div>
           </div>
         </div>
         <div class="box">
-          <div class="box-title">Komponen Tampilan pada Layar Utama</div>
-          <p class="desc-text">Mengintegrasikan seluruh parameter kelistrikan dalam tata letak visual terstruktur tanpa harus berpindah layar:</p>
-          <div class="point-item"><span class="point-title">• Zona 1 (Sidebar):</span> Navigasi hirarkis lintas area pabrik & kapsul telemetri live SCADA 20kV.</div>
-          <div class="point-item"><span class="point-title">• Zona 2 (Header):</span> Jam presisi detik, mode layar penuh (TV Mode), dan tombol periode waktu.</div>
-          <div class="point-item"><span class="point-title">• Zona 3 (Banner & KPI):</span> Peringatan kritis anomali kVARh dan 6 kartu metrik kinerja utama.</div>
-          <div class="point-item"><span class="point-title">• Zona 4 (Grafik Analitik):</span> Kurva beban 24 jam dan proporsi konsumsi energi per gardu.</div>
-          <div class="point-item"><span class="point-title">• Zona 5 (Distribusi & Pasokan):</span> Seluruh 19 trafo keluar dan 3 kartu penyulang masuk CLD.</div>
-          <div class="point-item"><span class="point-title">• Zona 6 (Database Tabel):</span> Direktori pembacaan telemetri lengkap 111 meter aktif.</div>
-          <div class="box-title box-title-green">Kegunaan Operasional bagi Tim Maintenance</div>
-          <div class="point-item"><span class="point-title">• Diagnostik 5 Detik:</span> Supervisor dan teknisi dapat mendiagnosis kondisi listrik pabrik dalam 5 detik pertama membuka layar.</div>
-          <div class="point-item"><span class="point-title">• Multi-Platform:</span> Dapat dibuka di PC Control Room, laptop engineer, maupun tablet patroli lapangan.</div>
+          <div class="box-title">Struktur Tata Letak 6 Zona Operasional</div>
+          <p class="desc-text">Dashboard mengintegrasikan seluruh parameter kelistrikan dalam tata letak visual terstruktur tanpa harus berpindah layar:</p>
+          <div class="point-item"><span class="point-title">• Zona 1 (Sidebar Kiri):</span> Navigasi fasilitas pabrik & status jaringan SCADA 20kV.</div>
+          <div class="point-item"><span class="point-title">• Zona 2 (Header Atas):</span> Waktu live, switch tema SCADA, mode TV display, dan filter rentang tanggal.</div>
+          <div class="point-item"><span class="point-title">• Zona 3 (Banner & KPI):</span> Peringatan anomali Power Factor dan 6 kartu metrik kinerja utama.</div>
+          <div class="point-item"><span class="point-title">• Zona 4 (Grafik Analitik):</span> Profil beban 24 jam dengan penanda Peak/Terendah dan proporsi konsumsi energi per gardu.</div>
+          <div class="point-item"><span class="point-title">• Zona 5 (Distribusi & Suplai):</span> Seluruh 19 Outgoing Trafo dan 3 Incoming Feeder CLD 20kV.</div>
+          <div class="point-item"><span class="point-title">• Zona 6 (Database Tabel):</span> Direktori pembacaan telemetri 111 meter aktif lengkap dengan register Modbus.</div>
+          <div class="box-title box-title-green">Nilai Keunggulan Operasional bagi Tim Maintenance</div>
+          <div class="point-item"><span class="point-title">• Kecepatan Diagnosis:</span> Kondisi kesehatan jaringan listrik dapat dinilai dalam <b>5 detik pertama</b> saat membuka dashboard.</div>
+          <div class="point-item"><span class="point-title">• Akses Multi-Device:</span> Dapat diakses fleksibel melalui PC Ruang Kontrol Utility, laptop engineer, maupun tablet saat inspeksi lapangan.</div>
         </div>
       </div>
     </div>
@@ -223,150 +238,166 @@
     <div class="slide-card" data-slide="4">
       <div class="slide-header">
         <div>
-          <div class="slide-category">NAVIGASI & INTEGRASI SISTEM</div>
-          <h1 class="slide-title">Sidebar Navigasi Gardu & Kapsul Telemetri SCADA 20kV</h1>
+          <div class="slide-category">STRUKTUR NAVIGASI & TELEMETRI SCADA</div>
+          <h1 class="slide-title">Sidebar Menu Pabrik & Kapsul Telemetri Jaringan SCADA 20kV</h1>
         </div>
-        <div class="slide-module-badge">Panel Sisi Kiri Dashboard</div>
+        <div class="slide-module-badge">Panel Navigasi Sisi Kiri</div>
       </div>
-      <div class="grid-2">
-        <div class="box">
-          <div class="img-container">
-            <div class="img-wrap"><img src="ss_sidebar_menu_2x.png" alt="Sidebar Navigation"></div>
-            <div class="img-caption">Tangkapan Layar: Menu Navigasi Pabrik & Kapsul Telemetri Live SCADA 20kV</div>
-          </div>
+      <div class="layout-sidebar">
+        <div class="sidebar-img-wrap">
+          <img src="ss_sidebar_complete.png" alt="Sidebar Navigation">
+          <div class="img-caption" style="margin-top:6px;">Navigasi & SCADA</div>
         </div>
         <div class="box">
-          <div class="box-title">Komponen Tampilan pada Sidebar</div>
-          <div class="point-item"><span class="point-title">• Hirarki Menu Pabrik:</span> Main Dashboard, Electrical Room 1 (Fac 1), Electrical Room 2 (Fac 2.1), Electrical Room 3 (Fac 3), Forging Lines, Heat Treatment, dan Energy Reports.</div>
-          <div class="point-item"><span class="point-title">• Kapsul Telemetri SCADA 20kV (Sisi Bawah):</span></div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Total Load:</span> Beban aktif gabungan (14.129 kW) yang ter-update kontinu.</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Power Factor:</span> Cos φ rata-rata seluruh pabrik (0,90 Optimal warna hijau).</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Active Meters:</span> Rasio keaktifan komunikasi meter (111 / 111 Online).</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Network Badge:</span> Status koneksi jaringan industri (SCADA VLAN 20 Normal).</div>
-          <div class="box-title box-title-green">Kegunaan Operasional bagi Teknisi & Mentor</div>
-          <div class="point-item"><span class="point-title">• Deteksi Putus Jaringan Instan:</span> Jika ada kabel komunikasi RS-485 putus atau switch LAN down, jumlah meter aktif berkurang seketika sehingga teknisi tahu persis gardu mana yang bermasalah.</div>
-          <div class="point-item"><span class="point-title">• Isolasi Area Cepat:</span> Memfilter data khusus satu gardu pabrik saat *preventive maintenance* (PM).</div>
+          <div class="box-title">Hierarki Navigasi Fasilitas Pabrik</div>
+          <div class="point-item"><span class="point-title">• Main Dashboard:</span> Pusat ikhtisar operasional 3 pabrik.</div>
+          <div class="point-item"><span class="point-title">• Electrical Room 1 (Factory 1):</span> Kubikel SM6 20kV & Trafo 01–05.</div>
+          <div class="point-item"><span class="point-title">• Electrical Room 2 (Factory 2.1):</span> Billet Heater & Trafo 06–10.</div>
+          <div class="point-item"><span class="point-title">• Electrical Room 3 (Factory 3):</span> Pompa utilitas & Trafo 17–19.</div>
+          <div class="point-item"><span class="point-title">• Forging Lines:</span> Monitoring 39 mesin press penempaan.</div>
+          <div class="point-item"><span class="point-title">• Heat Treatment:</span> Pengawasan tungku pemanas & carburizing.</div>
+          <div class="point-item"><span class="point-title">• Energy Reports & Audit:</span> Pusat ekspor rekapitulasi data energi.</div>
+          <div class="point-item"><span class="point-title">• EMS Training & SOP:</span> Panduan teknis & standar operasional.</div>
+          <div class="info-callout-blue"><b>Kegunaan:</b> Memudahkan teknisi mengisolasi area pengawasan khusus saat pelaksanaan Preventive Maintenance berkala.</div>
+        </div>
+        <div class="box">
+          <div class="box-title box-title-blue">Kapsul Status Jaringan SCADA 20kV</div>
+          <div class="point-item"><span class="point-title">• Total Load (14.129 kW):</span> Akumulasi beban daya aktif seketika seluruh plant yang diperbarui secara kontinu.</div>
+          <div class="point-item"><span class="point-title">• Power Factor (0,90 Optimal):</span> Nilai rata-rata Cos φ sistem pabrik yang ditampilkan dengan warna hijau aman.</div>
+          <div class="point-item"><span class="point-title">• Active Meters (111 / 111 Online):</span> Rasio keaktifan komunikasi seluruh instrumen ukur digital pada jaringan.</div>
+          <div class="point-item"><span class="point-title">• SCADA VLAN (NORMAL):</span> Status koneksi jaringan industri VLAN 20 pada grid Cikarang Listrindo 50.00 Hz.</div>
+          <div class="box-title box-title-green">Keandalan Deteksi Jaringan Komunikasi</div>
+          <div class="point-item"><span class="point-title">• Deteksi Jalur Putus Cepat:</span> Jika kabel komunikasi RS-485 putus atau gateway Modbus mati, rasio meter aktif berkurang seketika sehingga teknisi langsung mengetahui gardu yang bermasalah.</div>
+          <div class="point-item"><span class="point-title">• Zero Blind Spot:</span> Menjamin tidak ada data telemetri yang terlewat.</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 5: HEADER & TOOLBAR -->
+    <!-- SLIDE 5: HEADER BAR & TOOLBAR -->
     <div class="slide-card" data-slide="5">
       <div class="slide-header">
         <div>
-          <div class="slide-category">KONTROL & MONITORING SHIFT</div>
-          <h1 class="slide-title">Header Bar Operasional & Toolbar Penyelarasan Waktu</h1>
+          <div class="slide-category">KONTROL OPERASIONAL & FILTER WAKTU</div>
+          <h1 class="slide-title">Header Bar Terpusat & Segmented Toolbar Pemilihan Periode</h1>
         </div>
-        <div class="slide-module-badge">Bagian Atas Dashboard</div>
+        <div class="slide-module-badge">Panel Kontrol Atas</div>
       </div>
-      <div class="grid-2">
-        <div class="box">
-          <div class="img-container">
-            <div class="img-wrap"><img src="ss_header_banner_2x.png" alt="Header Banner"></div>
-            <div class="img-caption">Tangkapan Layar: Header Bar Operasional & Toolbar Pemilihan Waktu</div>
-          </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap">
+          <img src="ss_header_clean.png" alt="Header Banner & Toolbar">
         </div>
-        <div class="box">
-          <div class="box-title">Komponen Tampilan Header & Toolbar</div>
-          <div class="point-item"><span class="point-title">• Live Clock Presisi Detik:</span> Menampilkan tanggal & jam WIB real-time tersinkronisasi server SCADA.</div>
-          <div class="point-item"><span class="point-title">• Tombol TV Mode:</span> Mengubah dashboard menjadi mode layar penuh tanpa scroll untuk monitor dinding di Ruang Kontrol Utility.</div>
-          <div class="point-item"><span class="point-title">• Toggle Dark / Light:</span> Opsi tema gelap SCADA (standar control room) & tema terang (standar presentasi).</div>
-          <div class="point-item"><span class="point-title">• Tombol Export Report:</span> Membuka panel unduh rekap data operasional dalam format spreadsheet.</div>
-          <div class="box-title box-title-blue">Pilihan Rentang Waktu (Timeframe Filter)</div>
-          <div class="point-item"><span class="point-title">• Today (Live):</span> Analisis real-time jam ke jam hari ini.</div>
-          <div class="point-item"><span class="point-title">• Yesterday (H-1):</span> Evaluasi efisiensi konsumsi listrik kemarin.</div>
-          <div class="point-item"><span class="point-title">• 7 Days:</span> Profil konsumsi harian selama 1 minggu kerja.</div>
-          <div class="point-item"><span class="point-title">• This Month:</span> Akumulasi konsumsi energi MTD (Month to Date).</div>
-          <div class="info-callout"><b>Kegunaan Shift Handover:</b> Mempermudah serah terima shift (Shift 1, 2, 3) dengan membandingkan tarikan beban antar shift kerja secara langsung.</div>
+        <div class="img-caption">Header Bar Operasional: Live Clock, TV Fullscreen Mode, Theme Switcher, & Export</div>
+        <div class="stacked-grid">
+          <div class="box">
+            <div class="box-title">Komponen Header Bar Utama</div>
+            <div class="point-item"><span class="point-title">• Live Clock Berpresisi Detik:</span> Menampilkan tanggal dan jam WIB secara real-time tersinkronisasi dengan server SCADA pabrik.</div>
+            <div class="point-item"><span class="point-title">• Tombol TV Mode (Fullscreen Kiosk):</span> Mengubah tata letak menjadi mode display layar penuh tanpa bilah gulir untuk monitor dinding di Utility Control Room.</div>
+            <div class="point-item"><span class="point-title">• Tombol SCADA Dark / Light Theme:</span> Opsi tema gelap SCADA (standar kenyamanan mata ruang kontrol 24 jam) dan tema terang untuk dokumentasi & presentasi.</div>
+            <div class="point-item"><span class="point-title">• Tombol Export Report:</span> Pintasan langsung untuk mengunduh rekapitulasi data energi kelistrikan.</div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-blue">Segmented Timeframe Selector</div>
+            <div class="point-item"><span class="point-title">• Today (Live):</span> Analisis real-time jam-ke-jam untuk shift kerja berjalan hari ini.</div>
+            <div class="point-item"><span class="point-title">• Yesterday (H-1):</span> Evaluasi pola konsumsi daya 24 jam siklus kemarin.</div>
+            <div class="point-item"><span class="point-title">• 7 Days:</span> Profil tren konsumsi dan variasi beban selama 1 minggu kerja.</div>
+            <div class="point-item"><span class="point-title">• This Month (MTD):</span> Akumulasi konsumsi energi bulanan untuk verifikasi tagihan rekening listrik.</div>
+            <div class="info-callout-blue"><b>Kegunaan Shift Handover:</b> Mempermudah rapat serah terima antar shift (Shift 1, 2, dan 3) dengan membandingkan performa pemakaian energi shift berjalan terhadap shift sebelumnya.</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 6: ALERT BANNER -->
+    <!-- SLIDE 6: CRITICAL ALERT BANNER -->
     <div class="slide-card" data-slide="6">
       <div class="slide-header">
         <div>
-          <div class="slide-category">SISTEM PROTEKSI & PREVENSI</div>
-          <h1 class="slide-title">Sistem Peringatan Dini: Pencegahan Denda kVARh Listrik</h1>
+          <div class="slide-category">SISTEM PROTEKSI & PREVENSI ANOMALI</div>
+          <h1 class="slide-title">Sistem Peringatan Dini: Pencegahan Penalti Finansial kVARh Listrik</h1>
         </div>
-        <div class="slide-module-badge">Banner Peringatan Tindakan Darurat</div>
+        <div class="slide-module-badge">Banner Tindakan Cepat (Action Required)</div>
       </div>
-      <div class="grid-2">
-        <div class="box">
-          <div class="img-container">
-            <div class="img-wrap"><img src="ss_alert_banner_2x.png" alt="Alert Banner"></div>
-            <div class="img-caption">Tangkapan Layar: Banner Peringatan Dini Anomali Daya Reaktif (Cos φ < 0.85)</div>
-          </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap">
+          <img src="ss_alert_clean.png" alt="Alert Banner">
         </div>
-        <div class="box">
-          <div class="box-title">Komponen Tampilan Alert Banner</div>
-          <p class="desc-text">Banner peringatan muncul otomatis di bagian atas saat terdeteksi anomali kritis pada sistem kelistrikan:</p>
-          <div class="point-item"><span class="point-title">• Visual Kontras Tinggi:</span> Latar belakang kuning/oranye dengan ikon petir yang langsung menarik perhatian operator di ruang kontrol.</div>
-          <div class="point-item"><span class="point-title">• Lokasi Masalah Spesifik:</span> Menunjuk langsung titik anomali: <i>'Detected on Outgoing Trafo 01 (Cos φ 0.84) and APFC Cap Bank'</i>.</div>
-          <div class="point-item"><span class="point-title">• Instruksi Tindakan Lapangan (Action Guidance):</span> <i>'Please inspect capacitor step controller to prevent kVARh surcharge.'</i></div>
-          <div class="point-item"><span class="point-title">• Tombol Review Alert Meters:</span> Seketika memfilter tabel ke meter yang bermasalah.</div>
-          <div class="box-title box-title-green">Kegunaan Finansial & Operasional bagi Pabrik</div>
-          <div class="point-item"><span class="point-title">• Penyelamat Biaya Finansial:</span> Cikarang Listrindo mendenda pemakaian daya reaktif jika faktor daya rata-rata di bawah 0,85. Sistem ini mencegah denda sebelum tagihan membengkak.</div>
-          <div class="point-item"><span class="point-title">• Respons Cepat:</span> Teknisi langsung menuju panel kompensasi kapasitor bank yang rusak.</div>
+        <div class="img-caption">Banner Peringatan Otomatis: Deteksi Dini Penurunan Power Factor (Cos φ < 0.85)</div>
+        <div class="stacked-grid">
+          <div class="box">
+            <div class="box-title">Mekanisme Deteksi Otomatis (Early Warning Logic)</div>
+            <p class="desc-text">Banner peringatan muncul otomatis pada bagian teratas saat terdeteksi anomali kritis:</p>
+            <div class="point-item"><span class="point-title">• Kontras Visual Jelas:</span> Latar belakang kuning peringatan dengan indikator kontras tinggi yang langsung menarik perhatian operator ruang kontrol.</div>
+            <div class="point-item"><span class="point-title">• Lokasi Masalah Teridentifikasi Spesifik:</span> Menunjuk langsung titik anomali peralatan: <i>'Power factor below Cikarang Listrindo threshold (< 0.85) detected on Outgoing Trafo 01 (0.84) and APFC Cap Bank.'</i></div>
+            <div class="point-item"><span class="point-title">• Tombol Navigasi Pintas:</span> Tombol <i>'Review Alert Meters →'</i> seketika memfilter tabel ke instrumen yang mengalami anomali.</div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-green">Nilai Teknis & Pencegahan Denda Penalti</div>
+            <div class="point-item"><span class="point-title">• Panduan Aksi Perbaikan di Lapangan:</span> Menyediakan instruksi langsung: <i>'Please inspect capacitor step controller to prevent kVARh surcharge.'</i></div>
+            <div class="point-item"><span class="point-title">• Penyelamat Biaya Pabrik:</span> PT Cikarang Listrindo memberlakukan denda penalti jika Power Factor rata-rata berada di bawah 0,85. Sistem ini mencegah timbulnya biaya penalti sebelum siklus tagihan resmi ditutup.</div>
+            <div class="point-item"><span class="point-title">• Respon Cepat:</span> Teknisi tidak perlu mencari lokasi kerusakan secara manual; sistem langsung mengarahkan teknisi ke panel kompensasi daya reaktif yang rusak.</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 7: 6 KPI CARDS -->
+    <!-- SLIDE 7: 6 EXECUTIVE KPI CARDS -->
     <div class="slide-card" data-slide="7">
       <div class="slide-header">
         <div>
-          <div class="slide-category">METRIK KINERJA UTAMA</div>
-          <h1 class="slide-title">6 Kartu KPI Eksekutif: Daya, Biaya, Puncak, & Emisi Karbon</h1>
+          <div class="slide-category">RINGKASAN PARAMETER EKSEKUTIF</div>
+          <h1 class="slide-title">6 Kartu Metrik Kinerja Utama: Daya, Biaya, Puncak, & Emisi Karbon</h1>
         </div>
-        <div class="slide-module-badge">Panel Metrik Ringkasan Utama</div>
+        <div class="slide-module-badge">Panel Ringkasan Kinerja Utama</div>
       </div>
-      <div class="grid-2">
-        <div class="box">
-          <div class="img-container">
-            <div class="img-wrap"><img src="ss_kpi_cards_all_2x.png" alt="KPI Cards"></div>
-            <div class="img-caption">Tangkapan Layar: 6 Kartu Indikator Kinerja Utama Kelistrikan Pabrik</div>
-          </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap">
+          <img src="ss_kpi_all_clean.png" alt="KPI Cards">
         </div>
-        <div class="box">
-          <div class="box-title">Komponen Tampilan 6 Kartu KPI</div>
-          <div class="point-item"><span class="point-title">• 1. Total Active Power (14.129 kW):</span> Beban aktif riil detik ini; mencerminkan ritme kerja mesin produksi 3 pabrik yang sedang berjalan.</div>
-          <div class="point-item"><span class="point-title">• 2. Energy Today (197.064 kWh):</span> Akumulasi konsumsi energi sejak jam 00:00 yang terus bertambah secara dinamis.</div>
-          <div class="point-item"><span class="point-title">• 3. Estimated Cost (Rp 285 jt):</span> Estimasi rupiah tagihan listrik berjalan berdasarkan tarif industri resmi Cikarang Listrindo.</div>
-          <div class="point-item"><span class="point-title">• 4. Peak Demand (16.820 kW):</span> Titik beban puncak tertinggi hari ini; memastikan beban tidak melampaui kapasitas kontrak gardu.</div>
-          <div class="point-item"><span class="point-title">• 5. Utility Delta (-7.086 kWh / ▼ -3,5%):</span> Selisih efisiensi terhadap hari kemarin (warna hijau = pabrik lebih hemat energi).</div>
-          <div class="point-item"><span class="point-title">• 6. Carbon Emission (155,7 ton CO2e):</span> Estimasi emisi gas rumah kaca untuk kepatuhan ESG.</div>
-          <div class="info-callout"><b>Nilai bagi Mentor:</b> Memberikan data instan bagi manajer dan supervisor saat evaluasi harian tanpa perlu membuka kalkulator atau laporan manual yang tebal.</div>
+        <div class="img-caption">6 Kartu KPI Eksekutif: Total Active Power, Energy Today, Cost, Peak Demand, Delta, & CO2</div>
+        <div class="stacked-grid">
+          <div class="box">
+            <div class="box-title">Indikator Daya Aktif, Akumulasi Energi, & Biaya</div>
+            <div class="point-item"><span class="point-title">• 1. Total Active Power (14.129 kW):</span> Beban daya aktif riil seketika 3 pabrik, mencerminkan ritme operasional mesin produksi.</div>
+            <div class="point-item"><span class="point-title">• 2. Energy Today (197.064 kWh):</span> Akumulasi pemakaian energi sejak jam 00:00 WIB yang bertambah dinamis, lengkap dengan komparasi data kemarin.</div>
+            <div class="point-item"><span class="point-title">• 3. Estimated Cost (Rp 285 jt):</span> Estimasi rupiah biaya listrik berjalan berdasarkan formula tarif industri PT Cikarang Listrindo Tbk.</div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-blue">Indikator Keandalan Beban Puncak & Keberlanjutan</div>
+            <div class="point-item"><span class="point-title">• 4. Peak Demand (16.820 kW):</span> Titik beban tertinggi hari ini; memastikan beban tetap berada dalam margin kapasitas aman transformator dan pemutus 20kV.</div>
+            <div class="point-item"><span class="point-title">• 5. Utility Delta (-7.086 kWh / ▼ -3,5%):</span> Selisih konsumsi energi dibanding waktu yang sama kemarin (warna hijau menandakan kondisi lebih hemat).</div>
+            <div class="point-item"><span class="point-title">• 6. Carbon Emission (155,7 ton CO2e):</span> Estimasi emisi gas rumah kaca berbasis faktor emisi grid Jamali (0,79 kg/kWh) untuk kepatuhan pelaporan ESG.</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 8: 24H LOAD PROFILE -->
+    <!-- SLIDE 8: 24-HOUR LOAD PROFILE -->
     <div class="slide-card" data-slide="8">
       <div class="slide-header">
         <div>
-          <div class="slide-category">ANALISIS TREN OPERASIONAL</div>
-          <h1 class="slide-title">Grafik Beban 24 Jam: Penanda Beban Puncak (Peak) & Terendah</h1>
+          <div class="slide-category">ANALISIS KURVA BEBAN OPERASIONAL</div>
+          <h1 class="slide-title">Profil Beban 24 Jam: Penanda Beban Puncak (Peak) & Beban Terendah</h1>
         </div>
         <div class="slide-module-badge">Grafik Garis Komparasi 24 Jam</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_chart_24h_2x.png" alt="24h Load Profile"></div>
-            <div class="img-caption">Tangkapan Layar: Kurva Beban 24 Jam Lengkap dengan Callout Peak & Terendah</div>
+            <div class="img-wrap"><img src="ss_chart_24h_clean.png" alt="24-Hour Load Profile"></div>
+            <div class="img-caption">Kurva Beban 24 Jam: Hari Ini vs Kemarin dengan Callout Peak & Terendah</div>
           </div>
         </div>
         <div class="box">
-          <div class="box-title">Komponen Tampilan Kurva 24 Jam</div>
-          <div class="point-item"><span class="point-title">• Dual Curve:</span> Garis Biru Solid (Today Live) vs Garis Abu-Abu Putus-Putus (Yesterday H-1).</div>
-          <div class="point-item"><span class="point-title">• Badge Merah (▲ PEAK: 15.720 kW):</span> Penanda visual di atas titik puncak jam 15:00 lengkap dengan glowing marker dan garis penunjuk putus-putus.</div>
-          <div class="point-item"><span class="point-title">• Badge Hijau (▼ TERENDAH: 7.730 kW):</span> Penanda visual di bawah titik beban terendah pada jam 03:00 dini hari (baseline daya standby saat pergantian shift).</div>
-          <div class="point-item"><span class="point-title">• Header Legend:</span> Dilengkapi badge nilai Peak & Terendah sinkron dengan kurva.</div>
-          <div class="box-title box-title-green">Kegunaan Operasional bagi Tim Maintenance</div>
-          <div class="point-item"><span class="point-title">• Pengawasan Batas Daya:</span> Memastikan beban pada jam 15:00 tidak memicu trip Circuit Breaker 20kV.</div>
-          <div class="point-item"><span class="point-title">• Audit Standby Malam:</span> Memverifikasi jam 03:00 tidak ada pemanas/kompresor yang menyala sia-sia.</div>
-          <div class="point-item"><span class="point-title">• Deteksi Istirahat:</span> Terlihat jelas lembah penurunan daya saat istirahat makan siang (12:00–13:00).</div>
+          <div class="box-title">Komponen Tampilan Kurva Beban 24 Jam</div>
+          <p class="desc-text">Grafik garis dinamis dengan interval 3 jam yang membandingkan hari ini vs kemarin:</p>
+          <div class="point-item"><span class="point-title">• Garis Biru Solid (Today - Live):</span> Pola beban pemakaian daya aktif riil yang sedang berjalan.</div>
+          <div class="point-item"><span class="point-title">• Garis Abu-Abu Putus-Putus (Yesterday):</span> Pola pemakaian daya listrik pada waktu yang sama kemarin sebagai baseline.</div>
+          <div class="point-item"><span class="point-title">• Badge Merah (▲ Peak: 15.720 kW):</span> Penanda visual otomatis di atas titik beban tertinggi pada pukul 15:00 WIB saat jam kerja puncak.</div>
+          <div class="point-item"><span class="point-title">• Badge Hijau (▼ Terendah: 7.730 kW):</span> Penanda visual otomatis di bawah titik beban terendah pada pukul 03:00 WIB dini hari.</div>
+          <div class="point-item"><span class="point-title">• Header Legend Terpadu:</span> Menampilkan angka Peak dan Terendah yang tersinkronisasi.</div>
+          <div class="box-title box-title-green">Fungsi Rekayasa bagi Tim Utility</div>
+          <div class="point-item"><span class="point-title">• Pengawasan Kapasitas Trafo:</span> Memastikan lonjakan mesin pada pukul 15:00 WIB tidak melampaui batas trip Circuit Breaker 20kV.</div>
+          <div class="point-item"><span class="point-title">• Audit Beban Standby Malam Hari:</span> Memverifikasi bahwa pada jam 03:00 WIB dini hari tidak ada Billet Heater atau kompresor yang beroperasi sia-sia.</div>
+          <div class="point-item"><span class="point-title">• Identifikasi Jam Istirahat:</span> Terlihat jelas penurunan lembah beban saat istirahat makan siang (12:00–13:00 WIB).</div>
         </div>
       </div>
     </div>
@@ -375,119 +406,125 @@
     <div class="slide-card" data-slide="9">
       <div class="slide-header">
         <div>
-          <div class="slide-category">DISTRIBUSI BEBAN SUBSTATION</div>
-          <h1 class="slide-title">Grafik Donut: Proporsi Konsumsi Gardu (100% Total Share)</h1>
+          <div class="slide-category">DISTRIBUSI BEBAN SUBSTATION PABRIK</div>
+          <h1 class="slide-title">Musashi Substation Load Share: Proporsi Konsumsi Gardu (100% Total Share)</h1>
         </div>
-        <div class="slide-module-badge">Grafik Lingkaran Beban Gardu</div>
+        <div class="slide-module-badge">Grafik Donut Beban Substation</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_chart_donut_2x.png" alt="Donut Substation"></div>
-            <div class="img-caption">Tangkapan Layar: Donut Chart Proporsi Substation dengan Label Persentase Langsung</div>
+            <div class="img-wrap"><img src="ss_chart_donut_clean.png" alt="Donut Load Share"></div>
+            <div class="img-caption">Donut Chart: Distribusi Beban Substation dengan Label Persentase Langsung</div>
           </div>
         </div>
         <div class="box">
           <div class="box-title">Komponen Tampilan Grafik Donut</div>
-          <div class="point-item"><span class="point-title">• Label Persentase Langsung pada Irisan Busur (On-Slice Labels):</span></div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Factory 1 (33% - Biru Muda):</span> Substation penyuplai lini permesinan utama & utilitas.</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Factory 2 (30% - Teal):</span> Substation penyuplai lini penempaan mesin press forging.</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Factory 2.1 (22% - Cyan):</span> Substation penyuplai pemanas billet induksi & motor.</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Factory 3 (15% - Hijau):</span> Substation penyuplai pompa sentral & cooling tower.</div>
-          <div class="point-item"><span class="point-title">• Pusat Donut (100% TOTAL SHARE):</span> Menampilkan angka 100% dan label TOTAL SHARE secara bersih.</div>
-          <div class="point-item"><span class="point-title">• Pemisahan Kategori:</span> Kategori Forging dan HT telah dipisahkan ke modul khusus agar grafik murni membandingkan 4 gardu pabrik secara bersih.</div>
-          <div class="info-callout"><b>Kegunaan Analisis Biaya:</b> Membantu bagian Cost Accounting menghitung proporsi pembebanan biaya listrik ke masing-masing lini produk (Factory 1, Factory 2, Factory 3).</div>
+          <p class="desc-text">Grafik donat modern dengan rendering persentase langsung pada segmen warna busur:</p>
+          <div class="point-item"><span class="point-title">• Persentase Langsung pada Segmen Busur (On-Slice Labels):</span></div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Factory 1 (33% - Biru Muda):</span> Substation penyuplai lini permesinan utama, perakitan, dan utilitas pabrik.</div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Factory 2 (30% - Teal):</span> Substation penyuplai lini mesin Forging Press berkapasitas besar.</div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Factory 2.1 (22% - Cyan):</span> Substation penyuplai Billet Heater induksi berdaya tinggi.</div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Factory 3 (15% - Hijau):</span> Substation penyuplai fasilitas pompa sentral dan cooling tower.</div>
+          <div class="point-item"><span class="point-title">• Pusat Donut (100% TOTAL SHARE):</span> Lingkaran tengah menampilkan teks <b>100% TOTAL SHARE</b> untuk konfirmasi keseimbangan data.</div>
+          <div class="point-item"><span class="point-title">• Struktur Kategori Bersih:</span> Kategori proses Forging dan Heat Treatment dipisahkan agar donat murni membandingkan 4 gardu pabrik secara jelas.</div>
+          <div class="box-title box-title-green">Kegunaan Analisis Biaya Listrik</div>
+          <div class="point-item"><span class="point-title">• Akuntabilitas Finansial:</span> Membantu akuntansi biaya membagi beban tagihan listrik bulanan ke masing-masing lini pabrik secara objektif berbasis data telemetri riil.</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 10: 19 OUTGOING TRAFOS -->
+    <!-- SLIDE 10: 19 OUTGOING TRANSFORMERS -->
     <div class="slide-card" data-slide="10">
       <div class="slide-header">
         <div>
-          <div class="slide-category">MONITORING TRANSFORMATOR DAYA</div>
-          <h1 class="slide-title">Outgoing Transformers: 19 Unit Trafo Sesuai Nomor Urut</h1>
+          <div class="slide-category">MONITORING TRANSFORMATOR DISTRIBUSI</div>
+          <h1 class="slide-title">Outgoing Transformers: Pemantauan 19 Unit Trafo Lengkap Sesuai Urutan</h1>
         </div>
         <div class="slide-module-badge">Grafik Batang Horisontal 19 Trafo</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_top8_chart_2x.png" alt="19 Outgoing Transformers"></div>
-            <div class="img-caption">Tangkapan Layar: Profil Pemakaian Energi Seluruh 19 Transformator Distribusi Keluar</div>
+            <div class="img-wrap"><img src="ss_trafo19_clean.png" alt="19 Outgoing Transformers Chart"></div>
+            <div class="img-caption">Profil Konsumsi Energi Seluruh 19 Transformator Keluar (Outgoing Trafo 01–19)</div>
           </div>
         </div>
         <div class="box">
           <div class="box-title">Komponen Tampilan 19 Outgoing Trafo</div>
-          <div class="point-item"><span class="point-title">• 19 Trafo Lengkap & Terurut:</span> Menampilkan seluruh trafo keluar dari <b>Outgoing Trafo 01</b> sampai <b>Outgoing Trafo 19</b> secara sekuensial numerik.</div>
-          <div class="point-item"><span class="point-title">• Format Nama Bersih:</span> Imbuhan belakang panjang dihilangkan sehingga nama rapi dan mudah dicocokkan dengan label fisik panel gardu.</div>
-          <div class="point-item"><span class="point-title">• Konsumen Energi Terbesar Terlihat Jelas:</span></div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Trafo 12:</span> Konsumen tertinggi (18.450 kWh) - menyuplai lini penempaan berat.</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Trafo 01:</span> 15.400 kWh - menyuplai pemanas induksi billet Fac 1.</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Trafo 03:</span> 14.200 kWh - menyuplai lini heat treatment Fac 1.</div>
-          <div class="box-title box-title-green">Kegunaan Operasional bagi Tim Maintenance</div>
-          <div class="point-item"><span class="point-title">• Keseimbangan Beban Trafo:</span> Memastikan tidak ada satu trafo yang terbebani di atas rating kVA-nya saat jam kerja puncak.</div>
-          <div class="point-item"><span class="point-title">• Jadwal Preventive Maintenance:</span> Trafo dengan konsumsi tertinggi (Trafo 12, 01, 03) diprioritaskan untuk uji kualitas minyak trafo dan termografi berkala.</div>
+          <p class="desc-text">Grafik batang horizontal yang dirancang khusus untuk memuat seluruh 19 transformator keluar:</p>
+          <div class="point-item"><span class="point-title">• 19 Unit Trafo Lengkap & Terurut:</span> Menampilkan seluruh transformator distribusi mulai dari <b>Outgoing Trafo 01</b> hingga <b>Outgoing Trafo 19</b> secara sekuensial.</div>
+          <div class="point-item"><span class="point-title">• Format Penamaan Baku & Bersih:</span> Menggunakan standar penamaan baku industri kelistrikan pabrik sehingga langsung cocok dengan Single Line Diagram (SLD).</div>
+          <div class="point-item"><span class="point-title">• Peringkat Konsumsi Energi Transformator:</span></div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Outgoing Trafo 12:</span> Konsumen tertinggi (18.450 kWh) - menyuplai mesin Forging Press & Heat Treatment.</div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Outgoing Trafo 01:</span> 15.400 kWh - menyuplai Billet Heater Factory 1.</div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Outgoing Trafo 03:</span> 14.200 kWh - menyuplai Heat Treatment Factory 1.</div>
+          <div class="point-item" style="padding-left:12px;"><span class="point-title">- Outgoing Trafo 10:</span> 11.800 kWh - menyuplai Billet Heater Komatsu Factory 2.1.</div>
+          <div class="box-title box-title-green">Manajemen Beban & Preventive Maintenance</div>
+          <div class="point-item"><span class="point-title">• Keseimbangan Beban Transformator:</span> Memastikan tidak ada transformator yang terbebani melampaui rating kVA pada jam kerja puncak.</div>
+          <div class="point-item"><span class="point-title">• Prioritas Inspeksi Berkala:</span> Trafo berbeban tinggi (Trafo 12, 01, 03) diprioritaskan untuk pengujian dielektrik minyak dan inspeksi termografi inframerah.</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 11: ATTENTION REQUIRED -->
+    <!-- SLIDE 11: ATTENTION REQUIRED LIST -->
     <div class="slide-card" data-slide="11">
       <div class="slide-header">
         <div>
-          <div class="slide-category">PRIORITAS TINDAKAN PERBAIKAN</div>
-          <h1 class="slide-title">Daftar Perlu Perhatian: Worklist Proaktif Teknisi Gardu</h1>
+          <div class="slide-category">MANAJEMEN PERAWATAN PROAKTIF</div>
+          <h1 class="slide-title">Attention Required: Daftar Kerja Proaktif Teknisi Substation</h1>
         </div>
-        <div class="slide-module-badge">Panel Kanan Baris Ketiga Dashboard</div>
+        <div class="slide-module-badge">Daftar Tindakan Cepat Lapangan</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_attention_list_2x.png" alt="Attention Required List"></div>
-            <div class="img-caption">Tangkapan Layar: Daftar Meter Anomali yang Membutuhkan Inspeksi Lapangan</div>
+            <div class="img-wrap"><img src="ss_attention_clean.png" alt="Attention Required List"></div>
+            <div class="img-caption">Daftar Meter Anomali yang Memerlukan Inspeksi Lapangan Segera</div>
           </div>
         </div>
         <div class="box">
           <div class="box-title">Komponen Tampilan Attention Required</div>
-          <div class="point-item"><span class="point-title">• Kartu 1 (Low Cos φ 0.84 - TR-01):</span> Peringatan faktor daya rendah pada Outgoing Trafo 01 Billet Heater. Aksi: <i>'Inspect & check APFC capacitor bank step regulator.'</i></div>
-          <div class="point-item"><span class="point-title">• Kartu 2 (Peak Demand - F2-6):</span> Peringatan lonjakan arus pada Feeder F2-6 MV Titan 1200T saat Shift 1 berjalan.</div>
+          <p class="desc-text">Daftar kerja otomatis berbasis logika SCADA yang menyaring instrumen bermasalah:</p>
+          <div class="point-item"><span class="point-title">• Kartu 1 (Low Cos φ 0.84 - TR-01):</span> Peringatan Power Factor rendah pada Outgoing Trafo 01 Billet Heater. Rekomendasi aksi: <i>'Inspect & check APFC capacitor bank step regulator.'</i></div>
+          <div class="point-item"><span class="point-title">• Kartu 2 (Peak Demand - F2-6):</span> Peringatan lonjakan arus pada Feeder F2-6 MV Titan 1200T saat shift kerja berjalan.</div>
           <div class="point-item"><span class="point-title">• Kartu 3 (High Inductive Load - TR-12):</span> Peringatan beban induktif tinggi pada Outgoing Trafo 12 FO & HT 200V.</div>
-          <div class="point-item"><span class="point-title">• Tombol Detail →:</span> Klik langsung pada kartu untuk membuka diagnostik tegangan, arus, dan register Modbus meter tersebut.</div>
-          <div class="box-title box-title-green">Kegunaan Operasional bagi Teknisi & Mentor</div>
-          <div class="point-item"><span class="point-title">• Transformasi Maintenance Proaktif:</span> Teknisi tidak lagi menunggu laporan komplain produksi atau surat denda tagihan listrik; sistem secara otomatis menerbitkan 'tiket kerja' visual.</div>
-          <div class="point-item"><span class="point-title">• Standar Keamanan Kelistrikan:</span> Mencegah kabel terbakar akibat beban induktif berlebih.</div>
+          <div class="point-item"><span class="point-title">• Tombol Detail →:</span> Klik langsung pada kartu membuka jendela diagnostik tegangan, arus, dan register Modbus meter terkait.</div>
+          <div class="box-title box-title-green">Manfaat Operasional bagi Tim Maintenance</div>
+          <div class="point-item"><span class="point-title">• Transformasi Perawatan Proaktif:</span> Teknisi tidak perlu menunggu laporan trip mesin atau surat denda tagihan listrik; sistem menerbitkan tiket kerja visual secara otomatis.</div>
+          <div class="point-item"><span class="point-title">• Keamanan Instalasi Listrik:</span> Mencegah terjadinya kenaikan suhu kabel berlebih (overheating) pada konduktor tegangan rendah.</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 12: INCOMING CLD -->
+    <!-- SLIDE 12: INCOMING FEEDERS CLD -->
     <div class="slide-card" data-slide="12">
       <div class="slide-header">
         <div>
-          <div class="slide-category">SUMBER DAYA UTAMA 20kV</div>
-          <h1 class="slide-title">Pasokan Utama Listrik 20kV: CLD 1, CLD 2, dan CLD 3</h1>
+          <div class="slide-category">SUMBER PASOKAN UTAMA 20kV</div>
+          <h1 class="slide-title">Pasokan Utama Listrik 20kV: CLD 1, CLD 2, dan CLD 3 Cikarang Listrindo</h1>
         </div>
-        <div class="slide-module-badge">3 Kartu Sumber Daya Masuk 20kV</div>
+        <div class="slide-module-badge">3 Kartu Suplai Masuk TM 20kV</div>
       </div>
-      <div class="grid-2">
-        <div class="box">
-          <div class="img-container">
-            <div class="img-wrap"><img src="ss_incoming_cld_2x.png" alt="CLD Feeders"></div>
-            <div class="img-caption">Tangkapan Layar: 3 Kartu Penyulang Masuk Tegangan Menengah 20 kV (CLD 1, 2, 3)</div>
-          </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap">
+          <img src="ss_cld_clean.png" alt="Incoming CLD Feeders">
         </div>
-        <div class="box">
-          <div class="box-title">Komponen Tampilan 3 Kartu CLD</div>
-          <div class="point-item"><span class="point-title">• Label Nama Ringkas:</span> Disederhanakan menjadi <b>CLD 1</b>, <b>CLD 2</b>, dan <b>CLD 3</b> (kata 'Incoming Feeder' dan keterangan panjang telah dihapus agar bersih).</div>
-          <div class="point-item"><span class="point-title">• Rincian Data Masing-Masing Penyulang:</span></div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- CLD 1:</span> Daya 3.940 kW, Energi 49.704 kWh, Tegangan 20.000 V, Cos φ 0,92 (Optimal).</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- CLD 2:</span> Daya 5.640 kW, Energi 72.540 kWh, Tegangan 20.000 V, Cos φ 0,93 (Optimal).</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- CLD 3:</span> Daya 5.820 kW, Energi 74.820 kWh, Tegangan 20.000 V, Cos φ 0,94 (Optimal).</div>
-          <div class="point-item"><span class="point-title">• Selisih Kemarin:</span> Menampilkan penghematan energi harian (▼ -1.896 s/d -2.610 kWh).</div>
-          <div class="box-title box-title-green">Kegunaan Operasional bagi Tim Utility</div>
-          <div class="point-item"><span class="point-title">• Audit Tagihan Resmi:</span> Angka kumulatif pada ketiga kartu inilah yang menentukan besaran tagihan rekening listrik bulanan pabrik dari Cikarang Listrindo.</div>
-          <div class="point-item"><span class="point-title">• Monitoring Kestabilan Tegangan 20kV:</span> Memastikan pasokan dari gardu induk utilitas stabil pada 20.000 V tanpa mengalami fluktuasi berlebih.</div>
+        <div class="img-caption">3 Kartu Suplai Masuk Tegangan Menengah 20kV dari PT Cikarang Listrindo Tbk (CLD 1, 2, 3)</div>
+        <div class="stacked-grid">
+          <div class="box">
+            <div class="box-title">Rincian Parameter 3 Penyulang Masuk 20kV</div>
+            <p class="desc-text">Memantau 3 titik suplai utama tegangan menengah 20.000 Volt dari PT Cikarang Listrindo Tbk:</p>
+            <div class="point-item"><span class="point-title">• CLD 1:</span> Daya aktif 3.940 kW, Energi 49.704 kWh, Tegangan 20.000 V, Power Factor 0,92 (Optimal).</div>
+            <div class="point-item"><span class="point-title">• CLD 2:</span> Daya aktif 5.640 kW, Energi 72.540 kWh, Tegangan 20.000 V, Power Factor 0,93 (Optimal).</div>
+            <div class="point-item"><span class="point-title">• CLD 3:</span> Daya aktif 5.820 kW, Energi 74.820 kWh, Tegangan 20.000 V, Power Factor 0,94 (Optimal).</div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-blue">Kegunaan Rekayasa & Verifikasi Tagihan Resmi</div>
+            <div class="point-item"><span class="point-title">• Audit Rekening Listrik Bulanan:</span> Data akumulasi energi pada ketiga kartu penyulang ini menjadi acuan pencocokan dengan lembar penagihan resmi Cikarang Listrindo.</div>
+            <div class="point-item"><span class="point-title">• Monitoring Kestabilan Tegangan 20kV:</span> Memastikan suplai tegangan stabil pada 20.000 V tanpa mengalami undervoltage atau overvoltage yang dapat memicu relai proteksi.</div>
+            <div class="point-item"><span class="point-title">• Pelacakan Selisih Harian:</span> Menampilkan indikator penghematan energi harian (▼ -1.896 s/d -2.610 kWh) dibanding hari sebelumnya.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -497,114 +534,119 @@
       <div class="slide-header">
         <div>
           <div class="slide-category">DATABASE TELEMETRI LENGKAP</div>
-          <h1 class="slide-title">Tabel Direktori Digital Power Meter: 111 Titik Mesin</h1>
+          <h1 class="slide-title">Direktori Digital Power Meter: Database Telemetri 111 Titik Mesin</h1>
         </div>
-        <div class="slide-module-badge">Tabel Telemetri Lengkap Sisi Bawah</div>
+        <div class="slide-module-badge">Tabel Pengukuran Lengkap</div>
       </div>
-      <div class="grid-2">
-        <div class="box">
-          <div class="img-container">
-            <div class="img-wrap"><img src="ss_meter_table_rows_2x.png" alt="Meter Table"></div>
-            <div class="img-caption">Tangkapan Layar: Tabel Direktori 111 Unit Power Meter Schneider dengan Pencarian</div>
-          </div>
+      <div class="layout-stacked">
+        <div class="stacked-img-wrap">
+          <img src="ss_table_clean.png" alt="Meter Directory Table">
         </div>
-        <div class="box">
-          <div class="box-title">Komponen Tampilan Tabel Direktori</div>
-          <div class="point-item"><span class="point-title">• Fitur Pencarian & Filter Cepat:</span> Kotak pencarian instan berdasarkan kode mesin (misal: <i>TRF-01, CLD-001, PRESS-1600T</i>), nama meter, nomor feeder, atau alamat IP.</div>
-          <div class="point-item"><span class="point-title">• Kolom Pengukuran Komprehensif:</span></div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Identitas:</span> Machine Code, Meter Name, Area Pabrik, dan Alamat IP Modbus TCP.</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Beban Listrik:</span> Daya Aktif (kW), Tegangan (V), Arus (A), dan Faktor Daya (Cos φ).</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Energi & Emisi:</span> Today (kWh), Yesterday (kWh), Delta Selisih (Δ), dan Emisi CO2 (kg).</div>
-          <div class="point-item" style="padding-left: 12px;"><span class="point-title">- Status Operasional:</span> Indikator status Normal (hijau) atau Warning.</div>
-          <div class="point-item"><span class="point-title">• Tombol Detail:</span> Membuka pop-up diagnostik mendalam untuk masing-masing meter.</div>
-          <div class="info-callout"><b>Transparansi Data:</b> Teknisi dapat langsung mengekspor atau memeriksa beban mesin manapun tanpa harus mendatangi panel di lantai pabrik.</div>
+        <div class="img-caption">Tabel Direktori 111 Digital Power Meter Schneider dengan Kolom Parameter Lengkap</div>
+        <div class="stacked-grid">
+          <div class="box">
+            <div class="box-title">Arsitektur Direktori & Fitur Pencarian Cepat</div>
+            <p class="desc-text">Tabel interaktif berkecepatan tinggi yang memuat seluruh instrumen ukur digital pabrik:</p>
+            <div class="point-item"><span class="point-title">• Pencarian & Penyaringan Instan:</span> Pencarian langsung berdasarkan Machine Code (misal: <i>TRF-01, CLD-001, PRESS-1600T</i>), nama meter, nomor feeder, atau alamat IP Modbus TCP.</div>
+            <div class="point-item"><span class="point-title">• Status Operasional Terbaca Jelas:</span> Menampilkan status Normal (hijau) atau Warning dengan indikator visual kontras.</div>
+          </div>
+          <div class="box">
+            <div class="box-title box-title-blue">Cakupan Parameter Pengukuran Kelistrikan</div>
+            <div class="point-item"><span class="point-title">• Identitas Peralatan:</span> Machine Code, Meter Name, Area Pabrik, dan Alamat IP Jaringan.</div>
+            <div class="point-item"><span class="point-title">• Beban Listrik:</span> Daya Aktif (kW), Tegangan (V), Arus (A), dan Power Factor (Cos φ).</div>
+            <div class="point-item"><span class="point-title">• Energi & Emisi:</span> Today (kWh), Yesterday (kWh), Delta Selisih (Δ), dan Emisi CO2 (kg).</div>
+            <div class="point-item"><span class="point-title">• Akses Diagnostik:</span> Tombol Action membuka jendela modal pop-up telemetri 3-fasa mendalam.</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 14: DEEP DIVE MODAL -->
+    <!-- SLIDE 14: DEEP-DIVE MODAL -->
     <div class="slide-card" data-slide="14">
       <div class="slide-header">
         <div>
-          <div class="slide-category">DIAGNOSTIK MENDALAM</div>
-          <h1 class="slide-title">Modal Pop-Up: Analisis Telemetri 3-Fasa & Register Modbus</h1>
+          <div class="slide-category">DIAGNOSTIK KUALITAS DAYA TINGKAT LANJUT</div>
+          <h1 class="slide-title">Modal Pop-Up: Analisis Telemetri 3-Fasa R-S-T & Register Modbus Riil</h1>
         </div>
-        <div class="slide-module-badge">Jendela Diagnostik R-S-T & Harmonik</div>
+        <div class="slide-module-badge">Jendela Diagnostik Kualitas Daya</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_modal_clean_2x.png" alt="Modal Telemetry 3-Phase"></div>
-            <div class="img-caption">Tangkapan Layar: Pop-Up Detail 3-Fasa R-S-T, THD %, & Register Modbus Riil</div>
+            <div class="img-wrap"><img src="ss_modal_clean_2x.png" alt="Modal Detail Telemetry"></div>
+            <div class="img-caption">Pop-Up Diagnostik: Detail 3-Fasa R-S-T, THD %, & Cuplikan Register Modbus</div>
           </div>
         </div>
         <div class="box">
           <div class="box-title">Komponen Tampilan Modal Diagnostik</div>
-          <div class="point-item"><span class="point-title">• Tegangan 3-Fasa:</span> V_RN, V_SN, V_TN (230V) dan V_RS, V_ST, V_TR (400V).</div>
-          <div class="point-item"><span class="point-title">• Arus Listrik 3-Fasa:</span> I_R, I_S, I_T serta kalkulasi arus netral (I_N).</div>
-          <div class="point-item"><span class="point-title">• Kualitas Daya (Power Quality):</span> Frekuensi (50.0 Hz), Total Harmonic Distortion (% THD Tegangan & Arus), serta Cos φ masing-masing fasa.</div>
-          <div class="point-item"><span class="point-title">• Modbus Register Snippet:</span> Menampilkan alamat register heksadesimal/desimal mentah untuk validasi integrasi PLC/SCADA.</div>
-          <div class="box-title box-title-green">Kegunaan Operasional bagi Engineering Mentor</div>
-          <div class="point-item"><span class="point-title">• Analisis Ketidakseimbangan Beban (Unbalance Current):</span> Memastikan beban fasa R, S, T seimbang sehingga kawat netral tidak mengalami panas berlebih (*neutral overheating*).</div>
-          <div class="point-item"><span class="point-title">• Mitigasi Harmonik:</span> Memantau distorsi akibat inverter VFD motor press agar trafo tidak rusak.</div>
+          <p class="desc-text">Jendela diagnostik teknik kelistrikan tingkat lanjut saat tombol Action diklik:</p>
+          <div class="point-item"><span class="point-title">• Tegangan Fasa-Netral & Fasa-Fasa:</span> V_RN, V_SN, V_TN (230 V) serta V_RS, V_ST, V_TR (400 V).</div>
+          <div class="point-item"><span class="point-title">• Arus Listrik 3-Fasa:</span> I_R, I_S, I_T serta kalkulasi arus kawat netral (I_N).</div>
+          <div class="point-item"><span class="point-title">• Kualitas Daya Listrik:</span> Frekuensi (50.00 Hz), Total Harmonic Distortion (% THD Tegangan & Arus), serta Cos φ masing-masing fasa.</div>
+          <div class="point-item"><span class="point-title">• Cuplikan Register Modbus:</span> Menampilkan alamat register heksadesimal/desimal mentah untuk integrasi PLC/SCADA pabrik.</div>
+          <div class="box-title box-title-green">Nilai Analisis Rekayasa bagi Maintenance</div>
+          <div class="point-item"><span class="point-title">• Analisis Ketidakseimbangan Beban (Unbalance Current):</span> Memastikan beban fasa R, S, T seimbang sehingga konduktor netral tidak mengalami panas berlebih.</div>
+          <div class="point-item"><span class="point-title">• Mitigasi Harmonik:</span> Memantau dampak beban non-linier dari inverter Variable Speed Drive motor press dan tungku induksi agar tidak merusak transformator.</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 15: DEDICATED VIEWS -->
+    <!-- SLIDE 15: DEDICATED AREA VIEWS -->
     <div class="slide-card" data-slide="15">
       <div class="slide-header">
         <div>
           <div class="slide-category">FASILITAS SUB-SISTEM PABRIK</div>
-          <h1 class="slide-title">Tampilan Khusus Area: Substation, Forging, & Heat Treatment</h1>
+          <h1 class="slide-title">Tampilan Khusus Area: Substation Electrical Room 1, Forging, & Heat Treatment</h1>
         </div>
-        <div class="slide-module-badge">View Khusus per Departemen Produksi</div>
+        <div class="slide-module-badge">Tampilan Terdedikasi per Plant</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="cropped_ss_view_electrical1.png" alt="Electrical Room 1 View"></div>
-            <div class="img-caption">Tangkapan Layar: Dedicated View Substation Electrical Room Factory 1</div>
+            <div class="img-wrap"><img src="cropped_ss_view_electrical1.png" alt="Dedicated Substation View"></div>
+            <div class="img-caption">Tampilan Khusus Substation Electrical Room Factory 1 (Kubikel SM6 20kV)</div>
           </div>
         </div>
         <div class="box">
           <div class="box-title">Komponen Tampilan Area Khusus</div>
-          <div class="point-item"><span class="point-title">• Electrical Room 1 (Factory 1):</span> Fokus pada Kubikel SM6 20kV, LVMDP, dan Trafo Tr 01 s/d Tr 05 (5.400 kVA).</div>
-          <div class="point-item"><span class="point-title">• Electrical Room 2 (Factory 2.1):</span> Khusus Billet Heater 1.100 kVA dan Trafo Tr 06 s/d Tr 10.</div>
-          <div class="point-item"><span class="point-title">• Electrical Room 3 (Factory 3):</span> Khusus pompa cooling tower dan Trafo Tr 17 s/d Tr 19.</div>
-          <div class="point-item"><span class="point-title">• Forging Lines View:</span> Konsolidasi 39 mesin press penempaan (Komatsu 1600T, Titan, dll).</div>
-          <div class="point-item"><span class="point-title">• Heat Treatment View:</span> Monitoring tungku vakum, carburizing, dan induction heater.</div>
-          <div class="info-callout"><b>Kegunaan Pengawasan:</b> Memberikan wewenang pengawasan terfokus bagi masing-masing supervisor area (Supervisor Forging, Supervisor Machining, Supervisor Heat Treatment).</div>
+          <p class="desc-text">Dashboard menyediakan filter tampilan mandiri untuk masing-masing area produksi:</p>
+          <div class="point-item"><span class="point-title">• Electrical Room 1 (Factory 1):</span> Fokus pengawasan pada Kubikel Schneider SM6 20kV, panel LVMDP, dan Trafo Tr 01 hingga Tr 05 (5.400 kVA).</div>
+          <div class="point-item"><span class="point-title">• Electrical Room 2 (Factory 2.1):</span> Khusus Billet Heater 1.100 kVA dan Trafo Tr 06 hingga Tr 10.</div>
+          <div class="point-item"><span class="point-title">• Electrical Room 3 (Factory 3):</span> Khusus pompa utilitas cooling tower dan Trafo Tr 17 hingga Tr 19.</div>
+          <div class="point-item"><span class="point-title">• Forging Lines View:</span> Konsolidasi 39 mesin Forging Press (Komatsu 1600T, Titan, dll).</div>
+          <div class="point-item"><span class="point-title">• Heat Treatment View:</span> Monitoring tungku pemanas kontinu, carburizing, dan induction heater.</div>
+          <div class="box-title box-title-green">Manfaat Operasional</div>
+          <div class="point-item"><span class="point-title">• Pengawasan Terfokus:</span> Memberikan wewenang pengawasan terfokus bagi masing-masing penanggung jawab area (Supervisor Forging, Machining, dan Heat Treatment).</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 16: REPORTING & MENTOR ROI SUMMARY -->
+    <!-- SLIDE 16: REPORTING & SUMMARY -->
     <div class="slide-card" data-slide="16">
       <div class="slide-header">
         <div>
-          <div class="slide-category">DAMPAK BISNIS & EVALUASI MENTOR</div>
-          <h1 class="slide-title">Pusat Laporan Audit ISO 50001 & Ringkasan Dampak Proyek</h1>
+          <div class="slide-category">DAMPAK OPERASIONAL & KESIMPULAN REKAYASA</div>
+          <h1 class="slide-title">Pusat Pelaporan Audit Energi ISO 50001 & Dampak Nyata Operasional</h1>
         </div>
-        <div class="slide-module-badge">Laporan Audit & Kesimpulan Proyek</div>
+        <div class="slide-module-badge">Modul Laporan & Kesimpulan Evaluasi</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="cropped_ss_view_reports.png" alt="Reporting View"></div>
-            <div class="img-caption">Tangkapan Layar: Modul Laporan Energi & Audit Log CSV/Excel Terintegrasi</div>
+            <div class="img-wrap"><img src="cropped_ss_view_reports.png" alt="Reports and Audit View"></div>
+            <div class="img-caption">Modul Laporan Konsumsi Energi & Audit Log CSV/Excel Terintegrasi</div>
           </div>
         </div>
         <div class="box">
           <div class="box-title">Fitur Pelaporan & Ekspor Audit</div>
-          <div class="point-item"><span class="point-title">• Ekspor CSV / Excel Sekali Klik:</span> Seluruh data historis konsumsi listrik per mesin, trafo, dan pabrik dapat diunduh untuk lampiran laporan resmi.</div>
-          <div class="point-item"><span class="point-title">• Kepatuhan ISO 50001 & ESG:</span> Log data terverifikasi memudahkan auditor menghitung *Energy Baseline (EnB)* dan target dekarbonisasi.</div>
-          <div class="box-title box-title-blue">Ringkasan Dampak Nyata bagi PT Musashi (Hasil Evaluasi):</div>
-          <div class="point-item"><span class="point-title">• 1. Hemat Waktu Teknisi:</span> Menghemat <b>~90 jam kerja per bulan</b> (3 jam/hari) yang sebelumnya habis untuk mencatat meter fisik.</div>
-          <div class="point-item"><span class="point-title">• 2. Nol Denda kVARh:</span> Proteksi dini menjaga Power Factor selalu di atas 0,85 sehingga pabrik bebas denda Cikarang Listrindo.</div>
-          <div class="point-item"><span class="point-title">• 3. Deteksi Gangguan Lebih Cepat:</span> Menurunkan waktu identifikasi beban berlebih dari hitungan hari menjadi menit.</div>
-          <div class="point-item"><span class="point-title">• 4. Siap Diterapkan Penuh:</span> Aplikasi telah ter-deploy di server dan repositori GitHub, siap dioperasikan 24/7.</div>
-          <div class="info-callout"><b>Kesimpulan untuk Mentor:</b> Proyek Web Dashboard EMS ini telah berhasil memenuhi seluruh tujuan fungsional kelistrikan, andal secara operasional, dan siap dioperasikan 24/7 di PT Musashi Auto Parts Indonesia.</div>
+          <div class="point-item"><span class="point-title">• Ekspor CSV / Excel Sekali Klik:</span> Seluruh data historis konsumsi listrik per mesin, per trafo, dan per pabrik dapat diunduh untuk lampiran laporan resmi.</div>
+          <div class="point-item"><span class="point-title">• Kepatuhan ISO 50001 & Audit Energi:</span> Log data terverifikasi mempermudah auditor energi menghitung <i>Energy Baseline (EnB)</i> dan target efisiensi.</div>
+          <div class="box-title box-title-blue">Ringkasan Dampak Nyata bagi PT Musashi Auto Parts Indonesia</div>
+          <div class="point-item"><span class="point-title">• 1. Efisiensi Jam Kerja Teknisi:</span> Menghemat <b>~90 jam kerja per bulan</b> (3 jam/hari) yang sebelumnya habis untuk mencatat meter fisik secara manual.</div>
+          <div class="point-item"><span class="point-title">• 2. Bebas Denda Penalti kVARh:</span> Sistem peringatan dini berhasil menjaga Power Factor selalu di atas 0,85 sehingga pabrik terhindar dari denda reaktif.</div>
+          <div class="point-item"><span class="point-title">• 3. Deteksi Gangguan Lebih Cepat:</span> Menurunkan waktu identifikasi beban lebih transformator dari hitungan hari menjadi hitungan menit.</div>
+          <div class="point-item"><span class="point-title">• 4. Siap Operasional 24/7:</span> Sistem telah aktif, terintegrasi ke jaringan SCADA pabrik, dan siap dioperasikan penuh.</div>
+          <div class="info-callout"><b>Kesimpulan Rekayasa:</b> Web Dashboard EMS & SCADA 20kV ini telah terbukti andal, meningkatkan efisiensi operasional utilitas, serta menjamin keandalan distribusi tenaga listrik pabrik.</div>
         </div>
       </div>
     </div>
@@ -615,11 +657,13 @@
     let currentSlide = 1;
     const totalSlides = 16;
 
-    function updateView() {
+    function updateSlide() {
       document.querySelectorAll('.slide-card').forEach(card => card.classList.remove('active'));
       const activeCard = document.querySelector(`.slide-card[data-slide="${currentSlide}"]`);
-      if (activeCard) activeCard.classList.add('active');
-
+      if (activeCard) {
+        activeCard.classList.add('active');
+        activeCard.scrollTop = 0;
+      }
       document.getElementById('slideIndicator').textContent = `Slide ${currentSlide} / ${totalSlides}`;
       document.getElementById('slideSelect').value = currentSlide;
       document.getElementById('btnPrev').disabled = (currentSlide === 1);
@@ -629,36 +673,38 @@
     function nextSlide() {
       if (currentSlide < totalSlides) {
         currentSlide++;
-        updateView();
+        updateSlide();
       }
     }
 
     function prevSlide() {
       if (currentSlide > 1) {
         currentSlide--;
-        updateView();
+        updateSlide();
       }
     }
 
     function goToSlide(n) {
       if (n >= 1 && n <= totalSlides) {
         currentSlide = n;
-        updateView();
+        updateSlide();
       }
     }
 
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
-          alert(`Error attempting to enable full-screen mode: ${err.message}`);
+          console.warn("Fullscreen request error:", err);
         });
       } else {
-        document.exitFullscreen();
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
       }
     }
 
     // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
+    window.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
         nextSlide();
@@ -676,7 +722,8 @@
       }
     });
 
-    updateView();
+    // Initialize
+    updateSlide();
   </script>
 </body>
 </html>
