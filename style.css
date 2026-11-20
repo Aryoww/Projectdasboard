@@ -2870,6 +2870,60 @@ body.drawer-open {
   }
 }
 
+/* --- MOBILE LANDSCAPE / HAPE MIRING (Height <= 520px and Orientation: Landscape) --- */
+@media (max-height: 520px) and (orientation: landscape) {
+  .app-main-content {
+    padding: 0.5rem 0.75rem 2rem 0.75rem !important;
+  }
+  .musashi-header-banner {
+    padding: 0.5rem 0.75rem;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .banner-title {
+    font-size: 1.05rem;
+  }
+  .banner-subtitle,
+  .banner-meta {
+    font-size: 0.68rem;
+  }
+  .banner-actions {
+    width: auto;
+  }
+  .banner-actions .btn-banner-action {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.70rem;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.45rem;
+  }
+  .kpi-card {
+    min-height: 62px;
+    padding: 0.45rem 0.55rem;
+  }
+  .kpi-value {
+    font-size: 1.05rem;
+  }
+  .kpi-title {
+    font-size: 0.65rem;
+  }
+  .line-chart-container {
+    height: 190px;
+  }
+  .donut-canvas-box {
+    height: 160px;
+  }
+  .bar-chart-container {
+    height: 220px;
+  }
+  .modal-card {
+    max-height: 94vh !important;
+    padding: 0.65rem !important;
+  }
+}
+
 /* ================= 15. DETAIL MODAL & SCADA ACTIONS (HIGH-PRECISION) ================= */
 .modal-actions-bar {
   display: flex !important;

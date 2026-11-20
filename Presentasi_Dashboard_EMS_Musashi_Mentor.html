@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>Web Dashboard Utility EMS & SCADA 20kV – PT Musashi Auto Parts Indonesia</title>
   <style>
     :root {
@@ -23,124 +23,685 @@
       --shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.6);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: var(--bg-dark); color: var(--text-white); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    
+    html, body {
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      height: 100vh;
+      height: 100dvh;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      touch-action: pan-y;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Animated Top Progress Bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 3px;
+      background: rgba(51, 65, 85, 0.4);
+      flex-shrink: 0;
+      z-index: 102;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 6.25%;
+      background: linear-gradient(90deg, #0284C7, #38BDF8);
+      transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
     
     /* Top Control Bar */
-    .top-bar { height: 56px; background: rgba(11, 19, 43, 0.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 100; flex-shrink: 0; }
-    .brand-title { display: flex; align-items: center; gap: 12px; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.5px; }
-    .brand-badge { background: linear-gradient(135deg, #1E3A8A, #0284C7); padding: 5px 11px; border-radius: 5px; font-size: 0.75rem; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
-    .nav-controls { display: flex; align-items: center; gap: 10px; }
-    .slide-indicator { font-size: 0.85rem; font-weight: 700; color: var(--cyan-accent); background: rgba(56, 189, 248, 0.12); padding: 5px 14px; border-radius: 20px; border: 1px solid rgba(56, 189, 248, 0.35); }
-    .btn-nav { background: var(--bg-card); border: 1px solid var(--border-color); color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: 600; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
-    .btn-nav:hover { background: var(--navy-accent); border-color: var(--navy-accent); }
-    .btn-pdf { background: #059669; border-color: #10B981; text-decoration: none; }
-    .btn-pdf:hover { background: #10B981; }
+    .top-bar {
+      height: 54px;
+      background: rgba(11, 19, 43, 0.98);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+      flex-shrink: 0;
+      gap: 12px;
+    }
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.90rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #1E3A8A, #0284C7);
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    .brand-sub {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .slide-indicator {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--cyan-accent);
+      background: rgba(56, 189, 248, 0.12);
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      white-space: nowrap;
+    }
+    .slide-select-dropdown {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.80rem;
+      font-weight: 600;
+      max-width: 240px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .slide-select-dropdown:hover, .slide-select-dropdown:focus {
+      border-color: var(--cyan-accent);
+    }
+    .btn-nav {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.80rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .btn-nav:hover {
+      background: var(--navy-accent);
+      border-color: var(--navy-accent);
+    }
+    .btn-nav:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      border-color: var(--border-color);
+      background: var(--bg-card);
+    }
+    .btn-pdf {
+      background: #059669;
+      border-color: #10B981;
+      text-decoration: none;
+    }
+    .btn-pdf:hover {
+      background: #10B981;
+    }
 
     /* Main Slide Viewport */
-    .slide-viewport { flex: 1; padding: 18px 24px; overflow-y: auto; display: flex; justify-content: center; align-items: center; }
-    .slide-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow); width: 100%; max-width: 1320px; height: calc(100vh - 105px); display: none; flex-direction: column; padding: 20px 26px; overflow-y: auto; }
-    .slide-card.active { display: flex; animation: fadeIn 0.25s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-viewport {
+      flex: 1;
+      padding: 14px 20px;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 0;
+      position: relative;
+    }
+    .slide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 1360px;
+      height: 100%;
+      max-height: calc(100dvh - 84px);
+      display: none;
+      flex-direction: column;
+      padding: 18px 24px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .slide-card.active {
+      display: flex;
+      animation: fadeIn 0.22s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     
     /* Slide Header */
-    .slide-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
-    .slide-category { font-size: 0.72rem; font-weight: 800; color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 4px; }
-    .slide-title { font-size: 1.35rem; font-weight: 800; color: var(--text-white); letter-spacing: -0.3px; }
-    .slide-module-badge { background: rgba(2, 132, 199, 0.18); border: 1px solid rgba(56, 189, 248, 0.4); color: #BAE6FD; font-size: 0.76rem; font-weight: 700; padding: 5px 12px; border-radius: 6px; }
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      flex-shrink: 0;
+      gap: 12px;
+    }
+    .slide-category {
+      font-size: 0.70rem;
+      font-weight: 800;
+      color: var(--cyan-accent);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 3px;
+    }
+    .slide-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-white);
+      letter-spacing: -0.2px;
+      line-height: 1.25;
+    }
+    .slide-module-badge {
+      background: rgba(2, 132, 199, 0.18);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #BAE6FD;
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
     /* Layout Variations */
     /* 1. Standard 2-Column Split Layout */
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; min-height: 0; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      flex: 1;
+      min-height: 0;
+    }
     
     /* 2. Stacked Layout: Full-Width Image Top + 2 Cards Below */
-    .layout-stacked { display: flex; flex-direction: column; gap: 14px; flex: 1; min-height: 0; }
-    .stacked-img-wrap { width: 100%; max-height: 220px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-    .stacked-img-wrap img { width: 100%; height: auto; max-height: 220px; object-fit: contain; display: block; }
-    .stacked-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; }
+    .layout-stacked {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      min-height: 0;
+    }
+    .stacked-img-wrap {
+      width: 100%;
+      max-height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      flex-shrink: 0;
+    }
+    .stacked-img-wrap img {
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+      object-fit: contain;
+      display: block;
+    }
+    .stacked-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1;
+      min-height: 0;
+    }
 
     /* 3. Sidebar Showcase Layout */
-    .layout-sidebar { display: grid; grid-template-columns: 160px 1fr 1fr; gap: 20px; flex: 1; min-height: 0; }
-    .sidebar-img-wrap { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--border-color); background: #000; padding: 6px; }
-    .sidebar-img-wrap img { max-height: 480px; width: auto; object-fit: contain; border-radius: 4px; }
+    .layout-sidebar {
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr;
+      gap: 16px;
+      flex: 1;
+      min-height: 0;
+    }
+    .sidebar-img-wrap {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #000;
+      padding: 6px;
+    }
+    .sidebar-img-wrap img {
+      max-height: 440px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
 
-    .box { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
-    .box-title { font-size: 0.85rem; font-weight: 800; color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    /* Content Cards (Boxes) */
+    .box {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .box-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fff;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 5px;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
     .box-title-blue { color: var(--cyan-accent); border-color: rgba(56, 189, 248, 0.3); }
     .box-title-green { color: #34D399; border-color: rgba(16, 185, 129, 0.3); }
 
     /* Image Container in Split Grid */
-    .img-container { display: flex; flex-direction: column; gap: 8px; height: 100%; justify-content: center; }
-    .img-wrap { width: 100%; max-height: 440px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-radius: 8px; border: 1px solid var(--border-color); background: #000; box-shadow: 0 4px 15px rgba(0,0,0,0.4); }
-    .img-wrap img { width: 100%; height: auto; max-height: 440px; object-fit: contain; display: block; }
-    .img-caption { font-size: 0.75rem; color: var(--text-muted); text-align: center; font-style: italic; }
+    .img-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      height: 100%;
+      justify-content: center;
+    }
+    .img-wrap {
+      width: 100%;
+      max-height: 420px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: #000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .img-wrap img {
+      width: 100%;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
+      display: block;
+    }
+    .img-caption {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+      font-style: italic;
+    }
 
     /* Typography & Points */
-    .desc-text { font-size: 0.83rem; line-height: 1.45; color: var(--text-white); margin-bottom: 6px; }
-    .point-item { font-size: 0.80rem; line-height: 1.4; color: #E2E8F0; margin-bottom: 6px; }
+    .desc-text { font-size: 0.80rem; line-height: 1.42; color: var(--text-white); margin-bottom: 5px; }
+    .point-item { font-size: 0.78rem; line-height: 1.38; color: #E2E8F0; margin-bottom: 5px; }
     .point-title { font-weight: 700; color: #BAE6FD; }
-    .info-callout { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; line-height: 1.35; color: #6EE7B7; margin-top: auto; }
-    .info-callout-blue { background: rgba(2, 132, 199, 0.12); border: 1px solid rgba(2, 132, 199, 0.4); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; line-height: 1.35; color: #7DD3FC; margin-top: auto; }
+    .info-callout {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 0.76rem;
+      line-height: 1.35;
+      color: #6EE7B7;
+      margin-top: auto;
+    }
+    .info-callout-blue {
+      background: rgba(2, 132, 199, 0.12);
+      border: 1px solid rgba(2, 132, 199, 0.4);
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 0.76rem;
+      line-height: 1.35;
+      color: #7DD3FC;
+      margin-top: auto;
+    }
 
     /* Cover Slide Specifics */
-    .cover-layout { display: flex; gap: 24px; align-items: center; flex: 1; }
-    .cover-left { flex: 1.2; display: flex; flex-direction: column; gap: 14px; }
-    .cover-tag { font-size: 0.8rem; font-weight: 800; color: var(--cyan-accent); letter-spacing: 1.5px; text-transform: uppercase; }
-    .cover-title { font-size: 2.1rem; font-weight: 900; line-height: 1.2; color: #fff; letter-spacing: -0.5px; }
-    .cover-sub { font-size: 1.02rem; line-height: 1.45; color: #BAE6FD; }
-    .cover-company { font-size: 0.88rem; font-weight: 700; color: #38BDF8; letter-spacing: 0.5px; }
-    .cover-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-    .meta-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 12px; }
-    .meta-label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
-    .meta-val { font-size: 0.85rem; color: #fff; font-weight: 700; margin-top: 2px; }
+    .cover-layout { display: flex; gap: 20px; align-items: center; flex: 1; min-height: 0; }
+    .cover-left { flex: 1.2; display: flex; flex-direction: column; gap: 12px; }
+    .cover-tag { font-size: 0.78rem; font-weight: 800; color: var(--cyan-accent); letter-spacing: 1.3px; text-transform: uppercase; }
+    .cover-title { font-size: 1.85rem; font-weight: 900; line-height: 1.2; color: #fff; letter-spacing: -0.4px; }
+    .cover-sub { font-size: 0.96rem; line-height: 1.42; color: #BAE6FD; }
+    .cover-company { font-size: 0.84rem; font-weight: 700; color: #38BDF8; letter-spacing: 0.4px; }
+    .cover-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 6px; }
+    .meta-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; }
+    .meta-label { font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; }
+    .meta-val { font-size: 0.82rem; color: #fff; font-weight: 700; margin-top: 2px; }
     .cover-right { flex: 1; display: flex; justify-content: center; align-items: center; }
-    .cover-right img { width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+    .cover-right img { width: 100%; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow); object-fit: contain; max-height: 380px; }
 
     /* Keyboard hint */
     .kbd-hint { font-size: 0.72rem; color: var(--text-dim); display: flex; align-items: center; gap: 4px; }
-    kbd { background: #1E293B; border: 1px solid #475569; padding: 1px 6px; border-radius: 3px; font-size: 0.7rem; font-family: monospace; }
+    kbd { background: #1E293B; border: 1px solid #475569; padding: 1px 5px; border-radius: 3px; font-size: 0.68rem; font-family: monospace; }
+
+    /* Mobile Bottom Navigation Bar (Thumb Friendly) */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      background: rgba(11, 19, 43, 0.98);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border-color);
+      padding: 0 12px;
+      z-index: 110;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .btn-mobile-nav {
+      flex: 1;
+      height: 38px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: #fff;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.80rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .btn-mobile-nav:active {
+      background: var(--navy-accent);
+    }
+    .btn-mobile-nav:disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .btn-mobile-next {
+      background: var(--navy-primary);
+      border-color: var(--navy-accent);
+    }
+    .mobile-slide-selector-wrap {
+      flex: 1.4;
+    }
+    .mobile-slide-select {
+      width: 100%;
+      height: 38px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--cyan-accent);
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 0 8px;
+      outline: none;
+      text-align: center;
+    }
+
+    /* ========================================================
+       RESPONSIVE BREAKPOINTS (ALL DEVICES & ORIENTATIONS)
+       ======================================================== */
+
+    /* 1. TABLET / SMALL LAPTOP (<= 1024px) */
+    @media (max-width: 1024px) {
+      .brand-sub { display: none; }
+      .kbd-hint { display: none; }
+      .slide-select-dropdown { max-width: 180px; }
+      .slide-card { padding: 16px 20px; }
+      .slide-title { font-size: 1.15rem; }
+      .layout-sidebar { grid-template-columns: 120px 1fr 1fr; gap: 12px; }
+    }
+
+    /* 2. MOBILE LANDSCAPE / HAPE MIRING (Height <= 520px and Orientation: Landscape) */
+    @media (max-height: 520px) and (orientation: landscape) {
+      .top-bar {
+        height: 40px;
+        padding: 0 14px;
+        gap: 8px;
+      }
+      .brand-title { font-size: 0.78rem; }
+      .brand-badge { font-size: 0.68rem; padding: 2px 7px; }
+      .brand-sub { display: none; }
+      .kbd-hint { display: none; }
+      .slide-indicator { font-size: 0.74rem; padding: 2px 8px; }
+      .slide-select-dropdown { max-width: 140px; height: 28px; font-size: 0.72rem; padding: 2px 6px; }
+      .btn-nav { padding: 4px 8px; font-size: 0.72rem; height: 28px; }
+      
+      .slide-viewport {
+        padding: 6px 12px;
+      }
+      .slide-card {
+        max-height: calc(100dvh - 52px);
+        padding: 10px 14px;
+        border-radius: 8px;
+      }
+      .slide-header {
+        padding-bottom: 5px;
+        margin-bottom: 6px;
+      }
+      .slide-category { font-size: 0.62rem; margin-bottom: 1px; }
+      .slide-title { font-size: 0.98rem; line-height: 1.2; }
+      .slide-module-badge { font-size: 0.65rem; padding: 2px 7px; }
+      
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .img-wrap { max-height: 240px; }
+      .img-wrap img { max-height: 240px; }
+      
+      .layout-stacked { gap: 8px; }
+      .stacked-img-wrap { max-height: 125px; }
+      .stacked-img-wrap img { max-height: 125px; }
+      .stacked-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      
+      .layout-sidebar {
+        grid-template-columns: 85px 1fr 1fr;
+        gap: 8px;
+      }
+      .sidebar-img-wrap img { max-height: 230px; }
+      
+      .box {
+        padding: 8px 10px;
+        gap: 3px;
+        border-radius: 6px;
+      }
+      .box-title { font-size: 0.74rem; padding-bottom: 3px; margin-bottom: 2px; }
+      .desc-text { font-size: 0.72rem; line-height: 1.32; margin-bottom: 3px; }
+      .point-item { font-size: 0.70rem; line-height: 1.30; margin-bottom: 3px; }
+      .info-callout, .info-callout-blue { font-size: 0.70rem; padding: 5px 8px; line-height: 1.28; }
+      .img-caption { font-size: 0.65rem; }
+
+      /* Cover slide on landscape phone */
+      .cover-layout { gap: 12px; }
+      .cover-left { gap: 6px; }
+      .cover-tag { font-size: 0.65rem; }
+      .cover-title { font-size: 1.15rem; line-height: 1.15; }
+      .cover-sub { font-size: 0.78rem; line-height: 1.3; }
+      .cover-company { font-size: 0.72rem; }
+      .cover-meta-grid { gap: 6px; margin-top: 2px; }
+      .meta-box { padding: 4px 6px; }
+      .meta-label { font-size: 0.60rem; }
+      .meta-val { font-size: 0.70rem; }
+      .cover-right img { max-height: 230px; }
+    }
+
+    /* 3. MOBILE PORTRAIT / HP TEGAK (Width <= 768px and Height > 520px) */
+    @media (max-width: 768px) and (orientation: portrait) {
+      .top-bar {
+        height: 48px;
+        padding: 0 12px;
+      }
+      .brand-title { font-size: 0.82rem; }
+      .brand-sub { display: none; }
+      .kbd-hint { display: none; }
+      .slide-select-dropdown { display: none; }
+      .btn-nav:not(.btn-pdf) { display: none; }
+      .btn-pdf { padding: 4px 9px; font-size: 0.74rem; }
+      
+      .mobile-bottom-nav {
+        display: flex;
+      }
+      
+      .slide-viewport {
+        padding: 8px 8px calc(62px + env(safe-area-inset-bottom, 0px)) 8px;
+        align-items: stretch;
+      }
+      .slide-card {
+        max-height: calc(100dvh - 118px);
+        padding: 12px 14px;
+        border-radius: 10px;
+        height: auto;
+      }
+      .slide-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding-bottom: 8px;
+        margin-bottom: 10px;
+      }
+      .slide-title { font-size: 1.12rem; line-height: 1.25; }
+      .slide-module-badge { font-size: 0.68rem; padding: 3px 8px; }
+      
+      /* Stack layout into 1 column for phones */
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .img-wrap { max-height: 240px; }
+      .img-wrap img { max-height: 240px; }
+      
+      .layout-stacked { gap: 10px; }
+      .stacked-img-wrap { max-height: 160px; }
+      .stacked-img-wrap img { max-height: 160px; }
+      .stacked-grid { grid-template-columns: 1fr; gap: 10px; }
+      
+      .layout-sidebar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .sidebar-img-wrap { max-height: 280px; }
+      .sidebar-img-wrap img { max-height: 260px; }
+
+      .box {
+        padding: 10px 12px;
+        border-radius: 6px;
+      }
+      .box-title { font-size: 0.78rem; }
+      .desc-text { font-size: 0.76rem; }
+      .point-item { font-size: 0.74rem; }
+      .info-callout, .info-callout-blue { font-size: 0.72rem; padding: 7px 10px; }
+
+      /* Cover slide on phone */
+      .cover-layout {
+        flex-direction: column;
+        gap: 14px;
+      }
+      .cover-left { gap: 8px; }
+      .cover-title { font-size: 1.35rem; line-height: 1.2; }
+      .cover-sub { font-size: 0.85rem; line-height: 1.35; }
+      .cover-company { font-size: 0.76rem; }
+      .cover-meta-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .meta-box { padding: 6px 8px; }
+      .meta-label { font-size: 0.64rem; }
+      .meta-val { font-size: 0.74rem; }
+      .cover-right img { max-height: 220px; }
+    }
+
+    /* 4. VERY SMALL PHONES (Width <= 380px) */
+    @media (max-width: 380px) {
+      .cover-meta-grid { grid-template-columns: 1fr; }
+      .cover-title { font-size: 1.20rem; }
+      .slide-title { font-size: 1.02rem; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <div class="brand-title">
-      <span class="brand-badge">PT MUSASHI</span>
-      <span>Web Dashboard Energy Management System & SCADA 20kV</span>
-    </div>
-    <div class="nav-controls">
-      <div class="kbd-hint">Gunakan tombol <kbd>◀</kbd> <kbd>▶</kbd> atau klik:</div>
-      <span class="slide-indicator" id="slideIndicator">Slide 1 / 16</span>
-      <select id="slideSelect" class="btn-nav" style="padding: 5px 10px;" onchange="goToSlide(parseInt(this.value))">
-        <option value="1">Slide 1: Cover Web Dashboard EMS & SCADA 20kV</option>
-        <option value="2">Slide 2: Sistem Arsitektur & Integrasi Lapangan 3-Tier</option>
-        <option value="3">Slide 3: Master Dashboard 'Single Pane of Glass'</option>
-        <option value="4">Slide 4: Sidebar Navigasi & Kapsul Telemetri SCADA 20kV</option>
-        <option value="5">Slide 5: Header Bar Terpusat & Segmented Toolbar</option>
-        <option value="6">Slide 6: Sistem Peringatan Dini Power Factor & Denda kVARh</option>
-        <option value="7">Slide 7: 6 Kartu Metrik Kinerja Utama (KPI)</option>
-        <option value="8">Slide 8: Profil Beban 24 Jam (Peak & Terendah)</option>
-        <option value="9">Slide 9: Musashi Substation Load Share (100% Total)</option>
-        <option value="10">Slide 10: Outgoing Transformers (19 Unit Trafo Lengkap)</option>
-        <option value="11">Slide 11: Attention Required (Daftar Tindakan Proaktif)</option>
-        <option value="12">Slide 12: Pasokan Utama Listrik 20kV (CLD 1, 2, 3)</option>
-        <option value="13">Slide 13: Direktori Digital Power Meter (111 Titik Mesin)</option>
-        <option value="14">Slide 14: Modal Pop-Up: Analisis Telemetri 3-Fasa R-S-T</option>
-        <option value="15">Slide 15: Tampilan Khusus Area Substation, Forging, & HT</option>
-        <option value="16">Slide 16: Pusat Audit ISO 50001 & Dampak Operasional</option>
-      </select>
-      <button class="btn-nav" id="btnPrev" onclick="prevSlide()">◀ Prev</button>
-      <button class="btn-nav" id="btnNext" onclick="nextSlide()">Next ▶</button>
-      <button class="btn-nav" onclick="toggleFullscreen()">⛶ Fullscreen</button>
-      <a href="Presentasi_Dashboard_EMS_Musashi_Mentor.pdf" download class="btn-nav btn-pdf">⬇ Unduh PDF</a>
-    </div>
+  <!-- TOP PROGRESS BAR -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
   </div>
 
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="brand-title">
+      <span class="brand-badge">PT MUSASHI</span>
+      <span class="brand-sub">Web Dashboard Energy Management System & SCADA 20kV</span>
+    </div>
+    <div class="nav-controls">
+      <div class="kbd-hint">Tombol <kbd>◀</kbd> <kbd>▶</kbd> / Swipe:</div>
+      <span class="slide-indicator" id="slideIndicator">Slide 1 / 16</span>
+      <select id="slideSelect" class="slide-select-dropdown" onchange="goToSlide(parseInt(this.value))">
+        <option value="1">Slide 1: Cover EMS & SCADA 20kV</option>
+        <option value="2">Slide 2: Arsitektur SCADA IoT 3-Tier</option>
+        <option value="3">Slide 3: Master Dashboard Hero</option>
+        <option value="4">Slide 4: Sidebar & Kapsul SCADA 20kV</option>
+        <option value="5">Slide 5: Header Bar & Filter Toolbar</option>
+        <option value="6">Slide 6: Peringatan Dini Power Factor</option>
+        <option value="7">Slide 7: 6 Kartu Metrik Kinerja (KPI)</option>
+        <option value="8">Slide 8: Profil Beban 24 Jam</option>
+        <option value="9">Slide 9: Donut Substation Load Share</option>
+        <option value="10">Slide 10: 19 Outgoing Transformers</option>
+        <option value="11">Slide 11: Attention Required Worklist</option>
+        <option value="12">Slide 12: Pasokan Utama CLD 1, 2, 3</option>
+        <option value="13">Slide 13: Direktori 111 Power Meter</option>
+        <option value="14">Slide 14: Modal Detail 3-Fasa & Modbus</option>
+        <option value="15">Slide 15: Substation, Forging & HT View</option>
+        <option value="16">Slide 16: Audit ISO 50001 & Kesimpulan</option>
+      </select>
+      <button class="btn-nav" id="btnPrev" onclick="prevSlide()" title="Slide Sebelumnya (Arrow Left)">◀ Prev</button>
+      <button class="btn-nav" id="btnNext" onclick="nextSlide()" title="Slide Selanjutnya (Arrow Right)">Next ▶</button>
+      <button class="btn-nav" onclick="toggleFullscreen()" title="Layar Penuh (F)">⛶ Full</button>
+      <a href="Presentasi_Dashboard_EMS_Musashi_Mentor.pdf" download class="btn-nav btn-pdf" title="Unduh Berkas PDF Lanskap">⬇ PDF</a>
+    </div>
+  </header>
+
   <!-- SLIDES CONTAINER -->
-  <div class="slide-viewport">
+  <main class="slide-viewport" id="slideViewport">
 
     <!-- SLIDE 1: COVER -->
-    <div class="slide-card active" data-slide="1">
+    <section class="slide-card active" data-slide="1" aria-label="Cover Slide">
       <div class="cover-layout">
         <div class="cover-left">
           <div class="cover-tag">SISTEM REKAYASA KELISTRIKAN & ENERGI PABRIK</div>
@@ -167,24 +728,24 @@
           </div>
         </div>
         <div class="cover-right">
-          <img src="ss_overview_clean.png" alt="Dashboard Hero Preview">
+          <img src="ss_overview_clean.png" alt="Dashboard Hero Preview" loading="lazy">
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 2: BACKGROUND & ARCHITECTURE -->
-    <div class="slide-card" data-slide="2">
+    <section class="slide-card" data-slide="2" aria-label="Slide 2: Sistem Arsitektur">
       <div class="slide-header">
         <div>
           <div class="slide-category">SISTEM ARSITEKTUR & INTEGRASI LAPANGAN</div>
-          <h1 class="slide-title">Tantangan Operasional Kelistrikan & Solusi Arsitektur SCADA IoT 3-Tier</h1>
+          <h2 class="slide-title">Tantangan Operasional Kelistrikan & Solusi Arsitektur SCADA IoT 3-Tier</h2>
         </div>
         <div class="slide-module-badge">Arsitektur Rekayasa Kelistrikan</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_overview_clean.png" alt="Dashboard Overview"></div>
+            <div class="img-wrap"><img src="ss_overview_clean.png" alt="Dashboard Overview" loading="lazy"></div>
             <div class="img-caption">Tampilan Antarmuka Master Web Dashboard EMS PT Musashi Auto Parts Indonesia</div>
           </div>
         </div>
@@ -200,21 +761,21 @@
           <div class="info-callout-blue"><b>Kegunaan Sistem:</b> Menyediakan sentralisasi data telemetri kelistrikan 3 pabrik dalam satu layar terpusat untuk keandalan distribusi daya dan audit ISO 50001.</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 3: MASTER DASHBOARD HERO -->
-    <div class="slide-card" data-slide="3">
+    <section class="slide-card" data-slide="3" aria-label="Slide 3: Master Dashboard">
       <div class="slide-header">
         <div>
           <div class="slide-category">IKHTISAR ANTARMUKA PUSAT</div>
-          <h1 class="slide-title">Master Dashboard: 'Single Pane of Glass' Monitoring Seluruh Pabrik</h1>
+          <h2 class="slide-title">Master Dashboard: 'Single Pane of Glass' Monitoring Seluruh Pabrik</h2>
         </div>
         <div class="slide-module-badge">Tampilan Keseluruhan Antarmuka Web</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_overview_clean.png" alt="Master Dashboard Full"></div>
+            <div class="img-wrap"><img src="ss_overview_clean.png" alt="Master Dashboard Full" loading="lazy"></div>
             <div class="img-caption">Tampilan Penuh Antarmuka Web Dashboard EMS (Resolusi Tinggi 3200x1950)</div>
           </div>
         </div>
@@ -232,21 +793,21 @@
           <div class="point-item"><span class="point-title">• Akses Multi-Device:</span> Dapat diakses fleksibel melalui PC Ruang Kontrol Utility, laptop engineer, maupun tablet saat inspeksi lapangan.</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 4: SIDEBAR & SCADA CAPSULE -->
-    <div class="slide-card" data-slide="4">
+    <section class="slide-card" data-slide="4" aria-label="Slide 4: Sidebar Navigasi">
       <div class="slide-header">
         <div>
           <div class="slide-category">STRUKTUR NAVIGASI & TELEMETRI SCADA</div>
-          <h1 class="slide-title">Sidebar Menu Pabrik & Kapsul Telemetri Jaringan SCADA 20kV</h1>
+          <h2 class="slide-title">Sidebar Menu Pabrik & Kapsul Telemetri Jaringan SCADA 20kV</h2>
         </div>
         <div class="slide-module-badge">Panel Navigasi Sisi Kiri</div>
       </div>
       <div class="layout-sidebar">
         <div class="sidebar-img-wrap">
-          <img src="ss_sidebar_complete.png" alt="Sidebar Navigation">
-          <div class="img-caption" style="margin-top:6px;">Navigasi & SCADA</div>
+          <img src="ss_sidebar_complete.png" alt="Sidebar Navigation" loading="lazy">
+          <div class="img-caption" style="margin-top:4px;">Navigasi & SCADA</div>
         </div>
         <div class="box">
           <div class="box-title">Hierarki Navigasi Fasilitas Pabrik</div>
@@ -271,20 +832,20 @@
           <div class="point-item"><span class="point-title">• Zero Blind Spot:</span> Menjamin tidak ada data telemetri yang terlewat.</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 5: HEADER BAR & TOOLBAR -->
-    <div class="slide-card" data-slide="5">
+    <section class="slide-card" data-slide="5" aria-label="Slide 5: Header Bar">
       <div class="slide-header">
         <div>
           <div class="slide-category">KONTROL OPERASIONAL & FILTER WAKTU</div>
-          <h1 class="slide-title">Header Bar Terpusat & Segmented Toolbar Pemilihan Periode</h1>
+          <h2 class="slide-title">Header Bar Terpusat & Segmented Toolbar Pemilihan Periode</h2>
         </div>
         <div class="slide-module-badge">Panel Kontrol Atas</div>
       </div>
       <div class="layout-stacked">
         <div class="stacked-img-wrap">
-          <img src="ss_header_clean.png" alt="Header Banner & Toolbar">
+          <img src="ss_header_clean.png" alt="Header Banner & Toolbar" loading="lazy">
         </div>
         <div class="img-caption">Header Bar Operasional: Live Clock, TV Fullscreen Mode, Theme Switcher, & Export</div>
         <div class="stacked-grid">
@@ -305,20 +866,20 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 6: CRITICAL ALERT BANNER -->
-    <div class="slide-card" data-slide="6">
+    <section class="slide-card" data-slide="6" aria-label="Slide 6: Sistem Peringatan Dini">
       <div class="slide-header">
         <div>
           <div class="slide-category">SISTEM PROTEKSI & PREVENSI ANOMALI</div>
-          <h1 class="slide-title">Sistem Peringatan Dini: Pencegahan Penalti Finansial kVARh Listrik</h1>
+          <h2 class="slide-title">Sistem Peringatan Dini: Pencegahan Penalti Finansial kVARh Listrik</h2>
         </div>
         <div class="slide-module-badge">Banner Tindakan Cepat (Action Required)</div>
       </div>
       <div class="layout-stacked">
         <div class="stacked-img-wrap">
-          <img src="ss_alert_clean.png" alt="Alert Banner">
+          <img src="ss_alert_clean.png" alt="Alert Banner" loading="lazy">
         </div>
         <div class="img-caption">Banner Peringatan Otomatis: Deteksi Dini Penurunan Power Factor (Cos φ < 0.85)</div>
         <div class="stacked-grid">
@@ -337,20 +898,20 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 7: 6 EXECUTIVE KPI CARDS -->
-    <div class="slide-card" data-slide="7">
+    <section class="slide-card" data-slide="7" aria-label="Slide 7: 6 KPI Eksekutif">
       <div class="slide-header">
         <div>
           <div class="slide-category">RINGKASAN PARAMETER EKSEKUTIF</div>
-          <h1 class="slide-title">6 Kartu Metrik Kinerja Utama: Daya, Biaya, Puncak, & Emisi Karbon</h1>
+          <h2 class="slide-title">6 Kartu Metrik Kinerja Utama: Daya, Biaya, Puncak, & Emisi Karbon</h2>
         </div>
         <div class="slide-module-badge">Panel Ringkasan Kinerja Utama</div>
       </div>
       <div class="layout-stacked">
         <div class="stacked-img-wrap">
-          <img src="ss_kpi_all_clean.png" alt="KPI Cards">
+          <img src="ss_kpi_all_clean.png" alt="KPI Cards" loading="lazy">
         </div>
         <div class="img-caption">6 Kartu KPI Eksekutif: Total Active Power, Energy Today, Cost, Peak Demand, Delta, & CO2</div>
         <div class="stacked-grid">
@@ -368,21 +929,21 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 8: 24-HOUR LOAD PROFILE -->
-    <div class="slide-card" data-slide="8">
+    <section class="slide-card" data-slide="8" aria-label="Slide 8: Kurva Beban 24 Jam">
       <div class="slide-header">
         <div>
           <div class="slide-category">ANALISIS KURVA BEBAN OPERASIONAL</div>
-          <h1 class="slide-title">Profil Beban 24 Jam: Penanda Beban Puncak (Peak) & Beban Terendah</h1>
+          <h2 class="slide-title">Profil Beban 24 Jam: Penanda Beban Puncak (Peak) & Beban Terendah</h2>
         </div>
         <div class="slide-module-badge">Grafik Garis Komparasi 24 Jam</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_chart_24h_clean.png" alt="24-Hour Load Profile"></div>
+            <div class="img-wrap"><img src="ss_chart_24h_clean.png" alt="24-Hour Load Profile" loading="lazy"></div>
             <div class="img-caption">Kurva Beban 24 Jam: Hari Ini vs Kemarin dengan Callout Peak & Terendah</div>
           </div>
         </div>
@@ -400,21 +961,21 @@
           <div class="point-item"><span class="point-title">• Identifikasi Jam Istirahat:</span> Terlihat jelas penurunan lembah beban saat istirahat makan siang (12:00–13:00 WIB).</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 9: DONUT CHART -->
-    <div class="slide-card" data-slide="9">
+    <section class="slide-card" data-slide="9" aria-label="Slide 9: Donut Substation Share">
       <div class="slide-header">
         <div>
           <div class="slide-category">DISTRIBUSI BEBAN SUBSTATION PABRIK</div>
-          <h1 class="slide-title">Musashi Substation Load Share: Proporsi Konsumsi Gardu (100% Total Share)</h1>
+          <h2 class="slide-title">Musashi Substation Load Share: Proporsi Konsumsi Gardu (100% Total Share)</h2>
         </div>
         <div class="slide-module-badge">Grafik Donut Beban Substation</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_chart_donut_clean.png" alt="Donut Load Share"></div>
+            <div class="img-wrap"><img src="ss_chart_donut_clean.png" alt="Donut Load Share" loading="lazy"></div>
             <div class="img-caption">Donut Chart: Distribusi Beban Substation dengan Label Persentase Langsung</div>
           </div>
         </div>
@@ -432,21 +993,21 @@
           <div class="point-item"><span class="point-title">• Akuntabilitas Finansial:</span> Membantu akuntansi biaya membagi beban tagihan listrik bulanan ke masing-masing lini pabrik secara objektif berbasis data telemetri riil.</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 10: 19 OUTGOING TRANSFORMERS -->
-    <div class="slide-card" data-slide="10">
+    <section class="slide-card" data-slide="10" aria-label="Slide 10: 19 Outgoing Transformers">
       <div class="slide-header">
         <div>
           <div class="slide-category">MONITORING TRANSFORMATOR DISTRIBUSI</div>
-          <h1 class="slide-title">Outgoing Transformers: Pemantauan 19 Unit Trafo Lengkap Sesuai Urutan</h1>
+          <h2 class="slide-title">Outgoing Transformers: Pemantauan 19 Unit Trafo Lengkap Sesuai Urutan</h2>
         </div>
         <div class="slide-module-badge">Grafik Batang Horisontal 19 Trafo</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_trafo19_clean.png" alt="19 Outgoing Transformers Chart"></div>
+            <div class="img-wrap"><img src="ss_trafo19_clean.png" alt="19 Outgoing Transformers Chart" loading="lazy"></div>
             <div class="img-caption">Profil Konsumsi Energi Seluruh 19 Transformator Keluar (Outgoing Trafo 01–19)</div>
           </div>
         </div>
@@ -465,21 +1026,21 @@
           <div class="point-item"><span class="point-title">• Prioritas Inspeksi Berkala:</span> Trafo berbeban tinggi (Trafo 12, 01, 03) diprioritaskan untuk pengujian dielektrik minyak dan inspeksi termografi inframerah.</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 11: ATTENTION REQUIRED LIST -->
-    <div class="slide-card" data-slide="11">
+    <section class="slide-card" data-slide="11" aria-label="Slide 11: Attention Required">
       <div class="slide-header">
         <div>
           <div class="slide-category">MANAJEMEN PERAWATAN PROAKTIF</div>
-          <h1 class="slide-title">Attention Required: Daftar Kerja Proaktif Teknisi Substation</h1>
+          <h2 class="slide-title">Attention Required: Daftar Kerja Proaktif Teknisi Substation</h2>
         </div>
         <div class="slide-module-badge">Daftar Tindakan Cepat Lapangan</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_attention_clean.png" alt="Attention Required List"></div>
+            <div class="img-wrap"><img src="ss_attention_clean.png" alt="Attention Required List" loading="lazy"></div>
             <div class="img-caption">Daftar Meter Anomali yang Memerlukan Inspeksi Lapangan Segera</div>
           </div>
         </div>
@@ -495,20 +1056,20 @@
           <div class="point-item"><span class="point-title">• Keamanan Instalasi Listrik:</span> Mencegah terjadinya kenaikan suhu kabel berlebih (overheating) pada konduktor tegangan rendah.</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 12: INCOMING FEEDERS CLD -->
-    <div class="slide-card" data-slide="12">
+    <section class="slide-card" data-slide="12" aria-label="Slide 12: Suplai CLD 20kV">
       <div class="slide-header">
         <div>
           <div class="slide-category">SUMBER PASOKAN UTAMA 20kV</div>
-          <h1 class="slide-title">Pasokan Utama Listrik 20kV: CLD 1, CLD 2, dan CLD 3 Cikarang Listrindo</h1>
+          <h2 class="slide-title">Pasokan Utama Listrik 20kV: CLD 1, CLD 2, dan CLD 3 Cikarang Listrindo</h2>
         </div>
         <div class="slide-module-badge">3 Kartu Suplai Masuk TM 20kV</div>
       </div>
       <div class="layout-stacked">
         <div class="stacked-img-wrap">
-          <img src="ss_cld_clean.png" alt="Incoming CLD Feeders">
+          <img src="ss_cld_clean.png" alt="Incoming CLD Feeders" loading="lazy">
         </div>
         <div class="img-caption">3 Kartu Suplai Masuk Tegangan Menengah 20kV dari PT Cikarang Listrindo Tbk (CLD 1, 2, 3)</div>
         <div class="stacked-grid">
@@ -527,20 +1088,20 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 13: METER DIRECTORY TABLE -->
-    <div class="slide-card" data-slide="13">
+    <section class="slide-card" data-slide="13" aria-label="Slide 13: Tabel Direktori">
       <div class="slide-header">
         <div>
           <div class="slide-category">DATABASE TELEMETRI LENGKAP</div>
-          <h1 class="slide-title">Direktori Digital Power Meter: Database Telemetri 111 Titik Mesin</h1>
+          <h2 class="slide-title">Direktori Digital Power Meter: Database Telemetri 111 Titik Mesin</h2>
         </div>
         <div class="slide-module-badge">Tabel Pengukuran Lengkap</div>
       </div>
       <div class="layout-stacked">
         <div class="stacked-img-wrap">
-          <img src="ss_table_clean.png" alt="Meter Directory Table">
+          <img src="ss_table_clean.png" alt="Meter Directory Table" loading="lazy">
         </div>
         <div class="img-caption">Tabel Direktori 111 Digital Power Meter Schneider dengan Kolom Parameter Lengkap</div>
         <div class="stacked-grid">
@@ -559,21 +1120,21 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 14: DEEP-DIVE MODAL -->
-    <div class="slide-card" data-slide="14">
+    <section class="slide-card" data-slide="14" aria-label="Slide 14: Modal Diagnostik 3-Fasa">
       <div class="slide-header">
         <div>
           <div class="slide-category">DIAGNOSTIK KUALITAS DAYA TINGKAT LANJUT</div>
-          <h1 class="slide-title">Modal Pop-Up: Analisis Telemetri 3-Fasa R-S-T & Register Modbus Riil</h1>
+          <h2 class="slide-title">Modal Pop-Up: Analisis Telemetri 3-Fasa R-S-T & Register Modbus Riil</h2>
         </div>
         <div class="slide-module-badge">Jendela Diagnostik Kualitas Daya</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="ss_modal_clean_2x.png" alt="Modal Detail Telemetry"></div>
+            <div class="img-wrap"><img src="ss_modal_clean_2x.png" alt="Modal Detail Telemetry" loading="lazy"></div>
             <div class="img-caption">Pop-Up Diagnostik: Detail 3-Fasa R-S-T, THD %, & Cuplikan Register Modbus</div>
           </div>
         </div>
@@ -589,21 +1150,21 @@
           <div class="point-item"><span class="point-title">• Mitigasi Harmonik:</span> Memantau dampak beban non-linier dari inverter Variable Speed Drive motor press dan tungku induksi agar tidak merusak transformator.</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 15: DEDICATED AREA VIEWS -->
-    <div class="slide-card" data-slide="15">
+    <section class="slide-card" data-slide="15" aria-label="Slide 15: View Khusus Plant">
       <div class="slide-header">
         <div>
           <div class="slide-category">FASILITAS SUB-SISTEM PABRIK</div>
-          <h1 class="slide-title">Tampilan Khusus Area: Substation Electrical Room 1, Forging, & Heat Treatment</h1>
+          <h2 class="slide-title">Tampilan Khusus Area: Substation Electrical Room 1, Forging, & Heat Treatment</h2>
         </div>
         <div class="slide-module-badge">Tampilan Terdedikasi per Plant</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="cropped_ss_view_electrical1.png" alt="Dedicated Substation View"></div>
+            <div class="img-wrap"><img src="cropped_ss_view_electrical1.png" alt="Dedicated Substation View" loading="lazy"></div>
             <div class="img-caption">Tampilan Khusus Substation Electrical Room Factory 1 (Kubikel SM6 20kV)</div>
           </div>
         </div>
@@ -619,21 +1180,21 @@
           <div class="point-item"><span class="point-title">• Pengawasan Terfokus:</span> Memberikan wewenang pengawasan terfokus bagi masing-masing penanggung jawab area (Supervisor Forging, Machining, dan Heat Treatment).</div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- SLIDE 16: REPORTING & SUMMARY -->
-    <div class="slide-card" data-slide="16">
+    <section class="slide-card" data-slide="16" aria-label="Slide 16: Audit ISO 50001 & Dampak">
       <div class="slide-header">
         <div>
           <div class="slide-category">DAMPAK OPERASIONAL & KESIMPULAN REKAYASA</div>
-          <h1 class="slide-title">Pusat Pelaporan Audit Energi ISO 50001 & Dampak Nyata Operasional</h1>
+          <h2 class="slide-title">Pusat Pelaporan Audit Energi ISO 50001 & Dampak Nyata Operasional</h2>
         </div>
         <div class="slide-module-badge">Modul Laporan & Kesimpulan Evaluasi</div>
       </div>
       <div class="grid-2">
         <div class="box">
           <div class="img-container">
-            <div class="img-wrap"><img src="cropped_ss_view_reports.png" alt="Reports and Audit View"></div>
+            <div class="img-wrap"><img src="cropped_ss_view_reports.png" alt="Reports and Audit View" loading="lazy"></div>
             <div class="img-caption">Modul Laporan Konsumsi Energi & Audit Log CSV/Excel Terintegrasi</div>
           </div>
         </div>
@@ -649,25 +1210,82 @@
           <div class="info-callout"><b>Kesimpulan Rekayasa:</b> Web Dashboard EMS & SCADA 20kV ini telah terbukti andal, meningkatkan efisiensi operasional utilitas, serta menjamin keandalan distribusi tenaga listrik pabrik.</div>
         </div>
       </div>
-    </div>
+    </section>
 
-  </div>
+  </main>
+
+  <!-- MOBILE BOTTOM BAR (Thumb-friendly navigation on phones) -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile Navigation Controls">
+    <button class="btn-mobile-nav" id="btnMobilePrev" onclick="prevSlide()">◀ Prev</button>
+    <div class="mobile-slide-selector-wrap">
+      <select id="mobileSlideSelect" class="mobile-slide-select" onchange="goToSlide(parseInt(this.value))">
+        <option value="1">1 / 16: Cover</option>
+        <option value="2">2 / 16: Arsitektur</option>
+        <option value="3">3 / 16: Master Hero</option>
+        <option value="4">4 / 16: Sidebar & SCADA</option>
+        <option value="5">5 / 16: Header & Time</option>
+        <option value="6">6 / 16: Alert PF</option>
+        <option value="7">7 / 16: 6 KPI Cards</option>
+        <option value="8">8 / 16: Profil 24 Jam</option>
+        <option value="9">9 / 16: Donut Share</option>
+        <option value="10">10 / 16: 19 Outgoing Trafo</option>
+        <option value="11">11 / 16: Attention List</option>
+        <option value="12">12 / 16: Feeders CLD</option>
+        <option value="13">13 / 16: Direktori Meter</option>
+        <option value="14">14 / 16: Modal 3-Fasa</option>
+        <option value="15">15 / 16: View Pabrik</option>
+        <option value="16">16 / 16: Audit ISO 50001</option>
+      </select>
+    </div>
+    <button class="btn-mobile-nav btn-mobile-next" id="btnMobileNext" onclick="nextSlide()">Next ▶</button>
+  </nav>
 
   <script>
     let currentSlide = 1;
     const totalSlides = 16;
 
     function updateSlide() {
+      // Toggle active slide
       document.querySelectorAll('.slide-card').forEach(card => card.classList.remove('active'));
       const activeCard = document.querySelector(`.slide-card[data-slide="${currentSlide}"]`);
       if (activeCard) {
         activeCard.classList.add('active');
         activeCard.scrollTop = 0;
       }
-      document.getElementById('slideIndicator').textContent = `Slide ${currentSlide} / ${totalSlides}`;
-      document.getElementById('slideSelect').value = currentSlide;
-      document.getElementById('btnPrev').disabled = (currentSlide === 1);
-      document.getElementById('btnNext').disabled = (currentSlide === totalSlides);
+
+      // Update progress bar
+      const progressPercent = (currentSlide / totalSlides) * 100;
+      const progressBar = document.getElementById('progressBar');
+      if (progressBar) {
+        progressBar.style.width = `${progressPercent}%`;
+      }
+
+      // Update indicators
+      const indicator = document.getElementById('slideIndicator');
+      if (indicator) {
+        indicator.textContent = `Slide ${currentSlide} / ${totalSlides}`;
+      }
+
+      // Sync select dropdowns
+      const desktopSelect = document.getElementById('slideSelect');
+      if (desktopSelect) {
+        desktopSelect.value = currentSlide;
+      }
+      const mobileSelect = document.getElementById('mobileSlideSelect');
+      if (mobileSelect) {
+        mobileSelect.value = currentSlide;
+      }
+
+      // Update button states
+      const btnPrev = document.getElementById('btnPrev');
+      const btnNext = document.getElementById('btnNext');
+      const btnMobilePrev = document.getElementById('btnMobilePrev');
+      const btnMobileNext = document.getElementById('btnMobileNext');
+
+      if (btnPrev) btnPrev.disabled = (currentSlide === 1);
+      if (btnNext) btnNext.disabled = (currentSlide === totalSlides);
+      if (btnMobilePrev) btnMobilePrev.disabled = (currentSlide === 1);
+      if (btnMobileNext) btnMobileNext.disabled = (currentSlide === totalSlides);
     }
 
     function nextSlide() {
@@ -705,6 +1323,9 @@
 
     // Keyboard navigation
     window.addEventListener('keydown', (e) => {
+      // Don't intercept if user is inside a select
+      if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+
       if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
         nextSlide();
@@ -721,6 +1342,43 @@
         toggleFullscreen();
       }
     });
+
+    // Touch Swipe Gestures (for phones & tablets)
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+
+    const viewport = document.getElementById('slideViewport');
+    
+    viewport.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length > 0) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    viewport.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        touchEndX = e.changedTouches[0].clientX;
+        touchEndY = e.changedTouches[0].clientY;
+        handleSwipeGesture();
+      }
+    }, { passive: true });
+
+    function handleSwipeGesture() {
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+      
+      // Horizontal swipe detected (threshold: 45px, more horizontal than vertical)
+      if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4) {
+        if (deltaX < 0) {
+          nextSlide(); // Swipe left to go next
+        } else {
+          prevSlide(); // Swipe right to go prev
+        }
+      }
+    }
 
     // Initialize
     updateSlide();
