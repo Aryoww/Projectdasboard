@@ -2616,8 +2616,12 @@ body.drawer-open {
     gap: 0.85rem;
   }
 
+  .chart-trafo-container {
+    height: 380px;
+  }
+
   .activity-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.75rem;
   }
 
@@ -2638,18 +2642,54 @@ body.drawer-open {
   }
 }
 
-/* --- MOBILE & PHABLET (<= 768px) --- */
+/* ================= 14. MOBILE TABLE SWIPE HINT ================= */
+.mobile-table-hint {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  margin-bottom: 0.55rem;
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px dashed rgba(2, 132, 199, 0.35);
+  border-radius: var(--radius-sm);
+  color: var(--color-blue);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+body.dark-theme .mobile-table-hint {
+  background: rgba(56, 189, 248, 0.08);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+}
+
+@media (max-width: 1024px) {
+  .mobile-table-hint {
+    display: flex;
+  }
+}
+
+/* Default Chart Trafo Container */
+.chart-trafo-container {
+  height: 460px;
+  position: relative;
+  width: 100%;
+}
+
+/* --- MOBILE & PHABLET PORTRAIT (<= 768px) --- */
 @media (max-width: 768px) {
   .app-main-content {
-    padding: 0.65rem 0.75rem 2rem 0.75rem !important;
+    padding: 0.65rem 0.65rem 2.2rem 0.65rem !important;
   }
 
   /* Taskbar Header Banner Responsive */
   .musashi-header-banner {
-    padding: 0.85rem 0.95rem;
+    padding: 0.75rem 0.85rem;
     flex-direction: column;
     align-items: stretch;
-    gap: 0.75rem;
+    gap: 0.65rem;
   }
 
   .banner-left {
@@ -2664,13 +2704,14 @@ body.drawer-open {
   }
 
   .btn-sidebar-toggle {
-    padding: 0.4rem 0.8rem;
+    padding: 0.42rem 0.75rem;
     font-size: 0.76rem;
     border-radius: 6px;
+    height: 34px;
   }
 
   .banner-title {
-    font-size: 1.2rem;
+    font-size: 1.22rem;
   }
 
   .banner-subtitle {
@@ -2682,50 +2723,71 @@ body.drawer-open {
     font-size: 0.68rem;
     gap: 0.35rem;
     line-height: 1.35;
+    flex-wrap: wrap;
   }
 
   .banner-actions {
     width: 100%;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.45rem;
   }
 
   .banner-actions .btn-banner-action {
     flex: 1;
     justify-content: center;
     font-size: 0.74rem;
-    padding: 0.45rem 0.65rem;
-  }
-
-  /* Sub-Navbar Horizontal Scrollable Strip */
-  .sub-navbar-strip {
-    overflow-x: auto;
+    padding: 0.45rem 0.55rem;
+    height: 34px;
     white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 4px;
-    gap: 0.35rem;
-  }
-  .sub-navbar-strip::-webkit-scrollbar {
-    display: none;
   }
 
-  .sub-nav-pill {
-    padding: 0.38rem 0.75rem;
-    font-size: 0.74rem;
-    flex-shrink: 0;
+  /* Two-tier Monitoring Date Toolbar */
+  .monitoring-date-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .toolbar-left {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .toolbar-right {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .segmented-timeframe-switch {
+    width: 100%;
+    display: flex;
+  }
+
+  .segmented-timeframe-switch .timeframe-pill {
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
+    font-size: 0.73rem;
   }
 
   /* Alert Banner */
-  .alert-banner-inner {
-    flex-direction: column;
-    align-items: flex-start;
+  .alert-action-banner {
+    padding: 0.75rem 0.85rem;
     gap: 0.65rem;
   }
+
+  .alert-banner-left {
+    min-width: 0;
+    gap: 0.65rem;
+  }
+
   .btn-alert-action {
     width: 100%;
     justify-content: center;
-    padding: 0.45rem;
+    padding: 0.5rem;
   }
 
   /* Dedicated Hero Banners */
@@ -2735,14 +2797,16 @@ body.drawer-open {
     align-items: stretch;
     gap: 0.65rem;
   }
+
   .hero-title {
     font-size: 1.15rem;
   }
+
   .hero-desc {
     font-size: 0.74rem;
   }
 
-  /* Critical Assets Stack */
+  /* Critical Assets Stack on Mobile */
   .activity-cards-grid {
     grid-template-columns: 1fr;
     gap: 0.65rem;
@@ -2758,52 +2822,98 @@ body.drawer-open {
     align-items: center;
   }
 
+  /* Chart Trafo Height */
+  .chart-trafo-container {
+    height: 320px;
+  }
+
   /* Table Header & Search */
   .table-card-header {
     flex-direction: column;
     align-items: stretch;
     gap: 0.65rem;
   }
+
   .table-toolbar-right {
     width: 100%;
   }
+
   .clean-search-input {
     width: 100%;
   }
 
+  /* Sticky First Column on Mobile Table Scroll */
+  .clean-table th:first-child,
+  .clean-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: var(--bg-card);
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.06);
+  }
+
+  .clean-table th:first-child {
+    background: var(--bg-card-hover);
+    z-index: 3;
+  }
+
+  body.dark-theme .clean-table td:first-child {
+    background: var(--bg-card);
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.35);
+  }
+
+  body.dark-theme .clean-table th:first-child {
+    background: var(--bg-card-hover);
+  }
+
+  /* Pagination Buttons Touch Size */
+  .btn-page {
+    min-width: 34px;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
   /* Detail Modal on Mobile */
   .modal-card {
-    max-width: 95vw !important;
-    width: 95vw !important;
-    max-height: 90vh !important;
-    padding: 0.95rem !important;
+    max-width: 96vw !important;
+    width: 96vw !important;
+    max-height: 92vh !important;
+    padding: 0.85rem !important;
   }
+
   .detail-specs-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 0.45rem !important;
   }
+
   .modal-actions-bar {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 0.5rem !important;
   }
+
   .modal-actions-left {
     width: 100% !important;
     flex-direction: column !important;
     gap: 0.45rem !important;
   }
+
   .btn-action-telemetry,
   .btn-action-ping,
   .btn-action-close-red {
     width: 100% !important;
     justify-content: center !important;
+    height: 38px !important;
   }
 }
 
-/* --- SMALL MOBILE / HP (<= 520px) --- */
-@media (max-width: 520px) {
+/* --- SMALL MOBILE / HP VERTICAL (<= 540px) --- */
+@media (max-width: 540px) {
   .app-main-content {
-    padding: 0.5rem 0.5rem 2rem 0.5rem !important;
+    padding: 0.45rem 0.45rem 2rem 0.45rem !important;
   }
 
   .kpi-grid {
@@ -2812,12 +2922,12 @@ body.drawer-open {
   }
 
   .kpi-card {
-    min-height: 72px;
-    padding: 0.55rem 0.65rem;
+    min-height: 76px;
+    padding: 0.6rem 0.65rem;
   }
 
   .kpi-value {
-    font-size: 1.15rem;
+    font-size: clamp(1.1rem, 3.8vw, 1.35rem);
   }
 
   .kpi-unit {
@@ -2832,6 +2942,20 @@ body.drawer-open {
     font-size: 0.62rem;
   }
 
+  .kpi-comparison-row {
+    flex-wrap: wrap;
+    gap: 2px 4px;
+  }
+
+  .kpi-prev-val {
+    font-size: 0.62rem;
+  }
+
+  .kpi-delta-tag {
+    font-size: 0.62rem;
+    padding: 1px 4px;
+  }
+
   .clean-card {
     padding: 0.85rem 0.85rem;
   }
@@ -2839,15 +2963,17 @@ body.drawer-open {
   .line-chart-container {
     height: 210px;
   }
+
   .donut-canvas-box {
     height: 180px;
   }
-  .bar-chart-container {
-    height: 240px;
+
+  .chart-trafo-container {
+    height: 280px;
   }
 
   .attention-list-wrapper {
-    max-height: 300px;
+    max-height: 280px;
   }
 
   .banner-title {
@@ -2862,65 +2988,209 @@ body.drawer-open {
   .activity-card-item {
     padding: 0.75rem 0.85rem;
   }
+
   .activity-card-title {
     font-size: 0.82rem;
   }
+
   .act-metric-row {
     font-size: 0.72rem;
   }
 }
 
-/* --- MOBILE LANDSCAPE / HAPE MIRING (Height <= 520px and Orientation: Landscape) --- */
-@media (max-height: 520px) and (orientation: landscape) {
+/* ================= 15. MOBILE LANDSCAPE / HP HORIZONTAL (HEIGHT <= 550px & LANDSCAPE) ================= */
+@media (max-height: 550px) and (orientation: landscape) {
   .app-main-content {
-    padding: 0.5rem 0.75rem 2rem 0.75rem !important;
+    padding: 0.45rem 0.75rem 1.8rem 0.75rem !important;
   }
+
+  /* Ultra-slim header banner in landscape to prevent vertical block */
   .musashi-header-banner {
-    padding: 0.5rem 0.75rem;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.65rem;
+    padding: 0.4rem 0.75rem !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.65rem !important;
   }
+
+  .banner-left {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.65rem !important;
+  }
+
+  .banner-title-wrap {
+    gap: 0.45rem !important;
+  }
+
   .banner-title {
-    font-size: 1.05rem;
+    font-size: 1.05rem !important;
   }
+
   .banner-subtitle,
   .banner-meta {
-    font-size: 0.68rem;
+    display: none !important; /* Hide secondary meta in landscape to maximize vertical room */
   }
+
+  .btn-sidebar-toggle {
+    padding: 0.32rem 0.65rem !important;
+    font-size: 0.72rem !important;
+    height: 30px !important;
+  }
+
   .banner-actions {
-    width: auto;
+    width: auto !important;
+    gap: 0.35rem !important;
   }
+
   .banner-actions .btn-banner-action {
-    padding: 0.35rem 0.55rem;
-    font-size: 0.70rem;
+    padding: 0.3rem 0.55rem !important;
+    font-size: 0.70rem !important;
+    height: 30px !important;
   }
+
+  /* Compact Monitoring Toolbar */
+  .monitoring-date-toolbar {
+    padding: 0.35rem 0.65rem !important;
+    gap: 0.45rem !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .monitoring-label-wrap {
+    font-size: 0.72rem !important;
+  }
+
+  .active-date-capsule {
+    padding: 2px 7px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .segmented-timeframe-switch .timeframe-pill {
+    padding: 4px 8px !important;
+    font-size: 0.70rem !important;
+  }
+
+  .monitoring-live-badge {
+    padding: 2px 7px !important;
+    font-size: 0.68rem !important;
+  }
+
+  /* KPI Grid: 3 columns x 2 rows with ultra-compact height */
   .kpi-grid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 0.45rem;
+    gap: 0.45rem !important;
+    margin-bottom: 0.65rem !important;
   }
+
   .kpi-card {
-    min-height: 62px;
-    padding: 0.45rem 0.55rem;
+    min-height: 58px !important;
+    padding: 0.4rem 0.55rem !important;
   }
-  .kpi-value {
-    font-size: 1.05rem;
+
+  .kpi-top-row {
+    margin-bottom: 0.15rem !important;
   }
+
+  .kpi-icon-pill {
+    font-size: 0.58rem !important;
+    padding: 1px 4px !important;
+    height: 15px !important;
+    min-width: 20px !important;
+  }
+
   .kpi-title {
-    font-size: 0.65rem;
+    font-size: 0.66rem !important;
   }
+
+  .kpi-value-row {
+    margin-bottom: 0.1rem !important;
+  }
+
+  .kpi-value {
+    font-size: 1.08rem !important;
+  }
+
+  .kpi-unit {
+    font-size: 0.68rem !important;
+  }
+
+  .kpi-subtitle {
+    font-size: 0.60rem !important;
+  }
+
+  .kpi-comparison-row {
+    margin-top: 0.2rem !important;
+    padding-top: 0.2rem !important;
+    font-size: 0.62rem !important;
+  }
+
+  /* Charts in Landscape */
+  .charts-grid-row {
+    grid-template-columns: 1.4fr 1fr !important;
+    gap: 0.65rem !important;
+  }
+
   .line-chart-container {
-    height: 190px;
+    height: 180px !important;
   }
+
   .donut-canvas-box {
-    height: 160px;
+    height: 155px !important;
   }
-  .bar-chart-container {
-    height: 220px;
+
+  .mid-split-grid {
+    grid-template-columns: 1.3fr 1fr !important;
+    gap: 0.65rem !important;
   }
+
+  .chart-trafo-container {
+    height: 220px !important;
+  }
+
+  .attention-list-wrapper {
+    max-height: 220px !important;
+  }
+
+  /* CLD Incoming Feeders Grid: 3 columns in landscape */
+  .activity-cards-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.55rem !important;
+  }
+
+  .activity-card-item {
+    padding: 0.55rem 0.65rem !important;
+    gap: 0.45rem !important;
+  }
+
+  .activity-metric-rows {
+    gap: 0.25rem !important;
+    padding-top: 0.45rem !important;
+  }
+
+  .act-metric-row {
+    font-size: 0.68rem !important;
+  }
+
+  /* Detail Modal in Landscape */
   .modal-card {
     max-height: 94vh !important;
-    padding: 0.65rem !important;
+    max-width: 90vw !important;
+    padding: 0.75rem !important;
+  }
+
+  .detail-specs-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.45rem !important;
+  }
+
+  .param-table-box {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.3rem 0.75rem !important;
+    padding: 0.55rem 0.75rem !important;
+  }
+
+  .param-row {
+    font-size: 0.70rem !important;
   }
 }
 

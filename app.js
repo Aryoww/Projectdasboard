@@ -683,7 +683,54 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       }
+      // Recompute responsive chart canvas
+      if (chart24hInstance) chart24hInstance.resize();
+      if (chartDonutInstance) chartDonutInstance.resize();
+      if (chartTop8Instance) chartTop8Instance.resize();
     });
+
+    // Mobile Orientation Change (Portrait <-> Landscape)
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        if (chart24hInstance) chart24hInstance.resize();
+        if (chartDonutInstance) chartDonutInstance.resize();
+        if (chartTop8Instance) chartTop8Instance.resize();
+      }, 250);
+    });
+
+    // Touch Swipe Gestures for Mobile Drawer (Native Touch Experience)
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length === 1) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length === 1) {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const diffX = touchEndX - touchStartX;
+        const diffY = Math.abs(touchEndY - touchStartY);
+
+        // Horizontal swipe gesture check
+        if (diffY < 60 && Math.abs(diffX) > 45) {
+          if (window.innerWidth <= 1024) {
+            // Edge swipe from left (starting within 35px from edge) -> open drawer
+            if (touchStartX < 35 && diffX > 45) {
+              openMobileSidebar();
+            }
+            // Swipe left when drawer is open -> close drawer
+            else if (diffX < -45 && appSidebar?.classList.contains('open')) {
+              closeMobileSidebar();
+            }
+          }
+        }
+      }
+    }, { passive: true });
 
     // Keyboard Shortcut: Press '[' or 'Ctrl+B' to toggle, 'Esc' to close drawer
     window.addEventListener('keydown', (e) => {

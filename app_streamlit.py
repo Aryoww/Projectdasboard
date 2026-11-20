@@ -85,7 +85,7 @@ st.markdown("""
         max-height: 100vh !important;
         margin: 0 !important;
         padding: 0 !important;
-        background-color: #f4f5f9 !important;
+        background-color: transparent !important;
     }
 
     /* 3. Streamlit Custom Component Wrapper */
