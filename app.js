@@ -546,23 +546,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const kpiBiayaPrev = document.getElementById('kpiBiayaPrev');
   const kpiBiayaDelta = document.getElementById('kpiBiayaDelta');
 
+  const kpiPfTitle = document.getElementById('kpiPfTitle');
   const kpiPfVal = document.getElementById('kpiPfVal');
   const kpiPfSub = document.getElementById('kpiPfSub');
+  const kpiPfPrev = document.getElementById('kpiPfPrev');
+  const kpiPfDelta = document.getElementById('kpiPfDelta');
+  const monitoringLiveBadge = document.getElementById('monitoringLiveBadge');
 
   const kpiPeakVal = document.getElementById('kpiPeakVal');
   const kpiPeakSub = document.getElementById('kpiPeakSub');
   const kpiPeakTitle = document.getElementById('kpiPeakTitle');
   const kpiPeakPrev = document.getElementById('kpiPeakPrev');
   const kpiPeakDelta = document.getElementById('kpiPeakDelta');
-
-  const kpiUtilVal = document.getElementById('kpiUtilVal');
-  const kpiUtilSub = document.getElementById('kpiUtilSub');
-  const kpiUtilTitle = document.getElementById('kpiUtilTitle');
-  const kpiUtilPrev = document.getElementById('kpiUtilPrev');
-  const kpiUtilDelta = document.getElementById('kpiUtilDelta');
-
-  const kpiOnlineVal = document.getElementById('kpiOnlineVal');
-  const kpiOnlineSub = document.getElementById('kpiOnlineSub');
 
   const kpiCarbonVal = document.getElementById('kpiCarbonVal');
   const kpiCarbonSub = document.getElementById('kpiCarbonSub');
@@ -1039,22 +1034,26 @@ document.addEventListener('DOMContentLoaded', () => {
         activeDateDisplay.textContent = 'Today · 10 Nov 2026';
         if (btnPrevDay) btnPrevDay.disabled = false;
         if (btnNextDay) btnNextDay.disabled = true;
-        if (monitoringStatusText) monitoringStatusText.textContent = 'Live SCADA';
+        if (monitoringStatusText) monitoringStatusText.textContent = 'LIVE';
+        if (monitoringLiveBadge) monitoringLiveBadge.classList.remove('status-offline');
       } else if (period === 'yesterday') {
         activeDateDisplay.textContent = 'Yesterday · 09 Nov 2026';
         if (btnPrevDay) btnPrevDay.disabled = true;
         if (btnNextDay) btnNextDay.disabled = false;
-        if (monitoringStatusText) monitoringStatusText.textContent = 'H-1 Audited';
+        if (monitoringStatusText) monitoringStatusText.textContent = 'H-1';
+        if (monitoringLiveBadge) monitoringLiveBadge.classList.add('status-offline');
       } else if (period === '7days') {
         activeDateDisplay.textContent = 'Last 7 Days';
         if (btnPrevDay) btnPrevDay.disabled = false;
         if (btnNextDay) btnNextDay.disabled = false;
-        if (monitoringStatusText) monitoringStatusText.textContent = '7-Day Summary';
+        if (monitoringStatusText) monitoringStatusText.textContent = '7-Day';
+        if (monitoringLiveBadge) monitoringLiveBadge.classList.add('status-offline');
       } else if (period === 'month') {
         activeDateDisplay.textContent = 'This Month · MTD Nov 2026';
         if (btnPrevDay) btnPrevDay.disabled = false;
         if (btnNextDay) btnNextDay.disabled = false;
-        if (monitoringStatusText) monitoringStatusText.textContent = 'MTD Summary';
+        if (monitoringStatusText) monitoringStatusText.textContent = 'MTD';
+        if (monitoringLiveBadge) monitoringLiveBadge.classList.add('status-offline');
       }
     }
 
@@ -1114,6 +1113,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ================= 4. UPDATE VIEW BASED ON ACTIVE FILTER & TIMEFRAME =================
+  function updateCosphiCard(title, pfRaw, subText, prevText) {
+    const pfStr = pfRaw || '0,90';
+    const pfNum = parseFloat(String(pfStr).replace(',', '.')) || 0.90;
+    const isCompliant = pfNum >= 0.85;
+    const diff = (pfNum - 0.85).toFixed(2).replace('.', ',');
+    const sign = pfNum >= 0.85 ? '+' : '';
+
+    if (kpiPfTitle) kpiPfTitle.textContent = title;
+    if (kpiPfVal) {
+      kpiPfVal.textContent = pfStr;
+      kpiPfVal.style.color = isCompliant ? 'var(--color-green)' : 'var(--color-amber)';
+    }
+    if (kpiPfSub) kpiPfSub.textContent = subText;
+    if (kpiPfPrev) kpiPfPrev.textContent = prevText;
+    if (kpiPfDelta) {
+      kpiPfDelta.className = `kpi-delta-tag ${isCompliant ? 'down' : 'warn'}`;
+      kpiPfDelta.textContent = isCompliant ? `● ${sign}${diff} Optimal` : `▲ ${diff} Cek APFC`;
+    }
+  }
+
   function updateViewForActiveFilter() {
     const filterKey = state.activeFilter;
     const data = CATEGORY_BASELINES[filterKey] || CATEGORY_BASELINES.electrical || CATEGORY_BASELINES.all;
@@ -1123,7 +1142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (period === 'today') {
       if (kpiDayaTitle) kpiDayaTitle.textContent = 'Total Active Power';
       if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
-      if (kpiDayaSub) kpiDayaSub.textContent = 'Total live electrical load';
+      if (kpiDayaSub) kpiDayaSub.textContent = `Current live load · ${data.online || '111 / 111'}`;
       if (kpiDayaPrev) kpiDayaPrev.textContent = `Yesterday: ${(data.kwYesterday || data.kw).toLocaleString('id-ID')} kW`;
       if (kpiDayaDelta) {
         const dKw = (data.kw - (data.kwYesterday || data.kw));
@@ -1163,27 +1182,12 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = `${data.deltaPeak ? data.deltaPeak.replace('-', '▼ -') : '▼ Efficient'}`;
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Utility Delta (vs Yesterday)';
-      const dKwh = (data.deltaKwh !== undefined) ? data.deltaKwh : -7086;
-      const dPct = data.deltaKwhPct || '-3.5%';
-      const isSaved = dKwh <= 0;
-      const sign = dKwh > 0 ? '+' : '';
-      if (kpiUtilVal) {
-        kpiUtilVal.textContent = `${sign}${dKwh.toLocaleString('id-ID')}`;
-        kpiUtilVal.style.color = isSaved ? 'var(--color-green)' : 'var(--color-amber)';
-      }
-      const kpiUtilUnit = document.getElementById('kpiUtilUnit');
-      if (kpiUtilUnit) kpiUtilUnit.textContent = 'kWh';
-      if (kpiUtilSub) {
-        kpiUtilSub.textContent = isSaved 
-          ? `▼ -${Math.abs(dKwh).toLocaleString('id-ID')} kWh (${dPct}) vs Yesterday (Saving)`
-          : `▲ +${dKwh.toLocaleString('id-ID')} kWh (${dPct}) vs Yesterday`;
-      }
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Yesterday: ${(data.kwhYesterday || 0).toLocaleString('id-ID')} kWh`;
-      if (kpiUtilDelta) {
-        kpiUtilDelta.className = `kpi-delta-tag ${isSaved ? 'down' : 'up'}`;
-        kpiUtilDelta.textContent = isSaved ? `▼ ${dPct}` : `▲ ${dPct}`;
-      }
+      updateCosphiCard(
+        'Power Factor (Cos φ)',
+        data.pf,
+        'Target Cikarang Listrindo ≥ 0,85',
+        'Min Target: 0,85'
+      );
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Carbon Emission (CO₂e)';
       if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonTon;
@@ -1245,19 +1249,12 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = 'Peak H-1';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Yesterday Delta (vs H-2)';
-      if (kpiUtilVal) {
-        kpiUtilVal.textContent = '-2.850';
-        kpiUtilVal.style.color = 'var(--color-green)';
-      }
-      const kpiUtilUnitY = document.getElementById('kpiUtilUnit');
-      if (kpiUtilUnitY) kpiUtilUnitY.textContent = 'kWh';
-      if (kpiUtilSub) kpiUtilSub.textContent = '▼ -2,850 kWh (-1.4%) vs H-2 (Saving)';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = 'H-2: 207,000 kWh';
-      if (kpiUtilDelta) {
-        kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = '▼ -1.4%';
-      }
+      updateCosphiCard(
+        'Yesterday Avg Cos φ',
+        data.pfYesterday || data.pf,
+        'H-1 audited reactive compliance',
+        `Today: ${data.pf || '0,90'}`
+      );
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Yesterday Carbon Emission';
       if (kpiCarbonVal) kpiCarbonVal.textContent = data.carbonYesterday || data.carbonTon;
@@ -1320,19 +1317,12 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = 'Compliant';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = '7-Day Utility Delta';
-      if (kpiUtilVal) {
-        kpiUtilVal.textContent = '-26.486';
-        kpiUtilVal.style.color = 'var(--color-green)';
-      }
-      const kpiUtilUnit7 = document.getElementById('kpiUtilUnit');
-      if (kpiUtilUnit7) kpiUtilUnit7.textContent = 'kWh';
-      if (kpiUtilSub) kpiUtilSub.textContent = '▼ -26,486 kWh (-1.9%) vs previous week';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Previous Week: 1,380,000 kWh`;
-      if (kpiUtilDelta) {
-        kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = '▼ -1.9%';
-      }
+      updateCosphiCard(
+        '7-Day Avg Cos φ',
+        d7.pf || data.pf,
+        'Weekly reactive power efficiency',
+        'Min Target: 0,85'
+      );
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = '7-Day Carbon Emission';
       if (kpiCarbonVal) kpiCarbonVal.textContent = ((d7.totalKwh * 0.79) / 1000).toFixed(1);
@@ -1395,19 +1385,12 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiPeakDelta.textContent = 'Compliant';
       }
 
-      if (kpiUtilTitle) kpiUtilTitle.textContent = 'Month Utility Delta (MTD)';
-      if (kpiUtilVal) {
-        kpiUtilVal.textContent = '-31.200';
-        kpiUtilVal.style.color = 'var(--color-green)';
-      }
-      const kpiUtilUnitM = document.getElementById('kpiUtilUnit');
-      if (kpiUtilUnitM) kpiUtilUnitM.textContent = 'kWh';
-      if (kpiUtilSub) kpiUtilSub.textContent = '▼ Saving trend 31,200 kWh (-1.4%) vs last month';
-      if (kpiUtilPrev) kpiUtilPrev.textContent = `Last Month: 2,181,600 kWh`;
-      if (kpiUtilDelta) {
-        kpiUtilDelta.className = 'kpi-delta-tag down';
-        kpiUtilDelta.textContent = '▼ -1.4%';
-      }
+      updateCosphiCard(
+        'Month Avg Cos φ (MTD)',
+        mMtd.pf || data.pf,
+        'Monthly kVARh penalty compliance',
+        'Min Target: 0,85'
+      );
 
       if (kpiCarbonTitle) kpiCarbonTitle.textContent = 'Month Carbon Emission (MTD)';
       if (kpiCarbonVal) kpiCarbonVal.textContent = ((mMtd.kwh * 0.79) / 1000).toFixed(1);
@@ -1431,12 +1414,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       update24hChart(mMtd.kwPeak || [16200, 16850, 17120, 17480, 16820, 16950, 17200], 20000, 4000, mMtd.kwAvg || [12400, 12900, 13150, 13400, 13000, 13100, 13250], mMtd.labels || ['01 Nov', '05 Nov', '10 Nov', '15 Nov', '20 Nov', '25 Nov', '30 Nov']);
     }
-
-    // Common KPI updates
-    if (kpiPfVal) kpiPfVal.textContent = data.pf;
-    if (kpiPfSub) kpiPfSub.textContent = 'Optimal (target ≥ 0.85)';
-    if (kpiOnlineVal) kpiOnlineVal.textContent = data.online;
-    if (kpiOnlineSub) kpiOnlineSub.textContent = data.alertCount;
 
     // Sidebar Live Capsule Telemetry Sync
     const sideNavTotalKw = document.getElementById('sideNavTotalKw');

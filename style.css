@@ -1558,6 +1558,42 @@ body.dark-theme .segmented-timeframe-switch .timeframe-pill.active {
   color: #ffffff;
 }
 
+.kpi-live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.kpi-live-chip .pulse-indicator {
+  background: currentColor;
+}
+
+body.dark-theme .kpi-live-chip {
+  background: rgba(52, 211, 153, 0.14);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.kpi-live-chip.status-offline {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--text-secondary);
+  border-color: var(--border-card);
+}
+
+.kpi-live-chip.status-offline .pulse-indicator {
+  animation: none;
+  opacity: 0.5;
+}
+
 .monitoring-live-badge {
   display: inline-flex;
   align-items: center;
@@ -1571,7 +1607,43 @@ body.dark-theme .segmented-timeframe-switch .timeframe-pill.active {
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
-body.dark-theme .monitoring-live-badge {
+body.dark-theme .kpi-live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.kpi-live-chip .pulse-indicator {
+  background: currentColor;
+}
+
+body.dark-theme .kpi-live-chip {
+  background: rgba(52, 211, 153, 0.14);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.kpi-live-chip.status-offline {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--text-secondary);
+  border-color: var(--border-card);
+}
+
+.kpi-live-chip.status-offline .pulse-indicator {
+  animation: none;
+  opacity: 0.5;
+}
+
+.monitoring-live-badge {
   background: rgba(52, 211, 153, 0.12);
   color: #34d399;
   border-color: rgba(52, 211, 153, 0.25);
@@ -1640,28 +1712,50 @@ body.dark-theme .comparison-summary-badge {
   white-space: nowrap;
 }
 
-.kpi-delta-tag.delta-down {
+.kpi-delta-tag.delta-down,
+.kpi-delta-tag.down {
   background: rgba(22, 163, 74, 0.12);
   color: #16a34a;
   border: 1px solid rgba(22, 163, 74, 0.2);
 }
 
-body.dark-theme .kpi-delta-tag.delta-down {
+body.dark-theme .kpi-delta-tag.delta-down,
+body.dark-theme .kpi-delta-tag.down {
   color: #4ade80;
   background: rgba(74, 222, 128, 0.15);
   border-color: rgba(74, 222, 128, 0.25);
 }
 
-.kpi-delta-tag.delta-up {
+.kpi-delta-tag.delta-up,
+.kpi-delta-tag.up {
   background: rgba(225, 29, 72, 0.12);
   color: #e11d48;
   border: 1px solid rgba(225, 29, 72, 0.2);
 }
 
-body.dark-theme .kpi-delta-tag.delta-up {
+body.dark-theme .kpi-delta-tag.delta-up,
+body.dark-theme .kpi-delta-tag.up {
   color: #fb7185;
   background: rgba(251, 113, 133, 0.15);
   border-color: rgba(251, 113, 133, 0.25);
+}
+
+.kpi-delta-tag.warn {
+  background: rgba(217, 119, 6, 0.12);
+  color: #d97706;
+  border: 1px solid rgba(217, 119, 6, 0.25);
+}
+
+body.dark-theme .kpi-delta-tag.warn {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.kpi-delta-tag.neutral {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-card);
 }
 
 /* Table Delta Badges */
@@ -3329,7 +3423,43 @@ body.dark-theme .mobile-table-hint {
     font-size: 0.70rem !important;
   }
 
-  .monitoring-live-badge {
+  .kpi-live-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.kpi-live-chip .pulse-indicator {
+  background: currentColor;
+}
+
+body.dark-theme .kpi-live-chip {
+  background: rgba(52, 211, 153, 0.14);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.3);
+}
+
+.kpi-live-chip.status-offline {
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--text-secondary);
+  border-color: var(--border-card);
+}
+
+.kpi-live-chip.status-offline .pulse-indicator {
+  animation: none;
+  opacity: 0.5;
+}
+
+.monitoring-live-badge {
     padding: 2px 7px !important;
     font-size: 0.68rem !important;
   }

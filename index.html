@@ -378,27 +378,28 @@
               <button class="timeframe-pill" data-period="7days">7 Days</button>
               <button class="timeframe-pill" data-period="month">This Month</button>
             </div>
-
-            <div class="monitoring-live-badge" id="monitoringLiveBadge">
-              <span class="pulse-indicator"></span>
-              <span id="monitoringStatusText">Live SCADA</span>
-            </div>
           </div>
         </section>
 
-        <!-- KPI CARDS ROW (DILENGKAPI DATA HARI SEBELUMNYA & SELISIH PEMAKAIAN) -->
+        <!-- KPI CARDS ROW (DILENGKAPI COS PHI & LIVE DIGABUNG KE CURRENT ACTIVE POWER) -->
         <section class="kpi-grid" aria-label="Plant-Wide Power and Energy Summary">
-          <!-- Card 1: Total Active Power -->
+          <!-- Card 1: Total Active Power (Current + Live Combined) -->
           <div class="kpi-card">
-            <div class="kpi-top-row">
-              <span class="kpi-icon-pill kpi-icon-teal">kW</span>
-              <div class="kpi-title" id="kpiDayaTitle">Total Active Power</div>
+            <div class="kpi-top-row" style="justify-content: space-between;">
+              <div style="display:flex; align-items:center; gap:0.45rem; min-width:0;">
+                <span class="kpi-icon-pill kpi-icon-teal">kW</span>
+                <div class="kpi-title" id="kpiDayaTitle">Total Active Power</div>
+              </div>
+              <span class="kpi-live-chip" id="monitoringLiveBadge" title="Status telemetri SCADA saat ini">
+                <span class="pulse-indicator"></span>
+                <span id="monitoringStatusText">LIVE</span>
+              </span>
             </div>
             <div class="kpi-value-row">
               <span class="kpi-value" id="kpiDayaVal">14.129</span>
               <span class="kpi-unit">kW</span>
             </div>
-            <div class="kpi-subtitle" id="kpiDayaSub">Total live electrical load</div>
+            <div class="kpi-subtitle" id="kpiDayaSub">Current live load · 111/111 online</div>
             <div class="kpi-comparison-row">
               <span class="kpi-prev-val" id="kpiDayaPrev">Yesterday: 14,409 kW</span>
               <span class="kpi-delta-tag delta-down" id="kpiDayaDelta">▼ -280 kW</span>
@@ -455,20 +456,20 @@
             </div>
           </div>
 
-          <!-- Card 5: Utility Delta (vs Yesterday) -->
-          <div class="kpi-card" id="kpiCardUtilitas">
+          <!-- Card 5: Power Factor (Cos φ) -->
+          <div class="kpi-card" id="kpiCardCosphi">
             <div class="kpi-top-row">
-              <span class="kpi-icon-pill kpi-icon-teal" style="font-weight:700;">Δ</span>
-              <div class="kpi-title" id="kpiUtilTitle">Utility Delta (vs Yesterday)</div>
+              <span class="kpi-icon-pill kpi-icon-blue" style="font-weight:700;">cos φ</span>
+              <div class="kpi-title" id="kpiPfTitle">Power Factor (Cos φ)</div>
             </div>
             <div class="kpi-value-row">
-              <span class="kpi-value" id="kpiUtilVal" style="color:var(--color-green);">-7.086</span>
-              <span class="kpi-unit" id="kpiUtilUnit">kWh</span>
+              <span class="kpi-value" id="kpiPfVal" style="color:var(--color-green);">0,90</span>
+              <span class="kpi-unit" id="kpiPfUnit">PF</span>
             </div>
-            <div class="kpi-subtitle" id="kpiUtilSub">▼ -3.5% vs Yesterday (Saving)</div>
+            <div class="kpi-subtitle" id="kpiPfSub">Target Cikarang Listrindo ≥ 0,85</div>
             <div class="kpi-comparison-row">
-              <span class="kpi-prev-val" id="kpiUtilPrev">Yesterday: 204,150 kWh</span>
-              <span class="kpi-delta-tag delta-down" id="kpiUtilDelta">▼ -3.5%</span>
+              <span class="kpi-prev-val" id="kpiPfPrev">Min Target: 0,85</span>
+              <span class="kpi-delta-tag delta-down" id="kpiPfDelta">● +0,05 Optimal</span>
             </div>
           </div>
 
