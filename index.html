@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Musashi Utility – Monitoring Electrical Room & Power Meter</title>
   <meta name="description" content="Energy Management System & SCADA Dashboard for Electrical Room Cubicle Schneider SM6, Outgoing Transformers, and LV-MDB Panels at PT Musashi Auto Parts Indonesia.">
   <link rel="icon" type="image/png" href="musashi_logo_clean.png">
@@ -682,10 +682,15 @@
               <p class="card-subtitle" id="tableSectionSub">Realtime telemetry for 20kV Transformers, Schneider SM6 Cubicles, LMVDP Panels, and APFC Capacitor Banks.</p>
             </div>
             <div class="table-toolbar-right">
+              <div class="table-status-pills" role="group" aria-label="Filter status meter">
+                <button type="button" class="table-filter-pill active" data-table-status="all" onclick="window.setTableStatusFilter('all')">Semua</button>
+                <button type="button" class="table-filter-pill" data-table-status="normal" onclick="window.setTableStatusFilter('normal')">Normal</button>
+                <button type="button" class="table-filter-pill" data-table-status="alerts" onclick="window.setTableStatusFilter('alerts')">Perhatian</button>
+              </div>
               <button type="button" id="btnResetTableFilter" class="btn-reset-filter" style="display:none;" onclick="window.resetTableFilters()" title="Tampilkan kembali semua meter">
                 ✕ Reset Filter
               </button>
-              <input type="text" id="searchInput" class="clean-search-input" placeholder="Search machine code, meter name, feeder, IP...">
+              <input type="text" id="searchInput" class="clean-search-input" placeholder="Cari kode, nama meter, area, IP...">
             </div>
           </div>
 

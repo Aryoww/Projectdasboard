@@ -511,6 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
     activeFilter: 'all',
     activePeriod: 'today',
     filterOnlyAlerts: false,
+    tableStatusFilter: 'all',
     searchQuery: '',
     sortColumn: 'id',
     sortAsc: true,
@@ -587,7 +588,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================= 1. INITIALIZATION =================
   function init() {
-    initClock();
     initSidebarController();
     initNavigation();
     initTimeframeController();
@@ -827,14 +827,14 @@ document.addEventListener('DOMContentLoaded', () => {
     state.activeView = viewId;
     state.activeFilter = filterKey;
 
-    // 1. Toggle visibility of all views
+    // 1. Toggle visibility of all views with smooth re-entry animation
     document.querySelectorAll('.menu-view').forEach(v => {
       if (v.id === viewId) {
+        v.classList.remove('active');
+        void v.offsetWidth;
         v.classList.add('active');
-        v.style.display = 'block';
       } else {
         v.classList.remove('active');
-        v.style.display = 'none';
       }
     });
 
@@ -899,24 +899,32 @@ document.addEventListener('DOMContentLoaded', () => {
     if (bannerSubtitle) bannerSubtitle.textContent = cfg.subtitle;
     if (bannerAreaTag) bannerAreaTag.textContent = cfg.tag;
 
-    // 4. Update data on selected view
+    // 4. Update only the active view's data & resize charts cleanly
     if (viewId === 'view-dashboard') {
       updateViewForActiveFilter();
       renderTable();
+      if (typeof requestAnimationFrame === 'function') {
+        requestAnimationFrame(() => {
+          if (chart24hInstance) chart24hInstance.resize();
+          if (chartDonutInstance) chartDonutInstance.resize();
+          if (chartTop8Instance) chartTop8Instance.resize();
+        });
+      }
+    } else {
+      renderActiveDedicatedView(viewId);
     }
-    renderAllDedicatedTables();
 
-    // 5. Scroll smoothly to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 5. Scroll smoothly to top on the actual scroll container
+    const mainContent = document.getElementById('appMainContent');
+    if (mainContent && typeof mainContent.scrollTo === 'function') {
+      mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (mainContent) {
+      mainContent.scrollTop = 0;
+    }
 
     // 6. Close mobile sidebar drawer if on mobile
     if (window.innerWidth <= 1024) {
-      const appSidebar = document.getElementById('appSidebar');
-      if (appSidebar && appSidebar.classList.contains('open')) {
-        appSidebar.classList.remove('open');
-        const toggleText = document.getElementById('btnSidebarToggleText');
-        if (toggleText) toggleText.textContent = 'Menu';
-      }
+      closeMobileSidebar();
     }
   };
 
@@ -1472,8 +1480,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const defaultTextColor = isDark ? '#94a3b8' : '#64748b';
     const defaultGridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : '#e2e8f0';
 
-    Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
+    Chart.defaults.font.family = "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
     Chart.defaults.color = defaultTextColor;
+    Chart.defaults.animation = { duration: 420, easing: 'easeOutQuart' };
 
     // Custom Plugin: Peak, Min, Live Time Marker & Incomplete Data Indicator (Matching SCADA Reference)
     const peakAndMinPlugin = {
@@ -1640,25 +1649,28 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.fillText(`${pct}%`, x, y);
         });
 
-        // 2. Center cutout text: 100% and TOTAL SHARE
+        // 2. Center cutout text: Total kWh across active slices
         const firstArc = meta.data[0];
         const centerX = firstArc.x;
         const centerY = firstArc.y;
+        const innerR = firstArc.innerRadius || 60;
         const isDark = document.body.classList.contains('dark-theme');
+        const totalText = total.toLocaleString('id-ID');
+        const mainFontSize = Math.max(14, Math.min(20, Math.round(innerR * 0.3)));
 
         ctx.shadowBlur = 0;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
-        // 100%
-        ctx.font = 'bold 24px Inter, -apple-system, sans-serif';
+        // Total kWh number
+        ctx.font = `bold ${mainFontSize}px Plus Jakarta Sans, Inter, -apple-system, sans-serif`;
         ctx.fillStyle = isDark ? '#f8fafc' : '#0f172a';
-        ctx.fillText('100%', centerX, centerY - 7);
+        ctx.fillText(totalText, centerX, centerY - 7);
 
-        // Subtitle
-        ctx.font = '600 9px Inter, -apple-system, sans-serif';
-        ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
-        ctx.fillText('TOTAL SHARE', centerX, centerY + 13);
+        // Unit & Subtitle
+        ctx.font = '700 10px Plus Jakarta Sans, Inter, -apple-system, sans-serif';
+        ctx.fillStyle = isDark ? '#94a3b8' : '#475569';
+        ctx.fillText('TOTAL kWh', centerX, centerY + 13);
 
         ctx.restore();
       }
@@ -1814,7 +1826,7 @@ document.addEventListener('DOMContentLoaded', () => {
               callbacks: {
                 label: (ctx) => {
                   const val = ctx.parsed;
-                  const total = 229696;
+                  const total = ctx.dataset.data.reduce((a, b) => a + b, 0) || 1;
                   const pct = ((val / total) * 100).toFixed(1);
                   return ` ${ctx.label}: ${val.toLocaleString('id-ID')} kWh (${pct}%)`;
                 }
@@ -1876,7 +1888,7 @@ document.addEventListener('DOMContentLoaded', () => {
               grid: { color: defaultGridColor },
               ticks: {
                 color: defaultTextColor,
-                font: { size: 10, weight: '500' },
+                font: { size: 11, weight: '500' },
                 stepSize: 4000,
                 callback: (val) => val === 0 ? '0' : val.toLocaleString('id-ID')
               }
@@ -1886,7 +1898,7 @@ document.addEventListener('DOMContentLoaded', () => {
               grid: { display: false },
               ticks: {
                 color: defaultTextColor,
-                font: { size: 10, weight: '600' }
+                font: { size: 11, weight: '600' }
               }
             }
           }
@@ -2107,17 +2119,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ================= 7. DAFTAR METER TABLE =================
+  function isAlertMeter(m) {
+    return ['F2-6', 'TR-01', 'TR-12'].includes(m.id) || m.status === 'warning' || (m.pf && m.pf < 0.85);
+  }
+
+  function syncTableStatusPills() {
+    document.querySelectorAll('.table-filter-pill').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tableStatus === state.tableStatusFilter);
+    });
+  }
+
+  window.setTableStatusFilter = function(statusKey) {
+    state.tableStatusFilter = statusKey || 'all';
+    state.filterOnlyAlerts = (statusKey === 'alerts');
+    state.currentPage = 1;
+    syncTableStatusPills();
+    renderTable();
+  };
+
   function getFilteredMeters() {
     let list = state.meters;
 
     // Filter by Attention/Alerts Only
-    if (state.filterOnlyAlerts) {
-      list = list.filter(m => ['F2-6', 'TR-01', 'TR-12'].includes(m.id) || m.status === 'warning' || (m.pf && m.pf < 0.85));
-      return list;
+    if (state.filterOnlyAlerts || state.tableStatusFilter === 'alerts') {
+      list = list.filter(isAlertMeter);
+    } else if (state.tableStatusFilter === 'normal') {
+      list = list.filter(m => !isAlertMeter(m) && m.status === 'normal');
     }
 
     // Filter by Tab / Substation
-    if (state.activeFilter !== 'all') {
+    if (!state.filterOnlyAlerts && state.activeFilter !== 'all') {
       const f = state.activeFilter;
       list = list.filter(m => {
         if (f === 'electrical') {
@@ -2211,9 +2242,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const btnResetFilter = document.getElementById('btnResetTableFilter');
     if (btnResetFilter) {
-      const hasFilter = Boolean(state.filterOnlyAlerts || state.searchQuery.trim() !== '');
+      const hasFilter = Boolean(state.filterOnlyAlerts || state.tableStatusFilter !== 'all' || state.searchQuery.trim() !== '');
       btnResetFilter.style.display = hasFilter ? 'inline-flex' : 'none';
     }
+    syncTableStatusPills();
 
     // Build Table Rows
     if (pageItems.length === 0) {
@@ -2244,7 +2276,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const deltaBadgeHtml = `<span class="delta-badge ${deltaClass}" title="${deltaSign}${deltaKwh.toLocaleString('id-ID')} kWh (${deltaSign}${deltaPct}%) vs yesterday">${deltaArrow} ${deltaSign}${deltaKwh.toLocaleString('id-ID')} (${deltaSign}${deltaPct}%)</span>`;
 
       return `
-        <tr>
+        <tr onclick="window.openMeterDetailById('${m.id}')" title="Klik untuk melihat telemetri lengkap ${m.id}">
           <td class="col-id">${m.id}</td>
           <td style="max-width:240px; overflow:hidden; text-overflow:ellipsis;" title="${m.name}">
             ${m.name}
@@ -2275,7 +2307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="status-dot-badge ${statusClass}">${statusLabel}</span>
           </td>
           <td style="text-align:center;">
-            <button class="btn-table-detail" onclick="window.openMeterDetailById('${m.id}')">
+            <button class="btn-table-detail" onclick="event.stopPropagation(); window.openMeterDetailById('${m.id}')">
               Detail
             </button>
           </td>
@@ -2342,49 +2374,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
+      // Avoid layout/DOM churn while user inspects a modal or highlights text
+      if (document.body.classList.contains('modal-open')) return;
+      const sel = typeof window.getSelection === 'function' ? window.getSelection() : null;
+      if (sel && sel.toString().length > 0) return;
+
       if (state.activeView === 'view-dashboard') {
         renderTable();
       } else {
-        renderAllDedicatedTables();
+        renderActiveDedicatedView(state.activeView);
       }
     }, 3500);
   }
 
   // ================= 9. DEDICATED SUBSTATION TABLES RENDERER =================
+  function renderActiveDedicatedView(viewId) {
+    if (viewId === 'view-electrical-1') {
+      renderSubstationTable('fac1TableBody', state.meters.filter(m => m.factory === 'fac1'), false);
+    } else if (viewId === 'view-electrical-2-1') {
+      renderSubstationTable('fac2_1TableBody', state.meters.filter(m => m.factory === 'fac2_1'), false);
+    } else if (viewId === 'view-electrical-2') {
+      renderSubstationTable('fac2TableBody', state.meters.filter(m => m.factory === 'fac2'), false);
+    } else if (viewId === 'view-electrical-3') {
+      renderSubstationTable('fac3TableBody', state.meters.filter(m => m.factory === 'fac3'), false);
+    } else if (viewId === 'view-forging') {
+      const forgingMeters = state.meters.filter(m =>
+        m.category === 'forging' ||
+        m.system === 'forging' ||
+        (m.name && m.name.toLowerCase().includes('forging')) ||
+        (m.id && m.id.startsWith('F-'))
+      );
+      renderSubstationTable('forgingTableBody', forgingMeters, true);
+    } else if (viewId === 'view-heattreatment') {
+      const htMeters = state.meters.filter(m =>
+        m.category === 'heattreatment' ||
+        m.system === 'heattreatment' ||
+        (m.name && (m.name.toLowerCase().includes('heat') || m.name.toLowerCase().includes('billet') || m.name.toLowerCase().includes('carburizing') || m.name.toLowerCase().includes('annealing') || m.name.toLowerCase().includes('tempering') || m.name.toLowerCase().includes('furnace'))) ||
+        (m.id && m.id.startsWith('HT-'))
+      );
+      renderSubstationTable('htTableBody', htMeters, true);
+    }
+  }
+
   function renderAllDedicatedTables() {
-    // 1. Factory 1
-    const fac1Meters = state.meters.filter(m => m.factory === 'fac1');
-    renderSubstationTable('fac1TableBody', fac1Meters, false);
-
-    // 2. Factory 2.1
-    const fac2_1Meters = state.meters.filter(m => m.factory === 'fac2_1');
-    renderSubstationTable('fac2_1TableBody', fac2_1Meters, false);
-
-    // 3. Factory 2
-    const fac2Meters = state.meters.filter(m => m.factory === 'fac2');
-    renderSubstationTable('fac2TableBody', fac2Meters, false);
-
-    // 4. Factory 3
-    const fac3Meters = state.meters.filter(m => m.factory === 'fac3');
-    renderSubstationTable('fac3TableBody', fac3Meters, false);
-
-    // 5. Forging Substation
-    const forgingMeters = state.meters.filter(m => 
-      m.category === 'forging' || 
-      m.system === 'forging' || 
-      (m.name && m.name.toLowerCase().includes('forging')) ||
-      (m.id && m.id.startsWith('F-'))
-    );
-    renderSubstationTable('forgingTableBody', forgingMeters, true);
-
-    // 6. Heat Treatment Substation
-    const htMeters = state.meters.filter(m => 
-      m.category === 'heattreatment' || 
-      m.system === 'heattreatment' || 
-      (m.name && (m.name.toLowerCase().includes('heat') || m.name.toLowerCase().includes('billet') || m.name.toLowerCase().includes('carburizing') || m.name.toLowerCase().includes('annealing') || m.name.toLowerCase().includes('tempering') || m.name.toLowerCase().includes('furnace'))) ||
-      (m.id && m.id.startsWith('HT-'))
-    );
-    renderSubstationTable('htTableBody', htMeters, true);
+    ['view-electrical-1', 'view-electrical-2-1', 'view-electrical-2', 'view-electrical-3', 'view-forging', 'view-heattreatment'].forEach(renderActiveDedicatedView);
   }
 
   function renderSubstationTable(tbodyId, meterList, showFactoryCol = false) {
@@ -2404,7 +2437,7 @@ document.addEventListener('DOMContentLoaded', () => {
         : '';
 
       return `
-        <tr>
+        <tr onclick="window.openMeterDetailById('${m.id}')" title="Klik untuk melihat telemetri ${m.id}">
           <td class="col-id">${m.id}</td>
           <td style="font-weight:500; color:var(--text-primary); max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${m.name}">
             ${m.name}
@@ -2423,7 +2456,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <span class="status-dot-badge ${statusClass}">${statusLabel}</span>
           </td>
           <td style="text-align:center;">
-            <button class="btn-table-detail" onclick="window.openMeterDetailById('${m.id}')" title="Buka Detail Meter ${m.id}">
+            <button class="btn-table-detail" onclick="event.stopPropagation(); window.openMeterDetailById('${m.id}')" title="Buka Detail Meter ${m.id}">
               Detail
             </button>
           </td>
@@ -2517,6 +2550,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.filterTableToAlerts = function() {
     window.closeAllModals();
     state.filterOnlyAlerts = true;
+    state.tableStatusFilter = 'alerts';
     state.activeFilter = 'all';
     state.searchQuery = '';
     state.currentPage = 1;
@@ -2538,6 +2572,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.resetTableFilters = function() {
     state.filterOnlyAlerts = false;
+    state.tableStatusFilter = 'all';
     state.searchQuery = '';
     state.currentPage = 1;
     if (searchInput) searchInput.value = '';
@@ -2781,10 +2816,9 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
 
   // ================= 10. EVENT LISTENERS =================
   function setupEventListeners() {
-    // Search input
+    // Search input (works seamlessly with status filter pills)
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
-        state.filterOnlyAlerts = false;
         state.searchQuery = e.target.value;
         state.currentPage = 1;
         renderTable();
