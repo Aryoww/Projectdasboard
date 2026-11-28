@@ -259,7 +259,7 @@ body.modal-open {
 .brand-emblem-box {
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 8px;
   display: flex;
@@ -267,7 +267,6 @@ body.modal-open {
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(8px);
   padding: 3px;
 }
 
@@ -642,10 +641,9 @@ body.modal-open {
   margin-top: 0.55rem;
   margin-bottom: 0.45rem;
   padding: 0.5rem 0.65rem;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.28);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 9px;
-  backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -757,20 +755,17 @@ body.modal-open {
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
-  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+  will-change: scroll-position;
+  transform: translateZ(0);
   -webkit-overflow-scrolling: touch;
   padding: 1.1rem 1.45rem 3.75rem 1.45rem;
   background-color: var(--bg-app);
-  background-image:
-    radial-gradient(circle at 12% 0%, rgba(140, 41, 36, 0.04) 0%, transparent 42%),
-    radial-gradient(circle at 88% 8%, rgba(2, 132, 199, 0.045) 0%, transparent 40%);
   transition: margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1), width 0.3s cubic-bezier(0.16, 1, 0.3, 1), max-width 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease;
 }
 
 body.dark-theme .app-main-content {
-  background-image:
-    radial-gradient(circle at 14% 0%, rgba(140, 41, 36, 0.08) 0%, transparent 42%),
-    radial-gradient(circle at 88% 10%, rgba(56, 189, 248, 0.06) 0%, transparent 42%);
+  background-color: var(--bg-app);
 }
 
 .app-main-content::-webkit-scrollbar,
@@ -936,6 +931,12 @@ body.dark-theme .app-main-content {
   flex-wrap: wrap;
 }
 
+#headerLiveTime {
+  font-variant-numeric: tabular-nums;
+  display: inline-block;
+  min-width: 145px;
+}
+
 .btn-banner-action {
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.35);
@@ -951,7 +952,6 @@ body.dark-theme .app-main-content {
   align-items: center;
   gap: 0.45rem;
   white-space: nowrap;
-  backdrop-filter: blur(8px);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.18s ease, border-color 0.18s ease;
 }
 
@@ -1877,8 +1877,9 @@ body.dark-theme .delta-badge.up {
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  contain: layout style;
   box-shadow: var(--shadow-card);
-  transition: background-color 0.25s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+  transition: background-color 0.25s ease, border-color 0.22s ease;
 }
 
 .card-header-block {
@@ -2623,9 +2624,8 @@ body.dark-theme .attention-pill.critical {
 
 .clean-table-responsive {
   width: 100%;
-  overflow: auto;
-  max-height: 620px;
-  scroll-behavior: smooth;
+  overflow-x: auto;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border-card);
   border-radius: var(--radius-md);
@@ -2639,9 +2639,6 @@ body.dark-theme .attention-pill.critical {
 }
 
 .clean-table th {
-  position: sticky;
-  top: 0;
-  z-index: 4;
   background: var(--bg-canvas);
   color: var(--text-secondary);
   font-size: 0.72rem;
@@ -2848,8 +2845,6 @@ body.dark-theme .clean-table tbody tr:hover {
   right: 0;
   bottom: 0;
   background: rgba(15, 23, 42, 0.68);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
   z-index: 99999;
   display: flex !important;
   align-items: center;
@@ -2866,6 +2861,8 @@ body.dark-theme .clean-table tbody tr:hover {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .modal-card {
@@ -2928,7 +2925,8 @@ body.dark-theme .clean-table tbody tr:hover {
 .modal-body {
   padding: 1.25rem 1.4rem;
   overflow-y: auto;
-  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
   font-size: 0.84rem;
   line-height: 1.5;
   color: var(--text-secondary);

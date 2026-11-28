@@ -518,6 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPage: 1,
     pageSize: 15,
     isSimulationActive: true,
+    isActivelyScrolling: false,
     simulationTimer: null,
     isSidebarCollapsed: false
   };
@@ -2374,7 +2375,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Avoid layout/DOM churn while user inspects a modal or highlights text
+      // Avoid layout/DOM churn while user is actively scrolling, inspects a modal, or highlights text
+      if (state.isActivelyScrolling) return;
       if (document.body.classList.contains('modal-open')) return;
       const sel = typeof window.getSelection === 'function' ? window.getSelection() : null;
       if (sel && sel.toString().length > 0) return;
@@ -2941,6 +2943,19 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
         toggleTvMode();
       }
     });
+
+    // Passive scroll guard to prevent live DOM churn during scrolling
+    const mainScrollEl = document.getElementById('appMainContent');
+    if (mainScrollEl) {
+      let scrollIdleTimer = null;
+      mainScrollEl.addEventListener('scroll', () => {
+        state.isActivelyScrolling = true;
+        if (scrollIdleTimer) clearTimeout(scrollIdleTimer);
+        scrollIdleTimer = setTimeout(() => {
+          state.isActivelyScrolling = false;
+        }, 180);
+      }, { passive: true });
+    }
 
     // Close modals on overlay backdrop click or Escape
     document.querySelectorAll('.modal-overlay').forEach(modal => {
