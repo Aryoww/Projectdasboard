@@ -511,7 +511,6 @@ document.addEventListener('DOMContentLoaded', () => {
     activeFilter: 'all',
     activePeriod: 'today',
     filterOnlyAlerts: false,
-    tableStatusFilter: 'all',
     searchQuery: '',
     sortColumn: 'id',
     sortAsc: true,
@@ -2124,32 +2123,16 @@ document.addEventListener('DOMContentLoaded', () => {
     return ['F2-6', 'TR-01', 'TR-12'].includes(m.id) || m.status === 'warning' || (m.pf && m.pf < 0.85);
   }
 
-  function syncTableStatusPills() {
-    document.querySelectorAll('.table-filter-pill').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.tableStatus === state.tableStatusFilter);
-    });
-  }
-
-  window.setTableStatusFilter = function(statusKey) {
-    state.tableStatusFilter = statusKey || 'all';
-    state.filterOnlyAlerts = (statusKey === 'alerts');
-    state.currentPage = 1;
-    syncTableStatusPills();
-    renderTable();
-  };
-
   function getFilteredMeters() {
     let list = state.meters;
 
     // Filter by Attention/Alerts Only
-    if (state.filterOnlyAlerts || state.tableStatusFilter === 'alerts') {
-      list = list.filter(isAlertMeter);
-    } else if (state.tableStatusFilter === 'normal') {
-      list = list.filter(m => !isAlertMeter(m) && m.status === 'normal');
+    if (state.filterOnlyAlerts) {
+      return list.filter(isAlertMeter);
     }
 
     // Filter by Tab / Substation
-    if (!state.filterOnlyAlerts && state.activeFilter !== 'all') {
+    if (state.activeFilter !== 'all') {
       const f = state.activeFilter;
       list = list.filter(m => {
         if (f === 'electrical') {
@@ -2243,10 +2226,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const btnResetFilter = document.getElementById('btnResetTableFilter');
     if (btnResetFilter) {
-      const hasFilter = Boolean(state.filterOnlyAlerts || state.tableStatusFilter !== 'all' || state.searchQuery.trim() !== '');
+      const hasFilter = Boolean(state.filterOnlyAlerts || state.searchQuery.trim() !== '');
       btnResetFilter.style.display = hasFilter ? 'inline-flex' : 'none';
     }
-    syncTableStatusPills();
 
     // Build Table Rows
     if (pageItems.length === 0) {
@@ -2552,7 +2534,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.filterTableToAlerts = function() {
     window.closeAllModals();
     state.filterOnlyAlerts = true;
-    state.tableStatusFilter = 'alerts';
     state.activeFilter = 'all';
     state.searchQuery = '';
     state.currentPage = 1;
@@ -2574,7 +2555,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.resetTableFilters = function() {
     state.filterOnlyAlerts = false;
-    state.tableStatusFilter = 'all';
     state.searchQuery = '';
     state.currentPage = 1;
     if (searchInput) searchInput.value = '';
@@ -2818,9 +2798,10 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
 
   // ================= 10. EVENT LISTENERS =================
   function setupEventListeners() {
-    // Search input (works seamlessly with status filter pills)
+    // Search input
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
+        state.filterOnlyAlerts = false;
         state.searchQuery = e.target.value;
         state.currentPage = 1;
         renderTable();
