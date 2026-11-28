@@ -50,7 +50,7 @@
   --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --sidebar-width: 260px;
+  --sidebar-width: 245px;
   --radius-sm: 7px;
   --radius-md: 11px;
   --radius-lg: 14px;
@@ -97,8 +97,8 @@ html, body {
   background-color: var(--bg-app);
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.48;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
@@ -729,24 +729,24 @@ body.modal-open {
 
 /* ================= 3. MAIN CONTENT AREA ================= */
 .app-main-content {
+  display: block;
+  box-sizing: border-box;
   flex: 1;
   min-width: 0;
   margin-left: var(--sidebar-width); /* Offsets the fixed desktop sidebar */
   width: calc(100% - var(--sidebar-width));
+  max-width: calc(100% - var(--sidebar-width));
   height: 100vh;
   height: 100dvh;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: 1rem 1.35rem 2.5rem 1.35rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  padding: 0.95rem 1.25rem 3.75rem 1.25rem;
   background-color: var(--bg-app);
   background-image:
     radial-gradient(circle at 12% 0%, rgba(140, 41, 36, 0.04) 0%, transparent 42%),
     radial-gradient(circle at 88% 8%, rgba(2, 132, 199, 0.045) 0%, transparent 40%);
-  transition: margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1), width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1), width 0.28s cubic-bezier(0.16, 1, 0.3, 1), max-width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body.dark-theme .app-main-content {
@@ -782,25 +782,27 @@ body.dark-theme .app-main-content {
 .app-layout.sidebar-collapsed .app-main-content {
   margin-left: 0 !important;
   width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* ================= 4. MUSASHI HEADER BANNER (CRIMSON CARD) ================= */
 .musashi-header-banner {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+  position: relative;
+  flex-shrink: 0;
+  margin-bottom: 0.9rem;
+  z-index: 20;
   background: linear-gradient(135deg, #641013 0%, #8b1e21 48%, #a62b2d 100%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
-  padding: 1.1rem 1.45rem;
+  padding: 1rem 1.35rem;
   color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.85rem;
   overflow: hidden;
-  box-shadow: 0 12px 28px -10px rgba(100, 16, 19, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 26px -10px rgba(100, 16, 19, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .musashi-header-banner::after {
@@ -836,16 +838,18 @@ body.dark-theme .app-main-content {
 .btn-sidebar-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   background: rgba(255, 255, 255, 0.16);
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #ffffff;
-  padding: 0.42rem 0.9rem;
+  padding: 0.42rem 0.85rem;
+  min-height: 36px;
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
@@ -918,6 +922,7 @@ body.dark-theme .app-main-content {
   border: 1px solid rgba(255, 255, 255, 0.35);
   color: #ffffff;
   padding: 0.45rem 0.85rem;
+  min-height: 36px;
   border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: 0.78rem;
@@ -926,6 +931,8 @@ body.dark-theme .app-main-content {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
   transition: all 0.15s ease;
 }
 
@@ -1460,7 +1467,7 @@ body.dark-theme .alert-desc {
   font-size: 1.6rem;
   font-weight: 800;
   color: var(--text-primary);
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: -0.025em;
   font-variant-numeric: tabular-nums;
 }
@@ -1472,70 +1479,12 @@ body.dark-theme .alert-desc {
 }
 
 .kpi-subtitle {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Precision Micro-Gauge Inside KPI Cards */
-.kpi-micro-meter {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-top: 0.38rem;
-}
-
-.kpi-micro-track {
-  position: relative;
-  flex: 1;
-  height: 5px;
-  background: rgba(100, 116, 139, 0.16);
-  border-radius: 999px;
-  overflow: visible;
-}
-
-body.dark-theme .kpi-micro-track {
-  background: rgba(148, 163, 184, 0.14);
-}
-
-.kpi-micro-fill {
-  height: 100%;
-  border-radius: 999px;
-  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.kpi-micro-fill.teal {
-  background: linear-gradient(90deg, #0d9488, #2dd4bf);
-}
-
-.kpi-micro-fill.green {
-  background: linear-gradient(90deg, #16a34a, #34d399);
-}
-
-.kpi-micro-fill.amber {
-  background: linear-gradient(90deg, #d97706, #fbbf24);
-}
-
-.kpi-micro-threshold {
-  position: absolute;
-  top: -2px;
-  bottom: -2px;
-  width: 2px;
-  background: var(--text-primary);
-  opacity: 0.55;
-  border-radius: 2px;
-}
-
-.kpi-micro-pct {
-  font-family: var(--font-mono);
-  font-size: 0.63rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
 }
 
 /* ================= HARI PEMANTAUAN & EXECUTIVE DATE TOOLBAR ================= */
@@ -1600,12 +1549,12 @@ body.dark-theme .monitoring-icon-circle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -1625,10 +1574,11 @@ body.dark-theme .monitoring-icon-circle {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  min-height: 32px;
+  padding: 4px 11px;
   background: var(--bg-card);
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-primary);
   cursor: pointer;
@@ -1876,9 +1826,12 @@ body.dark-theme .delta-badge.up {
 /* ================= 8. CHARTS GRID (24H LINE & DONUT) ================= */
 .charts-grid-row {
   display: grid;
-  grid-template-columns: 1.85fr 1fr;
-  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1.68fr) minmax(0, 1fr);
+  gap: 0.85rem;
   margin-bottom: 0.85rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .clean-card {
@@ -1888,6 +1841,11 @@ body.dark-theme .delta-badge.up {
   padding: 1.1rem 1.25rem;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
   box-shadow: var(--shadow-card);
 }
 
@@ -2029,9 +1987,11 @@ body.dark-theme .delta-badge.up {
 }
 
 .line-chart-container {
-  height: 240px;
+  height: 245px;
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .donut-chart-wrapper {
@@ -2040,21 +2000,26 @@ body.dark-theme .delta-badge.up {
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .donut-canvas-box {
-  height: 190px;
+  height: 205px;
   position: relative;
   width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
 }
 
 .donut-legend-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.6rem 0.85rem;
-  margin-top: 0.65rem;
-  font-size: 0.72rem;
+  gap: 0.55rem 0.85rem;
+  margin-top: 0.75rem;
+  font-size: 0.74rem;
   color: var(--text-secondary);
 }
 
@@ -2073,9 +2038,12 @@ body.dark-theme .delta-badge.up {
 /* ================= 9. ROW 3: TOP 8 & PERLU PERHATIAN ================= */
 .mid-split-grid {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 0.85rem;
   margin-bottom: 0.85rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .bar-chart-container {
@@ -2317,9 +2285,11 @@ body.dark-theme .attention-pill.critical {
 /* ================= 10. CRITICAL ASSETS ROW ================= */
 .activity-cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
   margin-bottom: 0.85rem;
+  width: 100%;
+  max-width: 100%;
 }
 
 .activity-cards-grid.single-card {
@@ -2351,7 +2321,8 @@ body.dark-theme .attention-pill.critical {
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.7rem;
+  min-width: 0;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
 }
@@ -2482,6 +2453,50 @@ body.dark-theme .attention-pill.critical {
 .act-metric-row strong {
   color: var(--text-primary);
   font-weight: 600;
+}
+
+.cld-card-footer-cue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.45rem;
+  margin-top: 0.15rem;
+  border-top: 1px dashed var(--border-card);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.cld-detail-link {
+  font-weight: 700;
+  color: var(--color-blue);
+  transition: transform 0.15s ease;
+}
+
+.activity-card-item:hover .cld-detail-link {
+  transform: translateX(2px);
+}
+
+.btn-reset-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.42rem 0.85rem;
+  min-height: 34px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(225, 29, 72, 0.35);
+  background: rgba(225, 29, 72, 0.1);
+  color: var(--color-rose);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.btn-reset-filter:hover {
+  background: var(--color-rose);
+  color: #ffffff;
 }
 
 /* ================= 11. TABLE SECTION ================= */
@@ -3054,19 +3069,20 @@ body.drawer-open {
   overflow: hidden !important;
 }
 
-/* --- TABLET LANDSCAPE & DESKTOP COMPACT (<= 1440px) --- */
-@media (max-width: 1440px) {
+/* --- DESKTOP STANDARD & LAPTOP (<= 1620px): 3x2 KPI Grid for crisp readability --- */
+@media (max-width: 1620px) {
   .kpi-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 0.65rem;
+    gap: 0.75rem;
   }
+}
 
-  .charts-grid-row {
-    grid-template-columns: 1.4fr 1fr;
-  }
-
+/* --- COMPACT LAPTOP & TABLET LANDSCAPE (<= 1180px): Stack split grids so charts never clip --- */
+@media (max-width: 1180px) {
+  .charts-grid-row,
   .mid-split-grid {
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0.85rem;
   }
 }
 
@@ -3508,7 +3524,7 @@ body.dark-theme .mobile-table-hint {
   }
 
   .attention-list-wrapper {
-    max-height: 280px;
+    max-height: none;
   }
 
   .banner-title {
@@ -3530,6 +3546,13 @@ body.dark-theme .mobile-table-hint {
 
   .act-metric-row {
     font-size: 0.72rem;
+  }
+}
+
+/* --- ULTRA COMPACT MOBILE (<= 390px): Prevent cramped comparison rows --- */
+@media (max-width: 390px) {
+  .kpi-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 
@@ -3601,61 +3624,20 @@ body.dark-theme .mobile-table-hint {
   }
 
   .segmented-timeframe-switch .timeframe-pill {
-    padding: 4px 8px !important;
-    font-size: 0.70rem !important;
+    padding: 5px 9px !important;
+    font-size: 0.72rem !important;
   }
 
-  .kpi-live-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  padding: 2px 7px;
-  border-radius: 999px;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  flex-shrink: 0;
-  background: rgba(16, 185, 129, 0.12);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.28);
-}
-
-.kpi-live-chip .pulse-indicator {
-  background: currentColor;
-}
-
-body.dark-theme .kpi-live-chip {
-  background: rgba(52, 211, 153, 0.14);
-  color: #34d399;
-  border-color: rgba(52, 211, 153, 0.3);
-}
-
-.kpi-live-chip.status-offline {
-  background: rgba(100, 116, 139, 0.12);
-  color: var(--text-secondary);
-  border-color: var(--border-card);
-}
-
-.kpi-live-chip.status-offline .pulse-indicator {
-  animation: none;
-  opacity: 0.5;
-}
-
-.monitoring-live-badge {
-    padding: 2px 7px !important;
-    font-size: 0.68rem !important;
-  }
-
-  /* KPI Grid: 3 columns x 2 rows with ultra-compact height */
+  /* KPI Grid: 3 columns x 2 rows with crisp landscape readability */
   .kpi-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 0.45rem !important;
     margin-bottom: 0.65rem !important;
   }
 
   .kpi-card {
-    min-height: 58px !important;
-    padding: 0.4rem 0.55rem !important;
+    min-height: 76px !important;
+    padding: 0.5rem 0.65rem !important;
   }
 
   .kpi-top-row {
@@ -3670,7 +3652,7 @@ body.dark-theme .kpi-live-chip {
   }
 
   .kpi-title {
-    font-size: 0.66rem !important;
+    font-size: 0.68rem !important;
   }
 
   .kpi-value-row {
@@ -3678,7 +3660,7 @@ body.dark-theme .kpi-live-chip {
   }
 
   .kpi-value {
-    font-size: 1.08rem !important;
+    font-size: 1.15rem !important;
   }
 
   .kpi-unit {
@@ -3686,45 +3668,45 @@ body.dark-theme .kpi-live-chip {
   }
 
   .kpi-subtitle {
-    font-size: 0.60rem !important;
+    font-size: 0.62rem !important;
   }
 
   .kpi-comparison-row {
-    margin-top: 0.2rem !important;
-    padding-top: 0.2rem !important;
+    margin-top: 0.25rem !important;
+    padding-top: 0.25rem !important;
     font-size: 0.62rem !important;
   }
 
   /* Charts in Landscape */
   .charts-grid-row {
-    grid-template-columns: 1.4fr 1fr !important;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) !important;
     gap: 0.65rem !important;
   }
 
   .line-chart-container {
-    height: 180px !important;
+    height: 190px !important;
   }
 
   .donut-canvas-box {
-    height: 155px !important;
+    height: 165px !important;
   }
 
   .mid-split-grid {
-    grid-template-columns: 1.3fr 1fr !important;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) !important;
     gap: 0.65rem !important;
   }
 
   .chart-trafo-container {
-    height: 220px !important;
+    height: 230px !important;
   }
 
   .attention-list-wrapper {
-    max-height: 220px !important;
+    max-height: none !important;
   }
 
   /* CLD Incoming Feeders Grid: 3 columns in landscape */
   .activity-cards-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 0.55rem !important;
   }
 

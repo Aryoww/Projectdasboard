@@ -270,7 +270,7 @@
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <line x1="3" y1="18" x2="21" y2="18"></line>
               </svg>
-              <span id="btnSidebarToggleText">Navigation Menu</span>
+              <span id="btnSidebarToggleText">Menu</span>
             </button>
             <h1 class="banner-title" id="bannerTitle">Main Dashboard</h1>
           </div>
@@ -399,13 +399,7 @@
               <span class="kpi-value" id="kpiDayaVal">14.129</span>
               <span class="kpi-unit">kW</span>
             </div>
-            <div class="kpi-subtitle" id="kpiDayaSub">Current live load · 111/111 online</div>
-            <div class="kpi-micro-meter" title="Kapasitas beban substation aktif">
-              <div class="kpi-micro-track">
-                <div class="kpi-micro-fill teal" id="kpiLoadMeterFill" style="width: 69.4%;"></div>
-              </div>
-              <span class="kpi-micro-pct" id="kpiLoadMeterPct">69,4% cap</span>
-            </div>
+            <div class="kpi-subtitle" id="kpiDayaSub">Current live load · 69,4% cap (111/111)</div>
             <div class="kpi-comparison-row">
               <span class="kpi-prev-val" id="kpiDayaPrev">Yesterday: 14,409 kW</span>
               <span class="kpi-delta-tag delta-down" id="kpiDayaDelta">▼ -280 kW</span>
@@ -473,13 +467,6 @@
               <span class="kpi-unit" id="kpiPfUnit">PF</span>
             </div>
             <div class="kpi-subtitle" id="kpiPfSub">Target Cikarang Listrindo ≥ 0,85</div>
-            <div class="kpi-micro-meter" title="Indikator kepatuhan Cos φ (batas minimum 0,85)">
-              <div class="kpi-micro-track">
-                <div class="kpi-micro-fill green" id="kpiPfMeterFill" style="width: 90%;"></div>
-                <span class="kpi-micro-threshold" style="left: 85%;" title="Batas minimum 0,85"></span>
-              </div>
-              <span class="kpi-micro-pct" id="kpiPfMeterPct">≥ 0,85 OK</span>
-            </div>
             <div class="kpi-comparison-row">
               <span class="kpi-prev-val" id="kpiPfPrev">Min Target: 0,85</span>
               <span class="kpi-delta-tag delta-down" id="kpiPfDelta">● +0,05 Optimal</span>
@@ -511,7 +498,7 @@
               <div class="chart-header-row-top">
                 <div class="chart-header-titles">
                   <h2 class="card-title" id="chart24hTitle">Profil &amp; Tren Beban Daya Listrik</h2>
-                  <p class="card-subtitle" id="chart24hSub">Interval 3 jam · Satuan kW · Garis tebal biru = Hari Ini, garis putus-putus abu-abu = Kemarin</p>
+                  <p class="card-subtitle" id="chart24hSub">Interval 3 jam (kW) · Perbandingan kurva aktif &amp; historis</p>
                 </div>
                 <!-- Timeframe Selector Tabs right on the Chart -->
                 <div class="chart-timeframe-switch" role="tablist" aria-label="Rentang Waktu Profil Beban">
@@ -627,6 +614,10 @@
                 <div class="act-metric-row"><span>Tegangan menengah</span><strong>20.000 V</strong></div>
                 <div class="act-metric-row"><span>Power factor</span><strong style="color:var(--color-green);">0,92 <span class="cld-pf-optimal">● Optimal</span></strong></div>
               </div>
+              <div class="cld-card-footer-cue">
+                <span>Telemetry 3-Fasa &amp; Modbus</span>
+                <span class="cld-detail-link">Detail →</span>
+              </div>
             </div>
 
             <!-- Activity Card 2: Incoming CLD 2 -->
@@ -648,6 +639,10 @@
                 <div class="act-metric-row"><span>Kemarin</span><strong>75.120 kWh <span class="cld-saving-delta">▼ 2.580</span></strong></div>
                 <div class="act-metric-row"><span>Tegangan menengah</span><strong>20.000 V</strong></div>
                 <div class="act-metric-row"><span>Power factor</span><strong style="color:var(--color-green);">0,93 <span class="cld-pf-optimal">● Optimal</span></strong></div>
+              </div>
+              <div class="cld-card-footer-cue">
+                <span>Telemetry 3-Fasa &amp; Modbus</span>
+                <span class="cld-detail-link">Detail →</span>
               </div>
             </div>
 
@@ -671,6 +666,10 @@
                 <div class="act-metric-row"><span>Tegangan menengah</span><strong>20.000 V</strong></div>
                 <div class="act-metric-row"><span>Power factor</span><strong style="color:var(--color-green);">0,94 <span class="cld-pf-optimal">● Optimal</span></strong></div>
               </div>
+              <div class="cld-card-footer-cue">
+                <span>Telemetry 3-Fasa &amp; Modbus</span>
+                <span class="cld-detail-link">Detail →</span>
+              </div>
             </div>
           </div>
         </section>
@@ -683,6 +682,9 @@
               <p class="card-subtitle" id="tableSectionSub">Realtime telemetry for 20kV Transformers, Schneider SM6 Cubicles, LMVDP Panels, and APFC Capacitor Banks.</p>
             </div>
             <div class="table-toolbar-right">
+              <button type="button" id="btnResetTableFilter" class="btn-reset-filter" style="display:none;" onclick="window.resetTableFilters()" title="Tampilkan kembali semua meter">
+                ✕ Reset Filter
+              </button>
               <input type="text" id="searchInput" class="clean-search-input" placeholder="Search machine code, meter name, feeder, IP...">
             </div>
           </div>

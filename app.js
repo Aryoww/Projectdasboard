@@ -795,6 +795,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       state.isSidebarCollapsed = willBeCollapsed;
       syncSidebarUIState(!willBeCollapsed);
+      setTimeout(() => {
+        if (chart24hInstance) chart24hInstance.resize();
+        if (chartDonutInstance) chartDonutInstance.resize();
+        if (chartTop8Instance) chartTop8Instance.resize();
+      }, 310);
     }
   }
 
@@ -803,16 +808,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleText = document.getElementById('btnSidebarToggleText');
 
     if (isOpen) {
-      if (toggleText) toggleText.textContent = 'Navigation Menu';
+      if (toggleText) toggleText.textContent = 'Menu';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.remove('collapsed-mode');
-        btnToggleSidebar.title = 'Hide Navigation Menu';
+        btnToggleSidebar.title = 'Tutup Menu Samping';
       }
     } else {
       if (toggleText) toggleText.textContent = 'Open Menu';
       if (btnToggleSidebar) {
         btnToggleSidebar.classList.add('collapsed-mode');
-        btnToggleSidebar.title = 'Show Navigation Menu';
+        btnToggleSidebar.title = 'Buka Menu Samping';
       }
     }
   }
@@ -1131,30 +1136,6 @@ document.addEventListener('DOMContentLoaded', () => {
       kpiPfDelta.className = `kpi-delta-tag ${isCompliant ? 'down' : 'warn'}`;
       kpiPfDelta.textContent = isCompliant ? `● ${sign}${diff} Optimal` : `▲ ${diff} Cek APFC`;
     }
-
-    const pfFill = document.getElementById('kpiPfMeterFill');
-    const pfPct = document.getElementById('kpiPfMeterPct');
-    if (pfFill) {
-      pfFill.style.width = `${Math.min(100, Math.max(0, pfNum * 100)).toFixed(1)}%`;
-      pfFill.className = `kpi-micro-fill ${isCompliant ? 'green' : 'amber'}`;
-    }
-    if (pfPct) {
-      pfPct.textContent = isCompliant ? '≥ 0,85 OK' : '< 0,85 Alert';
-      pfPct.style.color = isCompliant ? 'var(--color-green)' : 'var(--color-amber)';
-    }
-  }
-
-  function updateLoadMeterBar(utilStr) {
-    const loadFill = document.getElementById('kpiLoadMeterFill');
-    const loadPct = document.getElementById('kpiLoadMeterPct');
-    const pctNum = parseFloat(String(utilStr || '69,4%').replace('%', '').replace(',', '.')) || 69.4;
-    if (loadFill) {
-      loadFill.style.width = `${Math.min(100, Math.max(5, pctNum)).toFixed(1)}%`;
-      loadFill.className = `kpi-micro-fill ${pctNum > 85 ? 'amber' : 'teal'}`;
-    }
-    if (loadPct) {
-      loadPct.textContent = `${utilStr || '69,4%'} cap`;
-    }
   }
 
   function updateViewForActiveFilter() {
@@ -1163,11 +1144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const period = state.activePeriod || 'today';
 
     // 1. Update KPI Values & Timeframe Comparison Badges
-    updateLoadMeterBar(period === 'yesterday' ? (data.utilYesterday || data.util) : data.util);
     if (period === 'today') {
       if (kpiDayaTitle) kpiDayaTitle.textContent = 'Total Active Power';
       if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
-      if (kpiDayaSub) kpiDayaSub.textContent = `Current live load · ${data.online || '111 / 111'}`;
+      if (kpiDayaSub) kpiDayaSub.textContent = `Current live load · ${data.util || '69,4%'} cap (${data.online || '111/111'})`;
       if (kpiDayaPrev) kpiDayaPrev.textContent = `Yesterday: ${(data.kwYesterday || data.kw).toLocaleString('id-ID')} kW`;
       if (kpiDayaDelta) {
         const dKw = (data.kw - (data.kwYesterday || data.kw));
@@ -1229,7 +1209,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (chart24hTitle) chart24hTitle.textContent = 'Profil & Tren Beban Daya Listrik';
-      if (chart24hSub) chart24hSub.textContent = 'Interval 3 jam · Satuan kW · Garis tebal biru = Hari Ini, garis putus-putus abu-abu = Kemarin';
+      if (chart24hSub) chart24hSub.textContent = 'Interval 3 jam (kW) · Perbandingan kurva aktif & historis';
       if (chartLegendToday) { chartLegendToday.style.display = 'inline-flex'; chartLegendToday.innerHTML = '<span class="chart-dot blue"></span> Hari Ini'; }
       if (chartLegendPrev) { chartLegendPrev.style.display = 'inline-flex'; chartLegendPrev.innerHTML = '<span class="chart-dot gray"></span> Kemarin'; }
       if (chartPeakBadge) chartPeakBadge.textContent = '▲ Puncak 15.720 kW · 15:00';
@@ -2222,12 +2202,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const endIndex = Math.min(startIndex + state.pageSize, totalItems);
     const pageItems = filtered.slice(startIndex, endIndex);
 
-    // Update Counts Text
+    // Update Counts Text & Reset Filter Button Visibility
     if (pageRangeText) {
       pageRangeText.textContent = totalItems === 0 ? '0' : `${startIndex + 1} - ${endIndex}`;
     }
     if (totalMetersText) {
       totalMetersText.textContent = totalItems;
+    }
+    const btnResetFilter = document.getElementById('btnResetTableFilter');
+    if (btnResetFilter) {
+      const hasFilter = Boolean(state.filterOnlyAlerts || state.searchQuery.trim() !== '');
+      btnResetFilter.style.display = hasFilter ? 'inline-flex' : 'none';
     }
 
     // Build Table Rows
@@ -2544,11 +2529,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderTable();
 
-    const tableSec = document.getElementById('meterDirectorySection') || document.querySelector('.table-card');
+    const tableSec = document.getElementById('tableSection') || document.querySelector('.table-card');
     if (tableSec) {
       tableSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
     showToast('Menampilkan 3 meter berstatus perhatian di tabel direktori');
+  };
+
+  window.resetTableFilters = function() {
+    state.filterOnlyAlerts = false;
+    state.searchQuery = '';
+    state.currentPage = 1;
+    if (searchInput) searchInput.value = '';
+    renderTable();
+    showToast('Filter tabel direset (menampilkan seluruh unit)');
   };
 
   // Detail Modal High-Precision Telemetry (Freeze-Free)
@@ -2861,20 +2855,12 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
       });
     }
 
-    // Review Alert Button (Amber Alert Banner)
+    // Review Alert Button (Amber Alert Banner) — Opens interactive All Alerts Modal on any device
     const btnReviewAlert = document.getElementById('btnReviewAlert');
     if (btnReviewAlert) {
-      btnReviewAlert.addEventListener('click', () => {
-        const attCard = document.getElementById('attentionListCard');
-        if (attCard) {
-          attCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          attCard.style.boxShadow = '0 0 16px rgba(245, 158, 11, 0.7)';
-          attCard.style.borderColor = '#f59e0b';
-          setTimeout(() => {
-            attCard.style.boxShadow = '';
-            attCard.style.borderColor = '';
-          }, 2200);
-        }
+      btnReviewAlert.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.openAllAlertsModal();
       });
     }
 
