@@ -1480,9 +1480,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const defaultTextColor = isDark ? '#94a3b8' : '#64748b';
     const defaultGridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : '#e2e8f0';
 
-    Chart.defaults.font.family = "'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+    Chart.defaults.font.family = "'Inter', -apple-system, sans-serif";
     Chart.defaults.color = defaultTextColor;
-    Chart.defaults.animation = { duration: 420, easing: 'easeOutQuart' };
 
     // Custom Plugin: Peak, Min, Live Time Marker & Incomplete Data Indicator (Matching SCADA Reference)
     const peakAndMinPlugin = {
