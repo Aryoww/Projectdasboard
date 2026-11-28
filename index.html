@@ -400,6 +400,12 @@
               <span class="kpi-unit">kW</span>
             </div>
             <div class="kpi-subtitle" id="kpiDayaSub">Current live load · 111/111 online</div>
+            <div class="kpi-micro-meter" title="Kapasitas beban substation aktif">
+              <div class="kpi-micro-track">
+                <div class="kpi-micro-fill teal" id="kpiLoadMeterFill" style="width: 69.4%;"></div>
+              </div>
+              <span class="kpi-micro-pct" id="kpiLoadMeterPct">69,4% cap</span>
+            </div>
             <div class="kpi-comparison-row">
               <span class="kpi-prev-val" id="kpiDayaPrev">Yesterday: 14,409 kW</span>
               <span class="kpi-delta-tag delta-down" id="kpiDayaDelta">▼ -280 kW</span>
@@ -467,6 +473,13 @@
               <span class="kpi-unit" id="kpiPfUnit">PF</span>
             </div>
             <div class="kpi-subtitle" id="kpiPfSub">Target Cikarang Listrindo ≥ 0,85</div>
+            <div class="kpi-micro-meter" title="Indikator kepatuhan Cos φ (batas minimum 0,85)">
+              <div class="kpi-micro-track">
+                <div class="kpi-micro-fill green" id="kpiPfMeterFill" style="width: 90%;"></div>
+                <span class="kpi-micro-threshold" style="left: 85%;" title="Batas minimum 0,85"></span>
+              </div>
+              <span class="kpi-micro-pct" id="kpiPfMeterPct">≥ 0,85 OK</span>
+            </div>
             <div class="kpi-comparison-row">
               <span class="kpi-prev-val" id="kpiPfPrev">Min Target: 0,85</span>
               <span class="kpi-delta-tag delta-down" id="kpiPfDelta">● +0,05 Optimal</span>

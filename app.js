@@ -1131,6 +1131,30 @@ document.addEventListener('DOMContentLoaded', () => {
       kpiPfDelta.className = `kpi-delta-tag ${isCompliant ? 'down' : 'warn'}`;
       kpiPfDelta.textContent = isCompliant ? `● ${sign}${diff} Optimal` : `▲ ${diff} Cek APFC`;
     }
+
+    const pfFill = document.getElementById('kpiPfMeterFill');
+    const pfPct = document.getElementById('kpiPfMeterPct');
+    if (pfFill) {
+      pfFill.style.width = `${Math.min(100, Math.max(0, pfNum * 100)).toFixed(1)}%`;
+      pfFill.className = `kpi-micro-fill ${isCompliant ? 'green' : 'amber'}`;
+    }
+    if (pfPct) {
+      pfPct.textContent = isCompliant ? '≥ 0,85 OK' : '< 0,85 Alert';
+      pfPct.style.color = isCompliant ? 'var(--color-green)' : 'var(--color-amber)';
+    }
+  }
+
+  function updateLoadMeterBar(utilStr) {
+    const loadFill = document.getElementById('kpiLoadMeterFill');
+    const loadPct = document.getElementById('kpiLoadMeterPct');
+    const pctNum = parseFloat(String(utilStr || '69,4%').replace('%', '').replace(',', '.')) || 69.4;
+    if (loadFill) {
+      loadFill.style.width = `${Math.min(100, Math.max(5, pctNum)).toFixed(1)}%`;
+      loadFill.className = `kpi-micro-fill ${pctNum > 85 ? 'amber' : 'teal'}`;
+    }
+    if (loadPct) {
+      loadPct.textContent = `${utilStr || '69,4%'} cap`;
+    }
   }
 
   function updateViewForActiveFilter() {
@@ -1139,6 +1163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const period = state.activePeriod || 'today';
 
     // 1. Update KPI Values & Timeframe Comparison Badges
+    updateLoadMeterBar(period === 'yesterday' ? (data.utilYesterday || data.util) : data.util);
     if (period === 'today') {
       if (kpiDayaTitle) kpiDayaTitle.textContent = 'Total Active Power';
       if (kpiDayaVal) kpiDayaVal.textContent = data.kw.toLocaleString('id-ID');
@@ -1663,7 +1688,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx24h = document.getElementById('chart24h');
     if (ctx24h) {
       const gradient = ctx24h.getContext('2d').createLinearGradient(0, 0, 0, 240);
-      gradient.addColorStop(0, 'rgba(2, 132, 199, 0.22)');
+      gradient.addColorStop(0, 'rgba(2, 132, 199, 0.28)');
+      gradient.addColorStop(0.55, 'rgba(2, 132, 199, 0.09)');
       gradient.addColorStop(1, 'rgba(2, 132, 199, 0.0)');
 
       chart24hInstance = new Chart(ctx24h, {
@@ -1678,22 +1704,25 @@ document.addEventListener('DOMContentLoaded', () => {
               borderWidth: 2.8,
               backgroundColor: gradient,
               fill: true,
-              tension: 0.45,
-              pointRadius: 3,
+              tension: 0.42,
+              pointRadius: 3.5,
+              pointBackgroundColor: '#ffffff',
+              pointBorderColor: '#0284c7',
+              pointBorderWidth: 2,
               pointHoverRadius: 6,
               pointHoverBackgroundColor: '#0284c7',
               pointHoverBorderColor: '#ffffff',
-              pointHoverBorderWidth: 2
+              pointHoverBorderWidth: 2.5
             },
             {
               label: 'Yesterday (H-1)',
               data: CATEGORY_BASELINES.all.curve24hYesterday,
               borderColor: '#94a3b8',
-              borderWidth: 2,
+              borderWidth: 1.8,
               borderDash: [5, 4],
               backgroundColor: 'transparent',
               fill: false,
-              tension: 0.45,
+              tension: 0.42,
               pointRadius: 2,
               pointHoverRadius: 5,
               pointHoverBackgroundColor: '#94a3b8',
@@ -1712,12 +1741,14 @@ document.addEventListener('DOMContentLoaded', () => {
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#0f172a',
+              backgroundColor: 'rgba(15, 23, 42, 0.94)',
               titleColor: '#ffffff',
               bodyColor: '#e2e8f0',
-              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(148, 163, 184, 0.2)',
               borderWidth: 1,
-              padding: 10,
+              cornerRadius: 8,
+              padding: 11,
+              boxPadding: 5,
               mode: 'index',
               intersect: false,
               callbacks: {
@@ -1746,15 +1777,17 @@ document.addEventListener('DOMContentLoaded', () => {
           scales: {
             x: {
               grid: { display: false },
-              ticks: { color: defaultTextColor, font: { size: 11 } }
+              border: { display: false },
+              ticks: { color: defaultTextColor, font: { size: 11, weight: '500' } }
             },
             y: {
               min: 0,
               max: CATEGORY_BASELINES.all.curveMax,
+              border: { display: false, dash: [4, 4] },
               grid: { color: defaultGridColor },
               ticks: {
                 color: defaultTextColor,
-                font: { size: 11 },
+                font: { size: 11, weight: '500' },
                 stepSize: CATEGORY_BASELINES.all.curveStep,
                 callback: (val) => val === 0 ? '0' : val.toLocaleString('id-ID')
               }
@@ -1775,28 +1808,29 @@ document.addEventListener('DOMContentLoaded', () => {
           datasets: [{
             data: [76200, 49800, 68100, 35596],
             backgroundColor: [
-              '#38bdf8', // Factory 1 (33%)
+              '#0284c7', // Factory 1 (33%)
               '#06b6d4', // Factory 2.1 (22%)
-              '#2dd4bf', // Factory 2 (30%)
-              '#34d399'  // Factory 3 (15%)
+              '#14b8a6', // Factory 2 (30%)
+              '#10b981'  // Factory 3 (15%)
             ],
-            borderWidth: 2,
-            borderColor: '#ffffff',
-            hoverOffset: 6
+            borderWidth: 2.5,
+            borderColor: isDark ? '#0f172a' : '#ffffff',
+            hoverOffset: 8
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          cutout: '68%',
+          cutout: '70%',
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#0f172a',
+              backgroundColor: 'rgba(15, 23, 42, 0.94)',
               titleColor: '#ffffff',
-              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(148, 163, 184, 0.2)',
               borderWidth: 1,
-              padding: 10,
+              cornerRadius: 8,
+              padding: 11,
               callbacks: {
                 label: (ctx) => {
                   const val = ctx.parsed;
@@ -1816,15 +1850,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctxTop8 = document.getElementById('chartTop8Meters');
     if (ctxTop8) {
       const topData = TOP_8_DATA.all;
+      const ctxBar = ctxTop8.getContext('2d');
+      const barGrad = ctxBar.createLinearGradient(0, 0, 420, 0);
+      barGrad.addColorStop(0, '#0369a1');
+      barGrad.addColorStop(0.55, '#0284c7');
+      barGrad.addColorStop(1, '#38bdf8');
+
       chartTop8Instance = new Chart(ctxTop8, {
         type: 'bar',
         data: {
           labels: topData.map(d => d.name),
           datasets: [{
             data: topData.map(d => d.val),
-            backgroundColor: '#0284c7',
+            backgroundColor: barGrad,
             hoverBackgroundColor: '#8c2924',
-            borderRadius: 4,
+            borderRadius: 5,
             barThickness: 11
           }]
         },
@@ -1835,12 +1875,13 @@ document.addEventListener('DOMContentLoaded', () => {
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#0f172a',
+              backgroundColor: 'rgba(15, 23, 42, 0.94)',
               titleColor: '#ffffff',
               bodyColor: '#38bdf8',
-              borderColor: 'rgba(255, 255, 255, 0.1)',
+              borderColor: 'rgba(148, 163, 184, 0.2)',
               borderWidth: 1,
-              padding: 9,
+              cornerRadius: 8,
+              padding: 10,
               displayColors: false,
               callbacks: {
                 label: (ctx) => `Pemakaian: ${ctx.parsed.x.toLocaleString('id-ID')} kWh`
@@ -1851,19 +1892,21 @@ document.addEventListener('DOMContentLoaded', () => {
             x: {
               min: 0,
               max: 22000,
+              border: { display: false, dash: [4, 4] },
               grid: { color: defaultGridColor },
               ticks: {
                 color: defaultTextColor,
-                font: { size: 10 },
+                font: { size: 10, weight: '500' },
                 stepSize: 4000,
                 callback: (val) => val === 0 ? '0' : val.toLocaleString('id-ID')
               }
             },
             y: {
+              border: { display: false },
               grid: { display: false },
               ticks: {
                 color: defaultTextColor,
-                font: { size: 10 }
+                font: { size: 10, weight: '600' }
               }
             }
           }
@@ -2901,6 +2944,11 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
       chart24hInstance.options.scales.y.ticks.color = textColor;
       chart24hInstance.options.scales.y.grid.color = gridColor;
       chart24hInstance.update();
+    }
+
+    if (chartDonutInstance && chartDonutInstance.data.datasets[0]) {
+      chartDonutInstance.data.datasets[0].borderColor = isDark ? '#0f172a' : '#ffffff';
+      chartDonutInstance.update();
     }
 
     if (chartTop8Instance) {
