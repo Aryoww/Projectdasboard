@@ -2961,40 +2961,75 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
     const dateFormatted = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
     const timeFormatted = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} WIB`;
 
-    // Metrics calculations
-    const totalKw = state.meters.reduce((acc, m) => acc + (m.kw || 0), 0);
-    const totalKwh = state.meters.reduce((acc, m) => acc + (m.kwhToday || 0), 0);
-    const totalCostRp = Math.round(totalKwh * 1444.70);
-    const avgPf = (state.meters.reduce((acc, m) => acc + (m.pf || 0.90), 0) / (state.meters.length || 1)).toFixed(2);
-    const totalCarbon = (totalKwh * 0.79).toFixed(1);
+    // Helper: Unicode visual bar (safe in Excel without nested tables that clip row height)
+    function makeBar(pct, totalBlocks = 12) {
+      const clamped = Math.max(0, Math.min(100, pct));
+      const filled = Math.max(1, Math.round((clamped / 100) * totalBlocks));
+      const empty = Math.max(0, totalBlocks - filled);
+      return `${'█'.repeat(filled)}${'░'.repeat(empty)}  ${clamped}%`;
+    }
+
+    // Calibrated Plant Incoming Totals (Matching Main Dashboard KPIs)
+    const plantBase = CATEGORY_BASELINES.all;
+    const plantKw = plantBase.kw;
+    const plantKwh = plantBase.kwh;
+    const plantCostRp = Math.round(plantKwh * 1444.70);
+    const plantPf = plantBase.pf || '0,90';
+    const plantCarbonTon = plantBase.carbonTon || '155,7';
+    const totalMetersCount = state.meters.length;
     const onlineMeters = state.meters.filter(m => m.status === 'normal' || m.status === 'warning').length;
 
-    // Factory breakdowns
-    const fac1Meters = state.meters.filter(m => m.factory === 'fac1');
-    const fac2_1Meters = state.meters.filter(m => m.factory === 'fac2_1');
-    const fac2Meters = state.meters.filter(m => m.factory === 'fac2');
-    const fac3Meters = state.meters.filter(m => m.factory === 'fac3');
+    // Directory sub-totals (sum across all channel rows in table)
+    const dirTotalKw = state.meters.reduce((acc, m) => acc + (m.kw || 0), 0);
+    const dirTotalKwh = Math.round(state.meters.reduce((acc, m) => acc + (m.kwhToday || 0), 0));
+    const dirTotalCostRp = Math.round(dirTotalKwh * 1444.70);
+    const avgDirPf = (state.meters.reduce((acc, m) => acc + (m.pf || 0.90), 0) / (totalMetersCount || 1)).toFixed(2).replace('.', ',');
 
-    const fac1Kwh = fac1Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
-    const fac2_1Kwh = fac2_1Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
-    const fac2Kwh = fac2Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
-    const fac3Kwh = fac3Meters.reduce((a, m) => a + (m.kwhToday || 0), 0);
-
-    const fac1Kw = fac1Meters.reduce((a, m) => a + (m.kw || 0), 0);
-    const fac2_1Kw = fac2_1Meters.reduce((a, m) => a + (m.kw || 0), 0);
-    const fac2Kw = fac2Meters.reduce((a, m) => a + (m.kw || 0), 0);
-    const fac3Kw = fac3Meters.reduce((a, m) => a + (m.kw || 0), 0);
-
-    const fac1Pct = totalKwh > 0 ? Math.round((fac1Kwh / totalKwh) * 100) : 0;
-    const fac2_1Pct = totalKwh > 0 ? Math.round((fac2_1Kwh / totalKwh) * 100) : 0;
-    const fac2Pct = totalKwh > 0 ? Math.round((fac2Kwh / totalKwh) * 100) : 0;
-    const fac3Pct = totalKwh > 0 ? Math.max(0, 100 - fac1Pct - fac2_1Pct - fac2Pct) : 0;
+    // Factory Breakdowns (Aligned with Substation Baselines)
+    const facRows = [
+      {
+        name: 'Factory 1 (Electrical Room 1)',
+        units: state.meters.filter(m => m.factory === 'fac1').length,
+        supply: '20kV / 6,6kV · Tr 01–05',
+        kw: CATEGORY_BASELINES.fac1.kw,
+        kwh: CATEGORY_BASELINES.fac1.kwh,
+        pct: 33,
+        color: '#0284c7'
+      },
+      {
+        name: 'Factory 2.1 (Electrical Room 2.1)',
+        units: state.meters.filter(m => m.factory === 'fac2_1').length,
+        supply: '20kV / 380V · Tr 06–10',
+        kw: CATEGORY_BASELINES.fac2_1.kw,
+        kwh: CATEGORY_BASELINES.fac2_1.kwh,
+        pct: 22,
+        color: '#06b6d4'
+      },
+      {
+        name: 'Factory 2 (Electrical Room 2)',
+        units: state.meters.filter(m => m.factory === 'fac2').length,
+        supply: '20kV / 200V · Tr 11–16',
+        kw: CATEGORY_BASELINES.fac2.kw,
+        kwh: CATEGORY_BASELINES.fac2.kwh,
+        pct: 30,
+        color: '#d97706'
+      },
+      {
+        name: 'Factory 3 (Electrical Room 3)',
+        units: state.meters.filter(m => m.factory === 'fac3').length,
+        supply: '20kV / 380V · Tr 17–19',
+        kw: CATEGORY_BASELINES.fac3.kw,
+        kwh: CATEGORY_BASELINES.fac3.kwh,
+        pct: 15,
+        color: '#059669'
+      }
+    ];
 
     // Top 8 Consumers
     const top8 = [...state.meters].sort((a, b) => (b.kwhToday || 0) - (a.kwhToday || 0)).slice(0, 8);
     const maxTop8Kwh = top8[0] ? (top8[0].kwhToday || 1) : 1;
 
-    // Generate XML/HTML content
+    // Generate Clean Single-Grid Excel HTML (Zero nested tables, explicit col widths, exact row heights)
     const excelHtml = `
 <html xmlns:o="urn:schemas-microsoft-com:office:office"
       xmlns:x="urn:schemas-microsoft-com:office:excel"
@@ -3009,7 +3044,10 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
           <x:Name>Audit Energi Musashi</x:Name>
           <x:WorksheetOptions>
             <x:DisplayGridlines/>
+            <x:FitToPage/>
             <x:Print>
+              <x:FitWidth>1</x:FitWidth>
+              <x:FitHeight>0</x:FitHeight>
               <x:ValidPrinterInfo/>
               <x:Orientation>Landscape</x:Orientation>
             </x:Print>
@@ -3020,274 +3058,219 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
   </xml>
   <![endif]-->
   <style>
-    body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; font-size: 10pt; color: #1e293b; background: #ffffff; }
-    .banner-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
-    .banner-title { background: #8C2924; color: #ffffff; font-size: 16pt; font-weight: bold; padding: 14px 18px; text-align: left; }
-    .banner-sub { background: #6b1f1b; color: #fed7aa; font-size: 9.5pt; padding: 6px 18px; text-align: left; }
-    .kpi-table { width: 100%; border-collapse: separate; border-spacing: 6px; margin-bottom: 16px; }
-    .kpi-box { background: #f8fafc; border: 1.5px solid #cbd5e1; padding: 10px; text-align: center; vertical-align: middle; }
-    .kpi-header { font-size: 8pt; font-weight: bold; color: #64748b; text-transform: uppercase; margin-bottom: 3px; }
-    .kpi-number { font-size: 15pt; font-weight: bold; color: #0f172a; margin-bottom: 2px; }
-    .kpi-subtext { font-size: 7.5pt; color: #94a3b8; }
-    .section-header { font-size: 11pt; font-weight: bold; color: #8C2924; padding: 8px 4px; border-bottom: 2px solid #8C2924; margin-top: 15px; margin-bottom: 6px; }
-    .chart-box-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; border: 1px solid #cbd5e1; }
-    .chart-th { background: #f1f5f9; color: #334155; font-size: 9pt; font-weight: bold; padding: 7px 10px; border: 1px solid #cbd5e1; }
-    .chart-td { padding: 6px 10px; font-size: 9pt; border: 1px solid #e2e8f0; vertical-align: middle; }
-    .chart-bar-cell { width: 260px; padding: 4px 8px; }
-    .data-table { width: 100%; border-collapse: collapse; border: 1.5px solid #8C2924; margin-top: 8px; }
-    .data-table th { background: #8C2924; color: #ffffff; font-size: 9pt; font-weight: bold; padding: 8px 6px; border: 1px solid #6b1f1b; text-align: center; }
-    .data-table td { padding: 6px 8px; font-size: 8.5pt; border: 1px solid #cbd5e1; vertical-align: middle; }
+    body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; font-size: 10pt; color: #0f172a; background: #ffffff; }
+    table.sheet { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    td, th { font-family: 'Segoe UI', Calibri, Arial, sans-serif; vertical-align: middle; }
+    .banner-title { background: #8C2924; color: #ffffff; font-size: 15pt; font-weight: bold; padding: 10px 16px; text-align: left; border: 1px solid #6b1f1b; }
+    .banner-sub { background: #641013; color: #fed7aa; font-size: 9.5pt; padding: 6px 16px; text-align: left; border: 1px solid #6b1f1b; }
+    .spacer-row td { background: #ffffff; border: none; height: 10pt; }
+
+    /* KPI Card Cells (3 stacked rows per card for rock-solid Excel rendering) */
+    .kpi-lbl { background: #f8fafc; color: #475569; font-size: 8pt; font-weight: bold; text-transform: uppercase; text-align: center; padding: 5px 6px 2px 6px; border-top: 2.5pt solid #8C2924; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
+    .kpi-val { background: #ffffff; font-size: 14pt; font-weight: bold; text-align: center; padding: 4px 6px; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
+    .kpi-sub { background: #f8fafc; color: #64748b; font-size: 7.5pt; text-align: center; padding: 2px 6px 5px 6px; border-bottom: 1px solid #cbd5e1; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
+
+    /* Section Headings */
+    .sec-head { background: #fef2f2; color: #8C2924; font-size: 10.5pt; font-weight: bold; padding: 7px 12px; text-align: left; border-top: 2pt solid #8C2924; border-bottom: 1.5pt solid #8C2924; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
+
+    /* Summary & Top 8 Tables */
+    .sub-th { background: #e2e8f0; color: #1e293b; font-size: 9pt; font-weight: bold; padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; white-space: normal; }
+    .sub-td { padding: 6px 8px; font-size: 9pt; border: 1px solid #cbd5e1; white-space: normal; color: #1e293b; }
+
+    /* Main Telemetry Table */
+    .dir-th { background: #8C2924; color: #ffffff; font-size: 8.5pt; font-weight: bold; padding: 7px 6px; border: 1px solid #6b1f1b; text-align: center; white-space: normal; }
+    .dir-td { padding: 5px 7px; font-size: 8.5pt; border: 1px solid #cbd5e1; white-space: normal; color: #1e293b; }
     .row-even { background: #f8fafc; }
     .row-odd { background: #ffffff; }
+
     .text-center { text-align: center; }
+    .text-left { text-align: left; }
     .text-right { text-align: right; }
-    .badge-normal { background: #dcfce7; color: #166534; font-weight: bold; text-align: center; padding: 2px 6px; border-radius: 3px; }
-    .badge-warn { background: #fef3c7; color: #92400e; font-weight: bold; text-align: center; padding: 2px 6px; border-radius: 3px; }
-    .total-row td { background: #f1f5f9; font-weight: bold; color: #0f172a; border-top: 2.5px solid #8C2924; border-bottom: 2.5px solid #8C2924; padding: 8px 6px; }
-    .num-dec1 { mso-number-format: "\\#\\,\\#\\#0\\.0"; }
-    .num-dec2 { mso-number-format: "\\#\\,\\#\\#0\\.00"; }
-    .num-int { mso-number-format: "\\#\\,\\#\\#0"; }
-    .num-curr { mso-number-format: "\"Rp\"\\ \\#\\,\\#\\#0"; }
+    .mono { font-family: Consolas, 'Courier New', monospace; }
+    .badge-normal { background: #dcfce7; color: #166534; font-weight: bold; }
+    .badge-warn { background: #fef3c7; color: #92400e; font-weight: bold; }
+    .total-row td { background: #f1f5f9; font-weight: bold; color: #0f172a; border-top: 2pt solid #8C2924; border-bottom: 2pt solid #8C2924; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; padding: 7px 6px; font-size: 9pt; }
+    .footer-cell { font-size: 8pt; color: #64748b; padding: 8px 4px; border: none; }
   </style>
 </head>
 <body>
-  <!-- 1. Header Banner Kop Perusahaan -->
-  <table class="banner-table" cellpadding="0" cellspacing="0">
-    <tr>
+  <table class="sheet" cellpadding="0" cellspacing="0">
+    <!-- Unified 14-Column Grid Widths (Columns A through N) -->
+    <colgroup>
+      <col width="44" />
+      <col width="96" />
+      <col width="225" />
+      <col width="110" />
+      <col width="215" />
+      <col width="175" />
+      <col width="110" />
+      <col width="84" />
+      <col width="82" />
+      <col width="82" />
+      <col width="70" />
+      <col width="98" />
+      <col width="122" />
+      <col width="92" />
+    </colgroup>
+
+    <!-- 1. HEADER BANNER KOP PERUSAHAAN -->
+    <tr style="height: 36pt; mso-height-source: userset;">
       <td class="banner-title" colspan="14">
-        ⚡ PT MUSASHI AUTO PARTS INDONESIA · UTILITY & ENERGY MANAGEMENT SYSTEM
+        PT MUSASHI AUTO PARTS INDONESIA · UTILITY &amp; ENERGY MANAGEMENT SYSTEM
       </td>
     </tr>
-    <tr>
+    <tr style="height: 22pt; mso-height-source: userset;">
       <td class="banner-sub" colspan="14">
-        Laporan Audit & Telemetri Realtime 38 Digital Power Meter · Tanggal: ${dateFormatted} · Pukul: ${timeFormatted} · Divisi: Engineering & Utility
+        Laporan Audit &amp; Telemetri Realtime ${totalMetersCount} Digital Power Meter · Tanggal: ${dateFormatted} · Pukul: ${timeFormatted} · Divisi: Engineering &amp; Utility
       </td>
     </tr>
-  </table>
+    <tr class="spacer-row" style="height: 10pt; mso-height-source: userset;"><td colspan="14"></td></tr>
 
-  <!-- 2. Ringkasan Eksekutif KPI Cards -->
-  <table class="kpi-table" cellpadding="0" cellspacing="0">
-    <tr>
-      <td class="kpi-box" width="16%">
-        <div class="kpi-header">TOTAL DAYA AKTIF</div>
-        <div class="kpi-number" style="color:#0284c7;">${totalKw.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kW</div>
-        <div class="kpi-subtext">All Electrical Rooms &amp; Plant Loads</div>
-      </td>
-      <td class="kpi-box" width="16%">
-        <div class="kpi-header">ENERGI LISTRIK HARI INI</div>
-        <div class="kpi-number" style="color:#d97706;">${totalKwh.toLocaleString('id-ID')} kWh</div>
-        <div class="kpi-subtext">Akumulasi shift 1 & 2</div>
-      </td>
-      <td class="kpi-box" width="18%">
-        <div class="kpi-header">ESTIMASI BIAYA LISTRIK</div>
-        <div class="kpi-number" style="color:#8C2924;">Rp ${totalCostRp.toLocaleString('id-ID')}</div>
-        <div class="kpi-subtext">Cikarang Listrindo Tariff: Rp 1.444,70/kWh</div>
-      </td>
-      <td class="kpi-box" width="16%">
-        <div class="kpi-header">POWER FACTOR RATA-RATA</div>
-        <div class="kpi-number" style="color:#059669;">${avgPf}</div>
-        <div class="kpi-subtext">Cikarang Listrindo Target ≥ 0,85 (Safe)</div>
-      </td>
-      <td class="kpi-box" width="16%">
-        <div class="kpi-header">STATUS JARINGAN METER</div>
-        <div class="kpi-number" style="color:#16a34a;">${onlineMeters} / ${state.meters.length}</div>
-        <div class="kpi-subtext">100% Online Polling Modbus</div>
-      </td>
-      <td class="kpi-box" width="18%">
-        <div class="kpi-header">JEJAK EMISI KARBON (ESG)</div>
-        <div class="kpi-number" style="color:#0d9488;">${totalCarbon.toLocaleString('id-ID')} kg</div>
-        <div class="kpi-subtext">Faktor Emisi 0,79 kg CO₂e/kWh</div>
-      </td>
+    <!-- 2. RINGKASAN EKSEKUTIF KPI (TERENTANG RAPI DARI KOLOM A SAMPAI N) -->
+    <tr style="height: 22pt; mso-height-source: userset;">
+      <td class="kpi-lbl" colspan="3" style="border-top-color:#0d9488;">PLANT ACTIVE POWER (LIVE)</td>
+      <td class="kpi-lbl" colspan="2" style="border-top-color:#d97706;">ENERGY TODAY (CLD 1–3)</td>
+      <td class="kpi-lbl" colspan="2" style="border-top-color:#16a34a;">ESTIMATED COST TODAY</td>
+      <td class="kpi-lbl" colspan="3" style="border-top-color:#0284c7;">POWER FACTOR (COS φ)</td>
+      <td class="kpi-lbl" colspan="2" style="border-top-color:#16a34a;">ACTIVE METERS</td>
+      <td class="kpi-lbl" colspan="2" style="border-top-color:#0d9488;">CARBON EMISSION (ESG)</td>
     </tr>
-  </table>
+    <tr style="height: 28pt; mso-height-source: userset;">
+      <td class="kpi-val" colspan="3" style="color:#0d9488;">${plantKw.toLocaleString('id-ID')} kW</td>
+      <td class="kpi-val" colspan="2" style="color:#d97706;">${plantKwh.toLocaleString('id-ID')} kWh</td>
+      <td class="kpi-val" colspan="2" style="color:#8C2924;">Rp ${plantCostRp.toLocaleString('id-ID')}</td>
+      <td class="kpi-val" colspan="3" style="color:#059669;">${plantPf}</td>
+      <td class="kpi-val" colspan="2" style="color:#0284c7;">${onlineMeters} / ${totalMetersCount}</td>
+      <td class="kpi-val" colspan="2" style="color:#0d9488;">${plantCarbonTon} ton</td>
+    </tr>
+    <tr style="height: 20pt; mso-height-source: userset;">
+      <td class="kpi-sub" colspan="3">Beban Aktual Plant · Kapasitas 69,4%</td>
+      <td class="kpi-sub" colspan="2">Akumulasi Incoming sejak 00:00 WIB</td>
+      <td class="kpi-sub" colspan="2">Tarif Cikarang Listrindo Rp 1.444,70/kWh</td>
+      <td class="kpi-sub" colspan="3">Target Cikarang Listrindo ≥ 0,85 (Optimal)</td>
+      <td class="kpi-sub" colspan="2">100% Online Polling Modbus</td>
+      <td class="kpi-sub" colspan="2">Faktor Emisi Jamali 0,79 kg/kWh</td>
+    </tr>
+    <tr class="spacer-row" style="height: 12pt; mso-height-source: userset;"><td colspan="14"></td></tr>
 
-  <!-- 3. Grafik Visual 1: Distribusi Konsumsi Energi per Factory -->
-  <div class="section-header">📊 1. ENERGY CONSUMPTION DISTRIBUTION BY FACTORY AREA</div>
-  <table class="chart-box-table" cellpadding="0" cellspacing="0">
-    <thead>
-      <tr>
-        <th class="chart-th" width="22%">Substation Area</th>
-        <th class="chart-th" width="10%">Meter Units</th>
-        <th class="chart-th" width="14%">Active Power (kW)</th>
-        <th class="chart-th" width="14%">Energy (kWh)</th>
-        <th class="chart-th" width="10%">Share (%)</th>
-        <th class="chart-th" width="30%">Proportional Bar Chart</th>
+    <!-- 3. SECTION 1: DISTRIBUSI ENERGI PER FACTORY -->
+    <tr style="height: 26pt; mso-height-source: userset;">
+      <td class="sec-head" colspan="14">1. ENERGY CONSUMPTION DISTRIBUTION BY FACTORY AREA (SUBSTATION 20kV)</td>
+    </tr>
+    <tr style="height: 24pt; mso-height-source: userset;">
+      <th class="sub-th text-left" colspan="3">Substation Area</th>
+      <th class="sub-th">Units</th>
+      <th class="sub-th text-left" colspan="3">Primary Supply &amp; Transformer Scope</th>
+      <th class="sub-th text-right" colspan="2">Active Power (kW)</th>
+      <th class="sub-th text-right" colspan="3">Energy Today (kWh)</th>
+      <th class="sub-th text-left" colspan="2">Proportional Share</th>
+    </tr>
+    ${facRows.map((fr, idx) => `
+      <tr class="${idx % 2 === 0 ? 'row-odd' : 'row-even'}" style="height: 24pt; mso-height-source: userset;">
+        <td class="sub-td text-left" colspan="3"><strong>${fr.name}</strong></td>
+        <td class="sub-td text-center">${fr.units} Unit</td>
+        <td class="sub-td text-left" colspan="3">${fr.supply}</td>
+        <td class="sub-td text-right mono" colspan="2">${fr.kw.toLocaleString('id-ID')} kW</td>
+        <td class="sub-td text-right mono" colspan="3"><strong>${fr.kwh.toLocaleString('id-ID')} kWh</strong></td>
+        <td class="sub-td text-left mono" colspan="2" style="color:${fr.color}; font-weight:bold;">${makeBar(fr.pct, 12)}</td>
       </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="chart-td"><strong>Factory 1 (Electrical 20kV / 6.6kV)</strong></td>
-        <td class="chart-td text-center">${fac1Meters.length} Unit</td>
-        <td class="chart-td text-right num-dec1">${fac1Kw.toFixed(1)} kW</td>
-        <td class="chart-td text-right num-int">${fac1Kwh.toLocaleString('id-ID')} kWh</td>
-        <td class="chart-td text-center"><strong>${fac1Pct}%</strong></td>
-        <td class="chart-td chart-bar-cell">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="${fac1Pct}%" style="background:#0284c7; height:16px; border:none; border-radius:3px;"></td>
-              <td width="${100 - fac1Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td class="chart-td"><strong>Factory 2.1 (Electrical Room 2.1)</strong></td>
-        <td class="chart-td text-center">${fac2_1Meters.length} Unit</td>
-        <td class="chart-td text-right num-dec1">${fac2_1Kw.toFixed(1)} kW</td>
-        <td class="chart-td text-right num-int">${fac2_1Kwh.toLocaleString('id-ID')} kWh</td>
-        <td class="chart-td text-center"><strong>${fac2_1Pct}%</strong></td>
-        <td class="chart-td chart-bar-cell">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="${fac2_1Pct}%" style="background:#06b6d4; height:16px; border:none; border-radius:3px;"></td>
-              <td width="${100 - fac2_1Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td class="chart-td"><strong>Factory 2 (Forging & Heat Treatment)</strong></td>
-        <td class="chart-td text-center">${fac2Meters.length} Unit</td>
-        <td class="chart-td text-right num-dec1">${fac2Kw.toFixed(1)} kW</td>
-        <td class="chart-td text-right num-int">${fac2Kwh.toLocaleString('id-ID')} kWh</td>
-        <td class="chart-td text-center"><strong>${fac2Pct}%</strong></td>
-        <td class="chart-td chart-bar-cell">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="${fac2Pct}%" style="background:#d97706; height:16px; border:none; border-radius:3px;"></td>
-              <td width="${100 - fac2Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td class="chart-td"><strong>Factory 3 (Electrical Room 3 &amp; Annealing)</strong></td>
-        <td class="chart-td text-center">${fac3Meters.length} Unit</td>
-        <td class="chart-td text-right num-dec1">${fac3Kw.toFixed(1)} kW</td>
-        <td class="chart-td text-right num-int">${fac3Kwh.toLocaleString('id-ID')} kWh</td>
-        <td class="chart-td text-center"><strong>${fac3Pct}%</strong></td>
-        <td class="chart-td chart-bar-cell">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="${fac3Pct}%" style="background:#059669; height:16px; border:none; border-radius:3px;"></td>
-              <td width="${100 - fac3Pct}%" style="background:#e2e8f0; height:16px; border:none; border-radius:3px;"></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    `).join('')}
+    <tr class="spacer-row" style="height: 12pt; mso-height-source: userset;"><td colspan="14"></td></tr>
 
-  <!-- 4. Grafik Visual 2: Top 8 Beban Listrik Terbesar -->
-  <div class="section-header">📈 2. TOP 8 HIGHEST ELECTRICAL CONSUMERS (PEAK LOADERS)</div>
-  <table class="chart-box-table" cellpadding="0" cellspacing="0">
-    <thead>
-      <tr>
-        <th class="chart-th" width="5%">Rank</th>
-        <th class="chart-th" width="10%">Machine Code</th>
-        <th class="chart-th" width="25%">Feeder / Machine Name</th>
-        <th class="chart-th" width="18%">Sub Area Location</th>
-        <th class="chart-th" width="12%">Active Power (kW)</th>
-        <th class="chart-th" width="12%">Energy (kWh)</th>
-        <th class="chart-th" width="18%">Load Proportion Bar</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${top8.map((m, idx) => {
-        const barPct = Math.max(8, Math.round(((m.kwhToday || 0) / maxTop8Kwh) * 100));
-        return `
-          <tr>
-            <td class="chart-td text-center"><strong>#${idx + 1}</strong></td>
-            <td class="chart-td text-center" style="font-family:Consolas, monospace;">${m.id}</td>
-            <td class="chart-td"><strong>${m.name}</strong></td>
-            <td class="chart-td">${m.factoryLabel || m.factory} - ${m.subArea}</td>
-            <td class="chart-td text-right num-dec1">${(m.kw || 0).toFixed(1)} kW</td>
-            <td class="chart-td text-right num-int"><strong>${(m.kwhToday || 0).toLocaleString('id-ID')} kWh</strong></td>
-            <td class="chart-td chart-bar-cell">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                  <td width="${barPct}%" style="background:#8C2924; height:14px; border:none; border-radius:2px;"></td>
-                  <td width="${100 - barPct}%" style="background:#f1f5f9; height:14px; border:none; border-radius:2px;"></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        `;
-      }).join('')}
-    </tbody>
-  </table>
+    <!-- 4. SECTION 2: TOP 8 HIGHEST CONSUMERS -->
+    <tr style="height: 26pt; mso-height-source: userset;">
+      <td class="sec-head" colspan="14">2. TOP 8 HIGHEST ELECTRICAL CONSUMERS (PEAK LOADERS)</td>
+    </tr>
+    <tr style="height: 24pt; mso-height-source: userset;">
+      <th class="sub-th">Rank</th>
+      <th class="sub-th">Code</th>
+      <th class="sub-th text-left" colspan="2">Feeder / Machine Name</th>
+      <th class="sub-th text-left" colspan="3">Substation &amp; Sub Area Location</th>
+      <th class="sub-th text-right" colspan="2">Active Power (kW)</th>
+      <th class="sub-th text-right" colspan="3">Energy Today (kWh)</th>
+      <th class="sub-th text-left" colspan="2">Load Proportion</th>
+    </tr>
+    ${top8.map((m, idx) => {
+      const barPct = Math.max(8, Math.round(((m.kwhToday || 0) / maxTop8Kwh) * 100));
+      const cleanKwh = Math.round(m.kwhToday || 0);
+      return `
+        <tr class="${idx % 2 === 0 ? 'row-odd' : 'row-even'}" style="height: 28pt; mso-height-source: userset;">
+          <td class="sub-td text-center"><strong>#${idx + 1}</strong></td>
+          <td class="sub-td text-center mono" style="color:#0284c7; font-weight:bold;">${m.id}</td>
+          <td class="sub-td text-left" colspan="2"><strong>${m.name}</strong></td>
+          <td class="sub-td text-left" colspan="3">${m.factoryLabel || m.factory} · ${m.subArea}</td>
+          <td class="sub-td text-right mono" colspan="2">${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kW</td>
+          <td class="sub-td text-right mono" colspan="3"><strong>${cleanKwh.toLocaleString('id-ID')} kWh</strong></td>
+          <td class="sub-td text-left mono" colspan="2" style="color:#8C2924; font-weight:bold;">${makeBar(barPct, 12)}</td>
+        </tr>
+      `;
+    }).join('')}
+    <tr class="spacer-row" style="height: 12pt; mso-height-source: userset;"><td colspan="14"></td></tr>
 
-  <!-- 5. Tabel Detail Digital Power Meter -->
-  <div class="section-header">📋 3. COMPLETE DIGITAL POWER METER TELEMETRY TABLE (SCHNEIDER &amp; MITSUBISHI)</div>
-  <table class="data-table" cellpadding="0" cellspacing="0">
-    <thead>
-      <tr>
-        <th width="3%">No</th>
-        <th width="6%">Machine Code</th>
-        <th width="17%">Feeder / Distribution Panel Name</th>
-        <th width="8%">Category</th>
-        <th width="12%">Area &amp; Substation</th>
-        <th width="12%">Digital Meter Brand</th>
-        <th width="9%">IP Gateway</th>
-        <th width="6%">Power (kW)</th>
-        <th width="5%">Voltage (V)</th>
-        <th width="5%">Current (A)</th>
-        <th width="5%">Cos φ</th>
-        <th width="7%">Energy (kWh)</th>
-        <th width="8%">Cost (Rp)</th>
-        <th width="6%">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${state.meters.map((m, idx) => {
-        const rowClass = idx % 2 === 0 ? 'row-even' : 'row-odd';
-        const costRp = Math.round((m.kwhToday || 0) * 1444.70);
-        const isWarn = m.pf < 0.85;
-        const statusBadge = isWarn
-          ? `<span class="badge-warn">Cos φ ${m.pf.toFixed(2)}</span>`
-          : `<span class="badge-normal">Normal Live</span>`;
+    <!-- 5. SECTION 3: TABEL LENGKAP DIREKTORI DIGITAL POWER METER -->
+    <tr style="height: 26pt; mso-height-source: userset;">
+      <td class="sec-head" colspan="14">3. COMPLETE DIGITAL POWER METER TELEMETRY DIRECTORY (${totalMetersCount} UNITS · SCHNEIDER &amp; MITSUBISHI)</td>
+    </tr>
+    <tr style="height: 26pt; mso-height-source: userset;">
+      <th class="dir-th">No</th>
+      <th class="dir-th">Machine Code</th>
+      <th class="dir-th text-left">Feeder / Distribution Panel Name</th>
+      <th class="dir-th">Category</th>
+      <th class="dir-th text-left">Area &amp; Substation</th>
+      <th class="dir-th text-left">Digital Meter Brand</th>
+      <th class="dir-th">IP Gateway</th>
+      <th class="dir-th text-right">Power (kW)</th>
+      <th class="dir-th text-right">Voltage (V)</th>
+      <th class="dir-th text-right">Current (A)</th>
+      <th class="dir-th">Cos φ</th>
+      <th class="dir-th text-right">Energy (kWh)</th>
+      <th class="dir-th text-right">Cost (Rp)</th>
+      <th class="dir-th">Status</th>
+    </tr>
+    ${state.meters.map((m, idx) => {
+      const rowClass = idx % 2 === 0 ? 'row-even' : 'row-odd';
+      const cleanKwh = Math.round(m.kwhToday || 0);
+      const costRp = Math.round(cleanKwh * 1444.70);
+      const isWarn = m.pf < 0.85 || m.status === 'warning';
+      const statusCellClass = isWarn ? 'badge-warn' : 'badge-normal';
+      const statusText = isWarn ? `Warning (${(m.pf || 0.84).toFixed(2)})` : 'Normal Live';
 
-        return `
-          <tr class="${rowClass}">
-            <td class="text-center">${idx + 1}</td>
-            <td class="text-center" style="font-family:Consolas, monospace; font-weight:bold; color:#0284c7;">${m.id}</td>
-            <td><strong>${m.name}</strong></td>
-            <td class="text-center">${m.categoryLabel || m.category}</td>
-            <td>${m.factoryLabel || m.factory} - ${m.subArea}</td>
-            <td>${m.brand || 'Schneider PM5500'}</td>
-            <td class="text-center" style="font-family:Consolas, monospace;">${m.ip || '-'}</td>
-            <td class="text-right num-dec1">${(m.kw || 0).toFixed(1)}</td>
-            <td class="text-right num-dec1">${(m.voltage || 0).toFixed(1)}</td>
-            <td class="text-right num-dec1">${(m.current || 0).toFixed(1)}</td>
-            <td class="text-center num-dec2" style="font-weight:bold; color:${isWarn ? '#d97706' : '#059669'};">${(m.pf || 0.90).toFixed(2)}</td>
-            <td class="text-right num-int">${(m.kwhToday || 0).toLocaleString('id-ID')}</td>
-            <td class="text-right num-curr">Rp ${costRp.toLocaleString('id-ID')}</td>
-            <td class="text-center">${statusBadge}</td>
-          </tr>
-        `;
-      }).join('')}
-    </tbody>
-    <tfoot>
-      <tr class="total-row">
-        <td colspan="7" class="text-right" style="font-size:9.5pt;">TOTAL AKUMULASI SISTEM (38 METER):</td>
-        <td class="text-right num-dec1" style="font-size:9.5pt; color:#0284c7;">${totalKw.toFixed(1)}</td>
-        <td class="text-center">-</td>
-        <td class="text-center">-</td>
-        <td class="text-center num-dec2" style="font-size:9.5pt; color:#059669;">${avgPf}</td>
-        <td class="text-right num-int" style="font-size:9.5pt; color:#d97706;">${totalKwh.toLocaleString('id-ID')}</td>
-        <td class="text-right num-curr" style="font-size:9.5pt; color:#8C2924;">Rp ${totalCostRp.toLocaleString('id-ID')}</td>
-        <td class="text-center" style="color:#16a34a;">38 UNIT AKTIF</td>
-      </tr>
-    </tfoot>
-  </table>
+      return `
+        <tr class="${rowClass}" style="height: 24pt; mso-height-source: userset;">
+          <td class="dir-td text-center">${idx + 1}</td>
+          <td class="dir-td text-center mono" style="font-weight:bold; color:#0284c7;">${m.id}</td>
+          <td class="dir-td text-left"><strong>${m.name}</strong></td>
+          <td class="dir-td text-center">${m.categoryLabel || m.category}</td>
+          <td class="dir-td text-left">${m.factoryLabel || m.factory} · ${m.subArea}</td>
+          <td class="dir-td text-left">${m.brand || 'Schneider PowerLogic PM5500'}</td>
+          <td class="dir-td text-center mono">${m.ip || '-'}</td>
+          <td class="dir-td text-right mono">${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
+          <td class="dir-td text-right mono">${(m.voltage || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
+          <td class="dir-td text-right mono">${(m.current || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
+          <td class="dir-td text-center mono" style="font-weight:bold; color:${isWarn ? '#d97706' : '#059669'};">${(m.pf || 0.90).toFixed(2).replace('.', ',')}</td>
+          <td class="dir-td text-right mono">${cleanKwh.toLocaleString('id-ID')}</td>
+          <td class="dir-td text-right mono">Rp ${costRp.toLocaleString('id-ID')}</td>
+          <td class="dir-td text-center ${statusCellClass}">${statusText}</td>
+        </tr>
+      `;
+    }).join('')}
+    <tr class="total-row" style="height: 28pt; mso-height-source: userset;">
+      <td colspan="7" class="text-right">AKUMULASI SELURUH CHANNEL DIREKTORI (${totalMetersCount} UNIT):</td>
+      <td class="text-right mono" style="color:#0284c7;">${dirTotalKw.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
+      <td class="text-center">-</td>
+      <td class="text-center">-</td>
+      <td class="text-center mono" style="color:#059669;">${avgDirPf}</td>
+      <td class="text-right mono" style="color:#d97706;">${dirTotalKwh.toLocaleString('id-ID')}</td>
+      <td class="text-right mono" style="color:#8C2924;">Rp ${dirTotalCostRp.toLocaleString('id-ID')}</td>
+      <td class="text-center" style="color:#16a34a;">${onlineMeters} / ${totalMetersCount} AKTIF</td>
+    </tr>
 
-  <!-- Footer Information -->
-  <table style="width:100%; margin-top:20px; border-collapse:collapse; font-size:8pt; color:#64748b;">
-    <tr>
-      <td style="text-align:left;">
-        Dicetak secara otomatis dari SCADA Energy Management System PT Musashi Auto Parts Indonesia · Pabrik Cikarang & Karawang
+    <!-- 6. FOOTER -->
+    <tr style="height: 24pt; mso-height-source: userset;">
+      <td class="footer-cell text-left" colspan="9">
+        Dicetak otomatis dari SCADA Energy Management System PT Musashi Auto Parts Indonesia · Pabrik Cikarang &amp; Karawang
       </td>
-      <td style="text-align:right;">
+      <td class="footer-cell text-right" colspan="5">
         Dokumen Resmi Utility Engineering · Konfidensial Internal
       </td>
     </tr>
@@ -3311,32 +3294,37 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
 
   window.exportToCsv = function() {
     const headers = ['Machine Code', 'Meter / Feeder Name', 'Area', 'Sub Area', 'Meter Brand', 'IP Address', 'Active Power (kW)', 'Voltage (V)', 'Current (A)', 'Power Factor (Cos φ)', 'Energy Today (kWh)', 'Estimated Cost (Rp)', 'CO2 Emission (kg)', 'Status'];
-    const rows = state.meters.map(m => [
-      m.id,
-      `"${(m.name || '').replace(/"/g, '""')}"`,
-      `"${(m.categoryLabel || m.category || '').replace(/"/g, '""')}"`,
-      `"${(m.subArea || '').replace(/"/g, '""')}"`,
-      `"${(m.brand || '').replace(/"/g, '""')}"`,
-      m.ip || '',
-      (m.kw || 0).toFixed(1),
-      (m.voltage || 0).toFixed(1),
-      (m.current || 0).toFixed(1),
-      (m.pf || 0.89).toFixed(2),
-      m.kwhToday || 0,
-      Math.round((m.kwhToday || 0) * 1444.70),
-      ((m.kwhToday || 0) * 0.79).toFixed(1),
-      m.status
-    ]);
+    const rows = state.meters.map(m => {
+      const cleanKwh = Math.round(m.kwhToday || 0);
+      return [
+        m.id,
+        `"${(m.name || '').replace(/"/g, '""')}"`,
+        `"${(m.categoryLabel || m.category || '').replace(/"/g, '""')}"`,
+        `"${(m.subArea || '').replace(/"/g, '""')}"`,
+        `"${(m.brand || '').replace(/"/g, '""')}"`,
+        m.ip || '',
+        (m.kw || 0).toFixed(1),
+        (m.voltage || 0).toFixed(1),
+        (m.current || 0).toFixed(1),
+        (m.pf || 0.89).toFixed(2),
+        cleanKwh,
+        Math.round(cleanKwh * 1444.70),
+        (cleanKwh * 0.79).toFixed(1),
+        m.status
+      ];
+    });
 
-    const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const csvText = '\uFEFF' + [headers.join(','), ...rows.map(e => e.join(','))].join('\r\n');
+    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `PT_Musashi_Power_Meters_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.href = url;
+    link.download = `PT_Musashi_Power_Meters_${new Date().toISOString().slice(0, 10)}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    showToast('✓ CSV Report for 111 Musashi Meters exported successfully!');
+    URL.revokeObjectURL(url);
+    showToast(`✓ CSV Report (${state.meters.length} Musashi Meters) exported successfully!`);
   };
 
   // ================= 12. TV MODE & AUTO-CYCLE ROTATION =================
