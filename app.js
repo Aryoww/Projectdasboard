@@ -2961,31 +2961,32 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
     const dateFormatted = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
     const timeFormatted = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} WIB`;
 
-    // Helper: Unicode visual bar (safe in Excel without nested tables that clip row height)
-    function makeBar(pct, totalBlocks = 12) {
-      const clamped = Math.max(0, Math.min(100, pct));
-      const filled = Math.max(1, Math.round((clamped / 100) * totalBlocks));
-      const empty = Math.max(0, totalBlocks - filled);
-      return `${'█'.repeat(filled)}${'░'.repeat(empty)}  ${clamped}%`;
+    function escXml(val) {
+      return String(val === undefined || val === null ? '' : val)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
     }
 
     // Calibrated Plant Incoming Totals (Matching Main Dashboard KPIs)
     const plantBase = CATEGORY_BASELINES.all;
-    const plantKw = plantBase.kw;
-    const plantKwh = plantBase.kwh;
+    const plantKw = Number(plantBase.kw) || 14129;
+    const plantKwh = Number(plantBase.kwh) || 197064;
     const plantCostRp = Math.round(plantKwh * 1444.70);
-    const plantPf = plantBase.pf || '0,90';
-    const plantCarbonTon = plantBase.carbonTon || '155,7';
+    const plantPfNum = parseFloat(String(plantBase.pf || '0,90').replace(',', '.')) || 0.90;
+    const plantCarbonTonNum = parseFloat(String(plantBase.carbonTon || '155,7').replace(',', '.')) || 155.7;
     const totalMetersCount = state.meters.length;
     const onlineMeters = state.meters.filter(m => m.status === 'normal' || m.status === 'warning').length;
 
-    // Directory sub-totals (sum across all channel rows in table)
-    const dirTotalKw = state.meters.reduce((acc, m) => acc + (m.kw || 0), 0);
+    // Directory totals (for Sheet 2 bottom formula fallback)
+    const dirTotalKw = Number(state.meters.reduce((acc, m) => acc + (m.kw || 0), 0).toFixed(1));
     const dirTotalKwh = Math.round(state.meters.reduce((acc, m) => acc + (m.kwhToday || 0), 0));
     const dirTotalCostRp = Math.round(dirTotalKwh * 1444.70);
-    const avgDirPf = (state.meters.reduce((acc, m) => acc + (m.pf || 0.90), 0) / (totalMetersCount || 1)).toFixed(2).replace('.', ',');
+    const avgDirPf = Number((state.meters.reduce((acc, m) => acc + (m.pf || 0.90), 0) / (totalMetersCount || 1)).toFixed(2));
 
-    // Factory Breakdowns (Aligned with Substation Baselines)
+    // Factory Breakdowns
     const facRows = [
       {
         name: 'Factory 1 (Electrical Room 1)',
@@ -2993,8 +2994,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
         supply: '20kV / 6,6kV · Tr 01–05',
         kw: CATEGORY_BASELINES.fac1.kw,
         kwh: CATEGORY_BASELINES.fac1.kwh,
-        pct: 33,
-        color: '#0284c7'
+        pct: 33
       },
       {
         name: 'Factory 2.1 (Electrical Room 2.1)',
@@ -3002,8 +3002,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
         supply: '20kV / 380V · Tr 06–10',
         kw: CATEGORY_BASELINES.fac2_1.kw,
         kwh: CATEGORY_BASELINES.fac2_1.kwh,
-        pct: 22,
-        color: '#06b6d4'
+        pct: 22
       },
       {
         name: 'Factory 2 (Electrical Room 2)',
@@ -3011,8 +3010,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
         supply: '20kV / 200V · Tr 11–16',
         kw: CATEGORY_BASELINES.fac2.kw,
         kwh: CATEGORY_BASELINES.fac2.kwh,
-        pct: 30,
-        color: '#d97706'
+        pct: 30
       },
       {
         name: 'Factory 3 (Electrical Room 3)',
@@ -3020,266 +3018,517 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
         supply: '20kV / 380V · Tr 17–19',
         kw: CATEGORY_BASELINES.fac3.kw,
         kwh: CATEGORY_BASELINES.fac3.kwh,
-        pct: 15,
-        color: '#059669'
+        pct: 15
       }
     ];
 
     // Top 8 Consumers
     const top8 = [...state.meters].sort((a, b) => (b.kwhToday || 0) - (a.kwhToday || 0)).slice(0, 8);
-    const maxTop8Kwh = top8[0] ? (top8[0].kwhToday || 1) : 1;
+    const lastDataRow = 2 + totalMetersCount;
+    const totalRowIndex = lastDataRow + 1;
 
-    // Generate Clean Single-Grid Excel HTML (Zero nested tables, explicit col widths, exact row heights)
-    const excelHtml = `
-<html xmlns:o="urn:schemas-microsoft-com:office:office"
-      xmlns:x="urn:schemas-microsoft-com:office:excel"
-      xmlns="http://www.w3.org/TR/REC-html40">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <!--[if gte mso 9]>
-  <xml>
-    <x:ExcelWorkbook>
-      <x:ExcelWorksheets>
-        <x:ExcelWorksheet>
-          <x:Name>Audit Energi Musashi</x:Name>
-          <x:WorksheetOptions>
-            <x:DisplayGridlines/>
-            <x:FitToPage/>
-            <x:Print>
-              <x:FitWidth>1</x:FitWidth>
-              <x:FitHeight>0</x:FitHeight>
-              <x:ValidPrinterInfo/>
-              <x:Orientation>Landscape</x:Orientation>
-            </x:Print>
-          </x:WorksheetOptions>
-        </x:ExcelWorksheet>
-      </x:ExcelWorksheets>
-    </x:ExcelWorkbook>
-  </xml>
-  <![endif]-->
-  <style>
-    body { font-family: 'Segoe UI', Calibri, Arial, sans-serif; font-size: 10pt; color: #0f172a; background: #ffffff; }
-    table.sheet { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    td, th { font-family: 'Segoe UI', Calibri, Arial, sans-serif; vertical-align: middle; }
-    .banner-title { background: #8C2924; color: #ffffff; font-size: 15pt; font-weight: bold; padding: 10px 16px; text-align: left; border: 1px solid #6b1f1b; }
-    .banner-sub { background: #641013; color: #fed7aa; font-size: 9.5pt; padding: 6px 16px; text-align: left; border: 1px solid #6b1f1b; }
-    .spacer-row td { background: #ffffff; border: none; height: 10pt; }
-
-    /* KPI Card Cells (3 stacked rows per card for rock-solid Excel rendering) */
-    .kpi-lbl { background: #f8fafc; color: #475569; font-size: 8pt; font-weight: bold; text-transform: uppercase; text-align: center; padding: 5px 6px 2px 6px; border-top: 2.5pt solid #8C2924; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
-    .kpi-val { background: #ffffff; font-size: 14pt; font-weight: bold; text-align: center; padding: 4px 6px; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
-    .kpi-sub { background: #f8fafc; color: #64748b; font-size: 7.5pt; text-align: center; padding: 2px 6px 5px 6px; border-bottom: 1px solid #cbd5e1; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
-
-    /* Section Headings */
-    .sec-head { background: #fef2f2; color: #8C2924; font-size: 10.5pt; font-weight: bold; padding: 7px 12px; text-align: left; border-top: 2pt solid #8C2924; border-bottom: 1.5pt solid #8C2924; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; }
-
-    /* Summary & Top 8 Tables */
-    .sub-th { background: #e2e8f0; color: #1e293b; font-size: 9pt; font-weight: bold; padding: 6px 8px; border: 1px solid #cbd5e1; text-align: center; white-space: normal; }
-    .sub-td { padding: 6px 8px; font-size: 9pt; border: 1px solid #cbd5e1; white-space: normal; color: #1e293b; }
-
-    /* Main Telemetry Table */
-    .dir-th { background: #8C2924; color: #ffffff; font-size: 8.5pt; font-weight: bold; padding: 7px 6px; border: 1px solid #6b1f1b; text-align: center; white-space: normal; }
-    .dir-td { padding: 5px 7px; font-size: 8.5pt; border: 1px solid #cbd5e1; white-space: normal; color: #1e293b; }
-    .row-even { background: #f8fafc; }
-    .row-odd { background: #ffffff; }
-
-    .text-center { text-align: center; }
-    .text-left { text-align: left; }
-    .text-right { text-align: right; }
-    .mono { font-family: Consolas, 'Courier New', monospace; }
-    .badge-normal { background: #dcfce7; color: #166534; font-weight: bold; }
-    .badge-warn { background: #fef3c7; color: #92400e; font-weight: bold; }
-    .total-row td { background: #f1f5f9; font-weight: bold; color: #0f172a; border-top: 2pt solid #8C2924; border-bottom: 2pt solid #8C2924; border-left: 1px solid #cbd5e1; border-right: 1px solid #cbd5e1; padding: 7px 6px; font-size: 9pt; }
-    .footer-cell { font-size: 8pt; color: #64748b; padding: 8px 4px; border: none; }
-  </style>
-</head>
-<body>
-  <table class="sheet" cellpadding="0" cellspacing="0">
-    <!-- Unified 14-Column Grid Widths (Columns A through N) -->
-    <colgroup>
-      <col width="44" />
-      <col width="96" />
-      <col width="225" />
-      <col width="110" />
-      <col width="215" />
-      <col width="175" />
-      <col width="110" />
-      <col width="84" />
-      <col width="82" />
-      <col width="82" />
-      <col width="70" />
-      <col width="98" />
-      <col width="122" />
-      <col width="92" />
-    </colgroup>
-
-    <!-- 1. HEADER BANNER KOP PERUSAHAAN -->
-    <tr style="height: 36pt; mso-height-source: userset;">
-      <td class="banner-title" colspan="14">
-        PT MUSASHI AUTO PARTS INDONESIA · UTILITY &amp; ENERGY MANAGEMENT SYSTEM
-      </td>
-    </tr>
-    <tr style="height: 22pt; mso-height-source: userset;">
-      <td class="banner-sub" colspan="14">
-        Laporan Audit &amp; Telemetri Realtime ${totalMetersCount} Digital Power Meter · Tanggal: ${dateFormatted} · Pukul: ${timeFormatted} · Divisi: Engineering &amp; Utility
-      </td>
-    </tr>
-    <tr class="spacer-row" style="height: 10pt; mso-height-source: userset;"><td colspan="14"></td></tr>
-
-    <!-- 2. RINGKASAN EKSEKUTIF KPI (TERENTANG RAPI DARI KOLOM A SAMPAI N) -->
-    <tr style="height: 22pt; mso-height-source: userset;">
-      <td class="kpi-lbl" colspan="3" style="border-top-color:#0d9488;">PLANT ACTIVE POWER (LIVE)</td>
-      <td class="kpi-lbl" colspan="2" style="border-top-color:#d97706;">ENERGY TODAY (CLD 1–3)</td>
-      <td class="kpi-lbl" colspan="2" style="border-top-color:#16a34a;">ESTIMATED COST TODAY</td>
-      <td class="kpi-lbl" colspan="3" style="border-top-color:#0284c7;">POWER FACTOR (COS φ)</td>
-      <td class="kpi-lbl" colspan="2" style="border-top-color:#16a34a;">ACTIVE METERS</td>
-      <td class="kpi-lbl" colspan="2" style="border-top-color:#0d9488;">CARBON EMISSION (ESG)</td>
-    </tr>
-    <tr style="height: 28pt; mso-height-source: userset;">
-      <td class="kpi-val" colspan="3" style="color:#0d9488;">${plantKw.toLocaleString('id-ID')} kW</td>
-      <td class="kpi-val" colspan="2" style="color:#d97706;">${plantKwh.toLocaleString('id-ID')} kWh</td>
-      <td class="kpi-val" colspan="2" style="color:#8C2924;">Rp ${plantCostRp.toLocaleString('id-ID')}</td>
-      <td class="kpi-val" colspan="3" style="color:#059669;">${plantPf}</td>
-      <td class="kpi-val" colspan="2" style="color:#0284c7;">${onlineMeters} / ${totalMetersCount}</td>
-      <td class="kpi-val" colspan="2" style="color:#0d9488;">${plantCarbonTon} ton</td>
-    </tr>
-    <tr style="height: 20pt; mso-height-source: userset;">
-      <td class="kpi-sub" colspan="3">Beban Aktual Plant · Kapasitas 69,4%</td>
-      <td class="kpi-sub" colspan="2">Akumulasi Incoming sejak 00:00 WIB</td>
-      <td class="kpi-sub" colspan="2">Tarif Cikarang Listrindo Rp 1.444,70/kWh</td>
-      <td class="kpi-sub" colspan="3">Target Cikarang Listrindo ≥ 0,85 (Optimal)</td>
-      <td class="kpi-sub" colspan="2">100% Online Polling Modbus</td>
-      <td class="kpi-sub" colspan="2">Faktor Emisi Jamali 0,79 kg/kWh</td>
-    </tr>
-    <tr class="spacer-row" style="height: 12pt; mso-height-source: userset;"><td colspan="14"></td></tr>
-
-    <!-- 3. SECTION 1: DISTRIBUSI ENERGI PER FACTORY -->
-    <tr style="height: 26pt; mso-height-source: userset;">
-      <td class="sec-head" colspan="14">1. ENERGY CONSUMPTION DISTRIBUTION BY FACTORY AREA (SUBSTATION 20kV)</td>
-    </tr>
-    <tr style="height: 24pt; mso-height-source: userset;">
-      <th class="sub-th text-left" colspan="3">Substation Area</th>
-      <th class="sub-th">Units</th>
-      <th class="sub-th text-left" colspan="3">Primary Supply &amp; Transformer Scope</th>
-      <th class="sub-th text-right" colspan="2">Active Power (kW)</th>
-      <th class="sub-th text-right" colspan="3">Energy Today (kWh)</th>
-      <th class="sub-th text-left" colspan="2">Proportional Share</th>
-    </tr>
-    ${facRows.map((fr, idx) => `
-      <tr class="${idx % 2 === 0 ? 'row-odd' : 'row-even'}" style="height: 24pt; mso-height-source: userset;">
-        <td class="sub-td text-left" colspan="3"><strong>${fr.name}</strong></td>
-        <td class="sub-td text-center">${fr.units} Unit</td>
-        <td class="sub-td text-left" colspan="3">${fr.supply}</td>
-        <td class="sub-td text-right mono" colspan="2">${fr.kw.toLocaleString('id-ID')} kW</td>
-        <td class="sub-td text-right mono" colspan="3"><strong>${fr.kwh.toLocaleString('id-ID')} kWh</strong></td>
-        <td class="sub-td text-left mono" colspan="2" style="color:${fr.color}; font-weight:bold;">${makeBar(fr.pct, 12)}</td>
-      </tr>
-    `).join('')}
-    <tr class="spacer-row" style="height: 12pt; mso-height-source: userset;"><td colspan="14"></td></tr>
-
-    <!-- 4. SECTION 2: TOP 8 HIGHEST CONSUMERS -->
-    <tr style="height: 26pt; mso-height-source: userset;">
-      <td class="sec-head" colspan="14">2. TOP 8 HIGHEST ELECTRICAL CONSUMERS (PEAK LOADERS)</td>
-    </tr>
-    <tr style="height: 24pt; mso-height-source: userset;">
-      <th class="sub-th">Rank</th>
-      <th class="sub-th">Code</th>
-      <th class="sub-th text-left" colspan="2">Feeder / Machine Name</th>
-      <th class="sub-th text-left" colspan="3">Substation &amp; Sub Area Location</th>
-      <th class="sub-th text-right" colspan="2">Active Power (kW)</th>
-      <th class="sub-th text-right" colspan="3">Energy Today (kWh)</th>
-      <th class="sub-th text-left" colspan="2">Load Proportion</th>
-    </tr>
-    ${top8.map((m, idx) => {
-      const barPct = Math.max(8, Math.round(((m.kwhToday || 0) / maxTop8Kwh) * 100));
-      const cleanKwh = Math.round(m.kwhToday || 0);
-      return `
-        <tr class="${idx % 2 === 0 ? 'row-odd' : 'row-even'}" style="height: 28pt; mso-height-source: userset;">
-          <td class="sub-td text-center"><strong>#${idx + 1}</strong></td>
-          <td class="sub-td text-center mono" style="color:#0284c7; font-weight:bold;">${m.id}</td>
-          <td class="sub-td text-left" colspan="2"><strong>${m.name}</strong></td>
-          <td class="sub-td text-left" colspan="3">${m.factoryLabel || m.factory} · ${m.subArea}</td>
-          <td class="sub-td text-right mono" colspan="2">${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kW</td>
-          <td class="sub-td text-right mono" colspan="3"><strong>${cleanKwh.toLocaleString('id-ID')} kWh</strong></td>
-          <td class="sub-td text-left mono" colspan="2" style="color:#8C2924; font-weight:bold;">${makeBar(barPct, 12)}</td>
-        </tr>
-      `;
-    }).join('')}
-    <tr class="spacer-row" style="height: 12pt; mso-height-source: userset;"><td colspan="14"></td></tr>
-
-    <!-- 5. SECTION 3: TABEL LENGKAP DIREKTORI DIGITAL POWER METER -->
-    <tr style="height: 26pt; mso-height-source: userset;">
-      <td class="sec-head" colspan="14">3. COMPLETE DIGITAL POWER METER TELEMETRY DIRECTORY (${totalMetersCount} UNITS · SCHNEIDER &amp; MITSUBISHI)</td>
-    </tr>
-    <tr style="height: 26pt; mso-height-source: userset;">
-      <th class="dir-th">No</th>
-      <th class="dir-th">Machine Code</th>
-      <th class="dir-th text-left">Feeder / Distribution Panel Name</th>
-      <th class="dir-th">Category</th>
-      <th class="dir-th text-left">Area &amp; Substation</th>
-      <th class="dir-th text-left">Digital Meter Brand</th>
-      <th class="dir-th">IP Gateway</th>
-      <th class="dir-th text-right">Power (kW)</th>
-      <th class="dir-th text-right">Voltage (V)</th>
-      <th class="dir-th text-right">Current (A)</th>
-      <th class="dir-th">Cos φ</th>
-      <th class="dir-th text-right">Energy (kWh)</th>
-      <th class="dir-th text-right">Cost (Rp)</th>
-      <th class="dir-th">Status</th>
-    </tr>
-    ${state.meters.map((m, idx) => {
-      const rowClass = idx % 2 === 0 ? 'row-even' : 'row-odd';
+    const meterRowsXml = state.meters.map((m, idx) => {
       const cleanKwh = Math.round(m.kwhToday || 0);
       const costRp = Math.round(cleanKwh * 1444.70);
-      const isWarn = m.pf < 0.85 || m.status === 'warning';
-      const statusCellClass = isWarn ? 'badge-warn' : 'badge-normal';
-      const statusText = isWarn ? `Warning (${(m.pf || 0.84).toFixed(2)})` : 'Normal Live';
+      const kwNum = Number((m.kw || 0).toFixed(1));
+      const voltNum = Number((m.voltage || 0).toFixed(1));
+      const currNum = Number((m.current || 0).toFixed(1));
+      const pfNum = Number((m.pf || 0.90).toFixed(2));
+      const isWarn = pfNum < 0.85 || m.status === 'warning';
+      const statusText = isWarn ? `Warning (${pfNum.toFixed(2)})` : 'Normal';
+      const zebra = idx % 2 === 0 ? 'Even' : 'Odd';
+      const pfStyle = isWarn ? `CellPfWarn${zebra}` : `CellPfOk${zebra}`;
+      const statusStyle = isWarn ? 'CellWarnBadge' : 'CellOkBadge';
 
       return `
-        <tr class="${rowClass}" style="height: 24pt; mso-height-source: userset;">
-          <td class="dir-td text-center">${idx + 1}</td>
-          <td class="dir-td text-center mono" style="font-weight:bold; color:#0284c7;">${m.id}</td>
-          <td class="dir-td text-left"><strong>${m.name}</strong></td>
-          <td class="dir-td text-center">${m.categoryLabel || m.category}</td>
-          <td class="dir-td text-left">${m.factoryLabel || m.factory} · ${m.subArea}</td>
-          <td class="dir-td text-left">${m.brand || 'Schneider PowerLogic PM5500'}</td>
-          <td class="dir-td text-center mono">${m.ip || '-'}</td>
-          <td class="dir-td text-right mono">${(m.kw || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
-          <td class="dir-td text-right mono">${(m.voltage || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
-          <td class="dir-td text-right mono">${(m.current || 0).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
-          <td class="dir-td text-center mono" style="font-weight:bold; color:${isWarn ? '#d97706' : '#059669'};">${(m.pf || 0.90).toFixed(2).replace('.', ',')}</td>
-          <td class="dir-td text-right mono">${cleanKwh.toLocaleString('id-ID')}</td>
-          <td class="dir-td text-right mono">Rp ${costRp.toLocaleString('id-ID')}</td>
-          <td class="dir-td text-center ${statusCellClass}">${statusText}</td>
-        </tr>
-      `;
-    }).join('')}
-    <tr class="total-row" style="height: 28pt; mso-height-source: userset;">
-      <td colspan="7" class="text-right">AKUMULASI SELURUH CHANNEL DIREKTORI (${totalMetersCount} UNIT):</td>
-      <td class="text-right mono" style="color:#0284c7;">${dirTotalKw.toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</td>
-      <td class="text-center">-</td>
-      <td class="text-center">-</td>
-      <td class="text-center mono" style="color:#059669;">${avgDirPf}</td>
-      <td class="text-right mono" style="color:#d97706;">${dirTotalKwh.toLocaleString('id-ID')}</td>
-      <td class="text-right mono" style="color:#8C2924;">Rp ${dirTotalCostRp.toLocaleString('id-ID')}</td>
-      <td class="text-center" style="color:#16a34a;">${onlineMeters} / ${totalMetersCount} AKTIF</td>
-    </tr>
+      <Row ss:AutoFitHeight="0" ss:Height="22">
+        <Cell ss:StyleID="CellCenter${zebra}"><Data ss:Type="Number">${idx + 1}</Data></Cell>
+        <Cell ss:StyleID="CellCode${zebra}"><Data ss:Type="String">${escXml(m.id)}</Data></Cell>
+        <Cell ss:StyleID="CellLeftBold${zebra}"><Data ss:Type="String">${escXml(m.name)}</Data></Cell>
+        <Cell ss:StyleID="CellCenter${zebra}"><Data ss:Type="String">${escXml(m.categoryLabel || m.category)}</Data></Cell>
+        <Cell ss:StyleID="CellLeft${zebra}"><Data ss:Type="String">${escXml(m.factoryLabel || m.factory)}</Data></Cell>
+        <Cell ss:StyleID="CellLeft${zebra}"><Data ss:Type="String">${escXml(m.subArea || '-')}</Data></Cell>
+        <Cell ss:StyleID="CellLeft${zebra}"><Data ss:Type="String">${escXml(m.brand || 'Schneider PowerLogic PM5500')}</Data></Cell>
+        <Cell ss:StyleID="CellCode${zebra}"><Data ss:Type="String">${escXml(m.ip || '-')}</Data></Cell>
+        <Cell ss:StyleID="CellNum1${zebra}"><Data ss:Type="Number">${kwNum}</Data></Cell>
+        <Cell ss:StyleID="CellNum1${zebra}"><Data ss:Type="Number">${voltNum}</Data></Cell>
+        <Cell ss:StyleID="CellNum1${zebra}"><Data ss:Type="Number">${currNum}</Data></Cell>
+        <Cell ss:StyleID="${pfStyle}"><Data ss:Type="Number">${pfNum}</Data></Cell>
+        <Cell ss:StyleID="CellInt${zebra}"><Data ss:Type="Number">${cleanKwh}</Data></Cell>
+        <Cell ss:StyleID="CellCurr${zebra}"><Data ss:Type="Number">${costRp}</Data></Cell>
+        <Cell ss:StyleID="${statusStyle}"><Data ss:Type="String">${escXml(statusText)}</Data></Cell>
+      </Row>`;
+    }).join('');
 
-    <!-- 6. FOOTER -->
-    <tr style="height: 24pt; mso-height-source: userset;">
-      <td class="footer-cell text-left" colspan="9">
-        Dicetak otomatis dari SCADA Energy Management System PT Musashi Auto Parts Indonesia · Pabrik Cikarang &amp; Karawang
-      </td>
-      <td class="footer-cell text-right" colspan="5">
-        Dokumen Resmi Utility Engineering · Konfidensial Internal
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-    `;
+    const excelXml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Title>Laporan Audit Energi PT Musashi Auto Parts Indonesia</Title>
+  <Author>Utility &amp; Engineering SCADA System</Author>
+ </DocumentProperties>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Color="#0F172A"/>
+  </Style>
+  <Style ss:ID="TitleBanner">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="14" ss:Bold="1" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#8C2924" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="SubBanner">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Color="#FED7AA"/>
+   <Interior ss:Color="#641013" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="SecTitle">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Bold="1" ss:Color="#8C2924"/>
+   <Interior ss:Color="#FEF2F2" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="TblHead">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#6B1F1B"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#6B1F1B"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#6B1F1B"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#6B1F1B"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#FFFFFF"/>
+   <Interior ss:Color="#8C2924" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="SubHead">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#94A3B8"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#1E293B"/>
+   <Interior ss:Color="#E2E8F0" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="SubHeadLeft">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#94A3B8"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#1E293B"/>
+   <Interior ss:Color="#E2E8F0" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="SubHeadRight">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#94A3B8"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#1E293B"/>
+   <Interior ss:Color="#E2E8F0" ss:Pattern="Solid"/>
+  </Style>
 
-    const blob = new Blob([excelHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
+  <!-- Data Cell Styles (Even = #F8FAFC, Odd = #FFFFFF) -->
+  <Style ss:ID="CellLeftEven">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellLeftOdd">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellLeftBoldEven">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#0F172A"/>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellLeftBoldOdd">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#0F172A"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellCenterEven">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellCenterOdd">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellCodeEven">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Consolas" x:Family="Modern" ss:Size="10" ss:Bold="1" ss:Color="#0369A1"/>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellCodeOdd">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Consolas" x:Family="Modern" ss:Size="10" ss:Bold="1" ss:Color="#0369A1"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellNum1Even">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0.0"/>
+  </Style>
+  <Style ss:ID="CellNum1Odd">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0.0"/>
+  </Style>
+  <Style ss:ID="CellIntEven">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0"/>
+  </Style>
+  <Style ss:ID="CellIntOdd">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0"/>
+  </Style>
+  <Style ss:ID="CellCurrEven">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="&quot;Rp &quot;#,##0"/>
+  </Style>
+  <Style ss:ID="CellCurrOdd">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="&quot;Rp &quot;#,##0"/>
+  </Style>
+  <Style ss:ID="CellPfOkEven">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#059669"/>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.00"/>
+  </Style>
+  <Style ss:ID="CellPfOkOdd">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#059669"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.00"/>
+  </Style>
+  <Style ss:ID="CellPfWarnEven">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#D97706"/>
+   <Interior ss:Color="#F8FAFC" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.00"/>
+  </Style>
+  <Style ss:ID="CellPfWarnOdd">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#D97706"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.00"/>
+  </Style>
+  <Style ss:ID="CellOkBadge">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9.5" ss:Bold="1" ss:Color="#166534"/>
+   <Interior ss:Color="#DCFCE7" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellWarnBadge">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9.5" ss:Bold="1" ss:Color="#92400E"/>
+   <Interior ss:Color="#FEF3C7" ss:Pattern="Solid"/>
+  </Style>
+
+  <!-- Totals Row Styles -->
+  <Style ss:ID="TotalLabel">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#0F172A"/>
+   <Interior ss:Color="#F1F5F9" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="TotalCenter">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#0F172A"/>
+   <Interior ss:Color="#F1F5F9" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="TotalNum1">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#0284C7"/>
+   <Interior ss:Color="#F1F5F9" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0.0"/>
+  </Style>
+  <Style ss:ID="TotalPf">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#059669"/>
+   <Interior ss:Color="#F1F5F9" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.00"/>
+  </Style>
+  <Style ss:ID="TotalInt">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#D97706"/>
+   <Interior ss:Color="#F1F5F9" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0"/>
+  </Style>
+  <Style ss:ID="TotalCurr">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#8C2924"/>
+   <Interior ss:Color="#F1F5F9" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="&quot;Rp &quot;#,##0"/>
+  </Style>
+  <Style ss:ID="TotalOk">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2" ss:Color="#8C2924"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#CBD5E1"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10" ss:Bold="1" ss:Color="#16A34A"/>
+   <Interior ss:Color="#F1F5F9" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="KpiValBlue">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10.5" ss:Bold="1" ss:Color="#0284C7"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0"/>
+  </Style>
+  <Style ss:ID="KpiValCurr">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10.5" ss:Bold="1" ss:Color="#8C2924"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="&quot;Rp &quot;#,##0"/>
+  </Style>
+  <Style ss:ID="KpiValPf">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10.5" ss:Bold="1" ss:Color="#059669"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="0.00"/>
+  </Style>
+  <Style ss:ID="KpiValDec1">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders><Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/><Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/></Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="10.5" ss:Bold="1" ss:Color="#0D9488"/>
+   <Interior ss:Color="#FFFFFF" ss:Pattern="Solid"/>
+   <NumberFormat ss:Format="#,##0.0"/>
+  </Style>
+ </Styles>
+
+ <!-- SHEET 1: RINGKASAN EKSEKUTIF -->
+ <Worksheet ss:Name="Ringkasan Energi">
+  <Table ss:DefaultRowHeight="22">
+   <Column ss:Index="1" ss:AutoFitWidth="0" ss:Width="65"/>
+   <Column ss:Index="2" ss:AutoFitWidth="0" ss:Width="95"/>
+   <Column ss:Index="3" ss:AutoFitWidth="0" ss:Width="275"/>
+   <Column ss:Index="4" ss:AutoFitWidth="0" ss:Width="245"/>
+   <Column ss:Index="5" ss:AutoFitWidth="0" ss:Width="135"/>
+   <Column ss:Index="6" ss:AutoFitWidth="0" ss:Width="220"/>
+
+   <Row ss:AutoFitHeight="0" ss:Height="30">
+    <Cell ss:MergeAcross="5" ss:StyleID="TitleBanner"><Data ss:Type="String">PT MUSASHI AUTO PARTS INDONESIA · UTILITY &amp; ENERGY MANAGEMENT SYSTEM</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="20">
+    <Cell ss:MergeAcross="5" ss:StyleID="SubBanner"><Data ss:Type="String">${escXml(`Laporan Ringkasan Audit Energi (${totalMetersCount} Unit) · Tanggal: ${dateFormatted} · Pukul: ${timeFormatted}`)}</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="12"/>
+
+   <!-- TABEL KPI UTAMA -->
+   <Row ss:AutoFitHeight="0" ss:Height="24">
+    <Cell ss:MergeAcross="5" ss:StyleID="SecTitle"><Data ss:Type="String">1. RINGKASAN PARAMETER UTAMA PLANT (INCOMING CLD 1–3)</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="2" ss:StyleID="SubHeadLeft"><Data ss:Type="String">Parameter Monitoring</Data></Cell>
+    <Cell ss:StyleID="SubHeadRight"><Data ss:Type="String">Nilai Saat Ini</Data></Cell>
+    <Cell ss:StyleID="SubHead"><Data ss:Type="String">Satuan</Data></Cell>
+    <Cell ss:StyleID="SubHeadLeft"><Data ss:Type="String">Keterangan &amp; Standar</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="2" ss:StyleID="CellLeftBoldOdd"><Data ss:Type="String">Total Active Power (Current Live Load)</Data></Cell>
+    <Cell ss:StyleID="KpiValBlue"><Data ss:Type="Number">${plantKw}</Data></Cell>
+    <Cell ss:StyleID="CellCenterOdd"><Data ss:Type="String">kW</Data></Cell>
+    <Cell ss:StyleID="CellLeftOdd"><Data ss:Type="String">Kapasitas terpakai 69,4%</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="2" ss:StyleID="CellLeftBoldEven"><Data ss:Type="String">Energy Today (Akumulasi Harian)</Data></Cell>
+    <Cell ss:StyleID="KpiValBlue"><Data ss:Type="Number">${plantKwh}</Data></Cell>
+    <Cell ss:StyleID="CellCenterEven"><Data ss:Type="String">kWh</Data></Cell>
+    <Cell ss:StyleID="CellLeftEven"><Data ss:Type="String">Sejak pukul 00:00 WIB</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="2" ss:StyleID="CellLeftBoldOdd"><Data ss:Type="String">Estimated Cost (Tarif Cikarang Listrindo)</Data></Cell>
+    <Cell ss:StyleID="KpiValCurr"><Data ss:Type="Number">${plantCostRp}</Data></Cell>
+    <Cell ss:StyleID="CellCenterOdd"><Data ss:Type="String">IDR</Data></Cell>
+    <Cell ss:StyleID="CellLeftOdd"><Data ss:Type="String">Tarif I-3/TM Rp 1.444,70/kWh</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="2" ss:StyleID="CellLeftBoldEven"><Data ss:Type="String">Power Factor Rata-Rata (Cos φ)</Data></Cell>
+    <Cell ss:StyleID="KpiValPf"><Data ss:Type="Number">${plantPfNum}</Data></Cell>
+    <Cell ss:StyleID="CellCenterEven"><Data ss:Type="String">PF</Data></Cell>
+    <Cell ss:StyleID="CellLeftEven"><Data ss:Type="String">Target Cikarang Listrindo &gt;= 0,85 (Aman)</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="2" ss:StyleID="CellLeftBoldOdd"><Data ss:Type="String">Carbon Emission (CO2e ESG)</Data></Cell>
+    <Cell ss:StyleID="KpiValDec1"><Data ss:Type="Number">${plantCarbonTonNum}</Data></Cell>
+    <Cell ss:StyleID="CellCenterOdd"><Data ss:Type="String">Ton CO2e</Data></Cell>
+    <Cell ss:StyleID="CellLeftOdd"><Data ss:Type="String">Faktor Grid Jamali 0,79 kg/kWh</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="2" ss:StyleID="CellLeftBoldEven"><Data ss:Type="String">Status Jaringan Meter SCADA</Data></Cell>
+    <Cell ss:StyleID="CellCenterEven"><Data ss:Type="String">${onlineMeters} / ${totalMetersCount}</Data></Cell>
+    <Cell ss:StyleID="CellCenterEven"><Data ss:Type="String">Unit</Data></Cell>
+    <Cell ss:StyleID="CellOkBadge"><Data ss:Type="String">100% Online Modbus</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="14"/>
+
+   <!-- TABEL DISTRIBUSI PER FACTORY -->
+   <Row ss:AutoFitHeight="0" ss:Height="24">
+    <Cell ss:MergeAcross="5" ss:StyleID="SecTitle"><Data ss:Type="String">2. DISTRIBUSI KONSUMSI ENERGI PER AREA FACTORY (20kV)</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="1" ss:StyleID="SubHeadLeft"><Data ss:Type="String">Area Substation</Data></Cell>
+    <Cell ss:StyleID="SubHeadLeft"><Data ss:Type="String">Cakupan Trafo</Data></Cell>
+    <Cell ss:StyleID="SubHeadRight"><Data ss:Type="String">Active Power (kW)</Data></Cell>
+    <Cell ss:StyleID="SubHeadRight"><Data ss:Type="String">Energy Today (kWh)</Data></Cell>
+    <Cell ss:StyleID="SubHead"><Data ss:Type="String">Share Beban (%)</Data></Cell>
+   </Row>
+   ${facRows.map((fr, idx) => {
+     const z = idx % 2 === 0 ? 'Odd' : 'Even';
+     return `
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:MergeAcross="1" ss:StyleID="CellLeftBold${z}"><Data ss:Type="String">${escXml(fr.name)} (${fr.units} Unit)</Data></Cell>
+    <Cell ss:StyleID="CellLeft${z}"><Data ss:Type="String">${escXml(fr.supply)}</Data></Cell>
+    <Cell ss:StyleID="CellNum1${z}"><Data ss:Type="Number">${fr.kw}</Data></Cell>
+    <Cell ss:StyleID="CellInt${z}"><Data ss:Type="Number">${fr.kwh}</Data></Cell>
+    <Cell ss:StyleID="CellCenter${z}"><Data ss:Type="String">${fr.pct}%</Data></Cell>
+   </Row>`;
+   }).join('')}
+   <Row ss:AutoFitHeight="0" ss:Height="14"/>
+
+   <!-- TABEL TOP 8 PEMAKAI LISTRIK TERBESAR -->
+   <Row ss:AutoFitHeight="0" ss:Height="24">
+    <Cell ss:MergeAcross="5" ss:StyleID="SecTitle"><Data ss:Type="String">3. TOP 8 BEBAN LISTRIK TERBESAR (PEAK LOADERS)</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:StyleID="SubHead"><Data ss:Type="String">Rank</Data></Cell>
+    <Cell ss:StyleID="SubHead"><Data ss:Type="String">Code</Data></Cell>
+    <Cell ss:StyleID="SubHeadLeft"><Data ss:Type="String">Feeder / Machine Name</Data></Cell>
+    <Cell ss:StyleID="SubHeadLeft"><Data ss:Type="String">Area &amp; Lokasi</Data></Cell>
+    <Cell ss:StyleID="SubHeadRight"><Data ss:Type="String">Power (kW)</Data></Cell>
+    <Cell ss:StyleID="SubHeadRight"><Data ss:Type="String">Energy Today (kWh)</Data></Cell>
+   </Row>
+   ${top8.map((m, idx) => {
+     const z = idx % 2 === 0 ? 'Odd' : 'Even';
+     const cleanKwh = Math.round(m.kwhToday || 0);
+     return `
+   <Row ss:AutoFitHeight="0" ss:Height="22">
+    <Cell ss:StyleID="CellCenter${z}"><Data ss:Type="String">#${idx + 1}</Data></Cell>
+    <Cell ss:StyleID="CellCode${z}"><Data ss:Type="String">${escXml(m.id)}</Data></Cell>
+    <Cell ss:StyleID="CellLeftBold${z}"><Data ss:Type="String">${escXml(m.name)}</Data></Cell>
+    <Cell ss:StyleID="CellLeft${z}"><Data ss:Type="String">${escXml(m.factoryLabel || m.factory)}</Data></Cell>
+    <Cell ss:StyleID="CellNum1${z}"><Data ss:Type="Number">${Number((m.kw || 0).toFixed(1))}</Data></Cell>
+    <Cell ss:StyleID="CellInt${z}"><Data ss:Type="Number">${cleanKwh}</Data></Cell>
+   </Row>`;
+   }).join('')}
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup><Layout x:Orientation="Landscape"/></PageSetup>
+   <FitToPage/>
+   <Print><ValidPrinterInfo/><FitWidth>1</FitWidth><FitHeight>0</FitHeight></Print>
+   <Selected/>
+  </WorksheetOptions>
+ </Worksheet>
+
+ <!-- SHEET 2: DIREKTORI LENGKAP 111 METER -->
+ <Worksheet ss:Name="Direktori 111 Meter">
+  <Table ss:DefaultRowHeight="22">
+   <Column ss:Index="1" ss:AutoFitWidth="0" ss:Width="38"/>
+   <Column ss:Index="2" ss:AutoFitWidth="0" ss:Width="85"/>
+   <Column ss:Index="3" ss:AutoFitWidth="0" ss:Width="275"/>
+   <Column ss:Index="4" ss:AutoFitWidth="0" ss:Width="140"/>
+   <Column ss:Index="5" ss:AutoFitWidth="0" ss:Width="125"/>
+   <Column ss:Index="6" ss:AutoFitWidth="0" ss:Width="365"/>
+   <Column ss:Index="7" ss:AutoFitWidth="0" ss:Width="220"/>
+   <Column ss:Index="8" ss:AutoFitWidth="0" ss:Width="95"/>
+   <Column ss:Index="9" ss:AutoFitWidth="0" ss:Width="85"/>
+   <Column ss:Index="10" ss:AutoFitWidth="0" ss:Width="80"/>
+   <Column ss:Index="11" ss:AutoFitWidth="0" ss:Width="80"/>
+   <Column ss:Index="12" ss:AutoFitWidth="0" ss:Width="65"/>
+   <Column ss:Index="13" ss:AutoFitWidth="0" ss:Width="100"/>
+   <Column ss:Index="14" ss:AutoFitWidth="0" ss:Width="145"/>
+   <Column ss:Index="15" ss:AutoFitWidth="0" ss:Width="105"/>
+
+   <Row ss:AutoFitHeight="0" ss:Height="28">
+    <Cell ss:MergeAcross="14" ss:StyleID="TitleBanner"><Data ss:Type="String">${escXml(`DIREKTORI TELEMETRI ${totalMetersCount} DIGITAL POWER METER · PT MUSASHI AUTO PARTS INDONESIA (${dateFormatted} ${timeFormatted})`)}</Data></Cell>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="24">
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">No</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Machine Code</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Feeder / Panel Name</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Category</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Factory</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Sub Area &amp; Location</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Digital Meter Brand</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">IP Gateway</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Power (kW)</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Voltage (V)</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Current (A)</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Cos φ</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Energy (kWh)</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Cost (Rp)</Data></Cell>
+    <Cell ss:StyleID="TblHead"><Data ss:Type="String">Status</Data></Cell>
+   </Row>
+   ${meterRowsXml}
+   <Row ss:Index="${totalRowIndex}" ss:AutoFitHeight="0" ss:Height="26">
+    <Cell ss:MergeAcross="7" ss:StyleID="TotalLabel"><Data ss:Type="String">TOTAL AKUMULASI CHANNEL DIREKTORI (${totalMetersCount} UNIT):</Data></Cell>
+    <Cell ss:StyleID="TotalNum1" ss:Formula="=SUM(R3C9:R${lastDataRow}C9)"><Data ss:Type="Number">${dirTotalKw}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="String">-</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="String">-</Data></Cell>
+    <Cell ss:StyleID="TotalPf" ss:Formula="=AVERAGE(R3C12:R${lastDataRow}C12)"><Data ss:Type="Number">${avgDirPf}</Data></Cell>
+    <Cell ss:StyleID="TotalInt" ss:Formula="=SUM(R3C13:R${lastDataRow}C13)"><Data ss:Type="Number">${dirTotalKwh}</Data></Cell>
+    <Cell ss:StyleID="TotalCurr" ss:Formula="=SUM(R3C14:R${lastDataRow}C14)"><Data ss:Type="Number">${dirTotalCostRp}</Data></Cell>
+    <Cell ss:StyleID="TotalOk"><Data ss:Type="String">${onlineMeters} / ${totalMetersCount} AKTIF</Data></Cell>
+   </Row>
+  </Table>
+  <AutoFilter x:Range="R2C1:R${lastDataRow}C15" xmlns="urn:schemas-microsoft-com:office:excel"/>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup><Layout x:Orientation="Landscape"/></PageSetup>
+   <FitToPage/>
+   <Print><ValidPrinterInfo/><FitWidth>1</FitWidth><FitHeight>0</FitHeight></Print>
+   <FreezePanes/>
+   <FrozenNoSplit/>
+   <SplitHorizontal>2</SplitHorizontal>
+   <TopRowBottomPane>2</TopRowBottomPane>
+   <ActivePane>2</ActivePane>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>`;
+
+    const blob = new Blob([excelXml], { type: 'application/vnd.ms-excel;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -3289,7 +3538,7 @@ Timestamp: ${new Date().toLocaleString('id-ID')}`;
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    showToast('✓ Laporan Excel (Tabel Rapi & Grafik Visual) Berhasil Diunduh!');
+    showToast('✓ Laporan Excel 2 Sheet (Ringkasan + Direktori 111 Meter) Berhasil Diunduh!');
   };
 
   window.exportToCsv = function() {
